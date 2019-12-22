@@ -5,7 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-  MatButtonModule, MatFormFieldModule,
+  MatButtonModule, MatDividerModule, MatFormFieldModule,
   MatGridListModule,
   MatIconModule, MatInputModule, MatListModule,
   MatMenuModule, MatOptionModule, MatSelectModule,
@@ -19,11 +19,13 @@ import {ButtonComponent} from './button/button.component';
 import {RegisterComponent} from './pages/register/register.component';
 import {SigninComponent} from './pages/signin/signin.component';
 import {GobackComponent} from './goback/goback.component';
+import {ProfileComponent} from './pages/profile/profile.component';
 
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent},
   {path: 'signin', component: SigninComponent},
   {path: 'register', component: RegisterComponent},
+  {path: 'profile', component: ProfileComponent}
 ];
 
 
@@ -36,7 +38,8 @@ const appRoutes: Routes = [
     ButtonComponent,
     RegisterComponent,
     SigninComponent,
-    GobackComponent
+    GobackComponent,
+    ProfileComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -55,7 +58,8 @@ const appRoutes: Routes = [
     MatFormFieldModule,
     MatOptionModule,
     MatSelectModule,
-    MatInputModule
+    MatInputModule,
+    MatDividerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
