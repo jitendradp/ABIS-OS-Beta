@@ -7,7 +7,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
   MatButtonModule,
   MatGridListModule,
-  MatIconModule,
+  MatIconModule, MatListModule,
   MatMenuModule,
   MatSidenavModule,
   MatToolbarModule
@@ -36,7 +36,8 @@ const appRoutes: Routes = [
     MatButtonModule,
     MatMenuModule,
     MatIconModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

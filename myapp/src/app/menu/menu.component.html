@@ -1,1 +1,8 @@
-<p>menu works!</p>
+<mat-toolbar>
+  <button mat-flat-button color="primary">Sign In / Register</button>
+</mat-toolbar>
+<mat-selection-list *ngFor="let page of options">
+  <mat-list-item>
+    {{page}}
+  </mat-list-item>
+</mat-selection-list>
