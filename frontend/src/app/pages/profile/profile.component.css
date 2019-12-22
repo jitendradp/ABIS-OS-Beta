@@ -1,4 +1,4 @@
-.center {
+.profileCard {
   text-align: center;
   padding-top: 16px;
 }
@@ -9,5 +9,13 @@
 
 .profileImage {
   width: 20vh;
-  border-radius: 50%
+  border-radius: 50%;
+}
+
+.profileInformation {
+  padding-top: 16px;
+}
+
+.contactProfile {
+  padding: 8px;
 }
