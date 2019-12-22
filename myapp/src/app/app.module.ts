@@ -6,19 +6,20 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterModule, Routes} from "@angular/router";
 import {LoginComponent} from './pages/login/login.component';
 import {SignupComponent} from './pages/signup/signup.component';
-import {MatButtonModule, MatGridListModule, MatIconModule, MatMenuModule, MatToolbarModule} from "@angular/material";
-import {HeaderComponent} from './header/header.component';
-import {BodyComponent} from './body/body.component';
-import {FooterComponent} from './footer/footer.component';
+import {
+  MatButtonModule,
+  MatGridListModule,
+  MatIconModule,
+  MatMenuModule,
+  MatSidenavModule,
+  MatToolbarModule
+} from "@angular/material";
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    SignupComponent,
-    HeaderComponent,
-    BodyComponent,
-    FooterComponent
+    SignupComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +33,8 @@ import {FooterComponent} from './footer/footer.component';
     MatGridListModule,
     MatButtonModule,
     MatMenuModule,
-    MatIconModule
+    MatIconModule,
+    MatSidenavModule
   ],
   providers: [],
   bootstrap: [AppComponent]
