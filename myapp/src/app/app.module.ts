@@ -14,11 +14,16 @@ import {
 } from "@angular/material";
 import {MenuComponent} from './menu/menu.component';
 import {AccessComponent} from './pages/access/access.component';
-import { ContentComponent } from './content/content.component';
-import { ButtonComponent } from './button/button.component';
+import {ContentComponent} from './content/content.component';
+import {ButtonComponent} from './button/button.component';
+import {RegisterComponent} from './pages/register/register.component';
+import {SigninComponent} from './pages/signin/signin.component';
+import { GobackComponent } from './goback/goback.component';
 
 const appRoutes: Routes = [
-  {path: 'access', component: AccessComponent}
+  {path: 'access', component: AccessComponent},
+  {path: 'signin', component: SigninComponent},
+  {path: 'register', component: RegisterComponent},
 ];
 
 
@@ -28,7 +33,10 @@ const appRoutes: Routes = [
     MenuComponent,
     AccessComponent,
     ContentComponent,
-    ButtonComponent
+    ButtonComponent,
+    RegisterComponent,
+    SigninComponent,
+    GobackComponent
   ],
   imports: [
     RouterModule.forRoot(
