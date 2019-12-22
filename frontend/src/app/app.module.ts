@@ -5,7 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-  MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule,
+  MatButtonModule, MatCardModule, MatChipsModule, MatDividerModule, MatFormFieldModule,
   MatGridListModule,
   MatIconModule, MatInputModule, MatListModule,
   MatMenuModule, MatOptionModule, MatSelectModule,
@@ -20,12 +20,14 @@ import {RegisterComponent} from './pages/register/register.component';
 import {SigninComponent} from './pages/signin/signin.component';
 import {GobackComponent} from './goback/goback.component';
 import {ProfileComponent} from './pages/profile/profile.component';
+import {HomeComponent} from './pages/home/home.component';
 
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent},
   {path: 'signin', component: SigninComponent},
   {path: 'register', component: RegisterComponent},
-  {path: 'profile', component: ProfileComponent}
+  {path: 'profile', component: ProfileComponent},
+  {path: 'home', component: HomeComponent}
 ];
 
 
@@ -39,7 +41,8 @@ const appRoutes: Routes = [
     RegisterComponent,
     SigninComponent,
     GobackComponent,
-    ProfileComponent
+    ProfileComponent,
+    HomeComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -60,7 +63,8 @@ const appRoutes: Routes = [
     MatSelectModule,
     MatInputModule,
     MatDividerModule,
-    MatCardModule
+    MatCardModule,
+    MatChipsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

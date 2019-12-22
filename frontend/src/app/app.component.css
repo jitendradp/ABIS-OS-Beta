@@ -20,6 +20,7 @@
   height: 32px;
   width: 100%;
   background: #999;
+  z-index: 3;
 }
 
 .fill-remaining-space {
