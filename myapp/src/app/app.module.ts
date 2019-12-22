@@ -13,16 +13,22 @@ import {
   MatToolbarModule
 } from "@angular/material";
 import {MenuComponent} from './menu/menu.component';
+import {AccessComponent} from './pages/access/access.component';
+import { ContentComponent } from './content/content.component';
+import { ButtonComponent } from './button/button.component';
 
 const appRoutes: Routes = [
-  {path: 'menu', component: MenuComponent}
+  {path: 'access', component: AccessComponent}
 ];
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    MenuComponent
+    MenuComponent,
+    AccessComponent,
+    ContentComponent,
+    ButtonComponent
   ],
   imports: [
     RouterModule.forRoot(
