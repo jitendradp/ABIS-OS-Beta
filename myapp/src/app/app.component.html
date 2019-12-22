@@ -1,12 +1,16 @@
 <mat-drawer-container>
   <mat-drawer position="end" #drawer mode="over">
-    <p>Auto-resizing sidenav</p>
+    <p>hallo ich bin die sidebar</p>
+    <button routerLink="/menu" mat-menu-item>
+      <mat-icon>dialpad</mat-icon>
+      <span>Test</span>
+    </button>
   </mat-drawer>
   <mat-drawer-content>
     <mat-toolbar class="header" color="primary">
       <span>Application Title</span>
       <!-- This fills the remaining space of the current row -->
-      <span class="example-fill-remaining-space"></span>
+      <span class="fill-remaining-space"></span>
       <button mat-icon-button (click)="drawer.toggle()">
         <mat-icon>more_vert</mat-icon>
       </button>
@@ -17,7 +21,7 @@
     <mat-toolbar class="footer">
       <span>Footer Title</span>
       <!-- This fills the remaining space of the current row -->
-      <span class="example-fill-remaining-space"></span>
+      <span class="fill-remaining-space"></span>
       <span>Right Aligned Text</span>
     </mat-toolbar>
   </mat-drawer-content>
