@@ -1,0 +1,138 @@
+scalar Json
+
+type Profile {
+    id: String!
+    createdAt: String!
+    updatedAt: String
+    name: String!
+    timezone: String
+    status: String
+    picture: String!
+    memberships: [Membership!]!
+    location: Location
+}
+
+type Location {
+    id: String!
+    createdAt: String!
+    updatedAt: String
+    name: String
+    latitude: Float!
+    longitude: Float!
+    radius: Float
+}
+
+type Group {
+    id:String!
+    name:String
+    title:String!
+    description:String
+    logo:String
+    type: GroupType!
+    tags: String
+    createdAt: String!
+    updatedAt: String
+    host:Profile!
+    members: [Membership!]
+    is_hidden:Boolean
+    is_public:Boolean
+}
+
+type Message {
+    id: String!
+    createdAt: String!
+    updatedAt: String
+    sender: Profile
+    subject: String
+    content: Json
+    tags: String
+    type: String
+    group: Group
+}
+
+enum GroupType {
+    WORKSPACE
+    TEAM
+    CONVERSATION
+    THREAD
+    FRIENDS
+}
+
+type Membership {
+    id: String!
+    createdAt: String!
+    updatedAt: String
+    member: Profile
+    group: Group
+}
+
+type Asset {
+    id: String!
+    name: String!
+}
+
+type Exchange {
+    id: String!
+    name: String!
+
+    assets:[Asset!]!
+}
+
+enum TransactionDirection {
+    BUY,
+    SELL
+}
+
+type Transaction {
+    id: String!
+    timestamp:String!                                   # When was the transaction performed?
+    profile: Profile!                                   # Who performed the transaction?
+    asset:Asset!                                        # What asset was included in the transaction?
+    direction:TransactionDirection!                     # Buy or Sell?
+    exchange:Exchange!                                  # Where took the transaction place?
+    amount:Float!                                       # How much units of [asset] have been traded?
+}
+
+type Portfolio {
+    id: String!
+    owner: Profile!
+    name: String!
+
+    transactions:[Transaction!]!
+}
+
+type Mutation {
+    signup(name:String email:String password:String) : String
+    verifySession(token:String) : Boolean!
+    verifyEmail(code:String) : String
+    createProfile(token:String name:String picture:String timezone:String) : String
+    updateProfile(token:String profileId:String name:String picture:String timezone:String status:String) : String
+    createWorkspace(token:String hostProfileId: String, name:String title:String description:String logo:String tags:String) : String
+    updateWorkspace(token:String workspaceId: String, name:String title:String description:String logo:String tags:String isHidden:Boolean isPublic:Boolean) : String
+    addMember(token:String groupId:String memberProfileId:String) : String
+    removeMember(token:String groupId:String memberProfileId:String) : String
+    postMessage(token:String groupId:String subject:String content:String) : String
+
+    createPortfolio(token:String name:String) : String
+
+    buy(token:String exchangeId:String! assetId:String! amount:Float!) : Transaction
+    sell(token:String exchangeId:String! assetId:String! amount:Float!) : Transaction
+
+    login(username:String password:String) : String
+    logout(token:String) : Boolean
+
+    setSessionProfile(token:String profileId:String) : String
+}
+
+type Query {
+    myWorkspaces(token:String):[Group!]!
+    myMemberships(token:String):[Membership!]!
+    getSessionProfile(token:String):Profile
+    listProfiles(token:String): [Profile!]!
+    listWorkspaces(token:String profileId:String): [Group!]!
+    listMemberships(token:String profileId:String): [Membership!]!
+    listMembers(token:String groupId:String):[Membership!]!
+    listMessages(token:String groupId:String profileId:String):[Message!]!
+    getProfile(token:String profileId:String):Profile
+    getWorkspace(token:String workspaceId:String):Group
+}
