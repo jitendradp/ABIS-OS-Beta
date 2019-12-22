@@ -8,16 +8,13 @@ import {Component, Input, OnInit} from '@angular/core';
 export class ProfileComponent implements OnInit {
 
   @Input()
-  picture: string = 'http://i.imgur.com/74sByqd.jpg';
-
-  @Input()
-  cover: string = 'https://htmlcolorcodes.com/assets/images/html-color-codes-color-tutorials-hero-00e10b1f.jpg';
+  picture: string = '';
 
   @Input()
   name: string = 'David Chang';
 
   @Input()
-  slogan: string = 'To be or not to be, this is my awesome motto!';
+  slogan: string = 'CEO and Founder of ABIS';
 
   constructor() {
   }

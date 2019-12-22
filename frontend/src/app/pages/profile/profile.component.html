@@ -5,12 +5,18 @@
     <div class="profileInformation">
       <mat-card-title>{{name}}</mat-card-title>
       <mat-card-subtitle>{{slogan}}</mat-card-subtitle>
-      <mat-icon class="contactProfile">phone</mat-icon>
-      <mat-icon class="contactProfile">email</mat-icon>
-      <mat-icon class="contactProfile">home</mat-icon>
     </div>
     <mat-card-actions>
-      <app-button>Follow</app-button>
+      <button mat-button>
+        <mat-icon>person_add</mat-icon>
+      </button>
+      <button mat-button>
+        <mat-icon>notifications_off</mat-icon>
+      </button>
+      <button mat-button>
+        <mat-icon>star</mat-icon>
+      </button>
+      <app-button>Chat</app-button>
     </mat-card-actions>
     <mat-card-content>
       <mat-icon class="contactProfile">lock</mat-icon>
