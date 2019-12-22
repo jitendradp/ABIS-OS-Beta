@@ -7,7 +7,7 @@ import {Component, OnInit} from '@angular/core';
 })
 export class MenuComponent implements OnInit {
 
-  options: string[] = ['Page1', 'Page2', 'Page3'];
+  options: string[] = ['Option1', 'Option2', 'Option3'];
 
   constructor() {
   }

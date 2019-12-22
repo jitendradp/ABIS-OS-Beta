@@ -5,7 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-  MatButtonModule, MatDividerModule, MatFormFieldModule,
+  MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule,
   MatGridListModule,
   MatIconModule, MatInputModule, MatListModule,
   MatMenuModule, MatOptionModule, MatSelectModule,
@@ -59,7 +59,8 @@ const appRoutes: Routes = [
     MatOptionModule,
     MatSelectModule,
     MatInputModule,
-    MatDividerModule
+    MatDividerModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
