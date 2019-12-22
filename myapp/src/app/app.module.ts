@@ -6,7 +6,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterModule, Routes} from "@angular/router";
 import {LoginComponent} from './pages/login/login.component';
 import {SignupComponent} from './pages/signup/signup.component';
-import {MatGridListModule, MatToolbarModule} from "@angular/material";
+import {MatButtonModule, MatGridListModule, MatIconModule, MatMenuModule, MatToolbarModule} from "@angular/material";
 import {HeaderComponent} from './header/header.component';
 import {BodyComponent} from './body/body.component';
 import {FooterComponent} from './footer/footer.component';
@@ -29,7 +29,10 @@ import {FooterComponent} from './footer/footer.component';
       {path: 'signup', component: SignupComponent}
     ]),
     MatToolbarModule,
-    MatGridListModule
+    MatGridListModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]
