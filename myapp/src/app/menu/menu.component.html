@@ -1,8 +1,8 @@
 <mat-toolbar>
   <button mat-flat-button color="primary">Sign In / Register</button>
 </mat-toolbar>
-<mat-selection-list *ngFor="let page of options">
+<mat-nav-list *ngFor="let option of options">
   <mat-list-item>
-    {{page}}
+    {{option}}
   </mat-list-item>
-</mat-selection-list>
+</mat-nav-list>
