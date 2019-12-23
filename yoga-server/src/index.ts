@@ -4,9 +4,41 @@ import {UserMutations} from "./mutations/users/userMutations";
 import {ProfileMutations} from "./mutations/profiles/profileMutations";
 import {GroupMutations} from "./mutations/groups/groupMutations";
 import {ContextParameters} from "graphql-yoga/dist/types";
+import {GroupQueries} from "./queries/groups/groupQueries";
+import {ProfileQueries} from "./queries/profiles/profileQueries";
 
 const resolvers = {
   Query: {
+    async getSessionProfile(root, {token}, ctx) {
+      return new ProfileQueries().getSessionProfile(ctx.token);
+    },
+    async getProfile(root, {profileId}, ctx) {
+      return new ProfileQueries().getProfile(ctx.token, profileId);
+    },
+    async myWorkspaces(root, {}, ctx) {
+      return new GroupQueries().myWorkspaces(ctx.token);
+    },
+    async myMemberships(root, {token}, ctx) {
+      return new GroupQueries().myMemberships(ctx.token);
+    },
+    async listProfiles(root, {token}, ctx) {
+      return new ProfileQueries().listProfiles(ctx.token);
+    },
+    async listWorkspaces(root, {profileId}, ctx) {
+      return new GroupQueries().listWorkspaces(ctx.token, profileId);
+    },
+    async listMemberships(root, {profileId}, ctx) {
+      return new GroupQueries().listMemberships(ctx.token, profileId);
+    },
+    async listMembers(root, {groupId}, ctx) {
+      return new GroupQueries().listMembers(ctx.token, groupId);
+    },
+    async listMessages(root, {groupId, profileId}, ctx) {
+      return new GroupQueries().listMessages(ctx.token, groupId, profileId);
+    },
+    async getWorkspace(root, {workspaceId}, ctx) {
+      return new GroupQueries().getWorkspace(ctx.token, workspaceId);
+    }
   },
   Mutation: {
     async signup(root, {name, email, password}, ctx) {
@@ -15,7 +47,7 @@ const resolvers = {
     async verifyEmail(root, {code}, ctx) {
       return new UserMutations().verifyEmail(code);
     },
-    async login(root, {name, email, password}, ctx) {
+    async login(root, {email, password}, ctx) {
       return new UserMutations().login(email, password);
     },
     async logout(root, {}, ctx) {
@@ -59,4 +91,11 @@ const server = new GraphQLServer({
   }
 });
 
-server.start(() => console.log('Server is running on http://localhost:4000'));
+server.start({
+  cors: {
+    methods: "POST",
+    origin: "*",
+    allowedHeaders: "*",
+    optionsSuccessStatus: 200
+  },
+},() => console.log('Server is running on http://localhost:4000'));
