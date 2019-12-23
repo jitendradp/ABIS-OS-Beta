@@ -34,7 +34,7 @@ import {GobackComponent} from './goback/goback.component';
 import {ProfileComponent} from './pages/profile/profile.component';
 import {HomeComponent} from './pages/home/home.component';
 import {PortfolioComponent} from './pages/portfolio/portfolio.component';
-import {AccountComponent} from './pages/account/account.component';
+import {CreditsComponent} from './pages/credits/credits.component';
 import {CardComponent} from './card/card.component';
 
 const appRoutes: Routes = [
@@ -44,7 +44,7 @@ const appRoutes: Routes = [
   {path: 'profile', component: ProfileComponent},
   {path: 'home', component: HomeComponent},
   {path: 'portfolio', component: PortfolioComponent},
-  {path: 'account', component: AccountComponent},
+  {path: 'credit', component: CreditsComponent},
 ];
 
 
@@ -61,7 +61,7 @@ const appRoutes: Routes = [
     ProfileComponent,
     HomeComponent,
     PortfolioComponent,
-    AccountComponent,
+    CreditsComponent,
     CardComponent
   ],
   imports: [
