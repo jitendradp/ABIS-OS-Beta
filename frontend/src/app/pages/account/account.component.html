@@ -1,5 +1,11 @@
 <app-content>
   <mat-form-field style="width: 100%">
+    <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field style="width: 100%">
     <mat-label>Account</mat-label>
     <mat-select>
       <mat-option *ngFor="let account of accounts" [value]="account.value">

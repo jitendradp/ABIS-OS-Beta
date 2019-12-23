@@ -5,11 +5,23 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-  MatButtonModule, MatCardModule, MatChipsModule, MatDividerModule, MatExpansionModule, MatFormFieldModule,
+  MatButtonModule,
+  MatCardModule,
+  MatChipsModule,
+  MatDatepickerModule,
+  MatDividerModule,
+  MatExpansionModule,
+  MatFormFieldModule,
   MatGridListModule,
-  MatIconModule, MatInputModule, MatListModule,
-  MatMenuModule, MatOptionModule, MatSelectModule,
-  MatSidenavModule, MatTabsModule,
+  MatIconModule,
+  MatInputModule,
+  MatListModule,
+  MatMenuModule,
+  MatNativeDateModule,
+  MatOptionModule,
+  MatSelectModule,
+  MatSidenavModule,
+  MatTabsModule,
   MatToolbarModule
 } from "@angular/material";
 import {MenuComponent} from './menu/menu.component';
@@ -23,7 +35,7 @@ import {ProfileComponent} from './pages/profile/profile.component';
 import {HomeComponent} from './pages/home/home.component';
 import {PortfolioComponent} from './pages/portfolio/portfolio.component';
 import {AccountComponent} from './pages/account/account.component';
-import { CardComponent } from './card/card.component';
+import {CardComponent} from './card/card.component';
 
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent},
@@ -74,7 +86,9 @@ const appRoutes: Routes = [
     MatCardModule,
     MatChipsModule,
     MatTabsModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [],
   bootstrap: [AppComponent]
