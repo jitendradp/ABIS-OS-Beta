@@ -6,11 +6,11 @@
 
 .aligned-with-icon {
   position: absolute;
-  margin-top: 16px;
+  margin-top: 18px;
   font-size: 11px;
   width: 40px;
 }
 
 .pullUp {
-  margin-top: -12px;
+  margin-top: -10px;
 }
