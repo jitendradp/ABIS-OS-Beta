@@ -16,6 +16,9 @@ export class CardComponent implements OnInit {
   @Input ()
   showOptions: boolean;
 
+  @Input ()
+  showStats: boolean;
+
   @Input()
   title: string;
 

@@ -5,6 +5,17 @@
     <div class="profileInformation">
       <mat-card-title>{{title}}</mat-card-title>
       <mat-card-subtitle>{{subtitle}}</mat-card-subtitle>
+      <app-content *ngIf="showStats">
+        <mat-divider style="padding-bottom: 8px"></mat-divider>
+        <mat-grid-list cols="3" rowHeight="2:1">
+          <mat-grid-tile><h3>Profit</h3></mat-grid-tile>
+          <mat-grid-tile>
+            <mat-icon>trending_up</mat-icon>
+          </mat-grid-tile>
+          <mat-grid-tile><h3>+2.835€</h3></mat-grid-tile>
+        </mat-grid-list>
+        <mat-divider style="padding-bottom: 8px"></mat-divider>
+      </app-content>
     </div>
 
     <mat-card-actions>
