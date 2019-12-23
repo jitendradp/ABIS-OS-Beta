@@ -37,7 +37,6 @@ import {HomeComponent} from './pages/home/home.component';
 import {PortfolioComponent} from './pages/portfolio/portfolio.component';
 import {CreditsComponent} from './pages/credits/credits.component';
 import {CardComponent} from './card/card.component';
-import {NotificationsComponent} from './pages/notifications/notifications.component';
 import {IconbarComponent} from './iconbar/iconbar.component';
 
 const appRoutes: Routes = [
@@ -66,7 +65,6 @@ const appRoutes: Routes = [
     PortfolioComponent,
     CreditsComponent,
     CardComponent,
-    NotificationsComponent,
     IconbarComponent
   ],
   imports: [

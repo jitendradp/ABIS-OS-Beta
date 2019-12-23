@@ -1,59 +1,57 @@
-<app-content>
-  <mat-card class="profileCard">
-    <div *ngIf="showImage">
-      <img mat-card-image src="{{image}}">
+<mat-card class="profileCard">
+  <div *ngIf="showImage">
+    <img mat-card-image src="{{image}}">
+  </div>
+  <div class="profileInformation">
+    <div style="padding-bottom: 8px">
+      <p>{{creator}}</p>
+      <small>{{creationDate}}</small>
     </div>
-    <div class="profileInformation">
-      <div style="padding-bottom: 8px">
-        <p>{{creator}}</p>
-        <small>{{creationDate}}</small>
-      </div>
-      <mat-card-header>
-        <div *ngIf="showIcon" mat-card-avatar class="headerImage"></div>
-        <mat-card-title>{{title}}</mat-card-title>
-        <mat-card-subtitle>{{subtitle}}</mat-card-subtitle>
-      </mat-card-header>
-      <app-content *ngIf="showStats">
-        <mat-divider style="padding-bottom: 8px"></mat-divider>
-        <mat-grid-list cols="3" rowHeight="2:1">
-          <mat-grid-tile><h3>Profit</h3></mat-grid-tile>
-          <mat-grid-tile>
-            <mat-icon>trending_up</mat-icon>
-          </mat-grid-tile>
-          <mat-grid-tile><h3>+2.835€</h3></mat-grid-tile>
-        </mat-grid-list>
-        <mat-divider style="padding-bottom: 8px"></mat-divider>
-      </app-content>
-    </div>
+    <mat-card-header>
+      <div *ngIf="showIcon" mat-card-avatar class="headerImage"></div>
+      <mat-card-title>{{title}}</mat-card-title>
+      <mat-card-subtitle>{{subtitle}}</mat-card-subtitle>
+    </mat-card-header>
+    <app-content *ngIf="showStats">
+      <mat-divider style="padding-bottom: 8px"></mat-divider>
+      <mat-grid-list cols="3" rowHeight="2:1">
+        <mat-grid-tile><h3>Profit</h3></mat-grid-tile>
+        <mat-grid-tile>
+          <mat-icon>trending_up</mat-icon>
+        </mat-grid-tile>
+        <mat-grid-tile><h3>+2.835€</h3></mat-grid-tile>
+      </mat-grid-list>
+      <mat-divider style="padding-bottom: 8px"></mat-divider>
+    </app-content>
+  </div>
 
-    <mat-card-actions>
-      <app-content *ngIf="showOptions">
-        <mat-grid-list cols="3" rowHeight="2:1">
-          <mat-grid-tile>
-            <button mat-button>
-              <mat-icon>visibility</mat-icon>
-            </button>
-          </mat-grid-tile>
-          <mat-grid-tile>
-            <button mat-button>
-              <mat-icon>notifications_off</mat-icon>
-            </button>
-          </mat-grid-tile>
-          <mat-grid-tile>
-            <button mat-button>
-              <mat-icon>star</mat-icon>
-            </button>
-          </mat-grid-tile>
-        </mat-grid-list>
-      </app-content>
-      <app-button>{{action}}</app-button>
-    </mat-card-actions>
+  <mat-card-actions>
+    <app-content *ngIf="showOptions">
+      <mat-grid-list cols="3" rowHeight="2:1">
+        <mat-grid-tile>
+          <button mat-button>
+            <mat-icon>visibility</mat-icon>
+          </button>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <button mat-button>
+            <mat-icon>notifications_off</mat-icon>
+          </button>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <button mat-button>
+            <mat-icon>star</mat-icon>
+          </button>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </app-content>
+    <app-button>{{action}}</app-button>
+  </mat-card-actions>
 
-    <mat-card-content *ngIf="showContent" class="profileContent">
-      <mat-icon class="contactProfile">lock</mat-icon>
-      <p>
-        This content is hidden
-      </p>
-    </mat-card-content>
-  </mat-card>
-</app-content>
+  <mat-card-content *ngIf="showContent" class="profileContent">
+    <mat-icon class="contactProfile">lock</mat-icon>
+    <p>
+      This content is hidden
+    </p>
+  </mat-card-content>
+</mat-card>
