@@ -16,11 +16,13 @@
     <app-content *ngIf="showStats">
       <mat-divider style="padding-bottom: 8px"></mat-divider>
       <mat-grid-list cols="3" rowHeight="2:1">
-        <mat-grid-tile><h3>Profit</h3></mat-grid-tile>
         <mat-grid-tile>
-          <mat-icon>trending_up</mat-icon>
+          <h4>{{statsLeft}}</h4>
         </mat-grid-tile>
-        <mat-grid-tile><h3>+2.835€</h3></mat-grid-tile>
+        <mat-grid-tile>
+          <mat-icon>{{statsIcon}}</mat-icon>
+        </mat-grid-tile>
+        <mat-grid-tile><h4>{{statsRight}}</h4></mat-grid-tile>
       </mat-grid-list>
       <mat-divider style="padding-bottom: 8px"></mat-divider>
     </app-content>

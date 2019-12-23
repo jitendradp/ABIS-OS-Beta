@@ -23,6 +23,15 @@ export class CardComponent implements OnInit {
   image: string;
 
   @Input ()
+  statsIcon: string = 'trending_up';
+
+  @Input ()
+  statsLeft: string = 'Profit';
+
+  @Input ()
+  statsRight: string = '+2.847 €';
+
+  @Input ()
   icon: string;
 
   @Input ()
