@@ -1,2 +1,2 @@
 #!/bin/bash
-docker run -p 80:80 abis-starterkit:latest
+docker run -p 80:80 abis-frontend:latest
