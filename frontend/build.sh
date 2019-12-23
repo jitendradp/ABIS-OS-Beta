@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build . -t abis-starterkit:latest
+docker build . -t abis-frontend:latest
