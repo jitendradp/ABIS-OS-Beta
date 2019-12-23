@@ -1,11 +1,26 @@
-<mat-grid-list class="quickButtons" cols="5" rowHeight="1:1">
-
-  <mat-grid-tile>
-      <mat-icon>home</mat-icon>
+<mat-grid-list class="quickButtons" cols="5" rowHeight="64px">
+  <mat-grid-tile class="gridTile" routerLink="/home">
+    <mat-icon class="pullUp">bar_chart</mat-icon>
+    <span class="aligned-with-icon">Cockpit</span>
   </mat-grid-tile>
 
-  <mat-grid-tile>
-    <mat-icon>add_circle_outline</mat-icon>
+  <mat-grid-tile class="gridTile">
+    <mat-icon class="pullUp">apps</mat-icon>
+    <span class="aligned-with-icon">Apps</span>
   </mat-grid-tile>
 
+  <mat-grid-tile class="gridTile">
+    <mat-icon class="pullUp">graphic_eq</mat-icon>
+    <span class="aligned-with-icon">Search</span>
+  </mat-grid-tile>
+
+  <mat-grid-tile class="gridTile">
+    <mat-icon class="pullUp">chat</mat-icon>
+    <span class="aligned-with-icon">Chat</span>
+  </mat-grid-tile>
+
+  <mat-grid-tile class="gridTile">
+    <mat-icon class="pullUp">calendar_today</mat-icon>
+    <span class="aligned-with-icon">Calendar</span>
+  </mat-grid-tile>
 </mat-grid-list>

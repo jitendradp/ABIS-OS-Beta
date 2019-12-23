@@ -11,8 +11,8 @@
   margin-top: 64px;
   padding-bottom: 16px;
   z-index: 2;
-  min-height: 100vh;
-  background-color: red;
+  min-height: calc(100vh - 128px);
+  background-color: #eee;
 }
 
 .footer {

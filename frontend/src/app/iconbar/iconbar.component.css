@@ -1,5 +1,17 @@
 .quickButtons {
-  font-size: 32px;
   color: white;
   background: #333;
+  text-align: center;
+}
+
+.aligned-with-icon{
+  position: absolute;
+  margin-top: 16px;
+  font-size: 11px;
+  width: 40px;
+}
+
+
+.pullUp {
+  margin-top: -16px;
 }
