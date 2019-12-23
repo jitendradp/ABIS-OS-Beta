@@ -8,7 +8,7 @@
       <!-- This fills the remaining space of the current row -->
       <span class="fill-remaining-space"></span>
       <button mat-icon-button routerLink="/notification">
-      <mat-icon matBadge="15" matBadgePosition="before" matBadgeColor="warn">notifications</mat-icon>
+        <mat-icon matBadge="15" matBadgePosition="before" matBadgeColor="warn">notifications</mat-icon>
       </button>
       <button mat-icon-button (click)="drawer.toggle()">
         <mat-icon>more_vert</mat-icon>
@@ -17,11 +17,6 @@
     <div class="body">
       <router-outlet></router-outlet>
     </div>
-    <mat-toolbar class="footer">
-      <small><a href="https://abis-cloud.de/">Powered by ABIS Cloud</a></small>
-      <!-- This fills the remaining space of the current row -->
-      <span class="fill-remaining-space"></span>
-      <small>V1.0_Q4-2019</small>
-    </mat-toolbar>
+      <app-iconbar class="footer"></app-iconbar>
   </mat-drawer-content>
 </mat-drawer-container>

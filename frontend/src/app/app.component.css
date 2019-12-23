@@ -9,18 +9,17 @@
 
 .body {
   margin-top: 64px;
-  height: calc(100vh - 96px);
-  margin-bottom: 0;
+  padding-bottom: 16px;
   z-index: 2;
+  min-height: 100vh;
+  background-color: red;
 }
 
 .footer {
   position: fixed;
   left: 0px;
   bottom: 0px;
-  height: 32px;
   width: 100%;
-  background: #a6a6a6;
   z-index: 3;
 }
 
