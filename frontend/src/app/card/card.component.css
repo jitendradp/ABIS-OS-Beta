@@ -15,8 +15,8 @@
   padding-top: 0px;
 }
 
-
-.headerImage {
-  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-  background-size: cover;
+.headerIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
 }

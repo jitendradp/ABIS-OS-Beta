@@ -1,6 +1,6 @@
 <mat-card class="profileCard">
   <div *ngIf="showImage">
-    <img mat-card-image src="{{image}}">
+    <img mat-card-image src="{{image}}" onError="this.src='./assets/error-images/picture.png';">
   </div>
   <div class="profileInformation">
     <div style="padding-bottom: 8px">
@@ -8,7 +8,8 @@
       <small>{{creationDate}}</small>
     </div>
     <mat-card-header>
-      <div *ngIf="showIcon" mat-card-avatar class="headerImage"></div>
+      <div *ngIf="showIcon" mat-card-avatar><img class="headerIcon" src="{{icon}}"
+                                                 onError="this.src='./assets/error-images/picture.png';"></div>
       <mat-card-title>{{title}}</mat-card-title>
       <mat-card-subtitle>{{subtitle}}</mat-card-subtitle>
     </mat-card-header>

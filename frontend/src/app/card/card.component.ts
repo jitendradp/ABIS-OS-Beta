@@ -23,6 +23,9 @@ export class CardComponent implements OnInit {
   image: string;
 
   @Input ()
+  icon: string;
+
+  @Input ()
   showImage: boolean;
 
   @Input ()
