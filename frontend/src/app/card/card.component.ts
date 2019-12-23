@@ -7,14 +7,14 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class CardComponent implements OnInit {
 
-  @Input()
-  picture: string;
-
   @Input ()
   action: string;
 
   @Input ()
-  showOptions: boolean;
+  showMaxButton: boolean;
+
+  @Input ()
+  showActionList: boolean;
 
   @Input ()
   showContent: boolean;
@@ -23,13 +23,13 @@ export class CardComponent implements OnInit {
   image: string;
 
   @Input ()
-  statsIcon: string = 'trending_up';
+  statsIcon: string;
 
   @Input ()
-  statsLeft: string = 'Profit';
+  statsLeft: string;
 
   @Input ()
-  statsRight: string = '+2.847 €';
+  statsRight: string;
 
   @Input ()
   icon: string;

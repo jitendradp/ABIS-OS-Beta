@@ -4,7 +4,7 @@
   </div>
   <div class="profileInformation">
     <small><b>{{creator}}</b></small>
-    <div style="padding-bottom: 8px">
+    <div style="padding-bottom: 12px">
       <span style="font-size: 12px">{{creationDate}}</span>
     </div>
     <mat-card-header>
@@ -28,9 +28,20 @@
     </app-content>
   </div>
 
+  <mat-card-content *ngIf="collapsed" class="profileContent">
+    <mat-icon style="padding-top: 32px">lock</mat-icon>
+    <div style="margin-top: 20px">
+      This content is hidden This content is hiddenThis content is hiddenThis content is hiddenThis content is
+      hiddenThis content is hiddenThis content is hiddenThis content is hidden
+    </div>
+  </mat-card-content>
+
   <mat-card-actions>
-    <app-content *ngIf="showOptions">
-      <mat-grid-list cols="3" rowHeight="2:1">
+    <button mat-button (click)="collapsed=true"><small>Collapse text</small></button>
+    <button mat-button (click)="collapsed=false"><small>Uncollapse text</small></button>
+    <app-content>
+      <span *ngIf="showMaxButton"><app-button>{{action}}</app-button></span>
+      <mat-grid-list style="padding-top: 16px" *ngIf="showActionList" cols="3" rowHeight="2:1">
         <mat-grid-tile>
           <button mat-button>
             <mat-icon>visibility</mat-icon>
@@ -48,13 +59,5 @@
         </mat-grid-tile>
       </mat-grid-list>
     </app-content>
-    <app-button>{{action}}</app-button>
   </mat-card-actions>
-
-  <mat-card-content *ngIf="showContent" class="profileContent">
-    <mat-icon class="contactProfile">lock</mat-icon>
-    <p>
-      This content is hidden
-    </p>
-  </mat-card-content>
 </mat-card>
