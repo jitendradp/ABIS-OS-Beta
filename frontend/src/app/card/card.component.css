@@ -1,0 +1,17 @@
+.profileCard {
+  text-align: center;
+  padding-top: 16px;
+}
+
+.profession {
+  font-size: 1.5em;
+}
+
+.profileImage {
+  width: 20vh;
+  border-radius: 50%;
+}
+
+.profileInformation {
+  padding-top: 16px;
+}
