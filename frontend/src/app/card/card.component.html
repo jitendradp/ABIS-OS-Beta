@@ -3,9 +3,9 @@
     <img mat-card-image src="{{image}}" onError="this.src='./assets/error-images/picture.png';">
   </div>
   <div class="profileInformation">
+    <small><b>{{creator}}</b></small>
     <div style="padding-bottom: 8px">
-      <p>{{creator}}</p>
-      <small>{{creationDate}}</small>
+      <span style="font-size: 12px">{{creationDate}}</span>
     </div>
     <mat-card-header>
       <div *ngIf="showIcon" mat-card-avatar><img class="headerIcon" src="{{icon}}"
