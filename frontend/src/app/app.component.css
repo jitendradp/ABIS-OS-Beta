@@ -12,7 +12,6 @@
   height: calc(100vh - 96px);
   margin-bottom: 0;
   z-index: 2;
-  background-color: #eeeeee;
 }
 
 .footer {
@@ -21,7 +20,7 @@
   bottom: 0px;
   height: 32px;
   width: 100%;
-  background: #999;
+  background: #a6a6a6;
   z-index: 3;
 }
 
