@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-profile',
@@ -7,7 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor() { }
+  @Input()
+  picture: string = '';
+
+  @Input()
+  name: string = 'David Chang';
+
+  @Input()
+  slogan: string = 'CEO and Founder of ABIS';
+
+  constructor() {
+  }
 
   ngOnInit() {
   }

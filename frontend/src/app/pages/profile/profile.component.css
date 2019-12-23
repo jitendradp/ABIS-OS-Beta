@@ -1,20 +1,17 @@
-.imageBox {
-  width: calc(64px * 2);
-  padding: 25%;
+.profileCard {
+  text-align: center;
+  padding-top: 16px;
 }
 
+.profession {
+  font-size: 1.5em;
+}
 
-.imageBox img {
-  max-width: 100%;
-  transition: all 0.3s;
-  display: block;
-  width: 100%;
-  height: auto;
-  transform: scale(1);
+.profileImage {
+  width: 20vh;
   border-radius: 50%;
-  border: 4px solid white;
-  background-color: white;
-  box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4);
-  -moz-box-shadow: 0 1px 2px rgba(34, 25, 25, 0.4);
-  -webkit-box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4);
+}
+
+.profileInformation {
+  padding-top: 16px;
 }

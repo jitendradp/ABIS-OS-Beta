@@ -1,14 +1,24 @@
-<mat-toolbar>
-  <button routerLink="access" mat-flat-button color="primary">Sign In / Register</button>
-</mat-toolbar>
-<mat-nav-list *ngFor="let option of options">
-  <mat-list-item>
-    {{option}}
-  </mat-list-item>
-</mat-nav-list>
+<div style="padding: 16px">
+  <app-button routerLink="access">Sign In / Register</app-button>
+</div>
+<form class="searchBox">
+  <mat-form-field class="full-width">
+    <input matInput placeholder="Search">
+  </mat-form-field>
+  <mat-nav-list *ngFor="let option of options">
+    <mat-list-item>
+      {{option}}
+    </mat-list-item>
+  </mat-nav-list>
+</form>
 <mat-divider></mat-divider>
-<mat-nav-list>
-  <mat-list-item routerLink="/profile">
-    <span>Profile</span>
-  </mat-list-item>
-</mat-nav-list>
+
+<app-content>
+  <p>Favorites</p>
+  <mat-chip-list>
+    <mat-chip color="primary" selected routerLink="/profile">Profiles</mat-chip>
+    <mat-chip routerLink="/portfolio">Portfolios</mat-chip>
+    <mat-chip routerLink="/account">Accounts</mat-chip>
+  </mat-chip-list>
+</app-content>
+

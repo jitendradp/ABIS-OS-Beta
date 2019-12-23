@@ -3,11 +3,14 @@
   left: 0px;
   top: 0px;
   width: 100%;
+  z-index: 1;
 }
 
 .body {
   margin-top: 64px;
-  height: calc(100vh - 64px);
+  height: calc(100vh - 96px);
+  margin-bottom: 0;
+  z-index: 2;
 }
 
 .footer {
@@ -17,6 +20,7 @@
   height: 32px;
   width: 100%;
   background: #999;
+  z-index: 3;
 }
 
 .fill-remaining-space {
