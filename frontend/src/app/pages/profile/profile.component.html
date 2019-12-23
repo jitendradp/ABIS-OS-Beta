@@ -1,4 +1,5 @@
 <app-content>
+  <mat-card-title>Profile</mat-card-title>
   <mat-card class="profileCard">
     <img class="profileImage" src="{{picture}}"
          onError="this.src='./assets/error-images/picture.png';">
@@ -12,7 +13,7 @@
         <mat-grid-list cols="3" rowHeight="2:1">
           <mat-grid-tile>
             <button mat-button>
-              <mat-icon>person_add</mat-icon>
+              <mat-icon>visibility</mat-icon>
             </button>
           </mat-grid-tile>
           <mat-grid-tile>
@@ -27,9 +28,8 @@
           </mat-grid-tile>
         </mat-grid-list>
       </app-content>
-      <app-button>Chat</app-button>
+      <app-button>Choose Avatar</app-button>
     </mat-card-actions>
-
 
     <mat-card-content>
       <mat-icon class="contactProfile">lock</mat-icon>
@@ -38,4 +38,6 @@
       </p>
     </mat-card-content>
   </mat-card>
+
+
 </app-content>
