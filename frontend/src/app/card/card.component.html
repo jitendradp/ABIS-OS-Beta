@@ -1,11 +1,15 @@
 <app-content>
   <mat-card class="profileCard">
     <div *ngIf="showImage">
-      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+      <img mat-card-image src="{{image}}">
     </div>
     <div class="profileInformation">
+      <div style="padding-bottom: 16px">
+        <p>{{creator}}</p>
+        <small>{{creationDate}}</small>
+      </div>
       <mat-card-header>
-        <div *ngIf="showIcon"  mat-card-avatar class="example-header-image"></div>
+        <div *ngIf="showIcon" mat-card-avatar class="headerImage"></div>
         <mat-card-title>{{title}}</mat-card-title>
         <mat-card-subtitle>{{subtitle}}</mat-card-subtitle>
       </mat-card-header>
@@ -45,7 +49,7 @@
       <app-button>{{action}}</app-button>
     </mat-card-actions>
 
-    <mat-card-content class="profileContent">
+    <mat-card-content *ngIf="showContent" class="profileContent">
       <mat-icon class="contactProfile">lock</mat-icon>
       <p>
         This content is hidden

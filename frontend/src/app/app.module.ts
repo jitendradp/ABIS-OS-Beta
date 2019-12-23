@@ -5,6 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
+  MatBadgeModule,
   MatButtonModule, MatButtonToggleModule,
   MatCardModule,
   MatChipsModule,
@@ -36,6 +37,7 @@ import {HomeComponent} from './pages/home/home.component';
 import {PortfolioComponent} from './pages/portfolio/portfolio.component';
 import {CreditsComponent} from './pages/credits/credits.component';
 import {CardComponent} from './card/card.component';
+import { NotificationsComponent } from './pages/notifications/notifications.component';
 
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent},
@@ -45,6 +47,7 @@ const appRoutes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'portfolio', component: PortfolioComponent},
   {path: 'credit', component: CreditsComponent},
+  {path: 'notification', component: NotificationsComponent}
 ];
 
 
@@ -62,7 +65,8 @@ const appRoutes: Routes = [
     HomeComponent,
     PortfolioComponent,
     CreditsComponent,
-    CardComponent
+    CardComponent,
+    NotificationsComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -89,7 +93,8 @@ const appRoutes: Routes = [
     MatExpansionModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatBadgeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
