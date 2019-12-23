@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AccessComponent } from './access.component';
+import {AccessComponent} from './access.component';
 
 describe('AccessComponent', () => {
   let component: AccessComponent;
@@ -8,9 +8,9 @@ describe('AccessComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AccessComponent ]
+      declarations: [AccessComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

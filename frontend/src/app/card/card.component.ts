@@ -7,46 +7,46 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class CardComponent implements OnInit {
 
-  @Input ()
+  @Input()
   action: string;
 
-  @Input ()
+  @Input()
   showMaxButton: boolean;
 
-  @Input ()
+  @Input()
   showActionList: boolean;
 
-  @Input ()
+  @Input()
   showContent: boolean;
 
-  @Input ()
+  @Input()
   image: string;
 
-  @Input ()
+  @Input()
   statsIcon: string;
 
-  @Input ()
+  @Input()
   statsLeft: string;
 
-  @Input ()
+  @Input()
   statsRight: string;
 
-  @Input ()
+  @Input()
   icon: string;
 
-  @Input ()
+  @Input()
   showImage: boolean;
 
-  @Input ()
+  @Input()
   showIcon: boolean;
 
-  @Input ()
+  @Input()
   creator: string;
 
-  @Input ()
+  @Input()
   creationDate: string;
 
-  @Input ()
+  @Input()
   showStats: boolean;
 
   @Input()
@@ -55,7 +55,8 @@ export class CardComponent implements OnInit {
   @Input()
   subtitle: string;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }

@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { GobackComponent } from './goback.component';
+import {GobackComponent} from './goback.component';
 
 describe('GobackComponent', () => {
   let component: GobackComponent;
@@ -8,9 +8,9 @@ describe('GobackComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GobackComponent ]
+      declarations: [GobackComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

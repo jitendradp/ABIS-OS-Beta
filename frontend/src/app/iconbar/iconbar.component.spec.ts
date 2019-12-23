@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { IconbarComponent } from './iconbar.component';
+import {IconbarComponent} from './iconbar.component';
 
 describe('IconbarComponent', () => {
   let component: IconbarComponent;
@@ -8,9 +8,9 @@ describe('IconbarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ IconbarComponent ]
+      declarations: [IconbarComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

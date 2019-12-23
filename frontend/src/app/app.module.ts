@@ -6,7 +6,8 @@ import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
   MatBadgeModule,
-  MatButtonModule, MatButtonToggleModule,
+  MatButtonModule,
+  MatButtonToggleModule,
   MatCardModule,
   MatChipsModule,
   MatDatepickerModule,
@@ -40,7 +41,9 @@ import {CardComponent} from './card/card.component';
 import {IconbarComponent} from './iconbar/iconbar.component';
 import {ChatComponent} from './pages/chat/chat.component';
 import {CalendarComponent} from './pages/calendar/calendar.component';
-import { StoreComponent } from './pages/store/store.component';
+import {StoreComponent} from './pages/store/store.component';
+import {FlexLayoutModule} from "@angular/flex-layout";
+import {DragDropModule} from "@angular/cdk/drag-drop";
 
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent},
@@ -102,7 +105,9 @@ const appRoutes: Routes = [
     MatDatepickerModule,
     MatNativeDateModule,
     MatButtonToggleModule,
-    MatBadgeModule
+    MatBadgeModule,
+    FlexLayoutModule,
+    DragDropModule
   ],
   providers: [],
   bootstrap: [AppComponent]

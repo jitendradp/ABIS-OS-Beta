@@ -7,16 +7,17 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class GobackComponent implements OnInit {
 
-  @Input ()
+  @Input()
   showIcon: boolean;
 
-  @Input ()
+  @Input()
   icon: string;
 
-  @Input ()
+  @Input()
   title: string;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }
