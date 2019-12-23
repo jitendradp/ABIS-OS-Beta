@@ -1,4 +1,4 @@
 <mat-toolbar class="pullUp">
-  <mat-icon>arrow_back</mat-icon>
-  <ng-content></ng-content>
+  <mat-icon *ngIf="showIcon">{{icon}}</mat-icon>
+  {{title}}
 </mat-toolbar>

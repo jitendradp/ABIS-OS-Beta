@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-goback',
@@ -6,6 +6,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./goback.component.css']
 })
 export class GobackComponent implements OnInit {
+
+  @Input ()
+  showIcon: boolean;
+
+  @Input ()
+  icon: string;
+
+  @Input ()
+  title: string;
 
   constructor() { }
 

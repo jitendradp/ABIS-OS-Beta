@@ -40,7 +40,7 @@ import {CardComponent} from './card/card.component';
 import {IconbarComponent} from './iconbar/iconbar.component';
 import {ChatComponent} from './pages/chat/chat.component';
 import {CalendarComponent} from './pages/calendar/calendar.component';
-import {SmartappComponent} from './pages/smartapp/smartapp.component';
+import { StoreComponent } from './pages/store/store.component';
 
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent},
@@ -52,7 +52,7 @@ const appRoutes: Routes = [
   {path: 'credit', component: CreditsComponent},
   {path: 'chat', component: ChatComponent},
   {path: 'calendar', component: CalendarComponent},
-  {path: 'smartapp', component: SmartappComponent},
+  {path: 'store', component: StoreComponent},
 ];
 
 
@@ -74,7 +74,7 @@ const appRoutes: Routes = [
     IconbarComponent,
     ChatComponent,
     CalendarComponent,
-    SmartappComponent
+    StoreComponent
   ],
   imports: [
     RouterModule.forRoot(
