@@ -1,5 +1,5 @@
 # AbisStarterkit
-git clone https://github.com/DBIAnalytics/AbisStarterkit.git  
-git checkout dev_dc  
+git clone https://github.com/DBIAnalytics/AbisStarterkit.git    
 cd AbisStarterkit  
+git checkout dev_dc  
 docker-compose up  
