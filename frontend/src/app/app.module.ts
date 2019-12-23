@@ -38,6 +38,9 @@ import {PortfolioComponent} from './pages/portfolio/portfolio.component';
 import {CreditsComponent} from './pages/credits/credits.component';
 import {CardComponent} from './card/card.component';
 import {IconbarComponent} from './iconbar/iconbar.component';
+import { AppstoreComponent } from './pages/appstore/appstore.component';
+import { ChatComponent } from './pages/chat/chat.component';
+import { CalendarComponent } from './pages/calendar/calendar.component';
 
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent},
@@ -65,7 +68,10 @@ const appRoutes: Routes = [
     PortfolioComponent,
     CreditsComponent,
     CardComponent,
-    IconbarComponent
+    IconbarComponent,
+    AppstoreComponent,
+    ChatComponent,
+    CalendarComponent
   ],
   imports: [
     RouterModule.forRoot(
