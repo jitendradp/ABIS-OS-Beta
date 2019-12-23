@@ -1,13 +1,12 @@
 version: '3'
 services:
+
   prisma:
     image: prismagraphql/prisma:1.34
     restart: always
-    ports:
-      - 4466:4466
     environment:
       PRISMA_CONFIG: |
-        managementApiSecret: managementApiSecret
+        managementApiSecret: ${PRISMA_MANAGEMENT_API_SECRET}
         port: 4466
         databases:
           default:
@@ -17,6 +16,8 @@ services:
             port: 5432
             user: ${POSTGRES_USER}
             password: ${POSTGRES_PASSWORD}
+    ports:
+      - 4466:4466
 
   db:
     image: postgres:12
@@ -26,6 +27,8 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
 
   frontend:
     restart: always
@@ -38,6 +41,8 @@ services:
     restart: always
     build:
       context: yoga-server
+    ports:
+      - 4000:4000
 
 volumes:
   postgres_data:
