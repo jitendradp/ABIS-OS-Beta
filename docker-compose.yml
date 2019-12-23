@@ -15,25 +15,27 @@ services:
             migrations: true
             host: db
             port: 5432
-            user: postgres
-            password: prisma
+            user: ${POSTGRES_USER}
+            password: ${POSTGRES_PASSWORD}
 
   db:
     image: postgres:12
     restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: prisma
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
   frontend:
+    restart: always
     build:
       context: frontend
     ports:
       - 80:80
 
   yoga-server:
+    restart: always
     build:
       context: yoga-server
 
