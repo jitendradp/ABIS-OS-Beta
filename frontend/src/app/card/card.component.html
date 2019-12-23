@@ -1,15 +1,14 @@
 <app-content>
-  <mat-card-title>Profile</mat-card-title>
   <mat-card class="profileCard">
     <img class="profileImage" src="{{picture}}"
          onError="this.src='./assets/error-images/picture.png';">
     <div class="profileInformation">
-      <mat-card-title>{{name}}</mat-card-title>
-      <mat-card-subtitle>{{slogan}}</mat-card-subtitle>
+      <mat-card-title>{{title}}</mat-card-title>
+      <mat-card-subtitle>{{subtitle}}</mat-card-subtitle>
     </div>
 
     <mat-card-actions>
-      <app-content>
+      <app-content *ngIf="showOptions">
         <mat-grid-list cols="3" rowHeight="2:1">
           <mat-grid-tile>
             <button mat-button>
@@ -34,7 +33,7 @@
     <mat-card-content>
       <mat-icon class="contactProfile">lock</mat-icon>
       <p>
-        This profile's content is hidden
+        This content is hidden
       </p>
     </mat-card-content>
   </mat-card>
