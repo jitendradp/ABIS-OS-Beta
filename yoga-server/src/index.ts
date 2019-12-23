@@ -12,17 +12,17 @@ const resolvers = {
     async getSessionProfile(root, {token}, ctx) {
       return new ProfileQueries().getSessionProfile(ctx.token);
     },
+    async listProfiles(root, {token}, ctx) {
+      return new ProfileQueries().listProfiles(ctx.token);
+    },
     async getProfile(root, {profileId}, ctx) {
       return new ProfileQueries().getProfile(ctx.token, profileId);
     },
-    async myWorkspaces(root, {}, ctx) {
+    async myWorkspaces(root, {token}, ctx) {
       return new GroupQueries().myWorkspaces(ctx.token);
     },
     async myMemberships(root, {token}, ctx) {
       return new GroupQueries().myMemberships(ctx.token);
-    },
-    async listProfiles(root, {token}, ctx) {
-      return new ProfileQueries().listProfiles(ctx.token);
     },
     async listWorkspaces(root, {profileId}, ctx) {
       return new GroupQueries().listWorkspaces(ctx.token, profileId);
