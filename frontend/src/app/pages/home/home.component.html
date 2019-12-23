@@ -11,20 +11,15 @@
 
 <app-content>
   <app-card
-    [creator]="'Thomas Müller'"
-    [title]="'Neue Bestellung angelegt'"
-    [subtitle]="'Ich habe das Budget um 20% erhöht. Hat jemand was dagegen?'"
+    [title]="'SmartCryptoApp'"
+    [subtitle]="'The crypto currency watcher'"
     [showIcon]="true"
-    [creationDate]="'Montag der 29.12.2019 um 15:40 Uhr'">
-  </app-card>
-</app-content>
-
-<app-content>
-  <app-card
-    [creator]="'Julia Ziegel'"
-    [title]="'Freigabe wird benötigt'"
-    [subtitle]="'Kannst du mir bitte eine Freigaben für die Bestellungen der Motoren geben?'"
-    [showIcon]="true"
-    [creationDate]="'Sonntag der 28.12.2019 um 05:10 Uhr'">
+    [showActionList]="true"
+    [showStats]="true"
+    [statsIcon]="'trending_down'"
+    [statsLeft]="'Profit'"
+    [statsRight]="'+23.739 €'"
+    [showMaxButton]="true"
+    [action]="'Buy/Sell'">
   </app-card>
 </app-content>
