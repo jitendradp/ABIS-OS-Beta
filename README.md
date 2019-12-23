@@ -14,3 +14,5 @@ frontend: http://localhost:80
 prisma: http://localhost:4466  
 yoga: http://localhost:4000  
 
+
+Access in your local network with any device. Lookup your IP and enter: ng serve --host 192.xxx.xxx.
