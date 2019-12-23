@@ -12,8 +12,13 @@
   margin-top: 64px;
   padding-bottom: 16px;
   z-index: 2;
-  min-height: calc(100vh - 128px);
+  min-height: 100vh;
   background-color: #eee;
+}
+
+.logo {
+  width: 32px;
+  padding-right: 8px;
 }
 
 .footer {

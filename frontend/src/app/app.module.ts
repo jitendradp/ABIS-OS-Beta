@@ -48,7 +48,6 @@ const appRoutes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'portfolio', component: PortfolioComponent},
   {path: 'credit', component: CreditsComponent},
-  {path: 'notification', component: NotificationsComponent}
 ];
 
 
