@@ -1,2 +1,5 @@
 /.idea/
 AbisStarterkit.iml
+/yoga-server/src/config.ts
+.idea
+yoga-server/src/config.ts

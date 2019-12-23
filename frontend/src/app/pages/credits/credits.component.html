@@ -1,0 +1,24 @@
+<app-content>
+  <mat-form-field style="width: 100%">
+    <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field style="width: 100%">
+    <mat-label>Budget Account</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let account of accounts" [value]="account.value">
+        {{account.viewValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</app-content>
+
+<app-card [title]="'8.395 €'"
+          [creationDate]="'Noch 40 Tage bis das Budget ausläuft'"
+          [subtitle]="'Team Controlling'"
+          [action]="'Place Order'"
+          [showOptions]="false"
+          [showIcon]="true">
+</app-card>

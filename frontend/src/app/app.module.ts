@@ -5,11 +5,24 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-  MatButtonModule, MatCardModule, MatChipsModule, MatDividerModule, MatFormFieldModule,
+  MatBadgeModule,
+  MatButtonModule, MatButtonToggleModule,
+  MatCardModule,
+  MatChipsModule,
+  MatDatepickerModule,
+  MatDividerModule,
+  MatExpansionModule,
+  MatFormFieldModule,
   MatGridListModule,
-  MatIconModule, MatInputModule, MatListModule,
-  MatMenuModule, MatOptionModule, MatSelectModule,
+  MatIconModule,
+  MatInputModule,
+  MatListModule,
+  MatMenuModule,
+  MatNativeDateModule,
+  MatOptionModule,
+  MatSelectModule,
   MatSidenavModule,
+  MatTabsModule,
   MatToolbarModule
 } from "@angular/material";
 import {MenuComponent} from './menu/menu.component';
@@ -21,13 +34,20 @@ import {SigninComponent} from './pages/signin/signin.component';
 import {GobackComponent} from './goback/goback.component';
 import {ProfileComponent} from './pages/profile/profile.component';
 import {HomeComponent} from './pages/home/home.component';
+import {PortfolioComponent} from './pages/portfolio/portfolio.component';
+import {CreditsComponent} from './pages/credits/credits.component';
+import {CardComponent} from './card/card.component';
+import { NotificationsComponent } from './pages/notifications/notifications.component';
 
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent},
   {path: 'signin', component: SigninComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'profile', component: ProfileComponent},
-  {path: 'home', component: HomeComponent}
+  {path: 'home', component: HomeComponent},
+  {path: 'portfolio', component: PortfolioComponent},
+  {path: 'credit', component: CreditsComponent},
+  {path: 'notification', component: NotificationsComponent}
 ];
 
 
@@ -42,7 +62,11 @@ const appRoutes: Routes = [
     SigninComponent,
     GobackComponent,
     ProfileComponent,
-    HomeComponent
+    HomeComponent,
+    PortfolioComponent,
+    CreditsComponent,
+    CardComponent,
+    NotificationsComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -64,7 +88,13 @@ const appRoutes: Routes = [
     MatInputModule,
     MatDividerModule,
     MatCardModule,
-    MatChipsModule
+    MatChipsModule,
+    MatTabsModule,
+    MatExpansionModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatButtonToggleModule,
+    MatBadgeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
