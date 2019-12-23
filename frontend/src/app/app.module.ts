@@ -38,9 +38,9 @@ import {PortfolioComponent} from './pages/portfolio/portfolio.component';
 import {CreditsComponent} from './pages/credits/credits.component';
 import {CardComponent} from './card/card.component';
 import {IconbarComponent} from './iconbar/iconbar.component';
-import { AppstoreComponent } from './pages/appstore/appstore.component';
-import { ChatComponent } from './pages/chat/chat.component';
-import { CalendarComponent } from './pages/calendar/calendar.component';
+import {ChatComponent} from './pages/chat/chat.component';
+import {CalendarComponent} from './pages/calendar/calendar.component';
+import {SmartappComponent} from './pages/smartapp/smartapp.component';
 
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent},
@@ -50,6 +50,9 @@ const appRoutes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'portfolio', component: PortfolioComponent},
   {path: 'credit', component: CreditsComponent},
+  {path: 'chat', component: ChatComponent},
+  {path: 'calendar', component: CalendarComponent},
+  {path: 'smartapp', component: SmartappComponent},
 ];
 
 
@@ -69,9 +72,9 @@ const appRoutes: Routes = [
     CreditsComponent,
     CardComponent,
     IconbarComponent,
-    AppstoreComponent,
     ChatComponent,
-    CalendarComponent
+    CalendarComponent,
+    SmartappComponent
   ],
   imports: [
     RouterModule.forRoot(
