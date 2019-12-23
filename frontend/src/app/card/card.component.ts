@@ -17,10 +17,10 @@ export class CardComponent implements OnInit {
   showOptions: boolean;
 
   @Input()
-  name: string;
+  title: string;
 
   @Input()
-  slogan: string;
+  subtitle: string;
 
   constructor() { }
 
