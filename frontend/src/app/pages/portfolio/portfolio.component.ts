@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {Portfolio} from "../portfolio/portfolio.component";
 
-export interface Portfolio {
+export interface IPortfolio {
   value: string;
   viewValue: string;
 }
@@ -13,7 +12,7 @@ export interface Portfolio {
 })
 export class PortfolioComponent implements OnInit {
 
-  portfolios: Portfolio[] = [
+  portfolios: IPortfolio[] = [
     {value: 'portfolio-0', viewValue: 'Test'},
     {value: 'portfolio-1', viewValue: 'Real Money'},
     {value: 'portfolio-2', viewValue: 'High Risky'}
