@@ -1,10 +1,14 @@
 <app-content>
   <mat-card class="profileCard">
-    <img class="profileImage" src="{{picture}}"
-         onError="this.src='./assets/error-images/picture.png';">
+    <div *ngIf="showImage">
+      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+    </div>
     <div class="profileInformation">
-      <mat-card-title>{{title}}</mat-card-title>
-      <mat-card-subtitle>{{subtitle}}</mat-card-subtitle>
+      <mat-card-header>
+        <div *ngIf="showIcon"  mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>{{title}}</mat-card-title>
+        <mat-card-subtitle>{{subtitle}}</mat-card-subtitle>
+      </mat-card-header>
       <app-content *ngIf="showStats">
         <mat-divider style="padding-bottom: 8px"></mat-divider>
         <mat-grid-list cols="3" rowHeight="2:1">
@@ -41,7 +45,7 @@
       <app-button>{{action}}</app-button>
     </mat-card-actions>
 
-    <mat-card-content>
+    <mat-card-content class="profileContent">
       <mat-icon class="contactProfile">lock</mat-icon>
       <p>
         This content is hidden

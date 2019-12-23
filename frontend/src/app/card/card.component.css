@@ -1,17 +1,22 @@
 .profileCard {
-  text-align: center;
+  text-align: left;
   padding-top: 16px;
+}
+
+.profileContent {
+  text-align: center;
 }
 
 .profession {
   font-size: 1.5em;
 }
 
-.profileImage {
-  width: 20vh;
-  border-radius: 50%;
-}
-
 .profileInformation {
   padding-top: 16px;
+}
+
+
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
 }
