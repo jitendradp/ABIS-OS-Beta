@@ -1,8 +1,28 @@
 <mat-tab-group>
   <mat-tab label="Connect Sheet">
+    <div class="container"
+         fxLayout
+         fxLayout.xs="column"
+         fxLayoutAlign="center"
+         fxLayoutGap="10px"
+         fxLayoutGap.xs="0">
+      <div class="item item-1" fxFlex="35%"></div>
+      <div class="item item-2" fxFlex>
+        <app-content>
+          <app-card [title]="'Connect your Google Drive'"
+                    [subtitle]="'Start with connecting a google sheet to your workspace.'"
+                    [showImage]="true"
+                    [image]="'https://abis-cloud.de/wp-content/uploads/2019/12/3075838-1-845x684.jpg'"
+                    [showIcon]="true"
+                    [icon]="'https://upload.wikimedia.org/wikipedia/commons/d/da/Google_Drive_logo.png'"
+                    [showMaxButton]="true"
+                    [action]="'Authorize'">
+          </app-card>
+        </app-content>
+      </div>
+      <div class="item item-3" fxFlex="35%"></div>
+    </div>
 
-
-  <app-content>HERE</app-content>
 
   </mat-tab>
   <mat-tab label="Mix Dataset">

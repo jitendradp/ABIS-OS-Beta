@@ -1,51 +1,91 @@
 <mat-tab-group>
-  <mat-tab label="Installed Apps">
-    <app-content>
-      <app-card
-        [title]="'SmartCryptoApp'"
-        [creator]="'Dynagroup Technologies GmbH'"
-        [subtitle]="'The crypto currency watcher for brokers.'"
-        [showIcon]="true"
-        [showActionList]="false"
-        [showStats]="true"
-        [statsIcon]="'shopping_cart'"
-        [statsLeft]="'Free Trial'"
-        [statsRight]="'20 € / m'"
-        [showMaxButton]="true"
-        [action]="'Configure'">
-      </app-card>
-    </app-content>
-  </mat-tab>
   <mat-tab label="Purchase">
-    <app-content>
-      <app-card
-        [title]="'SmartPharmacyApp'"
-        [creator]="'Apowi - Campus Essen'"
-        [subtitle]="'The market data for user groups.'"
-        [showIcon]="true"
-        [showActionList]="false"
-        [showStats]="true"
-        [statsIcon]="'shopping_cart'"
-        [statsLeft]="'Freemium'"
-        [statsRight]="'0 € / m'"
-        [showMaxButton]="true"
-        [action]="'Deploy'">
-      </app-card>
-    </app-content>
-    <app-content>
-      <app-card
-        [title]="'SmartControllingApp'"
-        [creator]="'MunichMotorsport e.V.'"
-        [subtitle]="'The workforce collaboration solution.'"
-        [showIcon]="true"
-        [showActionList]="false"
-        [showStats]="true"
-        [statsIcon]="'shopping_cart'"
-        [statsLeft]="'Free Trial'"
-        [statsRight]="'30 € / m'"
-        [showMaxButton]="true"
-        [action]="'Deploy'">
-      </app-card>
-    </app-content>
+    <div class="container"
+         fxLayout
+         fxLayout.xs="column"
+         fxLayoutAlign="center"
+         fxLayoutGap="10px"
+         fxLayoutGap.xs="0">
+      <div class="item item-1" fxFlex="25%">
+        <app-content>
+          <app-card
+            [title]="'SmartPharmacyApp'"
+            [creator]="'Apowi - Campus Essen'"
+            [subtitle]="'The market data for user groups.'"
+            [showIcon]="true"
+            [showActionList]="false"
+            [showStats]="true"
+            [statsIcon]="'shopping_cart'"
+            [statsLeft]="'Freemium'"
+            [statsRight]="'0 € / m'"
+            [showMaxButton]="true"
+            [action]="'Deploy'">
+          </app-card>
+        </app-content>
+      </div>
+      <div class="item item-2" fxFlex="25%">
+        <app-content>
+          <app-card
+            [title]="'SmartControllingApp'"
+            [creator]="'MunichMotorsport e.V.'"
+            [subtitle]="'The workforce collaboration solution.'"
+            [showIcon]="true"
+            [showActionList]="false"
+            [showStats]="true"
+            [statsIcon]="'shopping_cart'"
+            [statsLeft]="'Free Trial'"
+            [statsRight]="'30 € / m'"
+            [showMaxButton]="true"
+            [action]="'Deploy'">
+          </app-card>
+        </app-content>
+      </div>
+      <div class="item item-3" fxFlex="25%">
+
+      </div>
+      <div class="item item-4" fxFlex="25%">
+
+      </div>
+    </div>
+
+  </mat-tab>
+  <mat-tab label="Installed Apps">
+    <div class="container"
+         fxLayout
+         fxLayout.xs="column"
+         fxLayoutAlign="center"
+         fxLayoutGap="10px"
+         fxLayoutGap.xs="0">
+      <div class="item item-1" fxFlex="25%">
+        <app-content>
+          <app-card
+            [title]="'SmartCryptoApp'"
+            [creator]="'Dynagroup Technologies GmbH'"
+            [subtitle]="'The crypto currency watcher for brokers.'"
+            [showIcon]="true"
+            [showActionList]="false"
+            [showStats]="true"
+            [statsIcon]="'shopping_cart'"
+            [statsLeft]="'Free Trial'"
+            [statsRight]="'20 € / m'"
+            [showMaxButton]="true"
+            [action]="'Configure'">
+          </app-card>
+        </app-content>
+      </div>
+      <div class="item item-2" fxFlex="25%">
+
+      </div>
+      <div class="item item-3" fxFlex="25%">
+
+      </div>
+      <div class="item item-4" fxFlex="25%">
+
+      </div>
+    </div>
   </mat-tab>
 </mat-tab-group>
+
+
+
+
