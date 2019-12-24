@@ -44,6 +44,8 @@ import {CalendarComponent} from './pages/calendar/calendar.component';
 import {StoreComponent} from './pages/store/store.component';
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {DragDropModule} from "@angular/cdk/drag-drop";
+import {NgxEchartsModule} from "ngx-echarts";
+import {ChartComponent} from './chart/chart.component';
 
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent},
@@ -77,7 +79,8 @@ const appRoutes: Routes = [
     IconbarComponent,
     ChatComponent,
     CalendarComponent,
-    StoreComponent
+    StoreComponent,
+    ChartComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -107,7 +110,8 @@ const appRoutes: Routes = [
     MatButtonToggleModule,
     MatBadgeModule,
     FlexLayoutModule,
-    DragDropModule
+    DragDropModule,
+    NgxEchartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
