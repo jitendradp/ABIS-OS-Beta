@@ -1,4 +1,5 @@
 <mat-card class="profileCard">
+  <ng-content></ng-content>
   <div *ngIf="showImage">
     <img mat-card-image src="{{image}}" onError="this.src='./assets/error-images/picture.png';">
   </div>

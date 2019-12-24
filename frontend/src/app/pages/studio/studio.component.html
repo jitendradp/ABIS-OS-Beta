@@ -1,12 +1,68 @@
-<div class="container"
-     fxLayout
-     fxLayout.xs="column"
-     fxLayoutAlign="center"
-     fxLayoutGap="10px"
-     fxLayoutGap.xs="0">
-  <div class="item item-1" fxFlex="15%">Item 1</div>
-  <div class="item item-2" fxFlex="20%" fxFlexOrder="3">Item 2</div>
-  <div class="item item-3" fxFlex>
-    <app-chart></app-chart>
-  </div>
-</div>
+<mat-tab-group>
+  <mat-tab label="Connect Sheet">
+
+
+  <app-content>HERE</app-content>
+
+  </mat-tab>
+  <mat-tab label="Mix Dataset">
+    <div class="container"
+         fxLayout
+         fxLayout.xs="column"
+         fxLayoutAlign="center"
+         fxLayoutGap="10px"
+         fxLayoutGap.xs="0">
+      <div class="item item-1" fxFlex="20%">
+        <app-content>
+          <div class="example-container">
+            <h2>Statistics</h2>
+            <div
+              cdkDropList
+              #todoList="cdkDropList"
+              [cdkDropListData]="availableMetrics"
+              [cdkDropListConnectedTo]="[doneList]"
+              class="example-list"
+              (cdkDropListDropped)="drop($event)">
+              <div class="example-box" *ngFor="let item of availableMetrics" cdkDrag>{{item}}</div>
+            </div>
+          </div>
+          <div class="example-container">
+            <h2>Dimensions</h2>
+            <div
+              cdkDropList
+              #todoList="cdkDropList"
+              [cdkDropListData]="availableDimensions"
+              [cdkDropListConnectedTo]="[doneList]"
+              class="example-list"
+              (cdkDropListDropped)="drop($event)">
+              <div class="example-box" *ngFor="let item of availableDimensions" cdkDrag>{{item}}</div>
+            </div>
+          </div>
+        </app-content>
+      </div>
+      <div class="item item-2" fxFlex="20%">
+        <app-content>
+          <div class="example-container">
+            <h2>Dataset</h2>
+            <div
+              cdkDropList
+              #doneList="cdkDropList"
+              [cdkDropListData]="yourDataset"
+              [cdkDropListConnectedTo]="[todoList]"
+              class="example-list"
+              (cdkDropListDropped)="drop($event)">
+              <div class="example-box2" *ngFor="let item of yourDataset" cdkDrag>{{item}}</div>
+            </div>
+          </div>
+        </app-content>
+      </div>
+      <div class="item item-3" fxFlex>
+        <app-content>
+          <h2>Result Preview</h2>
+          <app-table></app-table>
+        </app-content>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Create Widget"> Content 3</mat-tab>
+</mat-tab-group>

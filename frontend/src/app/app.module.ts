@@ -22,7 +22,7 @@ import {
   MatNativeDateModule,
   MatOptionModule,
   MatSelectModule,
-  MatSidenavModule,
+  MatSidenavModule, MatTableModule,
   MatTabsModule,
   MatToolbarModule
 } from "@angular/material";
@@ -46,6 +46,7 @@ import {DragDropModule} from "@angular/cdk/drag-drop";
 import {NgxEchartsModule} from "ngx-echarts";
 import {ChartComponent} from './chart/chart.component';
 import {StudioComponent} from './pages/studio/studio.component';
+import { TableComponent } from './table/table.component';
 
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent},
@@ -80,7 +81,8 @@ const appRoutes: Routes = [
     ChatComponent,
     StoreComponent,
     ChartComponent,
-    StudioComponent
+    StudioComponent,
+    TableComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -111,7 +113,8 @@ const appRoutes: Routes = [
     MatBadgeModule,
     FlexLayoutModule,
     DragDropModule,
-    NgxEchartsModule
+    NgxEchartsModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]
