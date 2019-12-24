@@ -6,11 +6,12 @@
          fxLayoutAlign="center"
          fxLayoutGap="10px"
          fxLayoutGap.xs="0">
-      <div class="item item-1" fxFlex="35%"></div>
+      <div class="item item-1" fxFlex="35%">
+      </div>
       <div class="item item-2" fxFlex>
         <app-content>
           <app-card [title]="'Connect your Google Drive'"
-                    [subtitle]="'Start with connecting a google sheet to your workspace.'"
+                    [subtitle]="'Create your own cockpit widgets with the data studio by ABIS. Start with connecting a google sheet to your workspace.'"
                     [showImage]="true"
                     [image]="'https://abis-cloud.de/wp-content/uploads/2019/12/3075838-1-845x684.jpg'"
                     [showIcon]="true"
@@ -84,5 +85,5 @@
       </div>
     </div>
   </mat-tab>
-  <mat-tab label="Create Widget"> Content 3</mat-tab>
+  <mat-tab label="Create Widget"><app-content><app-chart></app-chart></app-content></mat-tab>
 </mat-tab-group>

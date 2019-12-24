@@ -35,7 +35,11 @@
       <div style="margin-top: 20px">
         This content is hidden
       </div>
-      <app-chart></app-chart>
+      <mat-tab-group style="margin-top: 16px">
+        <mat-tab label="First Chart"><app-chart></app-chart></mat-tab>
+        <mat-tab label="Second Chart"><app-chart></app-chart></mat-tab>
+        <mat-tab label="Third Chart"><app-chart></app-chart></mat-tab>
+      </mat-tab-group>
     </mat-card-content>
     <button mat-button (click)="collapsed=true">
       <small>Collapse text</small>
