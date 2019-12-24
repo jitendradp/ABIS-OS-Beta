@@ -22,31 +22,32 @@ import {
   MatNativeDateModule,
   MatOptionModule,
   MatSelectModule,
-  MatSidenavModule, MatTableModule,
+  MatSidenavModule,
+  MatTableModule,
   MatTabsModule,
   MatToolbarModule
 } from "@angular/material";
-import {MenuComponent} from './menu/menu.component';
+import {MenuComponent} from './components/menu/menu.component';
 import {AccessComponent} from './pages/access/access.component';
-import {ContentComponent} from './content/content.component';
-import {ButtonComponent} from './button/button.component';
+import {ContentComponent} from './components/content/content.component';
+import {ButtonComponent} from './components/button/button.component';
 import {RegisterComponent} from './pages/register/register.component';
 import {SigninComponent} from './pages/signin/signin.component';
-import {GobackComponent} from './goback/goback.component';
-import {ProfileComponent} from './pages/profile/profile.component';
+import {GobackComponent} from './components/goback/goback.component';
+import {ProfileComponent} from './widgets/profile/profile.component';
 import {HomeComponent} from './pages/home/home.component';
-import {PortfolioComponent} from './pages/portfolio/portfolio.component';
-import {CreditsComponent} from './pages/credits/credits.component';
-import {CardComponent} from './card/card.component';
-import {IconbarComponent} from './iconbar/iconbar.component';
-import {ChatComponent} from './pages/chat/chat.component';
+import {PortfolioComponent} from './widgets/portfolio/portfolio.component';
+import {CreditsComponent} from './widgets/credits/credits.component';
+import {CardComponent} from './components/card/card.component';
+import {IconbarComponent} from './components/iconbar/iconbar.component';
 import {StoreComponent} from './pages/store/store.component';
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {NgxEchartsModule} from "ngx-echarts";
-import {ChartComponent} from './chart/chart.component';
+import {LineChartComponent} from './charts/line-chart/line-chart.component';
 import {StudioComponent} from './pages/studio/studio.component';
-import { TableComponent } from './table/table.component';
+import {TableComponent} from './table/table.component';
+import {NewsroomComponent} from './pages/newsroom/newsroom.component';
 
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent},
@@ -56,9 +57,9 @@ const appRoutes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'portfolio', component: PortfolioComponent},
   {path: 'credit', component: CreditsComponent},
-  {path: 'chat', component: ChatComponent},
   {path: 'store', component: StoreComponent},
-  {path: 'studio', component: StudioComponent}
+  {path: 'studio', component: StudioComponent},
+  {path: 'newsroom', component: NewsroomComponent}
 ];
 
 
@@ -78,11 +79,11 @@ const appRoutes: Routes = [
     CreditsComponent,
     CardComponent,
     IconbarComponent,
-    ChatComponent,
     StoreComponent,
-    ChartComponent,
+    LineChartComponent,
     StudioComponent,
-    TableComponent
+    TableComponent,
+    NewsroomComponent
   ],
   imports: [
     RouterModule.forRoot(

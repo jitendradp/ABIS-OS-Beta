@@ -4,10 +4,10 @@ declare const require: any;
 
 @Component({
   selector: 'app-chart',
-  templateUrl: './chart.component.html',
-  styleUrls: ['./chart.component.css']
+  templateUrl: './line-chart.component.html',
+  styleUrls: ['./line-chart.component.css']
 })
-export class ChartComponent implements OnInit {
+export class LineChartComponent implements OnInit {
 
 
   options: any;
