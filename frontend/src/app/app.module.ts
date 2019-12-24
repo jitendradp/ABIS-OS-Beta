@@ -40,12 +40,12 @@ import {CreditsComponent} from './pages/credits/credits.component';
 import {CardComponent} from './card/card.component';
 import {IconbarComponent} from './iconbar/iconbar.component';
 import {ChatComponent} from './pages/chat/chat.component';
-import {CalendarComponent} from './pages/calendar/calendar.component';
 import {StoreComponent} from './pages/store/store.component';
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {NgxEchartsModule} from "ngx-echarts";
 import {ChartComponent} from './chart/chart.component';
+import {StudioComponent} from './pages/studio/studio.component';
 
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent},
@@ -56,8 +56,8 @@ const appRoutes: Routes = [
   {path: 'portfolio', component: PortfolioComponent},
   {path: 'credit', component: CreditsComponent},
   {path: 'chat', component: ChatComponent},
-  {path: 'calendar', component: CalendarComponent},
   {path: 'store', component: StoreComponent},
+  {path: 'studio', component: StudioComponent}
 ];
 
 
@@ -78,9 +78,9 @@ const appRoutes: Routes = [
     CardComponent,
     IconbarComponent,
     ChatComponent,
-    CalendarComponent,
     StoreComponent,
-    ChartComponent
+    ChartComponent,
+    StudioComponent
   ],
   imports: [
     RouterModule.forRoot(
