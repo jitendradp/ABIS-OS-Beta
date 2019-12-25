@@ -1,23 +1,10 @@
-<app-content>
-  <mat-form-field style="width: 100%">
-    <mat-label>Portfolio</mat-label>
-    <mat-select>
-      <mat-option *ngFor="let portfolio of portfolios" [value]="portfolio.value">
-        {{portfolio.viewValue}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-</app-content>
-
-<app-content>
-  <app-card [title]="'8.395 €'"
-            [subtitle]="'My first portfolio'"
-            [action]="'New Transaction'"
-            [showStats]="true"
-            [showIcon]="true"
-            [statsLeft]="'Profit'"
-            [statsIcon]="'trending_up'"
-            [statsRight]="'+3.589 €'"
-            [showMaxButton]="true">
-  </app-card>
-</app-content>
+<app-card [title]="'8.395 €'"
+          [subtitle]="'My first portfolio'"
+          [action]="'New Transaction'"
+          [showStats]="true"
+          [showIcon]="true"
+          [statsLeft]="'Profit'"
+          [statsIcon]="'trending_up'"
+          [statsRight]="'+3.589 €'"
+          [showMaxButton]="true">
+</app-card>
