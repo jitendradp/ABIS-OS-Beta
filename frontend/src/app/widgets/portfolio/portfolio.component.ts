@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 export interface IPortfolio {
   value: string;
@@ -12,11 +12,8 @@ export interface IPortfolio {
 })
 export class PortfolioComponent implements OnInit {
 
-  portfolios: IPortfolio[] = [
-    {value: 'portfolio-0', viewValue: 'Test'},
-    {value: 'portfolio-1', viewValue: 'Real Money'},
-    {value: 'portfolio-2', viewValue: 'High Risky'}
-  ];
+  @Input()
+  showWidget:boolean;
 
   constructor() {
   }

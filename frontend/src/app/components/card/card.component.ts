@@ -23,6 +23,9 @@ export class CardComponent implements OnInit {
   action: string;
 
   @Input()
+  link: string;
+
+  @Input()
   showMaxButton: boolean;
 
   @Input()
