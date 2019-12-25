@@ -1,9 +1,21 @@
-<app-card [title]="profile.name"
-          [subtitle]="profile.slogan"
-          [status]="profile.status"
-          [showIcon]="true"
-          [icon]="profile.picture"
-          [showImage]="true"
-          [image]='profile.banner'
-          [showStatus]="true">
-</app-card>
+<div *ngIf="menu">
+  <mat-card style="border-radius: 0; box-shadow: none">
+    <mat-card-header>
+      <img mat-card-avatar src="{{profile.picture}}">
+      <mat-card-title>{{profile.name}}</mat-card-title>
+      <mat-card-subtitle>{{profile.slogan}}</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+</div>
+
+<div *ngIf="card">
+  <app-card [title]="profile.name"
+            [subtitle]="profile.slogan"
+            [status]="profile.status"
+            [showIcon]="true"
+            [icon]="profile.picture"
+            [showImage]="true"
+            [image]='profile.banner'
+            [showStatus]="true">
+  </app-card>
+</div>

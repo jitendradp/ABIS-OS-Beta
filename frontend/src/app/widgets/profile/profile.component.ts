@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ProfileService} from "../../services/profile.service";
 
 @Component({
@@ -7,6 +7,12 @@ import {ProfileService} from "../../services/profile.service";
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
+
+  @Input()
+  menu: boolean;
+
+  @Input()
+  card: boolean;
 
   public profile = {};
 
