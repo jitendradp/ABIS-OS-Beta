@@ -1,5 +1,4 @@
 <mat-card class="profileCard">
-  <ng-content></ng-content>
   <div *ngIf="showImage">
     <img mat-card-image src="{{image}}" onError="this.src='./assets/error-images/picture.png';">
   </div>
@@ -31,30 +30,41 @@
   </div>
 
   <div *ngIf="showContent">
-    <mat-card-content *ngIf="collapsed" class="profileContent">
-      <mat-icon style="padding-top: 32px">lock</mat-icon>
-      <div style="margin-top: 20px">
-        This content is hidden
-      </div>
-      <mat-tab-group style="margin-top: 16px">
-        <mat-tab label="First Chart">
-          <app-chart></app-chart>
-        </mat-tab>
-        <mat-tab label="Second Chart">
-          <app-chart></app-chart>
-        </mat-tab>
-        <mat-tab label="Third Chart">
-          <app-chart></app-chart>
-        </mat-tab>
-      </mat-tab-group>
+    <mat-card-content class="profileContent">
+      <app-content>
+        <mat-icon>lock</mat-icon>
+        <p>This content is hidden</p>
+      </app-content>
+
+
+      <mat-expansion-panel class="mat-elevation-z0"
+                           (opened)="panelOpenState = true"
+                           (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Chart
+          </mat-panel-title>
+          <mat-panel-description>
+            Currently I am {{panelOpenState ? 'open' : 'closed'}}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-tab-group>
+          <mat-tab label="First Chart">
+            <app-chart></app-chart>
+          </mat-tab>
+          <mat-tab label="Second Chart">
+            <app-chart></app-chart>
+          </mat-tab>
+          <mat-tab label="Third Chart">
+            <app-chart></app-chart>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-expansion-panel>
+
     </mat-card-content>
-    <button mat-button (click)="collapsed=true">
-      <small>Collapse text</small>
-    </button>
-    <button mat-button (click)="collapsed=false">
-      <small>Uncollapse text</small>
-    </button>
   </div>
+
+
   <mat-card-actions>
     <app-content>
       <span *ngIf="showMaxButton"><app-button>{{action}}</app-button></span>
@@ -78,3 +88,5 @@
     </app-content>
   </mat-card-actions>
 </mat-card>
+
+
