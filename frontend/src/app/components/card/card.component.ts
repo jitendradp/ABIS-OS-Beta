@@ -8,6 +8,12 @@ import {Component, Input, OnInit} from '@angular/core';
 export class CardComponent implements OnInit {
 
   @Input ()
+  showAccordion: boolean;
+
+  @Input ()
+  lockedContent: boolean;
+
+  @Input ()
   status: string;
 
   @Input ()

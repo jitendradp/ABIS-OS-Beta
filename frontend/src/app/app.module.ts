@@ -46,7 +46,7 @@ import {DragDropModule} from "@angular/cdk/drag-drop";
 import {NgxEchartsModule} from "ngx-echarts";
 import {LineChartComponent} from './charts/line-chart/line-chart.component';
 import {StudioComponent} from './pages/studio/studio.component';
-import {TableComponent} from './table/table.component';
+import {TableComponent} from './charts/table/table.component';
 import {NewsroomComponent} from './pages/newsroom/newsroom.component';
 import {ProfileService} from "./services/profile.service";
 

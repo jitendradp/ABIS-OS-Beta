@@ -1,7 +1,8 @@
-<mat-card class="profileCard">
+<mat-card>
   <div *ngIf="showImage">
     <img mat-card-image src="{{image}}" onError="this.src='./assets/error-images/picture.png';">
   </div>
+
   <div class="information">
     <small><b>{{creator}}</b></small>
     <div style="padding-bottom: 12px">
@@ -14,50 +15,49 @@
       <mat-card-subtitle>{{subtitle}}</mat-card-subtitle>
       <mat-chip *ngIf="showStatus" color="accent" selected>{{status}}</mat-chip>
     </mat-card-header>
-    <app-content *ngIf="showStats">
-      <mat-divider style="padding-bottom: 8px"></mat-divider>
-      <mat-grid-list cols="3" rowHeight="2:1">
-        <mat-grid-tile>
-          <h4>{{statsLeft}}</h4>
-        </mat-grid-tile>
-        <mat-grid-tile>
-          <mat-icon>{{statsIcon}}</mat-icon>
-        </mat-grid-tile>
-        <mat-grid-tile><h4>{{statsRight}}</h4></mat-grid-tile>
-      </mat-grid-list>
-      <mat-divider style="padding-bottom: 8px"></mat-divider>
-    </app-content>
   </div>
 
-  <div *ngIf="showContent">
-    <mat-card-content class="profileContent">
-      <app-content>
+  <div *ngIf="showStats">
+    <mat-divider></mat-divider>
+    <mat-grid-list cols="3" rowHeight="2:1">
+      <mat-grid-tile>
+        <h4>{{statsLeft}}</h4>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-icon>{{statsIcon}}</mat-icon>
+      </mat-grid-tile>
+      <mat-grid-tile><h4>{{statsRight}}</h4></mat-grid-tile>
+    </mat-grid-list>
+    <mat-divider></mat-divider>
+  </div>
+
+  <mat-card-content *ngIf="showContent" class="profileContent">
+    <app-content>
+      <div *ngIf="lockedContent">
         <mat-icon>lock</mat-icon>
         <p>This content is hidden</p>
-      </app-content>
+      </div>
+      <ng-content></ng-content>
+    </app-content>
+  </mat-card-content>
 
-
-      <mat-expansion-panel class="mat-elevation-z0"
-                           (opened)="panelOpenState = true"
-                           (closed)="panelOpenState = false">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Chart
-          </mat-panel-title>
-          <mat-panel-description>
-            Currently I am {{panelOpenState ? 'open' : 'closed'}}
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <app-chart></app-chart>
-      </mat-expansion-panel>
-
-    </mat-card-content>
-  </div>
+  <mat-expansion-panel *ngIf="showAccordion" class="mat-elevation-z0"
+                       (opened)="panelOpenState = true"
+                       (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Chart
+      </mat-panel-title>
+      <mat-panel-description>
+        Currently I am {{panelOpenState ? 'open' : 'closed'}}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <app-chart></app-chart>
+  </mat-expansion-panel>
 
 
   <mat-card-actions>
     <app-content>
-      <span *ngIf="showMaxButton"><app-button>{{action}}</app-button></span>
       <mat-grid-list style="padding-top: 16px" *ngIf="showActionList" cols="3" rowHeight="2:1">
         <mat-grid-tile>
           <button mat-button>
@@ -75,6 +75,7 @@
           </button>
         </mat-grid-tile>
       </mat-grid-list>
+      <span *ngIf="showMaxButton"><app-button>{{action}}</app-button></span>
     </app-content>
   </mat-card-actions>
 </mat-card>
