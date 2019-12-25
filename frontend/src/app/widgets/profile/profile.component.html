@@ -1,17 +1,9 @@
-<app-card [title]= 'profile.name'
+<app-card [title]="profile.name"
           [subtitle]="profile.slogan"
-          [action]="'Select Avatar'"
-          [showMaxButton]="true"
-          [showActionList]="true"
+          [status]="profile.status"
           [showIcon]="true"
-          [showStats]="true"
-          [icon]= 'profile.picture'
-          [statsIcon]="'trending_up'"
-          [statsLeft]="'User'"
-          [statsRight]="'+83.344'"
+          [icon]="profile.picture"
           [showImage]="true"
-          [image]= 'profile.banner'
-          [showContent]="true"
-          [creator]="'DBI Analytics GmbH'"
-          [creationDate]="'Vor 30 Minuten'">
+          [image]='profile.banner'
+          [showStatus]="true">
 </app-card>

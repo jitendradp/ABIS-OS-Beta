@@ -13,7 +13,8 @@ export class ProfileComponent implements OnInit {
   constructor(private _profileService: ProfileService) {
   }
 
-  ngOnInit() {this.profile = this._profileService.getProfiles();
+  ngOnInit() {
+    this.profile = this._profileService.getProfileInformation();
   }
 
 }

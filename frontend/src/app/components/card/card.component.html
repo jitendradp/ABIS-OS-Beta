@@ -3,7 +3,7 @@
   <div *ngIf="showImage">
     <img mat-card-image src="{{image}}" onError="this.src='./assets/error-images/picture.png';">
   </div>
-  <div class="profileInformation">
+  <div class="information">
     <small><b>{{creator}}</b></small>
     <div style="padding-bottom: 12px">
       <span style="font-size: 12px">{{creationDate}}</span>
@@ -13,6 +13,7 @@
                                                  onError="this.src='./assets/error-images/picture.png';"></div>
       <mat-card-title>{{title}}</mat-card-title>
       <mat-card-subtitle>{{subtitle}}</mat-card-subtitle>
+      <mat-chip *ngIf="showStatus" color="accent" selected>{{status}}</mat-chip>
     </mat-card-header>
     <app-content *ngIf="showStats">
       <mat-divider style="padding-bottom: 8px"></mat-divider>
@@ -36,9 +37,15 @@
         This content is hidden
       </div>
       <mat-tab-group style="margin-top: 16px">
-        <mat-tab label="First Chart"><app-chart></app-chart></mat-tab>
-        <mat-tab label="Second Chart"><app-chart></app-chart></mat-tab>
-        <mat-tab label="Third Chart"><app-chart></app-chart></mat-tab>
+        <mat-tab label="First Chart">
+          <app-chart></app-chart>
+        </mat-tab>
+        <mat-tab label="Second Chart">
+          <app-chart></app-chart>
+        </mat-tab>
+        <mat-tab label="Third Chart">
+          <app-chart></app-chart>
+        </mat-tab>
       </mat-tab-group>
     </mat-card-content>
     <button mat-button (click)="collapsed=true">

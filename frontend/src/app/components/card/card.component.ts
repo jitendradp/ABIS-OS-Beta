@@ -7,6 +7,12 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class CardComponent implements OnInit {
 
+  @Input ()
+  status: string;
+
+  @Input ()
+  showStatus: boolean;
+
   @Input()
   action: string;
 
