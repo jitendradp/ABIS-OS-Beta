@@ -1,9 +1,10 @@
 <div *ngIf="menu">
-  <mat-card style="border-radius: 0; box-shadow: none">
+  <mat-card style="border-radius: 0; box-shadow: none; max-width: 300px">
     <mat-card-header>
       <img mat-card-avatar src="{{profile.picture}}">
       <mat-card-title>{{profile.name}}</mat-card-title>
       <mat-card-subtitle>{{profile.slogan}}</mat-card-subtitle>
+      <mat-chip color="accent" selected>{{profile.status}}</mat-chip>
     </mat-card-header>
   </mat-card>
 </div>
