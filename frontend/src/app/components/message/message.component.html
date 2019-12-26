@@ -1,0 +1,34 @@
+<mat-card class="embeddableMessage">
+  <small><b>{{creator}}</b></small>
+  <div style="padding-bottom: 12px">
+    <span style="font-size: 12px">{{creationDate}}</span>
+  </div>
+  <mat-card-header>
+    <div mat-card-avatar><img class="profilePicture" src="{{picture}}"
+                              onError="this.src='./assets/error-images/picture.png';"></div>
+    <mat-card-title>{{title}}</mat-card-title>
+    <mat-card-subtitle>{{message}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-actions>
+    <mat-grid-list cols="3" rowHeight="40px">
+      <mat-grid-tile>
+        <button mat-icon-button>
+          <mat-icon>thumb_up</mat-icon>
+        </button>
+        <small>89 Likes</small>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <button mat-icon-button>
+          <mat-icon>comment</mat-icon>
+        </button>
+        <small>4 Comments</small>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <button mat-icon-button>
+          <mat-icon>share</mat-icon>
+        </button>
+        <small>4 Shares</small>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-card-actions>
+</mat-card>

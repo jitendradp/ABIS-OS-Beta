@@ -1,10 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 
-export interface IPortfolio {
-  value: string;
-  viewValue: string;
-}
-
 @Component({
   selector: 'app-portfolio',
   templateUrl: './portfolio.component.html',

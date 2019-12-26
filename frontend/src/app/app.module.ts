@@ -35,7 +35,6 @@ import {RegisterComponent} from './pages/register/register.component';
 import {SigninComponent} from './pages/signin/signin.component';
 import {GobackComponent} from './components/goback/goback.component';
 import {ProfileComponent} from './widgets/profile/profile.component';
-import {HomeComponent} from './pages/home/home.component';
 import {PortfolioComponent} from './widgets/portfolio/portfolio.component';
 import {CreditsComponent} from './widgets/credits/credits.component';
 import {CardComponent} from './components/card/card.component';
@@ -47,20 +46,20 @@ import {NgxEchartsModule} from "ngx-echarts";
 import {LineChartComponent} from './charts/line-chart/line-chart.component';
 import {StudioComponent} from './pages/studio/studio.component';
 import {TableComponent} from './charts/table/table.component';
-import {NewsroomComponent} from './pages/newsroom/newsroom.component';
 import {ProfileService} from "./services/profile.service";
+import {MessageComponent} from './components/message/message.component';
+import {CockpitComponent} from './pages/cockpit/cockpit.component';
 
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent},
   {path: 'signin', component: SigninComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'profile', component: ProfileComponent},
-  {path: 'home', component: HomeComponent},
+  {path: 'cockpit', component: CockpitComponent},
   {path: 'portfolio', component: PortfolioComponent},
   {path: 'credit', component: CreditsComponent},
   {path: 'store', component: StoreComponent},
-  {path: 'studio', component: StudioComponent},
-  {path: 'newsroom', component: NewsroomComponent}
+  {path: 'studio', component: StudioComponent}
 ];
 
 
@@ -75,7 +74,6 @@ const appRoutes: Routes = [
     SigninComponent,
     GobackComponent,
     ProfileComponent,
-    HomeComponent,
     PortfolioComponent,
     CreditsComponent,
     CardComponent,
@@ -84,7 +82,8 @@ const appRoutes: Routes = [
     LineChartComponent,
     StudioComponent,
     TableComponent,
-    NewsroomComponent
+    MessageComponent,
+    CockpitComponent
   ],
   imports: [
     RouterModule.forRoot(

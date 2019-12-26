@@ -7,16 +7,22 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class CardComponent implements OnInit {
 
-  @Input ()
+  @Input()
+  accordionTitle: string;
+
+  @Input()
+  accordionDescription: string;
+
+  @Input()
   showAccordion: boolean;
 
-  @Input ()
+  @Input()
   lockedContent: boolean;
 
-  @Input ()
+  @Input()
   status: string;
 
-  @Input ()
+  @Input()
   showStatus: boolean;
 
   @Input()

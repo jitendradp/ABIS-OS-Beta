@@ -1,10 +1,40 @@
-<app-card *ngIf="showWidget" [title]="'8.395 €'"
-          [subtitle]="'My first portfolio'"
-          [action]="'New Transaction'"
-          [showStats]="true"
+<app-card *ngIf="showWidget" [title]="'83.395 €'"
+          [subtitle]="'All my portfolios'"
+          [action]="'View Portfolios'"
           [showIcon]="true"
+          [showAccordion]="true"
           [statsLeft]="'Profit'"
+          [showContent]="true"
           [statsIcon]="'trending_up'"
-          [statsRight]="'+3.589 €'"
-          [showMaxButton]="true">
+          [statsRight]="'+8.589 €'"
+          [showMaxButton]="true"
+          [link]='"/portfolio"'>
 </app-card>
+<div class="container"
+     fxLayout
+     fxLayout.xs="column"
+     fxLayoutAlign="center"
+     fxLayoutGap="10px"
+     fxLayoutGap.xs="0">
+  <div class="item item-1" fxFlex="50%">
+    <app-content *ngIf="!showWidget">
+      <app-card [title]="'8.395 €'"
+                [subtitle]="'My first portfolio'"
+                [action]="'New Transaction'"
+                [showIcon]="true"
+                [statsLeft]="'Profit'"
+                [statsIcon]="'trending_up'"
+                [statsRight]="'+3.589 €'"
+                [showContent]="true"
+                [showAccordion]="true"
+                [accordionTitle]="'Show Chart'">
+        <app-chart></app-chart>
+      </app-card>
+    </app-content>
+  </div>
+  <div class="item item-2" fxFlex="50%">
+    <app-content *ngIf="!showWidget">
+      <app-table></app-table>
+    </app-content>
+  </div>
+</div>
