@@ -7,6 +7,9 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class GobackComponent implements OnInit {
 
+  @Input ()
+  link:string;
+
   @Input()
   showIcon: boolean;
 

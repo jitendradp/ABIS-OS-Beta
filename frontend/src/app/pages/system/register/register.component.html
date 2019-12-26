@@ -1,0 +1,13 @@
+<app-goback [link]='"/access"'  [title]="'Register'" [showIcon]="true" [icon]="'arrow_back'"></app-goback>
+<app-content>
+  <mat-form-field class="full-width">
+    <input matInput type="email" placeholder="Email">
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <input matInput type="password" placeholder="Password">
+  </mat-form-field>
+  <app-button [link]="'/verify'">Next</app-button>
+  <p>By continuing, you're agreeing to our <a>Customer Terms of Service</a>, <a>Privacy Policy</a> and <a>Cookie
+    Policy.</a></p>
+</app-content>
+

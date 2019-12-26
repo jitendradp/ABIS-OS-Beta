@@ -28,11 +28,11 @@ import {
   MatToolbarModule
 } from "@angular/material";
 import {MenuComponent} from './components/menu/menu.component';
-import {AccessComponent} from './pages/access/access.component';
+import {AccessComponent} from './pages/system/access/access.component';
 import {ContentComponent} from './components/content/content.component';
 import {ButtonComponent} from './components/button/button.component';
-import {RegisterComponent} from './pages/register/register.component';
-import {SigninComponent} from './pages/signin/signin.component';
+import {RegisterComponent} from './pages/system/register/register.component';
+import {SigninComponent} from './pages/system/signin/signin.component';
 import {GobackComponent} from './components/goback/goback.component';
 import {ProfileComponent} from './widgets/profile/profile.component';
 import {PortfolioComponent} from './widgets/portfolio/portfolio.component';
@@ -49,6 +49,10 @@ import {TableComponent} from './charts/table/table.component';
 import {ProfileService} from "./services/profile.service";
 import {MessageComponent} from './components/message/message.component';
 import {CockpitComponent} from './pages/cockpit/cockpit.component';
+import {MapComponent} from './pages/map/map.component';
+import {VerifyComponent} from './pages/system/verify/verify.component';
+import {InviteComponent} from './pages/system/invite/invite.component';
+import {WorkspaceComponent} from './pages/system/workspace/workspace.component';
 
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent},
@@ -59,7 +63,11 @@ const appRoutes: Routes = [
   {path: 'portfolio', component: PortfolioComponent},
   {path: 'credit', component: CreditsComponent},
   {path: 'store', component: StoreComponent},
-  {path: 'studio', component: StudioComponent}
+  {path: 'studio', component: StudioComponent},
+  {path: 'map', component: MapComponent},
+  {path: 'verify', component: VerifyComponent},
+  {path: 'invite', component: InviteComponent},
+  {path: 'workspace', component: WorkspaceComponent}
 ];
 
 
@@ -83,7 +91,11 @@ const appRoutes: Routes = [
     StudioComponent,
     TableComponent,
     MessageComponent,
-    CockpitComponent
+    CockpitComponent,
+    MapComponent,
+    VerifyComponent,
+    InviteComponent,
+    WorkspaceComponent
   ],
   imports: [
     RouterModule.forRoot(
