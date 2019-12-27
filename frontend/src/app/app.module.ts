@@ -37,7 +37,6 @@ import {SigninComponent} from './pages/system/signin/signin.component';
 import {GobackComponent} from './components/goback/goback.component';
 import {ProfileComponent} from './widgets/profile/profile.component';
 import {PortfolioComponent} from './widgets/portfolio/portfolio.component';
-import {CreditsComponent} from './widgets/credits/credits.component';
 import {CardComponent} from './components/card/card.component';
 import {IconbarComponent} from './components/iconbar/iconbar.component';
 import {StoreComponent} from './pages/store/store.component';
@@ -62,7 +61,6 @@ const appRoutes: Routes = [
   {path: 'profile', component: ProfileComponent},
   {path: 'cockpit', component: CockpitComponent},
   {path: 'portfolio', component: PortfolioComponent},
-  {path: 'credit', component: CreditsComponent},
   {path: 'store', component: StoreComponent},
   {path: 'studio', component: StudioComponent},
   {path: 'map', component: MapComponent},
@@ -84,7 +82,6 @@ const appRoutes: Routes = [
     GobackComponent,
     ProfileComponent,
     PortfolioComponent,
-    CreditsComponent,
     CardComponent,
     IconbarComponent,
     StoreComponent,

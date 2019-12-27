@@ -1,8 +1,30 @@
-<app-content>
-  <div class="smallEdgeSpace">
-    <app-button [link]='"/register"'>Register</app-button>
+<div class="container"
+     fxLayout
+     fxLayout.xs="column"
+     fxLayoutAlign="center"
+     fxLayoutGap="10px"
+     fxLayoutGap.xs="0">
+  <div class="item item-1"></div>
+  <div class="item item-2" fxFlex="40%">
+    <app-content>
+      <mat-card>
+        <img mat-card-image src="./assets/banners/access-cockpit.jpg"
+             onError="this.src='./assets/error-images/picture.png';">
+        <mat-card-title>
+          Access resource
+        </mat-card-title>
+        <mat-card-content>
+        </mat-card-content>
+        <mat-card-actions>
+          <div class="smallEdgeSpace">
+            <app-button [link]='"/register"'>Register</app-button>
+          </div>
+          <div class="smallEdgeSpace">
+            <app-button [link]='"/signin"'>Sign In</app-button>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </app-content>
   </div>
-  <div class="smallEdgeSpace">
-    <app-button [link]='"/signin"'>Sign In</app-button>
-  </div>
-</app-content>
+  <div class="item item-3"></div>
+</div>

@@ -1,11 +1,36 @@
-<app-goback routerLink="/access" [title]="'Sign In'" [showIcon]="true" [icon]="'arrow_back'"></app-goback>
-<app-content>
-  <mat-form-field class="full-width">
-    <input matInput type="email" placeholder="Email">
-  </mat-form-field>
-  <mat-form-field class="full-width">
-    <input matInput type="password" placeholder="Password">
-  </mat-form-field>
-  <app-button>Login</app-button>
-</app-content>
+<app-goback [link]='"/access"' [title]="'Access'" [showIcon]="true" [icon]="'arrow_back'"></app-goback>
+<div class="container"
+     fxLayout
+     fxLayout.xs="column"
+     fxLayoutAlign="center"
+     fxLayoutGap="10px"
+     fxLayoutGap.xs="0">
+  <div class="item item-1"></div>
+  <div class="item item-2" fxFlex="40%">
+    <app-content>
+      <app-content>
+        <mat-card>
+          <mat-card-title>
+            Login
+          </mat-card-title>
+          <mat-card-content>
+            <mat-form-field class="full-width">
+              <input matInput type="email" placeholder="Email">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <input matInput type="password" placeholder="Password">
+            </mat-form-field>
+          </mat-card-content>
+          <mat-card-actions>
+            <app-button [link]="'/cockpit'">Submit</app-button>
+          </mat-card-actions>
+        </mat-card>
+      </app-content>
+    </app-content>
+  </div>
+  <div class="item item-3"></div>
+</div>
+
+
+
 
