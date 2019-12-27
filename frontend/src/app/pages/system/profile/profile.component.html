@@ -1,0 +1,58 @@
+<mat-card *ngIf="isSidebar" class="profileBlank">
+  <mat-card-header [matMenuTriggerFor]="menu">
+    <img mat-card-avatar src="{{profile.picture}}">
+    <mat-card-title>{{profile.name}}</mat-card-title>
+    <mat-card-subtitle>{{profile.slogan}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item routerLink="/profile">Edit profile</button>
+    <button mat-menu-item routerLink="/signin">Sign off</button>
+  </mat-menu>
+</mat-card>
+
+<app-content *ngIf="!isSidebar">
+  <mat-card>
+    <mat-card-header>
+      <img mat-card-avatar src="{{profile.picture}}">
+      <mat-card-title>{{profile.name}}</mat-card-title>
+      <mat-card-subtitle>{{profile.slogan}}</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+</app-content>
+
+<div *ngIf="!isSidebar"
+     class="container"
+     fxLayout
+     fxLayout.xs="column"
+     fxLayoutAlign="center"
+     fxLayoutGap="10px"
+     fxLayoutGap.xs="0">
+  <div class="item item-1" fxFlex="50%">
+    <app-content>
+      <app-form [title]="'Edit profile'" [buttonText]="'Save'">
+        <mat-form-field class="full-width">
+          <input matInput type="text" placeholder="Full name">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <input matInput type="text" placeholder="Display name">
+        </mat-form-field>
+        <small>This is how your name will show up in ABIS.</small>
+        <mat-form-field class="full-width">
+          <input matInput type="text" placeholder="What I do">
+        </mat-form-field>
+        <small>Let people know what you do.</small>
+        <mat-form-field class="full-width">
+          <input matInput type="text" placeholder="Your slogan">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <input matInput type="tel" placeholder="Phone">
+        </mat-form-field>
+        <small>Enter a phone number.
+        </small>
+      </app-form>
+    </app-content>
+  </div>
+  <div class="item item-2" fxFlex="50%">
+    <app-reset></app-reset>
+  </div>
+</div>

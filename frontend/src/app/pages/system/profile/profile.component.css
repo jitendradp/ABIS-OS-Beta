@@ -1,0 +1,14 @@
+.profileBlank {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.profileHeaderImage {
+  max-height: 30vh;
+  object-fit: cover;
+  object-position: center;
+}
+
+.full-width {
+  width: 100%;
+}

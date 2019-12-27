@@ -1,23 +1,5 @@
-<app-profile [menu]="true"></app-profile>
-<div style="padding: 16px">
-  <app-button routerLink="access">Sign In / Register</app-button>
-</div>
-<form class="searchBox">
-  <mat-form-field class="full-width">
-    <input matInput placeholder="Search">
-  </mat-form-field>
-  <mat-nav-list *ngFor="let option of options">
-    <mat-list-item>
-      {{option}}
-    </mat-list-item>
-  </mat-nav-list>
-</form>
-<mat-divider></mat-divider>
-<app-content>
-  <p>Favorites</p>
-  <mat-chip-list>
-    <mat-chip color="primary" selected routerLink="/profile">Profiles</mat-chip>
-    <mat-chip routerLink="/portfolio">Portfolios</mat-chip>
-  </mat-chip-list>
-</app-content>
+<app-profile [isSidebar]="true"></app-profile>
 
+<div style="padding: 16px">
+  <app-button [link]='"/access"' [text]="'Register / Sign in'"></app-button>
+</div>

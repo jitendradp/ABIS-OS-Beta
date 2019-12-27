@@ -24,6 +24,7 @@ import {
   MatRadioModule,
   MatSelectModule,
   MatSidenavModule,
+  MatSlideToggleModule,
   MatTableModule,
   MatTabsModule,
   MatToolbarModule
@@ -35,8 +36,7 @@ import {ButtonComponent} from './components/button/button.component';
 import {RegisterComponent} from './pages/system/register/register.component';
 import {SigninComponent} from './pages/system/signin/signin.component';
 import {GobackComponent} from './components/goback/goback.component';
-import {ProfileComponent} from './widgets/profile/profile.component';
-import {PortfolioComponent} from './widgets/portfolio/portfolio.component';
+import {ProfileComponent} from './pages/system/profile/profile.component';
 import {CardComponent} from './components/card/card.component';
 import {IconbarComponent} from './components/iconbar/iconbar.component';
 import {StoreComponent} from './pages/store/store.component';
@@ -53,6 +53,8 @@ import {MapComponent} from './pages/map/map.component';
 import {VerifyComponent} from './pages/system/verify/verify.component';
 import {InviteComponent} from './pages/system/invite/invite.component';
 import {WorkspaceComponent} from './pages/system/workspace/workspace.component';
+import {FormComponent} from './components/form/form.component';
+import {ResetComponent} from './pages/system/reset/reset.component';
 
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent},
@@ -60,7 +62,6 @@ const appRoutes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'profile', component: ProfileComponent},
   {path: 'cockpit', component: CockpitComponent},
-  {path: 'portfolio', component: PortfolioComponent},
   {path: 'store', component: StoreComponent},
   {path: 'studio', component: StudioComponent},
   {path: 'map', component: MapComponent},
@@ -81,7 +82,6 @@ const appRoutes: Routes = [
     SigninComponent,
     GobackComponent,
     ProfileComponent,
-    PortfolioComponent,
     CardComponent,
     IconbarComponent,
     StoreComponent,
@@ -93,7 +93,9 @@ const appRoutes: Routes = [
     MapComponent,
     VerifyComponent,
     InviteComponent,
-    WorkspaceComponent
+    WorkspaceComponent,
+    FormComponent,
+    ResetComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -126,7 +128,8 @@ const appRoutes: Routes = [
     DragDropModule,
     NgxEchartsModule,
     MatTableModule,
-    MatRadioModule
+    MatRadioModule,
+    MatSlideToggleModule
   ],
   providers: [ProfileService],
   bootstrap: [AppComponent]

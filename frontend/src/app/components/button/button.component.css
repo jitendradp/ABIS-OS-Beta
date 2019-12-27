@@ -3,3 +3,7 @@
   width: 100%;
   color: white;
 }
+
+.smallEdgeSpace {
+  padding: 8px;
+}

@@ -64,7 +64,7 @@
           </button>
         </mat-grid-tile>
       </mat-grid-list>
-      <span *ngIf="showMaxButton"><app-button routerLink="{{link}}">{{action}}</app-button></span>
+      <span *ngIf="showMaxButton"><app-button routerLink="{{link}}" [text]="action"></app-button></span>
     </app-content>
   </mat-card-actions>
 </mat-card>

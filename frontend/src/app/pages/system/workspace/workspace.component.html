@@ -8,8 +8,8 @@
   <div class="item item-1"></div>
   <div class="item item-2" fxFlex="40%">
     <app-content>
-      <app-content>
-        <mat-card>
+      <mat-card>
+        <app-content>
           <mat-card-title>
             Create workspace
           </mat-card-title>
@@ -18,16 +18,23 @@
               <input matInput type="text" placeholder="Name">
             </mat-form-field>
             <mat-radio-group aria-label="Select an option">
-              <mat-radio-button value="1">Public</mat-radio-button>
-              <mat-radio-button value="2" style="padding-left: 16px" [checked]="true">Private</mat-radio-button>
+              <mat-radio-button value="1">Public (Free)</mat-radio-button>
+              <mat-radio-button value="2" style="padding-left: 16px" [checked]="true">Private (Trial)</mat-radio-button>
             </mat-radio-group>
           </mat-card-content>
           <mat-card-actions>
-            <app-button [link]="'/invite'">Next</app-button>
+            <app-button [link]="'/invite'" [text]="'Next'"></app-button>
           </mat-card-actions>
-        </mat-card>
-      </app-content>
+          <small>Create a workspace to manage data and accesses. If you choose the public mode other participants can
+            find and enter your workspace. This public workspace is free of charge. The private workspace protects your
+            data from unauthorized access and has a 30 days trial.
+          </small>
+        </app-content>
+      </mat-card>
     </app-content>
   </div>
   <div class="item item-3"></div>
 </div>
+
+
+

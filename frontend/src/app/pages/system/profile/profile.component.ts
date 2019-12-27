@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ProfileService} from "../../services/profile.service";
+import {ProfileService} from "../../../services/profile.service";
 
 @Component({
   selector: 'app-profile',
@@ -9,10 +9,19 @@ import {ProfileService} from "../../services/profile.service";
 export class ProfileComponent implements OnInit {
 
   @Input()
-  menu: boolean;
+  header: boolean;
 
   @Input()
-  card: boolean;
+  page: boolean;
+
+  @Input()
+  style: string;
+
+  @Input()
+  isSidebar: boolean;
+
+  @Input()
+  isPreview: boolean;
 
   public profile = {};
 
