@@ -1,8 +1,33 @@
-<app-goback [link]='"/verify"' [title]="'Workspace'" [showIcon]="true" [icon]="'arrow_back'"></app-goback>
-<app-content>
-  <mat-form-field class="full-width">
-    <input matInput type="text" placeholder="Name">
-  </mat-form-field>
-  <app-button [link]='"/invite"'>Next</app-button>
-</app-content>
-
+<app-goback [link]='"/verify"' [title]="'Verify'" [showIcon]="true" [icon]="'arrow_back'"></app-goback>
+<div class="container"
+     fxLayout
+     fxLayout.xs="column"
+     fxLayoutAlign="center"
+     fxLayoutGap="10px"
+     fxLayoutGap.xs="0">
+  <div class="item item-1"></div>
+  <div class="item item-2" fxFlex="40%">
+    <app-content>
+      <app-content>
+        <mat-card>
+          <mat-card-title>
+            Create workspace
+          </mat-card-title>
+          <mat-card-content>
+            <mat-form-field class="full-width">
+              <input matInput type="text" placeholder="Name">
+            </mat-form-field>
+            <mat-radio-group aria-label="Select an option">
+              <mat-radio-button value="1">Public</mat-radio-button>
+              <mat-radio-button value="2" style="padding-left: 16px" [checked]="true">Private</mat-radio-button>
+            </mat-radio-group>
+          </mat-card-content>
+          <mat-card-actions>
+            <app-button [link]="'/invite'">Next</app-button>
+          </mat-card-actions>
+        </mat-card>
+      </app-content>
+    </app-content>
+  </div>
+  <div class="item item-3"></div>
+</div>

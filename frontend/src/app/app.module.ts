@@ -21,6 +21,7 @@ import {
   MatMenuModule,
   MatNativeDateModule,
   MatOptionModule,
+  MatRadioModule,
   MatSelectModule,
   MatSidenavModule,
   MatTableModule,
@@ -127,7 +128,8 @@ const appRoutes: Routes = [
     FlexLayoutModule,
     DragDropModule,
     NgxEchartsModule,
-    MatTableModule
+    MatTableModule,
+    MatRadioModule
   ],
   providers: [ProfileService],
   bootstrap: [AppComponent]
