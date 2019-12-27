@@ -1,8 +1,8 @@
 <mat-card *ngIf="isSidebar" class="profileBlank">
   <mat-card-header [matMenuTriggerFor]="menu">
     <img mat-card-avatar src="{{profile.picture}}">
-    <mat-card-title>{{profile.name}}</mat-card-title>
-    <mat-card-subtitle>{{profile.slogan}}</mat-card-subtitle>
+    <mat-card-title>{{profile.displayName}}</mat-card-title>
+    <mat-card-subtitle><b>{{profile.job}}</b> {{profile.slogan}}</mat-card-subtitle>
   </mat-card-header>
   <mat-menu #menu="matMenu">
     <button mat-menu-item routerLink="/profile">Edit profile</button>
@@ -14,8 +14,8 @@
   <mat-card>
     <mat-card-header>
       <img mat-card-avatar src="{{profile.picture}}">
-      <mat-card-title>{{profile.name}}</mat-card-title>
-      <mat-card-subtitle>{{profile.slogan}}</mat-card-subtitle>
+      <mat-card-title>{{profile.displayName}}</mat-card-title>
+      <mat-card-subtitle><b>{{profile.job}}</b> {{profile.slogan}}</mat-card-subtitle>
     </mat-card-header>
   </mat-card>
 </app-content>
@@ -31,24 +31,24 @@
     <app-content>
       <app-form [title]="'Edit profile'" [buttonText]="'Save'">
         <mat-form-field class="full-width">
-          <input matInput type="text" placeholder="Full name">
+          <input matInput type="text" placeholder="Full name" value="{{profile.fullName}}">
         </mat-form-field>
         <mat-form-field class="full-width">
-          <input matInput type="text" placeholder="Display name">
+          <input matInput type="text" placeholder="Display name" value="{{profile.displayName}}">
         </mat-form-field>
-        <small>This is how your name will show up in ABIS.</small>
+        <app-description [isFormInput]="true" [text]='"This is how your name will show up in ABIS."'></app-description>
+
         <mat-form-field class="full-width">
-          <input matInput type="text" placeholder="What I do">
+          <input matInput type="text" placeholder="What I do" value="{{profile.job}}">
         </mat-form-field>
-        <small>Let people know what you do.</small>
+        <app-description [isFormInput]="true" [text]='"Let people know what you do."'></app-description>
         <mat-form-field class="full-width">
-          <input matInput type="text" placeholder="Your slogan">
+          <input matInput type="text" placeholder="Your slogan" value="{{profile.slogan}}">
         </mat-form-field>
         <mat-form-field class="full-width">
-          <input matInput type="tel" placeholder="Phone">
+          <input matInput type="tel" placeholder="Phone" value="{{profile.phone}}">
         </mat-form-field>
-        <small>Enter a phone number.
-        </small>
+        <app-description [isFormInput]="true" [text]='"Enter a phone number."'></app-description>
       </app-form>
     </app-content>
   </div>

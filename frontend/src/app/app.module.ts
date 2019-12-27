@@ -55,6 +55,7 @@ import {InviteComponent} from './pages/system/invite/invite.component';
 import {WorkspaceComponent} from './pages/system/workspace/workspace.component';
 import {FormComponent} from './components/form/form.component';
 import {ResetComponent} from './pages/system/reset/reset.component';
+import { DescriptionComponent } from './components/description/description.component';
 
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent},
@@ -95,7 +96,8 @@ const appRoutes: Routes = [
     InviteComponent,
     WorkspaceComponent,
     FormComponent,
-    ResetComponent
+    ResetComponent,
+    DescriptionComponent
   ],
   imports: [
     RouterModule.forRoot(
