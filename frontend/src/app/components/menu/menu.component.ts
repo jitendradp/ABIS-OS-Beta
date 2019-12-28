@@ -2,10 +2,16 @@ import {Component, Input} from '@angular/core';
 import {WorkspaceService} from "../../services/workspace.service";
 import {ProfileService} from "../../services/profile.service";
 
-export interface Section {
+export interface Section_A {
   name: string;
-  updated: Date;
+  icon: string;
 }
+
+export interface Section_B {
+  name: string;
+  status: string;
+}
+
 
 @Component({
   selector: 'app-menu',
@@ -32,28 +38,28 @@ export class MenuComponent {
     this.workspace = this._workspaceService.getWorkspaceInformation();
   }
 
-  channels: Section[] = [
+  channels: Section_A[] = [
     {
       name: 'Chaos',
-      updated: new Date('1/1/16'),
+      icon: 'lock'
     },
     {
       name: 'General',
-      updated: new Date('1/17/16'),
+      icon: 'bubble_chart'
     },
     {
       name: 'Marketing',
-      updated: new Date('1/28/16'),
+      icon: 'lock'
     }
   ];
-  members: Section[] = [
+  members: Section_B[] = [
     {
       name: 'Daniel Janz',
-      updated: new Date('2/20/16'),
+      status: 'online'
     },
     {
       name: 'Moritz Bönke',
-      updated: new Date('1/18/16'),
+      status: 'online'
     }
   ];
 }
