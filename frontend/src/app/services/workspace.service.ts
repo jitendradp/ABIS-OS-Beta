@@ -12,7 +12,11 @@ export class WorkspaceService {
     return {
       "name": "DBI Analytics GmbH",
       "logo": "https://upload.wikimedia.org/wikipedia/commons/6/63/Ingress_Logo.png",
-      "type": "Public"
+      "type": "Public",
+      "city": "Munich",
+      "address": "Ridlerstr. 35",
+      "country": "Germany",
+      "tags": ["Sport", "Work"]
     }
   }
 }

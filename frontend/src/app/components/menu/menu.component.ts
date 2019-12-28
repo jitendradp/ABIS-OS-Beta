@@ -5,6 +5,7 @@ import {ProfileService} from "../../services/profile.service";
 export interface Section_A {
   name: string;
   icon: string;
+  tag: string;
 }
 
 export interface Section_B {
@@ -40,16 +41,19 @@ export class MenuComponent {
 
   channels: Section_A[] = [
     {
-      name: 'Chaos',
-      icon: 'lock'
+      name: 'Soccer FSB',
+      icon: 'bubble_chart',
+      tag: 'Sport, Soccer, Friends'
     },
     {
-      name: 'General',
-      icon: 'bubble_chart'
+      name: 'Infineon Technologies',
+      icon: 'lock',
+      tag: 'Work, Freelancer'
     },
     {
-      name: 'Marketing',
-      icon: 'lock'
+      name: 'Fishers Club',
+      icon: 'lock',
+      tag: 'Hobby, Family'
     }
   ];
   members: Section_B[] = [

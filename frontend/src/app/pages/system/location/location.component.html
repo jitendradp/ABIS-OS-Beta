@@ -1,0 +1,42 @@
+<app-goback [link]='"/workspace"' [title]="'Workspace'" [showIcon]="true" [icon]="'arrow_back'"></app-goback>
+<div class="container"
+     fxLayout
+     fxLayout.xs="column"
+     fxLayoutAlign="center"
+     fxLayoutGap="10px"
+     fxLayoutGap.xs="0">
+  <div class="item item-1"></div>
+  <div class="item item-2" fxFlex="40%">
+    <app-content>
+      <mat-card>
+        <app-content>
+          <mat-card-title>
+            Set location
+          </mat-card-title>
+          <mat-card-content>
+            <mat-form-field class="full-width">
+              <input matInput type="text" placeholder="Address">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <input matInput type="text" placeholder="City">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <mat-label>Country</mat-label>
+              <mat-select>
+                <mat-option *ngFor="let country of countries" [value]="country.value">
+                  {{country.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-card-content>
+          <mat-card-actions>
+            <app-button [link]="'/invite'" [text]="'Next'"></app-button>
+          </mat-card-actions>
+          <app-description [isFormInput]="true" [text]="description">
+          </app-description>
+        </app-content>
+      </mat-card>
+    </app-content>
+  </div>
+  <div class="item item-3"></div>
+</div>

@@ -17,6 +17,23 @@
             <mat-form-field class="full-width">
               <input matInput type="text" placeholder="Name">
             </mat-form-field>
+            <mat-form-field class="full-width">
+              <mat-chip-list #chipList>
+                <mat-chip *ngFor="let tag of tags" [selectable]="selectable"
+                          [removable]="removable" (removed)="remove(tag)">
+                  {{tag.name}}
+                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+                <input placeholder="Your hashtags..."
+                       [matChipInputFor]="chipList"
+                       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                       [matChipInputAddOnBlur]="addOnBlur"
+                       (matChipInputTokenEnd)="add($event)">
+              </mat-chip-list>
+            </mat-form-field>
+            <app-description [isFormInput]="true"
+                             [text]="'Tags helps others to find or understand your workspace or channel much better.'">
+            </app-description>
             <mat-radio-group aria-label="Select an option">
               <mat-radio-button value="1">Public (Free)</mat-radio-button>
               <mat-radio-button value="2" style="padding-left: 16px" [checked]="true">Private (Trial)
@@ -24,7 +41,7 @@
             </mat-radio-group>
           </mat-card-content>
           <mat-card-actions>
-            <app-button [link]="'/invite'" [text]="'Next'"></app-button>
+            <app-button [link]="'/location'" [text]="'Next'"></app-button>
           </mat-card-actions>
           <app-description [isFormInput]="true" [text]="description">
           </app-description>
@@ -34,7 +51,3 @@
   </div>
   <div class="item item-3"></div>
 </div>
-
-
-
-

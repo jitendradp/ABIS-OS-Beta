@@ -57,7 +57,8 @@ import {FormComponent} from './components/form/form.component';
 import {ResetComponent} from './pages/system/reset/reset.component';
 import {DescriptionComponent} from './components/description/description.component';
 import {ForgotComponent} from './pages/system/forgot/forgot.component';
-import { LogoComponent } from './components/logo/logo.component';
+import {LogoComponent} from './components/logo/logo.component';
+import {LocationComponent} from './pages/system/location/location.component';
 
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent},
@@ -72,7 +73,8 @@ const appRoutes: Routes = [
   {path: 'invite', component: InviteComponent},
   {path: 'workspace', component: WorkspaceComponent},
   {path: 'reset-password', component: ResetComponent},
-  {path: 'forgot-password', component: ForgotComponent}
+  {path: 'forgot-password', component: ForgotComponent},
+  {path: 'location', component: LocationComponent}
 ];
 
 
@@ -103,7 +105,8 @@ const appRoutes: Routes = [
     ResetComponent,
     DescriptionComponent,
     ForgotComponent,
-    LogoComponent
+    LogoComponent,
+    LocationComponent
   ],
   imports: [
     RouterModule.forRoot(
