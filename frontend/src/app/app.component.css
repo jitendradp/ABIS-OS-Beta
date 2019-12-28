@@ -8,6 +8,11 @@
   background: #222;
 }
 
+.sidebar {
+  width: 300px;
+  background-color: #999999
+}
+
 .body {
   margin-top: 64px;
   padding-bottom: 80px;

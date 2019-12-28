@@ -10,7 +10,7 @@ import {ProfileService} from "../../services/profile.service";
 export class MenuComponent {
 
   @Input()
-  isLoggedIn: boolean = true;
+  isLoggedIn: boolean;
 
   public profile = {};
 
