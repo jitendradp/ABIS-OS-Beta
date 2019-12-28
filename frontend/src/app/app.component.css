@@ -16,8 +16,18 @@
 }
 
 .logo {
-  width: 32px;
-  padding-right: 8px;
+  max-width: 40px;
+}
+
+.appTitle {
+  padding-left: 8px;
+}
+
+.logoWrapper {
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  border-radius: 10%;
 }
 
 .footer {

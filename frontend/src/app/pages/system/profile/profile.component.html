@@ -10,49 +10,51 @@
   </mat-menu>
 </mat-card>
 
-<app-content *ngIf="!isSidebar">
-  <mat-card>
-    <mat-card-header>
-      <img mat-card-avatar src="{{profile.picture}}">
-      <mat-card-title>{{profile.displayName}}</mat-card-title>
-      <mat-card-subtitle><b>{{profile.job}}</b> {{profile.slogan}}</mat-card-subtitle>
-    </mat-card-header>
-  </mat-card>
-</app-content>
+<div *ngIf="!isSidebar">
+  <app-content>
+    <mat-card>
+      <mat-card-header>
+        <img mat-card-avatar src="{{profile.picture}}">
+        <mat-card-title>{{profile.displayName}}</mat-card-title>
+        <mat-card-subtitle><b>{{profile.job}}</b> {{profile.slogan}}</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+  </app-content>
+  <div
+    class="container"
+    fxLayout
+    fxLayout.xs="column"
+    fxLayoutAlign="center"
+    fxLayoutGap="10px"
+    fxLayoutGap.xs="0">
+    <div class="item item-1" fxFlex="50%">
+      <app-content>
+        <app-form [title]="'Edit profile'" [buttonText]="'Save'">
+          <mat-form-field class="full-width">
+            <input matInput type="text" placeholder="Full name" value="{{profile.fullName}}">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput type="text" placeholder="Display name" value="{{profile.displayName}}">
+          </mat-form-field>
+          <app-description [isFormInput]="true"
+                           [text]='"This is how your name will show up in ABIS."'></app-description>
 
-<div *ngIf="!isSidebar"
-     class="container"
-     fxLayout
-     fxLayout.xs="column"
-     fxLayoutAlign="center"
-     fxLayoutGap="10px"
-     fxLayoutGap.xs="0">
-  <div class="item item-1" fxFlex="50%">
-    <app-content>
-      <app-form [title]="'Edit profile'" [buttonText]="'Save'">
-        <mat-form-field class="full-width">
-          <input matInput type="text" placeholder="Full name" value="{{profile.fullName}}">
-        </mat-form-field>
-        <mat-form-field class="full-width">
-          <input matInput type="text" placeholder="Display name" value="{{profile.displayName}}">
-        </mat-form-field>
-        <app-description [isFormInput]="true" [text]='"This is how your name will show up in ABIS."'></app-description>
-
-        <mat-form-field class="full-width">
-          <input matInput type="text" placeholder="What I do" value="{{profile.job}}">
-        </mat-form-field>
-        <app-description [isFormInput]="true" [text]='"Let people know what you do."'></app-description>
-        <mat-form-field class="full-width">
-          <input matInput type="text" placeholder="Your slogan" value="{{profile.slogan}}">
-        </mat-form-field>
-        <mat-form-field class="full-width">
-          <input matInput type="tel" placeholder="Phone" value="{{profile.phone}}">
-        </mat-form-field>
-        <app-description [isFormInput]="true" [text]='"Enter a phone number."'></app-description>
-      </app-form>
-    </app-content>
-  </div>
-  <div class="item item-2" fxFlex="50%">
-    <app-reset [isProfile]="true"></app-reset>
+          <mat-form-field class="full-width">
+            <input matInput type="text" placeholder="What I do" value="{{profile.job}}">
+          </mat-form-field>
+          <app-description [isFormInput]="true" [text]='"Let people know what you do."'></app-description>
+          <mat-form-field class="full-width">
+            <input matInput type="text" placeholder="Your slogan" value="{{profile.slogan}}">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput type="tel" placeholder="Phone" value="{{profile.phone}}">
+          </mat-form-field>
+          <app-description [isFormInput]="true" [text]='"Enter a phone number."'></app-description>
+        </app-form>
+      </app-content>
+    </div>
+    <div class="item item-2" fxFlex="50%">
+      <app-reset [isProfile]="true"></app-reset>
+    </div>
   </div>
 </div>

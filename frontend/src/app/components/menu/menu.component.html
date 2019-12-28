@@ -1,5 +1,11 @@
-<app-profile [isSidebar]="true"></app-profile>
+<div *ngIf="isLoggedIn">
+  <app-profile [isSidebar]="true"></app-profile>
+</div>
 
-<div style="padding: 16px">
+
+<div *ngIf="!isLoggedIn" style="padding: 16px">
   <app-button [link]='"/access"' [text]="'Register / Sign in'"></app-button>
 </div>
+
+
+<app-workspace [isSidebar]="true"></app-workspace>

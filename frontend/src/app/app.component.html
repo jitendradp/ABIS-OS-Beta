@@ -1,16 +1,35 @@
 <mat-drawer-container>
-  <mat-drawer position="end" #drawer mode="over">
+  <mat-drawer position="start" #drawer mode="over">
     <app-menu></app-menu>
   </mat-drawer>
   <mat-drawer-content>
     <mat-toolbar class="header" color="primary">
-      <img class="logo" src="/assets/logo.png">
-      <span>ABIS</span>
+      <button mat-icon-button (click)="drawer.toggle()">
+        <div class="logoWrapper">
+          <img class="logo" src="/assets/logo.png">
+        </div>
+      </button>
+      <span class="appTitle">ABIS</span>
       <!-- This fills the remaining space of the current row -->
       <span class="fill-remaining-space"></span>
-      <button mat-icon-button (click)="drawer.toggle()">
-        <mat-icon>menu</mat-icon>
+
+
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
       </button>
+
+      <mat-menu #menu="matMenu">
+        <mat-card-header style="padding: 12px">
+          <img mat-card-avatar src="{{profile.picture}}">
+          <mat-card-title>{{profile.displayName}}</mat-card-title>
+          <mat-card-subtitle>{{profile.job}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-divider></mat-divider>
+        <button mat-menu-item routerLink="/profile">Edit Profile</button>
+        <button mat-menu-item routerLink="/signin">Sign off</button>
+      </mat-menu>
+
+
     </mat-toolbar>
     <div class="body">
       <router-outlet></router-outlet>
@@ -18,3 +37,5 @@
     <app-iconbar class="footer"></app-iconbar>
   </mat-drawer-content>
 </mat-drawer-container>
+
+

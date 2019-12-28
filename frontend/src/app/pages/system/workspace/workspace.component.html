@@ -1,40 +1,55 @@
-<app-goback [link]='"/verify"' [title]="'Verify'" [showIcon]="true" [icon]="'arrow_back'"></app-goback>
-<div class="container"
-     fxLayout
-     fxLayout.xs="column"
-     fxLayoutAlign="center"
-     fxLayoutGap="10px"
-     fxLayoutGap.xs="0">
-  <div class="item item-1"></div>
-  <div class="item item-2" fxFlex="40%">
-    <app-content>
-      <mat-card>
-        <app-content>
-          <mat-card-title>
-            Create workspace
-          </mat-card-title>
-          <mat-card-content>
-            <mat-form-field class="full-width">
-              <input matInput type="text" placeholder="Name">
-            </mat-form-field>
-            <mat-radio-group aria-label="Select an option">
-              <mat-radio-button value="1">Public (Free)</mat-radio-button>
-              <mat-radio-button value="2" style="padding-left: 16px" [checked]="true">Private (Trial)</mat-radio-button>
-            </mat-radio-group>
-          </mat-card-content>
-          <mat-card-actions>
-            <app-button [link]="'/invite'" [text]="'Next'"></app-button>
-          </mat-card-actions>
-          <app-description [isFormInput]="true" [text]='"Create a workspace to manage data and accesses. If you choose the public mode other participants can
-            find and enter your workspace. This public workspace is free of charge. The private workspace protects your
-            data from unauthorized access and has a 30 days trial."'>
-          </app-description>
-        </app-content>
-      </mat-card>
-    </app-content>
+<div *ngIf="!isSidebar">
+  <app-goback [link]='"/verify"' [title]="'Verify'" [showIcon]="true" [icon]="'arrow_back'"></app-goback>
+  <div class="container"
+       fxLayout
+       fxLayout.xs="column"
+       fxLayoutAlign="center"
+       fxLayoutGap="10px"
+       fxLayoutGap.xs="0">
+    <div class="item item-1"></div>
+    <div class="item item-2" fxFlex="40%">
+      <app-content>
+        <mat-card>
+          <app-content>
+            <mat-card-title>
+              Create workspace
+            </mat-card-title>
+            <mat-card-content>
+              <mat-form-field class="full-width">
+                <input matInput type="text" placeholder="Name">
+              </mat-form-field>
+              <mat-radio-group aria-label="Select an option">
+                <mat-radio-button value="1">Public (Free)</mat-radio-button>
+                <mat-radio-button value="2" style="padding-left: 16px" [checked]="true">Private (Trial)
+                </mat-radio-button>
+              </mat-radio-group>
+            </mat-card-content>
+            <mat-card-actions>
+              <app-button [link]="'/invite'" [text]="'Next'"></app-button>
+            </mat-card-actions>
+            <app-description [isFormInput]="true" [text]="description">
+            </app-description>
+          </app-content>
+        </mat-card>
+      </app-content>
+    </div>
+    <div class="item item-3"></div>
   </div>
-  <div class="item item-3"></div>
 </div>
+
+<mat-card *ngIf="isSidebar" class="workspaceBlank">
+  <mat-card-header>
+    <img mat-card-avatar src="https://upload.wikimedia.org/wikipedia/commons/6/63/Ingress_Logo.png">
+    <mat-card-title>Workspace</mat-card-title>
+    <mat-card-subtitle>DBI Analytics GmbH</mat-card-subtitle>
+  </mat-card-header>
+  <mat-grid-list cols="4" rowHeight="2:1">
+    <mat-grid-tile>1</mat-grid-tile>
+    <mat-grid-tile>2</mat-grid-tile>
+    <mat-grid-tile>3</mat-grid-tile>
+    <mat-grid-tile>4</mat-grid-tile>
+  </mat-grid-list>
+</mat-card>
 
 
 

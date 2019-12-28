@@ -10,7 +10,7 @@ export class ProfileQueries {
         if (!currentProfile) {
             let lastUsedProfileId = await prisma.session({token: token}).user().lastUsedProfileId();
             if (lastUsedProfileId) {
-                currentProfile = await  prisma.profile({id:lastUsedProfileId});
+                currentProfile = await  prisma.profile({id: lastUsedProfileId});
             }
         }
         if (!currentProfile) {
