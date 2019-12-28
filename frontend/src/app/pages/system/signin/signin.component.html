@@ -22,10 +22,13 @@
             </mat-form-field>
           </mat-card-content>
           <mat-card-actions>
-            <app-button [link]="'/cockpit'" [text]="'Submit'"></app-button>
+            <app-button [link]="'/cockpit'" [text]="'Confirm'"></app-button>
           </mat-card-actions>
-          <small>Login with your email and password to your account to access your available workspaces.
-          </small>
+          <app-description [isFormInput]="true"
+                           [text]="'Login with your email and password to your account to access your available workspaces.'"
+                           [linkText]="'Forgot password?'"
+                           [link]='"/forgot-password"'>
+          </app-description>
         </app-content>
       </mat-card>
     </app-content>

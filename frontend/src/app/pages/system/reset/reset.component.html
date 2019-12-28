@@ -1,0 +1,24 @@
+<app-content *ngIf="isProfile">
+  <app-form [title]="'Reset password'" [buttonText]="'Submit'">
+    <mat-form-field class="full-width">
+      <input matInput type="password" placeholder="Current password">
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <input matInput type="password" placeholder="New password">
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <input matInput type="password" placeholder="Repeat new password">
+    </mat-form-field>
+  </app-form>
+</app-content>
+
+<app-content *ngIf="!isProfile">
+  <app-form [title]="'Reset password'" [buttonText]="'Submit'">
+    <mat-form-field class="full-width">
+      <input matInput type="password" placeholder="New password">
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <input matInput type="password" placeholder="Repeat new password">
+    </mat-form-field>
+  </app-form>
+</app-content>

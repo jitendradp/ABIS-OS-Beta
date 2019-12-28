@@ -13,6 +13,15 @@
   width: 100%;
 }
 
+.dot {
+  height: 25px;
+  width: 25px;
+  background-color: red;
+  border-radius: 50%;
+}
 
+.iconSpace {
+  padding-right: 16px;
+}
 
 

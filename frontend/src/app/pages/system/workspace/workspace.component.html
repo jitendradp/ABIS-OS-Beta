@@ -25,10 +25,10 @@
           <mat-card-actions>
             <app-button [link]="'/invite'" [text]="'Next'"></app-button>
           </mat-card-actions>
-          <small>Create a workspace to manage data and accesses. If you choose the public mode other participants can
+          <app-description [isFormInput]="true" [text]='"Create a workspace to manage data and accesses. If you choose the public mode other participants can
             find and enter your workspace. This public workspace is free of charge. The private workspace protects your
-            data from unauthorized access and has a 30 days trial.
-          </small>
+            data from unauthorized access and has a 30 days trial."'>
+          </app-description>
         </app-content>
       </mat-card>
     </app-content>

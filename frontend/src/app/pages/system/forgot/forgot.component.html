@@ -1,4 +1,4 @@
-<app-goback [link]='"/access"' [title]="'Access'" [showIcon]="true" [icon]="'arrow_back'"></app-goback>
+<app-goback [link]='"/signin"' [title]="'Login'" [showIcon]="true" [icon]="'arrow_back'"></app-goback>
 <div class="container"
      fxLayout
      fxLayout.xs="column"
@@ -11,25 +11,29 @@
       <mat-card>
         <app-content>
           <mat-card-title>
-            Signup
+            Forgot password?
           </mat-card-title>
           <mat-card-content>
             <mat-form-field class="full-width">
               <input matInput type="email" placeholder="Email">
             </mat-form-field>
-            <mat-form-field class="full-width">
-              <input matInput type="password" placeholder="Password">
-            </mat-form-field>
+            <app-description [isFormInput]="true"
+                             [text]="'Enter your account email address. There you will then receive a link to reset your password.'"></app-description>
           </mat-card-content>
           <mat-card-actions>
-            <app-button [link]="'/verify'" [text]="'Next'"></app-button>
+            <app-button [link]="'/reset-password'" [text]="'Confirm'"></app-button>
           </mat-card-actions>
-          <app-description [isFormInput]="true"
-                           [text]="'By continuing, you are agreeing to our Customer Terms of Services, Privacy Policy and Cookie Poilicy.'">
-          </app-description>
         </app-content>
       </mat-card>
     </app-content>
   </div>
   <div class="item item-3"></div>
 </div>
+
+
+
+
+
+
+
+

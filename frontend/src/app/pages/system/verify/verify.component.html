@@ -21,7 +21,9 @@
           <mat-card-actions>
             <app-button [link]="'/workspace'" [text]="'Next'"></app-button>
           </mat-card-actions>
-          <small>Please check your email inbox and click on the registration link or enter the code to confirm that it is you.</small>
+          <app-description [isFormInput]="true"
+                           [text]="'Please check your email inbox and click on the registration link or enter the code to confirm that it is you.'">
+          </app-description>
         </app-content>
       </mat-card>
     </app-content>
