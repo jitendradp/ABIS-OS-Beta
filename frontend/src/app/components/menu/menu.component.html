@@ -1,8 +1,3 @@
-<div *ngIf="!isLoggedIn" style="padding: 16px">
-  <app-button [link]='"/access"' [text]="'Register / Sign in'"></app-button>
-</div>
-
-
 <mat-card class="workspaceBlank">
   <mat-card-header>
     <img mat-card-avatar src="{{workspace.logo}}" onError="this.src='./assets/error-images/picture.png';">
@@ -11,3 +6,4 @@
   </mat-card-header>
 </mat-card>
 <mat-divider></mat-divider>
+<app-button [link]='"/access"' [text]="'Register / Sign in'"></app-button>
