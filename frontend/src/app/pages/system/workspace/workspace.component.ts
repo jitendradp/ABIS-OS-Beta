@@ -7,10 +7,6 @@ import {Component, Input} from '@angular/core';
 })
 export class WorkspaceComponent {
 
-
-  @Input ()
-  isSidebar: boolean;
-
   @Input()
   description: string = "Create a workspace to manage data and accesses. If you choose the public mode other participants can find and enter your workspace. The private workspace protects your data from unauthorized access.";
 

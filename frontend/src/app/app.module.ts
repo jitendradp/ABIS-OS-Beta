@@ -57,6 +57,7 @@ import {FormComponent} from './components/form/form.component';
 import {ResetComponent} from './pages/system/reset/reset.component';
 import {DescriptionComponent} from './components/description/description.component';
 import {ForgotComponent} from './pages/system/forgot/forgot.component';
+import { LogoComponent } from './components/logo/logo.component';
 
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent},
@@ -101,7 +102,8 @@ const appRoutes: Routes = [
     FormComponent,
     ResetComponent,
     DescriptionComponent,
-    ForgotComponent
+    ForgotComponent,
+    LogoComponent
   ],
   imports: [
     RouterModule.forRoot(

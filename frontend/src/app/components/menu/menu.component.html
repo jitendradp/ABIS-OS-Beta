@@ -1,11 +1,13 @@
-<div *ngIf="isLoggedIn">
-  <app-profile [isSidebar]="true"></app-profile>
-</div>
-
-
 <div *ngIf="!isLoggedIn" style="padding: 16px">
   <app-button [link]='"/access"' [text]="'Register / Sign in'"></app-button>
 </div>
 
 
-<app-workspace [isSidebar]="true"></app-workspace>
+<mat-card class="workspaceBlank">
+  <mat-card-header>
+    <img mat-card-avatar src="{{workspace.logo}}" onError="this.src='./assets/error-images/picture.png';">
+    <mat-card-title>Workspace</mat-card-title>
+    <mat-card-subtitle>{{workspace.name}}</mat-card-subtitle>
+  </mat-card-header>
+</mat-card>
+<mat-divider></mat-divider>

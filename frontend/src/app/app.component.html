@@ -5,19 +5,14 @@
   <mat-drawer-content>
     <mat-toolbar class="header" color="primary">
       <button mat-icon-button (click)="drawer.toggle()">
-        <div class="logoWrapper">
-          <img class="logo" src="/assets/logo.png">
-        </div>
+        <app-logo [url]="workspace.logo"></app-logo>
       </button>
-      <span class="appTitle">ABIS</span>
+      <span class="appTitle">{{workspace.name}}</span>
       <!-- This fills the remaining space of the current row -->
       <span class="fill-remaining-space"></span>
-
-
       <button mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon>more_vert</mat-icon>
       </button>
-
       <mat-menu #menu="matMenu">
         <mat-card-header style="padding: 12px">
           <img mat-card-avatar src="{{profile.picture}}">
@@ -28,8 +23,6 @@
         <button mat-menu-item routerLink="/profile">Edit Profile</button>
         <button mat-menu-item routerLink="/signin">Sign off</button>
       </mat-menu>
-
-
     </mat-toolbar>
     <div class="body">
       <router-outlet></router-outlet>
@@ -37,5 +30,3 @@
     <app-iconbar class="footer"></app-iconbar>
   </mat-drawer-content>
 </mat-drawer-container>
-
-

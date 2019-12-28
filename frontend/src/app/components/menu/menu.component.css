@@ -5,3 +5,9 @@
 .searchBox {
   padding: 16px;
 }
+
+.workspaceBlank {
+  border-radius: 0;
+  box-shadow: none;
+}
+

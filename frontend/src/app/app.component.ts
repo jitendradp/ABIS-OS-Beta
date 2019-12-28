@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {ProfileService} from "./services/profile.service";
+import {WorkspaceService} from "./services/workspace.service";
 
 @Component({
   selector: 'app-root',
@@ -11,10 +12,16 @@ export class AppComponent {
 
   public profile = {};
 
-  constructor(private _profileService: ProfileService) {
+  public workspace = {};
+
+  constructor(
+    private _profileService: ProfileService,
+    private _workspaceService: WorkspaceService,
+  ) {
   }
 
   ngOnInit() {
     this.profile = this._profileService.getProfileInformation();
+    this.workspace = this._workspaceService.getWorkspaceInformation();
   }
 }

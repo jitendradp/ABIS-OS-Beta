@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ProfileService} from "../../../services/profile.service";
 
 @Component({
@@ -8,20 +8,6 @@ import {ProfileService} from "../../../services/profile.service";
 })
 export class ProfileComponent implements OnInit {
 
-  @Input()
-  header: boolean;
-
-  @Input()
-  page: boolean;
-
-  @Input()
-  style: string;
-
-  @Input()
-  isSidebar: boolean;
-
-  @Input()
-  isPreview: boolean;
 
   public profile = {};
 
