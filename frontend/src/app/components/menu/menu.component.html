@@ -1,12 +1,30 @@
-<mat-card *ngIf="isLoggedIn" class="workspaceBlank">
-  <mat-card-header>
-    <img mat-card-avatar src="{{workspace.logo}}" onError="this.src='./assets/error-images/picture.png';">
-    <mat-card-title>Workspace</mat-card-title>
-    <mat-card-subtitle>{{workspace.name}}</mat-card-subtitle>
-  </mat-card-header>
-</mat-card>
-<mat-divider></mat-divider>
-
-<div style="background: #333333; height: 64px; margin-top: -1px">
-<app-button *ngIf="!isLoggedIn" [link]='"/access"' [text]="'Sign In / Register'"></app-button>
+<div class="sidebarHeader">
+  <mat-card *ngIf="isLoggedIn" class="workspaceBlank">
+    <mat-card-header>
+      <img mat-card-avatar src="{{workspace.logo}}" onError="this.src='./assets/error-images/picture.png';">
+      <mat-card-title>Workspace</mat-card-title>
+      <mat-card-subtitle>{{workspace.name}}</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+  <div style="padding-top: 6px" *ngIf="!isLoggedIn">
+    <app-button [link]='"/access"'
+                [text]="'Sign In / Register'">
+    </app-button>
+  </div>
 </div>
+
+<mat-list>
+  <h3 mat-subheader>Channels</h3>
+  <mat-list-item *ngFor="let channel of channels">
+    <mat-icon mat-list-icon>bubble_chart</mat-icon>
+    <h4 mat-line>#{{channel.name}}</h4>
+    <p mat-line>{{channel.updated | date}}</p>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+  <h3 mat-subheader>Members</h3>
+  <mat-list-item *ngFor="let member of members">
+    <mat-icon mat-list-icon>person</mat-icon>
+    <h4 mat-line>{{member.name}}</h4>
+    <p mat-line>{{member.updated | date}}</p>
+  </mat-list-item>
+</mat-list>

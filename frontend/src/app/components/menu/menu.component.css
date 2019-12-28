@@ -11,3 +11,8 @@
   box-shadow: none;
 }
 
+.sidebarHeader {
+  background: #333333;
+  height: 65px;
+  margin-top: -1px
+}
