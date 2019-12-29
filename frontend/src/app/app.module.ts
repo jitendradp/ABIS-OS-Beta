@@ -51,7 +51,6 @@ import {ProfileService} from "./services/profile.service";
 import {MessageComponent} from './components/message/message.component';
 import {CockpitComponent} from './pages/cockpit/cockpit.component';
 import {MapComponent} from './pages/map/map.component';
-import {VerifyComponent} from './pages/system/verify/verify.component';
 import {InviteComponent} from './pages/system/invite/invite.component';
 import {FormComponent} from './components/form/form.component';
 import {ResetComponent} from './pages/system/reset/reset.component';
@@ -60,7 +59,6 @@ import {ForgotComponent} from './pages/system/forgot/forgot.component';
 import {LogoComponent} from './components/logo/logo.component';
 import {LocationComponent} from './pages/system/location/location.component';
 import {DataspaceComponent} from './pages/system/dataspace/dataspace.component';
-import {UploadComponent} from './pages/system/upload/upload.component';
 import {ChatComponent} from './pages/system/chat/chat.component';
 import {AccountComponent} from './pages/system/account/account.component';
 import {ReactiveFormsModule} from "@angular/forms";
@@ -74,13 +72,11 @@ const appRoutes: Routes = [
   {path: 'store', component: StoreComponent},
   {path: 'studio', component: StudioComponent},
   {path: 'map', component: MapComponent},
-  {path: 'verify', component: VerifyComponent},
   {path: 'invite', component: InviteComponent},
   {path: 'dataspace', component: DataspaceComponent},
   {path: 'reset-password', component: ResetComponent},
   {path: 'forgot-password', component: ForgotComponent},
   {path: 'location', component: LocationComponent},
-  {path: 'upload', component: UploadComponent},
   {path: 'account', component: AccountComponent},
 ];
 
@@ -105,7 +101,6 @@ const appRoutes: Routes = [
     MessageComponent,
     CockpitComponent,
     MapComponent,
-    VerifyComponent,
     InviteComponent,
     FormComponent,
     ResetComponent,
@@ -114,7 +109,6 @@ const appRoutes: Routes = [
     LogoComponent,
     LocationComponent,
     DataspaceComponent,
-    UploadComponent,
     ChatComponent,
     AccountComponent
   ],
