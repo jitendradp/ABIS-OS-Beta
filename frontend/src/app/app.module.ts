@@ -58,9 +58,7 @@ import {DescriptionComponent} from './components/description/description.compone
 import {ForgotComponent} from './pages/system/forgot/forgot.component';
 import {LogoComponent} from './components/logo/logo.component';
 import {LocationComponent} from './pages/system/location/location.component';
-import {DataspaceComponent} from './pages/system/dataspace/dataspace.component';
 import {ChatComponent} from './pages/system/chat/chat.component';
-import {AccountComponent} from './pages/system/account/account.component';
 import {ReactiveFormsModule} from "@angular/forms";
 
 const appRoutes: Routes = [
@@ -73,11 +71,9 @@ const appRoutes: Routes = [
   {path: 'studio', component: StudioComponent},
   {path: 'map', component: MapComponent},
   {path: 'invite', component: InviteComponent},
-  {path: 'dataspace', component: DataspaceComponent},
   {path: 'reset-password', component: ResetComponent},
   {path: 'forgot-password', component: ForgotComponent},
-  {path: 'location', component: LocationComponent},
-  {path: 'account', component: AccountComponent},
+  {path: 'location', component: LocationComponent}
 ];
 
 
@@ -108,9 +104,7 @@ const appRoutes: Routes = [
     ForgotComponent,
     LogoComponent,
     LocationComponent,
-    DataspaceComponent,
-    ChatComponent,
-    AccountComponent
+    ChatComponent
   ],
   imports: [
     RouterModule.forRoot(
