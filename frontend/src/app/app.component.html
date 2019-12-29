@@ -5,16 +5,19 @@
   <mat-drawer-content>
     <mat-toolbar class="header" color="primary">
       <button mat-icon-button (click)="drawer.toggle()">
-        <app-logo [url]="dataspace.logo"></app-logo>
+        <mat-icon>menu</mat-icon>
       </button>
-      <span class="appTitle">{{dataspace.name}}</span>
       <!-- This fills the remaining space of the current row -->
       <span class="fill-remaining-space"></span>
-      <button mat-icon-button [matMenuTriggerFor]="menu">
+      <app-button *ngIf="isLoggedIn" [link]='"/access"'
+                  [text]="'Sign In / Register'">
+      </app-button>
+      <button *ngIf="isLoggedIn" mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
         <mat-card-header style="padding: 12px">
+          <img mat-card-avatar src="{{profile.picture}}">
           <mat-card-title>{{account.firstname}} {{account.lastname}}</mat-card-title>
           <mat-card-subtitle>{{account.email}}</mat-card-subtitle>
         </mat-card-header>

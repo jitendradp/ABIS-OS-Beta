@@ -6,11 +6,6 @@
       <mat-card-subtitle>{{dataspace.name}}</mat-card-subtitle>
     </mat-card-header>
   </mat-card>
-  <div style="padding-top: 6px" *ngIf="!isLoggedIn">
-    <app-button [link]='"/access"'
-                [text]="'Sign In / Register'">
-    </app-button>
-  </div>
 </div>
 
 <mat-list>

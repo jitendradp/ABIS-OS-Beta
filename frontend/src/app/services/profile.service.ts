@@ -8,8 +8,7 @@ export class ProfileService {
 
   getProfileInformation() {
     return {
-      "fullName": "Jessica Cohen",
-      "displayName": "Jessica",
+      "name": "Jessica",
       "type": "Work",
       "slogan": "Having fun with friends",
       "picture": "./assets/profile_default.jpg",

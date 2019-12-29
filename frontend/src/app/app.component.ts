@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ProfileService} from "./services/profile.service";
 import {DataspaceService} from "./services/dataspace.service";
 import {AccountService} from "./services/account.service";
@@ -9,6 +9,10 @@ import {AccountService} from "./services/account.service";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
+  @Input()
+  isLoggedIn: boolean = true;
+
   title = 'myapp';
 
   public profile = {};
