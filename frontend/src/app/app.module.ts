@@ -58,7 +58,7 @@ import {DescriptionComponent} from './components/description/description.compone
 import {ForgotComponent} from './pages/system/forgot/forgot.component';
 import {LogoComponent} from './components/logo/logo.component';
 import {LocationComponent} from './pages/system/location/location.component';
-import {ChatComponent} from './pages/system/chat/chat.component';
+import {ChatComponent} from './pages/chat/chat.component';
 import {ReactiveFormsModule} from "@angular/forms";
 
 const appRoutes: Routes = [

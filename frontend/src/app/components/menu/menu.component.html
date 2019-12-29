@@ -1,11 +1,9 @@
 <div class="sidebarHeader">
-  <mat-card *ngIf="isLoggedIn" class="workspaceBlank">
-    <mat-card-header>
-      <img mat-card-avatar src="{{dataspace.logo}}" onError="this.src='./assets/error-images/picture.png';">
-      <mat-card-title>Dataspace</mat-card-title>
-      <mat-card-subtitle>{{dataspace.name}}</mat-card-subtitle>
-    </mat-card-header>
-  </mat-card>
+  <mat-card-header style="padding: 8px 16px 0 16px; color: white;">
+    <img mat-card-avatar src="{{dataspace.logo}}" onError="this.src='./assets/error-images/picture.png';">
+    <mat-card-title>Dataspace</mat-card-title>
+    <mat-card-subtitle style="color: white">{{dataspace.name}}</mat-card-subtitle>
+  </mat-card-header>
 </div>
 
 <mat-list>

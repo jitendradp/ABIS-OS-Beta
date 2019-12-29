@@ -1,8 +1,10 @@
+<!-- The sidebar section -->
 <mat-drawer-container>
-  <mat-drawer position="start" #drawer mode="over" class="sidebar">
+  <mat-drawer position="start" #drawer mode="over" class="sidebar" cdkScrollable>
     <app-menu></app-menu>
   </mat-drawer>
   <mat-drawer-content>
+    <!-- sticky header -->
     <mat-toolbar class="header" color="primary">
       <button mat-icon-button (click)="drawer.toggle()">
         <mat-icon>menu</mat-icon>

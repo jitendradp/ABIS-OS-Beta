@@ -6,15 +6,11 @@
   padding: 16px;
 }
 
-.workspaceBlank {
-  border-radius: 0;
-  box-shadow: none;
-}
 
 .sidebarHeader {
-  background: #333333;
+  background: #222222;
   height: 65px;
-  margin-top: -1px
+  margin-top: -1px;
 }
 
 .sectionIcon {
