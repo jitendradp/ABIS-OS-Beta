@@ -28,7 +28,8 @@ import {
   MatStepperModule,
   MatTableModule,
   MatTabsModule,
-  MatToolbarModule
+  MatToolbarModule,
+  MatTreeModule
 } from "@angular/material";
 import {MenuComponent} from './components/menu/menu.component';
 import {AccessComponent} from './pages/system/access/access.component';
@@ -73,7 +74,8 @@ const appRoutes: Routes = [
   {path: 'invite', component: InviteComponent},
   {path: 'reset-password', component: ResetComponent},
   {path: 'forgot-password', component: ForgotComponent},
-  {path: 'location', component: LocationComponent}
+  {path: 'location', component: LocationComponent},
+  {path: 'chat', component: ChatComponent}
 ];
 
 
@@ -140,7 +142,8 @@ const appRoutes: Routes = [
     MatRadioModule,
     MatSlideToggleModule,
     MatStepperModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatTreeModule
   ],
   providers: [ProfileService],
   bootstrap: [AppComponent]

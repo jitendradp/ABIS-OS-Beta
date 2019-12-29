@@ -54,16 +54,85 @@ export class MenuComponent {
       name: 'Fishers Club',
       icon: 'lock',
       tag: 'Hobby, Family'
+    },
+    {
+      name: 'Soccer FSB',
+      icon: 'bubble_chart',
+      tag: 'Sport, Soccer, Friends'
+    },
+    {
+      name: 'Soccer FSB',
+      icon: 'bubble_chart',
+      tag: 'Sport, Soccer, Friends'
+    },
+    {
+      name: 'Soccer FSB',
+      icon: 'bubble_chart',
+      tag: 'Sport, Soccer, Friends'
+    },
+    {
+      name: 'Soccer FSB',
+      icon: 'bubble_chart',
+      tag: 'Sport, Soccer, Friends'
+    },
+    {
+      name: 'Infineon Technologies',
+      icon: 'lock',
+      tag: 'Work, Freelancer'
+    },
+    {
+      name: 'Fishers Club',
+      icon: 'lock',
+      tag: 'Hobby, Family'
+    },
+    {
+      name: 'Soccer FSB',
+      icon: 'bubble_chart',
+      tag: 'Sport, Soccer, Friends'
+    },
+    {
+      name: 'Soccer FSB',
+      icon: 'bubble_chart',
+      tag: 'Sport, Soccer, Friends'
+    },
+    {
+      name: 'Soccer FSB',
+      icon: 'bubble_chart',
+      tag: 'Sport, Soccer, Friends'
     }
   ];
   members: Section_B[] = [
     {
       name: 'Daniel Janz',
-      status: 'online'
+      status: 'offline'
     },
     {
       name: 'Moritz Bönke',
+      status: 'offline'
+    },
+    {
+      name: 'Thomas Müller',
       status: 'online'
+    },
+    {
+      name: 'Steve Johnson',
+      status: 'offline'
+    },
+    {
+      name: 'Susi Tiel',
+      status: 'online'
+    },
+    {
+      name: 'Jasmin Huber',
+      status: 'online'
+    },
+    {
+      name: 'Alex Graup',
+      status: 'online'
+    },
+    {
+      name: 'Mr. Monkey',
+      status: 'offline'
     }
   ];
 }

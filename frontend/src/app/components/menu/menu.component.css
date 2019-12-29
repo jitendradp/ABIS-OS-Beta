@@ -6,11 +6,10 @@
   padding: 16px;
 }
 
-
 .sidebarHeader {
   background: #222222;
-  height: 65px;
-  margin-top: -1px;
+  height: 64px;
+  top: 0;
 }
 
 .sectionIcon {
