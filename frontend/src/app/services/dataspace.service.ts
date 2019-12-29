@@ -3,12 +3,12 @@ import {Injectable} from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class WorkspaceService {
+export class DataspaceService {
 
   constructor() {
   }
 
-  getWorkspaceInformation() {
+  getDataspaceInformation() {
     return {
       "name": "DBI Analytics GmbH",
       "logo": "https://upload.wikimedia.org/wikipedia/commons/6/63/Ingress_Logo.png",

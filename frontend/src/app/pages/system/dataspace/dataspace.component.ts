@@ -2,21 +2,19 @@ import {Component, Input} from '@angular/core';
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
 import {MatChipInputEvent} from "@angular/material";
 
-
 export interface Tag {
   name: string;
 }
 
-
 @Component({
-  selector: 'app-workspace',
-  templateUrl: './workspace.component.html',
-  styleUrls: ['./workspace.component.css']
+  selector: 'app-dataspace',
+  templateUrl: './dataspace.component.html',
+  styleUrls: ['./dataspace.component.css']
 })
-export class WorkspaceComponent {
+export class DataspaceComponent {
 
   @Input()
-  description: string = "Create a workspace to manage data and accesses. If you choose the public mode other participants can find and enter your workspace. The private workspace protects your data from unauthorized access.";
+  description: string = "A dataspace helps you to manage data, channels and accesses. If you choose the public mode other participants can find and enter your dataspace. The private dataspace protects your data from unauthorized access.";
 
   visible = true;
   selectable = true;

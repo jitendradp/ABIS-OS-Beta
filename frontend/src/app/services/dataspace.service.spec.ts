@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { WorkspaceService } from './workspace.service';
+import { DataspaceService } from './dataspace.service';
 
 describe('WorkspaceService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: WorkspaceService = TestBed.get(WorkspaceService);
+    const service: DataspaceService = TestBed.get(DataspaceService);
     expect(service).toBeTruthy();
   });
 });

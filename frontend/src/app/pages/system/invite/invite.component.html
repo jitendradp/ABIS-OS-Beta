@@ -1,4 +1,4 @@
-<app-goback [link]='"/workspace"' [title]="'Workspace'" [showIcon]="true" [icon]="'arrow_back'"></app-goback>
+<app-goback [link]='"/location"' [title]="'Dataspace'" [showIcon]="true" [icon]="'arrow_back'"></app-goback>
 <div class="container"
      fxLayout
      fxLayout.xs="column"
@@ -32,8 +32,7 @@
           <mat-card-actions>
             <app-button [link]="'/studio'" [text]="'Complete'"></app-button>
           </mat-card-actions>
-          <app-description [isFormInput]="true" [text]="'Workspace members can access your data and resources. The will receive
-            an invitation email from your account. You can add up to five members to your workspace free of charge.'">
+          <app-description [isFormInput]="true" [text]="description">
           </app-description>
         </app-content>
       </mat-card>

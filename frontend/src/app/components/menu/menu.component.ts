@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {WorkspaceService} from "../../services/workspace.service";
+import {DataspaceService} from "../../services/dataspace.service";
 import {ProfileService} from "../../services/profile.service";
 
 export interface Section_A {
@@ -13,12 +13,12 @@ export interface Section_B {
   status: string;
 }
 
-
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css']
 })
+
 export class MenuComponent {
 
   @Input()
@@ -26,17 +26,17 @@ export class MenuComponent {
 
   public profile = {};
 
-  public workspace = {};
+  public dataspace = {};
 
   constructor(
     private _profileService: ProfileService,
-    private _workspaceService: WorkspaceService,
+    private _dataspaceService: DataspaceService,
   ) {
   }
 
   ngOnInit() {
     this.profile = this._profileService.getProfileInformation();
-    this.workspace = this._workspaceService.getWorkspaceInformation();
+    this.dataspace = this._dataspaceService.getDataspaceInformation();
   }
 
   channels: Section_A[] = [

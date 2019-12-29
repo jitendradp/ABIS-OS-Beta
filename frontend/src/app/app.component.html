@@ -5,9 +5,9 @@
   <mat-drawer-content>
     <mat-toolbar class="header" color="primary">
       <button mat-icon-button (click)="drawer.toggle()">
-        <app-logo [url]="workspace.logo"></app-logo>
+        <app-logo [url]="dataspace.logo"></app-logo>
       </button>
-      <span class="appTitle">{{workspace.name}}</span>
+      <span class="appTitle">{{dataspace.name}}</span>
       <!-- This fills the remaining space of the current row -->
       <span class="fill-remaining-space"></span>
       <button mat-icon-button [matMenuTriggerFor]="menu">

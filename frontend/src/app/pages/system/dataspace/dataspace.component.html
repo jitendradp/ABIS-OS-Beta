@@ -11,7 +11,7 @@
       <mat-card>
         <app-content>
           <mat-card-title>
-            Create workspace
+            Create dataspace
           </mat-card-title>
           <mat-card-content>
             <mat-form-field class="full-width">
@@ -24,7 +24,7 @@
                   {{tag.name}}
                   <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                 </mat-chip>
-                <input placeholder="Your hashtags..."
+                <input placeholder="Hashtags..."
                        [matChipInputFor]="chipList"
                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                        [matChipInputAddOnBlur]="addOnBlur"
@@ -32,7 +32,7 @@
               </mat-chip-list>
             </mat-form-field>
             <app-description [isFormInput]="true"
-                             [text]="'Tags helps others to find or understand your workspace or channel much better.'">
+                             [text]="'Tags helps others to find or understand your dataspace and channels much better.'">
             </app-description>
             <mat-radio-group aria-label="Select an option">
               <mat-radio-button value="1">Public (Free)</mat-radio-button>

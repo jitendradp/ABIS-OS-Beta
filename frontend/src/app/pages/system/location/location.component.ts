@@ -14,7 +14,7 @@ export interface Country {
 export class LocationComponent {
 
   @Input()
-  description: string = "Add a location to your workspace or channel so people can find and enter it on a map.";
+  description: string = "Add a location to your dataspace or channel so people can find and enter it on a map.";
 
 
   countries: Country[] = [

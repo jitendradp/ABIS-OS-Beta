@@ -52,13 +52,13 @@ import {CockpitComponent} from './pages/cockpit/cockpit.component';
 import {MapComponent} from './pages/map/map.component';
 import {VerifyComponent} from './pages/system/verify/verify.component';
 import {InviteComponent} from './pages/system/invite/invite.component';
-import {WorkspaceComponent} from './pages/system/workspace/workspace.component';
 import {FormComponent} from './components/form/form.component';
 import {ResetComponent} from './pages/system/reset/reset.component';
 import {DescriptionComponent} from './components/description/description.component';
 import {ForgotComponent} from './pages/system/forgot/forgot.component';
 import {LogoComponent} from './components/logo/logo.component';
 import {LocationComponent} from './pages/system/location/location.component';
+import {DataspaceComponent} from './pages/system/dataspace/dataspace.component';
 
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent},
@@ -71,7 +71,7 @@ const appRoutes: Routes = [
   {path: 'map', component: MapComponent},
   {path: 'verify', component: VerifyComponent},
   {path: 'invite', component: InviteComponent},
-  {path: 'workspace', component: WorkspaceComponent},
+  {path: 'dataspace', component: DataspaceComponent},
   {path: 'reset-password', component: ResetComponent},
   {path: 'forgot-password', component: ForgotComponent},
   {path: 'location', component: LocationComponent}
@@ -100,13 +100,13 @@ const appRoutes: Routes = [
     MapComponent,
     VerifyComponent,
     InviteComponent,
-    WorkspaceComponent,
     FormComponent,
     ResetComponent,
     DescriptionComponent,
     ForgotComponent,
     LogoComponent,
-    LocationComponent
+    LocationComponent,
+    DataspaceComponent
   ],
   imports: [
     RouterModule.forRoot(
