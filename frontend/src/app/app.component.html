@@ -15,13 +15,12 @@
       </button>
       <mat-menu #menu="matMenu">
         <mat-card-header style="padding: 12px">
-          <img mat-card-avatar src="{{profile.picture}}">
-          <mat-card-title>{{profile.displayName}}</mat-card-title>
-          <mat-card-subtitle>{{profile.job}}</mat-card-subtitle>
+          <mat-card-title>{{account.firstname}} {{account.lastname}}</mat-card-title>
+          <mat-card-subtitle>{{account.email}}</mat-card-subtitle>
         </mat-card-header>
         <mat-divider></mat-divider>
-        <button mat-menu-item routerLink="/profile">Edit Profile</button>
-        <button mat-menu-item routerLink="/signin">Sign off</button>
+        <button mat-menu-item routerLink="/account">Settings</button>
+        <button mat-menu-item routerLink="/signin">Logout</button>
       </mat-menu>
     </mat-toolbar>
     <div class="body">

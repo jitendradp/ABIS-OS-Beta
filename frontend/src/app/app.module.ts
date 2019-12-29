@@ -25,6 +25,7 @@ import {
   MatSelectModule,
   MatSidenavModule,
   MatSlideToggleModule,
+  MatStepperModule,
   MatTableModule,
   MatTabsModule,
   MatToolbarModule
@@ -60,6 +61,9 @@ import {LogoComponent} from './components/logo/logo.component';
 import {LocationComponent} from './pages/system/location/location.component';
 import {DataspaceComponent} from './pages/system/dataspace/dataspace.component';
 import {UploadComponent} from './pages/system/upload/upload.component';
+import {ChatComponent} from './pages/system/chat/chat.component';
+import {AccountComponent} from './pages/system/account/account.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent},
@@ -76,7 +80,8 @@ const appRoutes: Routes = [
   {path: 'reset-password', component: ResetComponent},
   {path: 'forgot-password', component: ForgotComponent},
   {path: 'location', component: LocationComponent},
-  {path: 'upload', component: UploadComponent}
+  {path: 'upload', component: UploadComponent},
+  {path: 'account', component: AccountComponent},
 ];
 
 
@@ -109,7 +114,9 @@ const appRoutes: Routes = [
     LogoComponent,
     LocationComponent,
     DataspaceComponent,
-    UploadComponent
+    UploadComponent,
+    ChatComponent,
+    AccountComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -143,7 +150,9 @@ const appRoutes: Routes = [
     NgxEchartsModule,
     MatTableModule,
     MatRadioModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatStepperModule,
+    ReactiveFormsModule
   ],
   providers: [ProfileService],
   bootstrap: [AppComponent]
