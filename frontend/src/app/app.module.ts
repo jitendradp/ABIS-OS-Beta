@@ -59,6 +59,7 @@ import {ForgotComponent} from './pages/system/forgot/forgot.component';
 import {LogoComponent} from './components/logo/logo.component';
 import {LocationComponent} from './pages/system/location/location.component';
 import {DataspaceComponent} from './pages/system/dataspace/dataspace.component';
+import {UploadComponent} from './pages/system/upload/upload.component';
 
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent},
@@ -74,7 +75,8 @@ const appRoutes: Routes = [
   {path: 'dataspace', component: DataspaceComponent},
   {path: 'reset-password', component: ResetComponent},
   {path: 'forgot-password', component: ForgotComponent},
-  {path: 'location', component: LocationComponent}
+  {path: 'location', component: LocationComponent},
+  {path: 'upload', component: UploadComponent}
 ];
 
 
@@ -106,7 +108,8 @@ const appRoutes: Routes = [
     ForgotComponent,
     LogoComponent,
     LocationComponent,
-    DataspaceComponent
+    DataspaceComponent,
+    UploadComponent
   ],
   imports: [
     RouterModule.forRoot(

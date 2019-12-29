@@ -1,0 +1,29 @@
+<app-goback [link]='"/location"' [title]="'Dataspace'" [showIcon]="true" [icon]="'arrow_back'"></app-goback>
+<div class="container"
+     fxLayout
+     fxLayout.xs="column"
+     fxLayoutAlign="center"
+     fxLayoutGap="10px"
+     fxLayoutGap.xs="0">
+  <div class="item item-1"></div>
+  <div class="item item-2" fxFlex="40%">
+    <app-content>
+      <mat-card>
+        <app-content>
+          <mat-card-title>
+            Upload your logo
+          </mat-card-title>
+          <mat-card-content>
+            <!-- Code for upload component goes here -->
+          </mat-card-content>
+          <mat-card-actions>
+            <app-button [link]="'/invite'" [text]="'Next'"></app-button>
+          </mat-card-actions>
+          <app-description [isFormInput]="true" [text]="description">
+          </app-description>
+        </app-content>
+      </mat-card>
+    </app-content>
+  </div>
+  <div class="item item-3"></div>
+</div>

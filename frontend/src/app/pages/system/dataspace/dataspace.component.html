@@ -11,7 +11,7 @@
       <mat-card>
         <app-content>
           <mat-card-title>
-            Create dataspace
+            Create a dataspace
           </mat-card-title>
           <mat-card-content>
             <mat-form-field class="full-width">
@@ -24,7 +24,7 @@
                   {{tag.name}}
                   <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                 </mat-chip>
-                <input placeholder="Hashtags..."
+                <input placeholder="Hashtags"
                        [matChipInputFor]="chipList"
                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                        [matChipInputAddOnBlur]="addOnBlur"
