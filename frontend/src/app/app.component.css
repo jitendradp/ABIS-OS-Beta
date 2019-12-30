@@ -15,7 +15,7 @@
 
 .body {
   margin-top: 64px;
-  padding-bottom: 80px;
+  padding-bottom: 64px;
   background-color: #eee;
   min-height: calc(100vh - 128px)
 }
