@@ -61,6 +61,7 @@ import {LogoComponent} from './components/logo/logo.component';
 import {LocationComponent} from './pages/system/location/location.component';
 import {ChatComponent} from './pages/chat/chat.component';
 import {ReactiveFormsModule} from "@angular/forms";
+import {TreeComponent} from './components/tree/tree.component';
 
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent},
@@ -106,7 +107,8 @@ const appRoutes: Routes = [
     ForgotComponent,
     LogoComponent,
     LocationComponent,
-    ChatComponent
+    ChatComponent,
+    TreeComponent
   ],
   imports: [
     RouterModule.forRoot(

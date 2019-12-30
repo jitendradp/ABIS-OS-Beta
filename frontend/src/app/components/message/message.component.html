@@ -4,8 +4,8 @@
     <span style="font-size: 12px">{{creationDate}}</span>
   </div>
   <mat-card-header>
-    <div mat-card-avatar><img class="profilePicture" src="{{picture}}"
-                              onError="this.src='./assets/error-images/picture.png';"></div>
+    <img mat-card-avatar src="{{picture}}"
+         onError="this.src='./assets/error-images/picture.png';">
     <mat-card-title>{{title}}</mat-card-title>
     <mat-card-subtitle>{{message}}</mat-card-subtitle>
   </mat-card-header>
