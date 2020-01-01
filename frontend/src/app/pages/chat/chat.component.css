@@ -4,14 +4,7 @@
 }
 
 #frame #sidepanel {
-  float: left;
-  min-width: 280px;
-  max-width: 340px;
-  width: 40%;
-  height: 100%;
-  background-color: white;
-  overflow: hidden;
-  position: relative;
+  background-color: #e3e8eb;
 }
 
 #frame #sidepanel #contacts {
@@ -30,8 +23,6 @@
 }
 
 #frame .content {
-  float: right;
-  width: 60%;
   height: 100%;
   overflow: hidden;
   position: relative;
@@ -107,5 +98,17 @@
   width: 100%;
   bottom: 0;
   z-index: 99;
-  background-color: red;
+}
+
+.chatButton {
+  height: 64px;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.chatInput {
+  width: 100%;
+  height: 64px;
+  font-size: 0.9em;
+  padding-left: 8px;
 }
