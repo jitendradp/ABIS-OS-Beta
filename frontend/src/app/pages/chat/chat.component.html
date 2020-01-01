@@ -11,12 +11,15 @@
     <div id="contacts">
       <app-content>
         <mat-list>
-          <div><!-- todo align content same row -->
-            <h3 fxLayoutAlign="start center" mat-subheader>CHANNELS</h3>
-            <button (click)="_actionDispatcher.dispatch({name:'Abis.Chat.Channel.Create'})" mat-icon-button>
-              <mat-icon fxFlex fxLayoutAlign="end center" class="sectionIcon">add_circle_outline</mat-icon>
-            </button>
-          </div>
+          <mat-card-header><!-- todo align content same row -->
+            <h3 style="margin-left: -24px; margin-top: -3px" mat-subheader>CHANNELS</h3>
+            <div class="flex-item"
+                 fxFlex fxLayoutAlign="end start">
+              <button (click)="_actionDispatcher.dispatch({name:'Abis.Chat.Channel.Create'})" mat-icon-button>
+                <mat-icon>add_circle_outline</mat-icon>
+              </button>
+            </div>
+          </mat-card-header>
           <mat-list-item *ngFor="let channel of channels">
             <mat-icon mat-list-icon>{{channel.icon}}</mat-icon>
             <h4 mat-line>{{channel.name}}</h4>
@@ -24,15 +27,18 @@
           </mat-list-item>
         </mat-list>
       </app-content>
-      <mat-divider style="margin-bottom: 8px"></mat-divider>
+      <mat-divider></mat-divider>
       <app-content>
         <mat-list>
-          <div>
-            <h3 fxLayoutAlign="start center" mat-subheader>DIRECT MESSAGES</h3>
-            <button mat-icon-button>
-              <mat-icon fxFlex fxLayoutAlign="end center" class="sectionIcon">add_circle_outline</mat-icon>
-            </button>
-          </div>
+          <mat-card-header><!-- todo align content same row -->
+            <h3 style="margin-left: -24px; margin-top: -3px" mat-subheader>DIRECT MESSAGES</h3>
+            <div class="flex-item"
+                 fxFlex fxLayoutAlign="end start">
+              <button mat-icon-button>
+                <mat-icon>add_circle_outline</mat-icon>
+              </button>
+            </div>
+          </mat-card-header>
           <mat-list-item *ngFor="let member of members">
             <mat-icon mat-list-icon>person</mat-icon>
             <h4 mat-line>{{member.name}}</h4>
@@ -58,7 +64,7 @@
           <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt=""/>
           <p>Excuses don't win championships.</p>
           <small style="float: right; margin-right: -100px">9:12 AM, Today</small>
-        </li>
+        </li><!-- todo timestamp of sent message align with content -->
         <li class="sent">
           <img src="http://emilcarlsson.se/assets/mikeross.png" alt=""/>
           <p>Oh yeah, did Michael Jordan tell you that?</p>
@@ -88,10 +94,10 @@
     <div class="message-input"
          fxLayout
          fxLayout.xs="column"
-         fxLayoutAlign="center"
+         fxLayoutAlign="left"
          fxLayoutGap="0px"
          fxLayoutGap.xs="0">
-      <div fxFlex="64px">
+      <div fxFlex="56px">
         <button mat-flat-button class="chatButton" color="primary">
           <mat-icon>attach_file</mat-icon>
         </button>
@@ -99,7 +105,7 @@
       <div fxFlex>
         <input class="chatInput" type="text" placeholder="Write your message..."/>
       </div>
-      <div fxFlex="64px">
+      <div fxFlex="56px"> <!-- todo optimize in mobile view -->
         <button mat-flat-button class="chatButton" color="primary">
           <mat-icon>send</mat-icon>
         </button>

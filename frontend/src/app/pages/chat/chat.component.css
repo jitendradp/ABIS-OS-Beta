@@ -1,7 +1,3 @@
-.sectionIcon {
-  padding-right: 16px;
-  margin-top: 4px;
-}
 
 #frame {
   width: 100%;
@@ -108,7 +104,6 @@
 
 .chatButton {
   height: 56px;
-  width: 56px;
   border-radius: 0;
   box-shadow: none;
 }
@@ -117,6 +112,6 @@
   width: 100%;
   height: 56px;
   font-size: 0.9em;
-  padding-left: 8px;
+  padding-left: 16px;
 }
 
