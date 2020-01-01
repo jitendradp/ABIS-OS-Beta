@@ -1,0 +1,12 @@
+<mat-toolbar>
+  <mat-card-header style="height: 64px; padding-top: 8px">
+    <img *ngIf="showImage" mat-card-avatar src="{{image}}" style="margin-top: 8px;">
+    <button *ngIf="showButton" mat-icon-button routerLink="{{link}}">
+      <mat-icon *ngIf="showIcon">{{icon}}</mat-icon>
+    </button>
+    <mat-card-title style="margin-top: 4px">{{title}}</mat-card-title>
+    <mat-card-subtitle style="margin-top: -24px">{{subtitle}}</mat-card-subtitle>
+  </mat-card-header>
+</mat-toolbar>
+
+
