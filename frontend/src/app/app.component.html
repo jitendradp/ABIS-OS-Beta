@@ -1,25 +1,20 @@
-<!-- sticky header -->
 <mat-toolbar class="header" color="primary">
-
-  <button mat-icon-button>
+  <button mat-icon-button (click)="left.toggle()">
     <mat-icon>menu</mat-icon>
   </button>
   <div style="margin-left: 32px">
     Hello
   </div>
-  <!-- This fills the remaining space of the current row -->
   <span class="fill-remaining-space"></span>
-
   <app-button *ngIf="isLoggedIn" [link]='"/access"'
               [text]="'Sign In / Register'">
   </app-button>
 
   <div style="padding-right: 24px; padding-left: 24px">
-    <button mat-icon-button (click)="drawer.toggle()">
+    <button mat-icon-button (click)="right.toggle()">
       <mat-icon matBadge="15" matBadgePosition="after" matBadgeColor="warn">chat</mat-icon>
     </button>
   </div>
-
   <button mat-icon-button [matMenuTriggerFor]="menu">
     <mat-icon>more_vert</mat-icon>
   </button>
@@ -33,16 +28,26 @@
     <button mat-menu-item routerLink="/profile">Settings</button>
     <button mat-menu-item routerLink="/signin">Logout</button>
   </mat-menu>
-
 </mat-toolbar>
-<mat-drawer-container [hasBackdrop]="false">
-  <mat-drawer position="end" #drawer mode="side" class="sidebar">
-    <app-chat></app-chat>
-  </mat-drawer>
-  <mat-drawer-content>
-    <div class="body">
-      <router-outlet></router-outlet>
-    </div>
-  </mat-drawer-content>
-</mat-drawer-container>
-<app-iconbar class="footer"></app-iconbar>
+
+
+<mat-sidenav-container>
+
+  <mat-sidenav #left position="start" mode="over" class="sidebar">
+    Start Sidenav.
+  </mat-sidenav>
+
+  <mat-drawer-container [hasBackdrop]="false">
+    <mat-drawer position="end" #right mode="side" class="sidebar">
+      <app-chat></app-chat>
+    </mat-drawer>
+    <mat-drawer-content>
+      <div class="body">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+
+  <app-iconbar class="footer"></app-iconbar>
+</mat-sidenav-container>
+
