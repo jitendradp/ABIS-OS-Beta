@@ -1,6 +1,11 @@
+.sectionIcon {
+  padding-right: 16px;
+  margin-top: 4px;
+}
+
 #frame {
   width: 100%;
-  height: calc(100vh - 128px);
+  height: calc(100vh - 112px);
 }
 
 #frame #sidepanel {
@@ -32,8 +37,8 @@
 #frame .content .messages {
   height: auto;
   width: 100%;
-  min-height: calc(100% - 64px);
-  max-height: calc(100% - 64px);
+  min-height: calc(100% - 56px);
+  max-height: calc(100% - 56px);
   overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -95,22 +100,22 @@
 
 #frame .content .message-input {
   position: absolute;
-  height: 64px;
+  height: 56px;
   width: 100%;
   bottom: 0;
   z-index: 99;
 }
 
 .chatButton {
-  height: 64px;
-  width: 64px;
+  height: 56px;
+  width: 56px;
   border-radius: 0;
   box-shadow: none;
 }
 
 .chatInput {
   width: 100%;
-  height: 64px;
+  height: 56px;
   font-size: 0.9em;
   padding-left: 8px;
 }

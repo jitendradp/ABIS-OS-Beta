@@ -3,22 +3,22 @@
   position: -webkit-sticky; /* For macOS/iOS Safari */
   top: 0; /* Sets the sticky toolbar to be on top */
   z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
-  height: 64px;
+  height: 56px;
   width: 100%;
   background: #222;
 }
 
 .sidebar {
   min-width: 300px;
-  padding-top: 64px;
-  background-color: #fff
+  padding-top: 56px;
+  background-color: #fff;
 }
 
 .body {
-  margin-top: 64px;
-  padding-bottom: 64px;
+  margin-top: 56px;
+  padding-bottom: 56px;
   background-color: #eee;
-  min-height: calc(100vh - 128px)
+  min-height: calc(100vh - 112px);
 }
 
 .appTitle {
@@ -27,6 +27,7 @@
 
 .footer {
   position: fixed;
+  height: 56px;
   bottom: 0;
   width: 100%;
   z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
