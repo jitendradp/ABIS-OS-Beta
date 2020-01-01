@@ -16,9 +16,20 @@
 
 .body {
   margin-top: 56px;
-  padding-bottom: 56px;
+  margin-bottom: 56px;
   background-color: #eee;
-  min-height: calc(100vh - 112px);
+  height: calc(100vh - 112px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.body::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.body::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
 }
 
 .appTitle {
@@ -37,8 +48,4 @@
   /* This fills the remaining space, by using flexbox.
      Every toolbar row uses a flexbox row layout. */
   flex: 1 1 auto;
-}
-
-.mat-drawer:not(.mat-drawer-side) {
-  position: fixed;
 }
