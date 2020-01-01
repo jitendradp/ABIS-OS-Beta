@@ -81,7 +81,12 @@ const appRoutes: Routes = [
   }},
   {path: 'signin', component: SigninComponent, data:{
       "title": "Signup!",
-      "actions" : defaultActions
+      "actions" : defaultActions.concat([{ // Add another item:
+        name: "Abis.Chat.ToggleVisibility",
+        label:"Open/Close Chat",
+        icon: "send",
+        position: "right"
+      }])
   }},
   {path: 'register', component: RegisterComponent},
   {path: 'profile', component: ProfileComponent},
