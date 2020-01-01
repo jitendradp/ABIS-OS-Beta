@@ -1,4 +1,4 @@
-<mat-toolbar>
+<!--<mat-toolbar>
   <button *ngIf="showIcon" mat-icon-button routerLink="{{link}}">
     <mat-icon>{{icon}}</mat-icon>
   </button>
@@ -7,6 +7,36 @@
     <mat-card-title style="margin-top: 4px">{{title}}</mat-card-title>
     <mat-card-subtitle style="margin-top: -24px">{{subtitle}}</mat-card-subtitle>
   </mat-card-header>
-</mat-toolbar>
+</mat-toolbar>-->
+<mat-toolbar class="header" color="primary">
+  <button mat-icon-button (click)="click.emit('left');">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <div style="margin-left: 32px">
+    {{title}}
+  </div>
+  <span class="fill-remaining-space"></span>
+  <app-button *ngIf="!isLoggedIn" [link]='"/access"'
+              [text]="'Sign In / Register'">
+  </app-button>
 
+  <div style="padding-right: 24px; padding-left: 24px">
+    <button mat-icon-button (click)="click.emit('chat');">
+      <mat-icon matBadge="15" matBadgePosition="after" matBadgeColor="warn">chat</mat-icon>
+    </button>
+  </div>
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <mat-card-header style="padding: 12px">
+      <img mat-card-avatar src="{{profile.picture}}">
+      <mat-card-title>{{account.firstname}} {{account.lastname}}</mat-card-title>
+      <mat-card-subtitle>{{account.email}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-divider></mat-divider>
+    <button mat-menu-item routerLink="/profile">Settings</button>
+    <button mat-menu-item routerLink="/signin">Logout</button>
+  </mat-menu>
+</mat-toolbar>
 

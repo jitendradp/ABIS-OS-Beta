@@ -63,7 +63,9 @@ import {WhitespaceComponent} from './components/whitespace/whitespace.component'
 import {ChatComponent} from './pages/chat/chat.component';
 
 const appRoutes: Routes = [
-  {path: 'access', component: AccessComponent},
+  {path: 'access', component: AccessComponent, data:{
+    "title": "Hello World!"
+  }},
   {path: 'signin', component: SigninComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'profile', component: ProfileComponent},
