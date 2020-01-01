@@ -8,7 +8,8 @@ To start the complete environment, use the "docker-compose.yml" file in the root
 ```docker-compose up```  
   
 The ports are mapped like following:  
-* postgres: localhost:5432  
-* frontend: http://localhost:80  
-* prisma: http://localhost:4466  
-* yoga: http://localhost:4000  
+* postgres: localhost:5432
+* frontend: http://localhost:80
+* yoga: http://localhost:4000
+* prisma: http://localhost:4466/AbisStarterkit/dev
+* prisma-admin: http://localhost:4466/AbisStarterkit/dev/_admin
