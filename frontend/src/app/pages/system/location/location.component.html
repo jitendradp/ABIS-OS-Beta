@@ -1,4 +1,4 @@
-<app-goback [link]='"/dataspace"' [title]="'Dataspace'" [showIcon]="true" [icon]="'arrow_back'"></app-goback>
+<app-header [link]='"/dataspace"' [title]="'Dataspace'" [showIcon]="true" [icon]="'arrow_back'"></app-header>
 <div class="container"
      fxLayout
      fxLayout.xs="column"
@@ -32,8 +32,7 @@
           <mat-card-actions>
             <app-button [link]="'/upload'" [text]="'Next'"></app-button>
           </mat-card-actions>
-          <app-description [isFormInput]="true" [text]="description">
-          </app-description>
+      <mat-hint align="start">Add a location to your dataspace or channel so people can find and enter it on a map.</mat-hint>
         </app-content>
       </mat-card>
     </app-content>

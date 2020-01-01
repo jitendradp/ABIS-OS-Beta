@@ -37,7 +37,6 @@ import {ContentComponent} from './components/content/content.component';
 import {ButtonComponent} from './components/button/button.component';
 import {RegisterComponent} from './pages/system/register/register.component';
 import {SigninComponent} from './pages/system/signin/signin.component';
-import {GobackComponent} from './components/goback/goback.component';
 import {ProfileComponent} from './pages/system/profile/profile.component';
 import {CardComponent} from './components/card/card.component';
 import {IconbarComponent} from './components/iconbar/iconbar.component';
@@ -55,13 +54,15 @@ import {MapComponent} from './pages/map/map.component';
 import {InviteComponent} from './pages/system/invite/invite.component';
 import {FormComponent} from './components/form/form.component';
 import {ResetComponent} from './pages/system/reset/reset.component';
-import {DescriptionComponent} from './components/description/description.component';
 import {ForgotComponent} from './pages/system/forgot/forgot.component';
 import {LogoComponent} from './components/logo/logo.component';
 import {LocationComponent} from './pages/system/location/location.component';
 import {ChatComponent} from './pages/chat/chat.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {TreeComponent} from './components/tree/tree.component';
+import {HeaderComponent} from './components/header/header.component';
+import { InputComponent } from './components/input/input.component';
+import { WhitespaceComponent } from './components/whitespace/whitespace.component';
 
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent},
@@ -89,7 +90,6 @@ const appRoutes: Routes = [
     ButtonComponent,
     RegisterComponent,
     SigninComponent,
-    GobackComponent,
     ProfileComponent,
     CardComponent,
     IconbarComponent,
@@ -103,12 +103,14 @@ const appRoutes: Routes = [
     InviteComponent,
     FormComponent,
     ResetComponent,
-    DescriptionComponent,
     ForgotComponent,
     LogoComponent,
     LocationComponent,
     ChatComponent,
-    TreeComponent
+    TreeComponent,
+    HeaderComponent,
+    InputComponent,
+    WhitespaceComponent
   ],
   imports: [
     RouterModule.forRoot(

@@ -13,10 +13,6 @@ export interface Country {
 })
 export class LocationComponent {
 
-  @Input()
-  description: string = "Add a location to your dataspace or channel so people can find and enter it on a map.";
-
-
   countries: Country[] = [
     {value: 'de', viewValue: 'Germany'},
     {value: 'us', viewValue: 'United States'},

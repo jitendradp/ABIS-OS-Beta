@@ -1,4 +1,4 @@
-<app-goback [link]='"/access"' [title]="'Access'" [showIcon]="true" [icon]="'arrow_back'"></app-goback>
+<app-header [link]='"/access"' [title]="'Access'" [showIcon]="true" [icon]="'arrow_back'"></app-header>
 <div class="container"
      fxLayout
      fxLayout.xs="column"
@@ -24,11 +24,9 @@
           <mat-card-actions>
             <app-button [link]="'/cockpit'" [text]="'Confirm'"></app-button>
           </mat-card-actions>
-          <app-description [isFormInput]="true"
-                           [text]="'Login with your email and password to your account to access your available workspaces.'"
-                           [linkText]="'Forgot password?'"
-                           [link]='"/forgot-password"'>
-          </app-description>
+          <mat-hint align="start">Login with your email and password to your account to access your available
+            workspaces.
+          </mat-hint>
         </app-content>
       </mat-card>
     </app-content>

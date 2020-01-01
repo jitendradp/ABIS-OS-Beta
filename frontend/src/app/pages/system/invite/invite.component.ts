@@ -15,9 +15,6 @@ export interface Member {
 export class InviteComponent {
 
 
-  @Input()
-  description: string = "Dataspace members can access your data and resources. The will receive an invitation email from your account. You can add up to five members to your datapsace free of charge."
-
   visible = true;
   selectable = true;
   removable = true;

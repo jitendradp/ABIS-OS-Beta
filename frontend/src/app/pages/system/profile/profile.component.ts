@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ProfileService} from "../../../services/profile.service";
+import {AccountService} from "../../../services/account.service";
 
 @Component({
   selector: 'app-profile',
@@ -11,11 +12,17 @@ export class ProfileComponent implements OnInit {
 
   public profile = {};
 
-  constructor(private _profileService: ProfileService) {
+  public account = {};
+
+  constructor(
+    private _profileService: ProfileService,
+    private _accountService: AccountService
+  ) {
   }
 
   ngOnInit() {
     this.profile = this._profileService.getProfileInformation();
+    this.account = this._accountService.getAccountInformation()
   }
 
 }

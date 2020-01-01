@@ -1,33 +1,21 @@
-<app-goback [link]='"/signin"' [title]="'Login'" [showIcon]="true" [icon]="'arrow_back'"></app-goback>
-<div class="container"
-     fxLayout
+<app-header [link]='"/signin"' [title]="'Login'" [showIcon]="true" [icon]="'arrow_back'"></app-header>
+<div fxLayout
      fxLayout.xs="column"
      fxLayoutAlign="center"
      fxLayoutGap="10px"
      fxLayoutGap.xs="0">
-  <div class="item item-1"></div>
-  <div class="item item-2" fxFlex="40%">
+  <div fxFlex="50%">
     <app-content>
-      <mat-card>
-        <app-content>
-          <mat-card-title>
-            Forgot password?
-          </mat-card-title>
-          <mat-card-content>
-            <mat-form-field class="full-width">
-              <input matInput type="email" placeholder="Email">
-            </mat-form-field>
-            <app-description [isFormInput]="true"
-                             [text]="'Enter your account email address. There you will then receive a link to reset your password.'"></app-description>
-          </mat-card-content>
-          <mat-card-actions>
-            <app-button [link]="'/reset-password'" [text]="'Confirm'"></app-button>
-          </mat-card-actions>
-        </app-content>
-      </mat-card>
+      <app-form [title]="'Forgot password?'">
+        <app-input [type]="'email'"
+                   [placeholder]="'Email'"
+                   [showHint]="true"
+                   [hint]="'Enter your account email address. There you will then receive a link to reset your password.'">
+        </app-input>
+        <app-button [link]="'/reset-password'" [text]="'Confirm'"></app-button>
+      </app-form>
     </app-content>
   </div>
-  <div class="item item-3"></div>
 </div>
 
 

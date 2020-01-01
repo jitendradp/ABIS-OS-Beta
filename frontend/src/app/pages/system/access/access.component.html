@@ -4,26 +4,15 @@
      fxLayoutAlign="center"
      fxLayoutGap="10px"
      fxLayoutGap.xs="0">
-  <div class="item item-1"></div>
-  <div class="item item-2" fxFlex="50%">
+  <div fxFlex="50%">
     <app-content>
-      <mat-card>
+      <app-form [title]="'Your ABIS Account'">
         <img mat-card-image src="./assets/banners/access-cockpit.jpg"
              onError="this.src='./assets/error-images/picture.png';">
-        <mat-card-title>
-          Your ABIS Account
-        </mat-card-title>
-        <mat-card-subtitle>
-
-        </mat-card-subtitle>
-        <mat-card-content>
-        </mat-card-content>
-        <mat-card-actions>
-          <app-button [link]='"/register"' [text]="'Register'"></app-button>
-          <app-button [link]='"/signin"' [text]="'Sign in'"></app-button>
-        </mat-card-actions>
-      </mat-card>
+        <app-button [link]='"/register"' [text]="'Register'"></app-button>
+        <app-whitespace></app-whitespace>
+        <app-button [link]='"/signin"' [text]="'Sign in'"></app-button>
+      </app-form>
     </app-content>
   </div>
-  <div class="item item-3"></div>
 </div>

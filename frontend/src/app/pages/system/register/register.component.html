@@ -1,4 +1,4 @@
-<app-goback [link]='"/access"' [title]="'Access'" [showIcon]="true" [icon]="'arrow_back'"></app-goback>
+<app-header [link]='"/access"' [title]="'Access'" [showIcon]="true" [icon]="'arrow_back'"></app-header>
 <div class="container"
      fxLayout
      fxLayout.xs="column"
@@ -31,9 +31,9 @@
               </mat-form-field>
               <app-content>
                 <button mat-button matStepperNext class="maxButton">Next</button>
-                <app-description [isFormInput]="true"
-                                 [text]="'By continuing, you are agreeing to our Customer Terms of Services, Privacy Policy and Cookie Policy.'">
-                </app-description>
+                <mat-hint align="center">By continuing, you are agreeing to our Customer Terms of Services, Privacy
+                  Policy and Cookie Policy.
+                </mat-hint>
               </app-content>
             </form>
 
@@ -47,9 +47,9 @@
               </mat-form-field>
               <app-content>
                 <button mat-button matStepperNext class="maxButton">Next</button>
-                <app-description [isFormInput]="true"
-                                 [text]="'Please check your email inbox and click on the registration link or enter the code to confirm that it is you.'">
-                </app-description>
+                <mat-hint align="start">Please check your email inbox and click on the registration link or enter the
+                  code to confirm that it is you.
+                </mat-hint>
               </app-content>
             </form>
           </mat-step>
@@ -68,9 +68,7 @@
             <button mat-button>Upload Picture</button>
             <app-content>
               <button mat-button matStepperNext class="maxButton">Complete</button>
-              <app-description [isFormInput]="true"
-                               [text]="'Make it for your colleagues and friends easy to recognize you.'">
-              </app-description>
+              <mat-hint align="start">Make it for your colleagues and friends easy to recognize you.</mat-hint>
             </app-content>
           </mat-step>
         </mat-horizontal-stepper>
