@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ProfileService} from "../../services/profile.service";
-import {DataspaceService} from "../../services/dataspace.service";
 import {AccountService} from "../../services/account.service";
+import {IAction} from "../../IAction";
 
 @Component({
   selector: 'app-header',
@@ -36,6 +36,16 @@ export class HeaderComponent {
 
   @Input()
   isLoggedIn: boolean = false;
+
+  @Input()
+  actions:IAction[] = [];
+
+  get leftActions() : IAction[] {
+    return this.actions.filter(o => o.position == "left");
+  }
+  get rightActions() : IAction[] {
+    return this.actions.filter(o => o.position == "right");
+  }
 
   @Output()
   click:EventEmitter<any> = new EventEmitter<any>();

@@ -9,8 +9,8 @@
   </mat-card-header>
 </mat-toolbar>-->
 <mat-toolbar class="header" color="primary">
-  <button mat-icon-button (click)="click.emit('left');">
-    <mat-icon>menu</mat-icon>
+  <button *ngFor="let action of leftActions" mat-icon-button (click)="action.action();">
+    <mat-icon>{{action.icon}}</mat-icon>
   </button>
   <div style="margin-left: 32px">
     {{title}}
@@ -21,9 +21,14 @@
   </app-button>
 
   <div style="padding-right: 24px; padding-left: 24px">
+    <button *ngFor="let action of rightActions" mat-icon-button (click)="action.action();">
+      <mat-icon>{{action.icon}}</mat-icon>
+    </button>
+    <!--
     <button mat-icon-button (click)="click.emit('chat');">
       <mat-icon matBadge="15" matBadgePosition="after" matBadgeColor="warn">chat</mat-icon>
     </button>
+    -->
   </div>
   <button mat-icon-button [matMenuTriggerFor]="menu">
     <mat-icon>more_vert</mat-icon>
