@@ -1,5 +1,5 @@
 import {EventEmitter, Injectable} from '@angular/core';
-import {IAction} from "../IAction";
+import {IAction} from "../interfaces/IAction";
 
 @Injectable({
   providedIn: 'root'
