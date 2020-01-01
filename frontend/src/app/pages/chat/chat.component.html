@@ -1,4 +1,5 @@
 <!-- todo fix the timestamp of sent message item in chat -->
+<!-- todo create mobile view for chat -->
 
 <div id="frame"
      fxLayout
@@ -86,15 +87,15 @@
          fxLayoutAlign="center"
          fxLayoutGap="0px"
          fxLayoutGap.xs="0">
-      <div>
+      <div fxFlex="64px">
         <button mat-flat-button class="chatButton" color="primary">
           <mat-icon>attach_file</mat-icon>
         </button>
       </div>
-      <div fxFlex="90%">
+      <div fxFlex>
         <input class="chatInput" type="text" placeholder="Write your message..."/>
       </div>
-      <div>
+      <div fxFlex="64px">
         <button mat-flat-button class="chatButton" color="primary">
           <mat-icon>send</mat-icon>
         </button>

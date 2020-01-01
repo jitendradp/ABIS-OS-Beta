@@ -103,6 +103,7 @@
 
 .chatButton {
   height: 64px;
+  width: 64px;
   border-radius: 0;
   box-shadow: none;
 }
