@@ -4,7 +4,7 @@
 }
 
 #frame #sidepanel {
-  background-color: #e3e8eb;
+  background-color: white;
 }
 
 #frame #sidepanel #contacts {
@@ -26,6 +26,7 @@
   height: 100%;
   overflow: hidden;
   position: relative;
+  background-color: #e3e8eb;
 }
 
 #frame .content .messages {
@@ -79,7 +80,7 @@
 }
 
 #frame .content .messages ul li img {
-  width: 22px;
+  width: 44px;
   border-radius: 50%;
   float: left;
 }
@@ -112,3 +113,4 @@
   font-size: 0.9em;
   padding-left: 8px;
 }
+

@@ -1,3 +1,5 @@
+<!-- todo fix the timestamp of sent message item in chat -->
+
 <div id="frame"
      fxLayout
      fxLayout.xs="column"
@@ -18,7 +20,9 @@
             <small mat-line>{{channel.tag}}</small>
           </mat-list-item>
         </mat-list>
-        <mat-divider style="margin-bottom: 8px"></mat-divider>
+      </app-content>
+      <mat-divider style="margin-bottom: 8px"></mat-divider>
+      <app-content>
         <mat-list>
           <div>
             <h3 fxLayoutAlign="start center" mat-subheader>DIRECT MESSAGES</h3>
@@ -43,10 +47,12 @@
         <li class="replies">
           <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt=""/>
           <p>When you're backed against the wall, break the god damn thing down.</p>
+          <small style="float: right; margin-right: -100px">9:12 AM, Today</small>
         </li>
         <li class="replies">
           <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt=""/>
           <p>Excuses don't win championships.</p>
+          <small style="float: right; margin-right: -100px">9:12 AM, Today</small>
         </li>
         <li class="sent">
           <img src="http://emilcarlsson.se/assets/mikeross.png" alt=""/>
@@ -55,10 +61,12 @@
         <li class="replies">
           <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt=""/>
           <p>No, I told him that.</p>
+          <small style="float: right; margin-right: -100px">9:12 AM, Today</small>
         </li>
         <li class="replies">
           <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt=""/>
           <p>What are your choices when someone puts a gun to your head?</p>
+          <small style="float: right; margin-right: -100px">9:12 AM, Today</small>
         </li>
         <li class="sent">
           <img src="http://emilcarlsson.se/assets/mikeross.png" alt=""/>
@@ -68,6 +76,7 @@
           <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt=""/>
           <p>Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a
             hundred and forty six other things.</p>
+          <small style="float: right; margin-right: -100px">9:12 AM, Today</small>
         </li>
       </ul>
     </div>

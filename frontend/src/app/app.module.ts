@@ -74,8 +74,7 @@ const appRoutes: Routes = [
   {path: 'invite', component: InviteComponent},
   {path: 'reset-password', component: ResetComponent},
   {path: 'forgot-password', component: ForgotComponent},
-  {path: 'location', component: LocationComponent},
-  {path: 'chat', component: ChatComponent}
+  {path: 'location', component: LocationComponent}
 ];
 
 
