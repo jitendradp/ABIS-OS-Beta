@@ -1,16 +1,13 @@
 <app-header [link]='"/access"' [title]="'Access'" [showIcon]="true" [icon]="'arrow_back'"></app-header>
-<div class="container"
-     fxLayout
+<div fxLayout
      fxLayout.xs="column"
      fxLayoutAlign="center"
      fxLayoutGap="10px"
      fxLayoutGap.xs="0">
-  <div class="item item-1"></div>
-  <div class="item item-2" fxFlex="70%">
+  <div fxFlex="30%">
     <app-content>
       <app-form [title]="'Create your ABIS Account'">
         <mat-horizontal-stepper [linear]="isLinear" #stepper>
-
           <mat-step [stepControl]="firstFormGroup">
             <form [formGroup]="firstFormGroup">
               <ng-template matStepLabel>Signup</ng-template>
@@ -36,7 +33,6 @@
                 </mat-hint>
               </app-content>
             </form>
-
           </mat-step>
           <mat-step [stepControl]="secondFormGroup">
             <form [formGroup]="secondFormGroup">
@@ -53,7 +49,6 @@
               </app-content>
             </form>
           </mat-step>
-
           <mat-step>
             <ng-template matStepLabel>Profile</ng-template>
             <mat-form-field class="halfWidth">
@@ -75,5 +70,4 @@
       </app-form>
     </app-content>
   </div>
-  <div class="item item-3"></div>
 </div>
