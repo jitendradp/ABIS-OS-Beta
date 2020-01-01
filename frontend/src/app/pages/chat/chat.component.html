@@ -13,7 +13,9 @@
         <mat-list>
           <div><!-- todo align content same row -->
             <h3 fxLayoutAlign="start center" mat-subheader>CHANNELS</h3>
-            <mat-icon fxFlex fxLayoutAlign="end center" class="sectionIcon">add_circle_outline</mat-icon>
+            <button (click)="_actionDispatcher.dispatch({name:'Abis.Chat.Channel.Create'})" mat-icon-button>
+              <mat-icon fxFlex fxLayoutAlign="end center" class="sectionIcon">add_circle_outline</mat-icon>
+            </button>
           </div>
           <mat-list-item *ngFor="let channel of channels">
             <mat-icon mat-list-icon>{{channel.icon}}</mat-icon>
@@ -27,7 +29,9 @@
         <mat-list>
           <div>
             <h3 fxLayoutAlign="start center" mat-subheader>DIRECT MESSAGES</h3>
-            <mat-icon fxFlex fxLayoutAlign="end center" class="sectionIcon">add_circle_outline</mat-icon>
+            <button mat-icon-button>
+              <mat-icon fxFlex fxLayoutAlign="end center" class="sectionIcon">add_circle_outline</mat-icon>
+            </button>
           </div>
           <mat-list-item *ngFor="let member of members">
             <mat-icon mat-list-icon>person</mat-icon>

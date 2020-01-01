@@ -3,9 +3,11 @@ import {ProfileService} from "./services/profile.service";
 import {DataspaceService} from "./services/dataspace.service";
 import {AccountService} from "./services/account.service";
 import {MatDrawer} from "@angular/material/sidenav";
-import {ActivationEnd, ActivationStart, NavigationEnd, Router} from "@angular/router";
+import {ActivationEnd, Router} from "@angular/router";
 import {IAction} from "./IAction";
 import {ActionDispatcherService} from "./services/action-dispatcher.service";
+import {MatDialog} from "@angular/material";
+import {ChannelEditorComponent} from "./editors/channel-editor/channel-editor.component";
 
 @Component({
   selector: 'app-root',
@@ -15,9 +17,9 @@ import {ActionDispatcherService} from "./services/action-dispatcher.service";
 export class AppComponent {
 
   @ViewChild("left", {static: true})
-  left:MatDrawer;
+  left: MatDrawer;
   @ViewChild("right", {static: true})
-  right:MatDrawer;
+  right: MatDrawer;
 
   @Input()
   isLoggedIn: boolean = true;
@@ -34,8 +36,9 @@ export class AppComponent {
     private _profileService: ProfileService,
     private _dataspaceService: DataspaceService,
     private _accountService: AccountService,
-    private _router:Router,
-    private _actionDispatcher:ActionDispatcherService
+    private _router: Router,
+    private _actionDispatcher: ActionDispatcherService,
+    public _dialog: MatDialog
   ) {
     // Listen to actions ...
     _actionDispatcher.onAction.subscribe(action => {
@@ -45,6 +48,9 @@ export class AppComponent {
           break;
         case "Abis.Chat.ToggleVisibility":
           this.right.toggle();
+          break;
+        case "Abis.Chat.Channel.Create":
+          this.openDialog()
           break;
       }
     });
@@ -57,7 +63,7 @@ export class AppComponent {
         let activationEnd = <ActivationEnd>o;
         // set the title on the header bar
         this.title = activationEnd.snapshot.data.title;
-        if(activationEnd.snapshot.data.actions) {
+        if (activationEnd.snapshot.data.actions) {
           this.actions = activationEnd.snapshot.data.actions;
         } else {
           this.actions = [];
@@ -66,6 +72,14 @@ export class AppComponent {
     });
   }
 
-  ngOnInit() {
+  openDialog(): void {
+    const dialogRef = this._dialog.open(ChannelEditorComponent, {
+      width: '250px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
+
 }

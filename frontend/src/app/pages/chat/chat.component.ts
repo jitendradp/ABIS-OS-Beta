@@ -1,4 +1,9 @@
 import {Component} from '@angular/core';
+import {DataspaceService} from "../../services/dataspace.service";
+import {Router} from "@angular/router";
+import {AccountService} from "../../services/account.service";
+import {ProfileService} from "../../services/profile.service";
+import {ActionDispatcherService} from "../../services/action-dispatcher.service";
 
 export interface Channel {
   name: string;
@@ -17,6 +22,10 @@ export interface DirectMessage {
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent {
+
+  constructor(
+    protected _actionDispatcher:ActionDispatcherService
+  ) {}
 
   channels: Channel[] = [
     {

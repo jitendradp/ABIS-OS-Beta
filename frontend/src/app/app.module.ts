@@ -61,33 +61,38 @@ import {HeaderComponent} from './components/header/header.component';
 import {InputComponent} from './components/input/input.component';
 import {WhitespaceComponent} from './components/whitespace/whitespace.component';
 import {ChatComponent} from './pages/chat/chat.component';
+import {ChannelEditorComponent} from './editors/channel-editor/channel-editor.component';
 
 const defaultActions = [{
   name: "Abis.Sidebar.ToggleVisibility",
   label: "Open/Close Sidebar",
   icon: "menu",
   position: "left"
-},{
+}, {
   name: "Abis.Chat.ToggleVisibility",
-  label:"Open/Close Chat",
+  label: "Open/Close Chat",
   icon: "chat",
   position: "right"
 }];
 
 const appRoutes: Routes = [
-  {path: 'access', component: AccessComponent, data:{
-    "title": "Access!",
-    "actions" :defaultActions
-  }},
-  {path: 'signin', component: SigninComponent, data:{
+  {
+    path: 'access', component: AccessComponent, data: {
+      "title": "Access!",
+      "actions": defaultActions
+    }
+  },
+  {
+    path: 'signin', component: SigninComponent, data: {
       "title": "Signup!",
-      "actions" : defaultActions.concat([{ // Add another item:
+      "actions": defaultActions.concat([{ // Add another item:
         name: "Abis.Chat.ToggleVisibility",
-        label:"Open/Close Chat",
+        label: "Open/Close Chat",
         icon: "send",
         position: "right"
       }])
-  }},
+    }
+  },
   {path: 'register', component: RegisterComponent},
   {path: 'profile', component: ProfileComponent},
   {path: 'cockpit', component: CockpitComponent},
@@ -97,7 +102,8 @@ const appRoutes: Routes = [
   {path: 'invite', component: InviteComponent},
   {path: 'reset-password', component: ResetComponent},
   {path: 'forgot-password', component: ForgotComponent},
-  {path: 'location', component: LocationComponent}
+  {path: 'location', component: LocationComponent},
+  {path: 'channel-editor', component: ChannelEditorComponent}
 ];
 
 
@@ -128,7 +134,8 @@ const appRoutes: Routes = [
     HeaderComponent,
     InputComponent,
     WhitespaceComponent,
-    ChatComponent
+    ChatComponent,
+    ChannelEditorComponent
   ],
   imports: [
     RouterModule.forRoot(
