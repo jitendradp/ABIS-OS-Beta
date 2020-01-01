@@ -1,12 +1,11 @@
-<app-header [link]='"/access"' [title]="'Access'" [showIcon]="true" [icon]="'arrow_back'"></app-header>
-<div class="container"
-     fxLayout
+<app-header [link]='"/access"' [title]="'Access'" [showIcon]="true" [icon]="'arrow_back'"
+            [subtitle]="'Sign In or register to your account'"></app-header>
+<div fxLayout
      fxLayout.xs="column"
      fxLayoutAlign="center"
      fxLayoutGap="10px"
      fxLayoutGap.xs="0">
-  <div class="item item-1"></div>
-  <div class="item item-2" fxFlex="40%">
+  <div fxFlex="30%">
     <app-content>
       <mat-card>
         <app-content>
@@ -31,7 +30,6 @@
       </mat-card>
     </app-content>
   </div>
-  <div class="item item-3"></div>
 </div>
 
 

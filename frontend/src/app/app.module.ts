@@ -59,10 +59,9 @@ import {LogoComponent} from './components/logo/logo.component';
 import {LocationComponent} from './pages/system/location/location.component';
 import {ChatComponent} from './pages/chat/chat.component';
 import {ReactiveFormsModule} from "@angular/forms";
-import {TreeComponent} from './components/tree/tree.component';
 import {HeaderComponent} from './components/header/header.component';
-import { InputComponent } from './components/input/input.component';
-import { WhitespaceComponent } from './components/whitespace/whitespace.component';
+import {InputComponent} from './components/input/input.component';
+import {WhitespaceComponent} from './components/whitespace/whitespace.component';
 
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent},
@@ -107,7 +106,6 @@ const appRoutes: Routes = [
     LogoComponent,
     LocationComponent,
     ChatComponent,
-    TreeComponent,
     HeaderComponent,
     InputComponent,
     WhitespaceComponent
