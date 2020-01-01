@@ -3,8 +3,9 @@ import {ProfileService} from "./services/profile.service";
 import {DataspaceService} from "./services/dataspace.service";
 import {AccountService} from "./services/account.service";
 import {MatDrawer} from "@angular/material/sidenav";
-import {ActivationEnd, NavigationEnd, Router} from "@angular/router";
+import {ActivationEnd, ActivationStart, NavigationEnd, Router} from "@angular/router";
 import {IAction} from "./IAction";
+import {ActionDispatcherService} from "./services/action-dispatcher.service";
 
 @Component({
   selector: 'app-root',
@@ -27,34 +28,40 @@ export class AppComponent {
   public dataspace = this._dataspaceService.getDataspaceInformation();
   public account = this._accountService.getAccountInformation();
 
-  actions: IAction[] = null;
+  actions: IAction[] = [];
 
   constructor(
     private _profileService: ProfileService,
     private _dataspaceService: DataspaceService,
     private _accountService: AccountService,
-    protected _router:Router
+    private _router:Router,
+    private _actionDispatcher:ActionDispatcherService
   ) {
-    let self = this;
-    this.actions = [{
-      name: "left",
-      icon: "menu",
-      position: "left",
-      action: () => {
-        self.left.toggle();
+    // Listen to actions ...
+    _actionDispatcher.onAction.subscribe(action => {
+      switch (action.name) {
+        case "Abis.Sidebar.ToggleVisibility":
+          this.left.toggle();
+          break;
+        case "Abis.Chat.ToggleVisibility":
+          this.right.toggle();
+          break;
       }
-    },{
-      name: "right",
-      icon: "chat",
-      position: "right",
-      action: () => {
-        self.right.toggle();
-      }
-    }]
+    });
+
+    // Listen to router events ...
     _router.events.subscribe(o => {
+      // if the event is of Type "ActivationEnd" ...
       if (o instanceof ActivationEnd) {
+        // "<Cast>" to the right type to access the "data" property
         let activationEnd = <ActivationEnd>o;
+        // set the title on the header bar
         this.title = activationEnd.snapshot.data.title;
+        if(activationEnd.snapshot.data.actions) {
+          this.actions = activationEnd.snapshot.data.actions;
+        } else {
+          this.actions = [];
+        }
       }
     });
   }

@@ -1,6 +1,6 @@
 export interface IAction {
   name:string;
-  icon:string,
+  label:string;
+  icon:string;
   position:"left"|"right";
-  action:()=>void;
 }

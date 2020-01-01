@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ProfileService} from "../../services/profile.service";
 import {AccountService} from "../../services/account.service";
 import {IAction} from "../../IAction";
+import {ActionDispatcherService} from "../../services/action-dispatcher.service";
 
 @Component({
   selector: 'app-header',
@@ -57,6 +58,7 @@ export class HeaderComponent {
   constructor(
     private _profileService: ProfileService,
     private _accountService: AccountService,
+    protected _actionDispatcher: ActionDispatcherService,
   ) {
   }
 

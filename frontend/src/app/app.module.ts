@@ -62,11 +62,27 @@ import {InputComponent} from './components/input/input.component';
 import {WhitespaceComponent} from './components/whitespace/whitespace.component';
 import {ChatComponent} from './pages/chat/chat.component';
 
+const defaultActions = [{
+  name: "Abis.Sidebar.ToggleVisibility",
+  label: "Open/Close Sidebar",
+  icon: "menu",
+  position: "left"
+},{
+  name: "Abis.Chat.ToggleVisibility",
+  label:"Open/Close Chat",
+  icon: "chat",
+  position: "right"
+}];
+
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent, data:{
-    "title": "Hello World!"
+    "title": "Access!",
+    "actions" :defaultActions
   }},
-  {path: 'signin', component: SigninComponent},
+  {path: 'signin', component: SigninComponent, data:{
+      "title": "Signup!",
+      "actions" : defaultActions
+  }},
   {path: 'register', component: RegisterComponent},
   {path: 'profile', component: ProfileComponent},
   {path: 'cockpit', component: CockpitComponent},
