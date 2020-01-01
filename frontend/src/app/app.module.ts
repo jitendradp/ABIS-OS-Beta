@@ -78,32 +78,82 @@ const defaultActions = [{
 const appRoutes: Routes = [
   {
     path: 'access', component: AccessComponent, data: {
-      "title": "Access!",
+      "title": "Access",
       "actions": defaultActions
     }
   },
   {
     path: 'signin', component: SigninComponent, data: {
-      "title": "Signup!",
-      "actions": defaultActions.concat([{ // Add another item:
-        name: "Abis.Chat.ToggleVisibility",
-        label: "Open/Close Chat",
-        icon: "send",
-        position: "right"
-      }])
+      "title": "Login",
+      "actions": defaultActions
     }
   },
-  {path: 'register', component: RegisterComponent},
-  {path: 'profile', component: ProfileComponent},
-  {path: 'cockpit', component: CockpitComponent},
-  {path: 'store', component: StoreComponent},
-  {path: 'studio', component: StudioComponent},
-  {path: 'map', component: MapComponent},
-  {path: 'invite', component: InviteComponent},
-  {path: 'reset-password', component: ResetComponent},
-  {path: 'forgot-password', component: ForgotComponent},
-  {path: 'location', component: LocationComponent},
-  {path: 'channel-editor', component: ChannelEditorComponent}
+  {
+    path: 'register', component: RegisterComponent, data: {
+      "title": "Sign up",
+      "actions": defaultActions
+    }
+  },
+  {
+    path: 'profile', component: ProfileComponent, data: {
+      "title": "Settings",
+      "actions": defaultActions
+    }
+  },
+  {
+    path: 'cockpit', component: CockpitComponent, data: {
+      "title": "Cockpit",
+      "actions": defaultActions
+    }
+  },
+  {
+    path: 'store', component: StoreComponent, data: {
+      "title": "Store",
+      "actions": defaultActions
+    }
+  },
+  {
+    path: 'studio', component: StudioComponent, data: {
+      "title": "Studio",
+      "actions": defaultActions
+    }
+  },
+  {
+    path: 'map', component: MapComponent, data: {
+      "title": "Map",
+      "actions": defaultActions
+    }
+  },
+  {
+    path: 'invite', component: InviteComponent, data: {
+      "title": "Invite",
+      "actions": defaultActions
+    }
+  },
+  {
+    path: 'reset-password', component: ResetComponent, data: {
+      "title": "Reset password",
+      "actions": defaultActions
+    }
+  },
+  {
+    path: 'forgot-password', component: ForgotComponent, data: {
+      "title": "Forgot password",
+      "actions": defaultActions
+    }
+  },
+  {
+    path: 'location', component: LocationComponent, data: {
+      "title": "Add location",
+      "actions": defaultActions
+    }
+  },
+  {
+    path: 'channel-editor', component: ChannelEditorComponent, data: {
+      "title": "Create new channel",
+      "actions": defaultActions
+    }
+  }
 ];
 
 
