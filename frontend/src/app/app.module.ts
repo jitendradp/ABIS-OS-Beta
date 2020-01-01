@@ -31,7 +31,6 @@ import {
   MatToolbarModule,
   MatTreeModule
 } from "@angular/material";
-import {MenuComponent} from './components/menu/menu.component';
 import {AccessComponent} from './pages/system/access/access.component';
 import {ContentComponent} from './components/content/content.component';
 import {ButtonComponent} from './components/button/button.component';
@@ -57,11 +56,11 @@ import {ResetComponent} from './pages/system/reset/reset.component';
 import {ForgotComponent} from './pages/system/forgot/forgot.component';
 import {LogoComponent} from './components/logo/logo.component';
 import {LocationComponent} from './pages/system/location/location.component';
-import {ChatComponent} from './pages/chat/chat.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {HeaderComponent} from './components/header/header.component';
 import {InputComponent} from './components/input/input.component';
 import {WhitespaceComponent} from './components/whitespace/whitespace.component';
+import {ChatComponent} from './pages/chat/chat.component';
 
 const appRoutes: Routes = [
   {path: 'access', component: AccessComponent},
@@ -83,7 +82,6 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    MenuComponent,
     AccessComponent,
     ContentComponent,
     ButtonComponent,
@@ -105,10 +103,10 @@ const appRoutes: Routes = [
     ForgotComponent,
     LogoComponent,
     LocationComponent,
-    ChatComponent,
     HeaderComponent,
     InputComponent,
-    WhitespaceComponent
+    WhitespaceComponent,
+    ChatComponent
   ],
   imports: [
     RouterModule.forRoot(

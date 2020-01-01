@@ -1,9 +1,9 @@
 <!-- The sidebar section -->
 <mat-drawer-container>
-  <mat-drawer position="start" #drawer mode="over" class="sidebar" cdkScrollable>
-    <app-menu></app-menu>
-  </mat-drawer>
   <mat-drawer-content>
+    <mat-drawer position="start" #drawer mode="over" class="sidebar">
+      <app-chat></app-chat>
+    </mat-drawer>
     <!-- sticky header -->
     <mat-toolbar class="header" color="primary">
       <button mat-icon-button (click)="drawer.toggle()">
