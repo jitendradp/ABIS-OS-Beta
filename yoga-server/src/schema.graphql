@@ -104,34 +104,34 @@ type Portfolio {
 type Mutation {
     signup(name:String email:String password:String) : String
     verifyEmail(code:String) : String
-    createProfile(name:String picture:String timezone:String) : String
-    updateProfile(profileId:String name:String picture:String timezone:String status:String) : String
-    createWorkspace(hostProfileId: String, name:String title:String description:String logo:String tags:String) : String
-    updateWorkspace(workspaceId: String, name:String title:String description:String logo:String tags:String isHidden:Boolean isPublic:Boolean) : String
-    addMember(groupId:String memberProfileId:String) : String
-    removeMember(groupId:String memberProfileId:String) : String
-    postMessage(groupId:String subject:String content:String) : String
+    createProfile(token:String! name:String picture:String timezone:String) : String
+    updateProfile(token:String! profileId:String name:String picture:String timezone:String status:String) : String
+    createWorkspace(token:String! hostProfileId: String, name:String title:String description:String logo:String tags:String) : String
+    updateWorkspace(token:String! workspaceId: String, name:String title:String description:String logo:String tags:String isHidden:Boolean isPublic:Boolean) : String
+    addMember(token:String! groupId:String memberProfileId:String) : String
+    removeMember(token:String! groupId:String memberProfileId:String) : String
+    postMessage(token:String! groupId:String subject:String content:String) : String
 
-    createPortfolio(name:String) : String
+    createPortfolio(token:String! name:String) : String
 
-    buy(exchangeId:String! assetId:String! amount:Float!) : Transaction
-    sell(exchangeId:String! assetId:String! amount:Float!) : Transaction
+    buy(token:String! exchangeId:String! assetId:String! amount:Float!) : Transaction
+    sell(token:String! exchangeId:String! assetId:String! amount:Float!) : Transaction
 
     login(email:String password:String) : String
     logout(token:String) : Boolean
 
-    setSessionProfile(profileId:String) : String
+    setSessionProfile(token:String! profileId:String) : String
 }
 
 type Query {
-    myWorkspaces(token:String):[Group!]!
-    myMemberships(token:String):[Membership!]!
-    getSessionProfile(token:String):Profile
-    listProfiles(token:String): [Profile!]!
-    listWorkspaces(profileId:String): [Group!]!
-    listMemberships(profileId:String): [Membership!]!
-    listMembers(groupId:String):[Membership!]!
-    listMessages(groupId:String profileId:String):[Message!]!
-    getProfile(profileId:String):Profile
-    getWorkspace(workspaceId:String):Group
+    myWorkspaces(token:String!):[Group!]!
+    myMemberships(token:String!):[Membership!]!
+    getSessionProfile(token:String!):Profile
+    listProfiles(token:String!): [Profile!]!
+    listWorkspaces(token:String! profileId:String!): [Group!]!
+    listMemberships(token:String! profileId:String!): [Membership!]!
+    listMembers(token:String! groupId:String!):[Membership!]!
+    listMessages(token:String! groupId:String! profileId:String! begin:String end:String):[Message!]!
+    getProfile(token:String! profileId:String!):Profile
+    getWorkspace(token:String! workspaceId:String!):Group
 }

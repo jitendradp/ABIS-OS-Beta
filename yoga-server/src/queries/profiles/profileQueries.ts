@@ -1,7 +1,7 @@
 import {prisma} from "../../generated";
 
 export class ProfileQueries {
-    public static async getSessionProfile(token) {
+    public static async getSessionProfile(token:string) {
         let user = await prisma.session({token: token}).user();
         if (!user) {
             throw new Error("Invalid token");
@@ -20,11 +20,11 @@ export class ProfileQueries {
         }
     }
 
-    public static async listProfiles(token) {
+    public static async listProfiles(token:string) {
         return prisma.session({token: token}).user().profiles();
     }
 
-    public static async getProfile(token, profileId) {
+    public static async getProfile(token:string, profileId:string) {
         let user = await prisma.session({token: token}).user();
         if (!user) {
             throw new Error("Invalid token");

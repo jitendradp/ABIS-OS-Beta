@@ -1,7 +1,7 @@
 import {prisma} from "../../generated";
 
 export class GroupQueries {
-    public static async myWorkspaces(token) {
+    public static async myWorkspaces(token:string) {
         let profile = await prisma.session({token:token}).profile();
         if (!profile) {
             throw new Error("Invalid token or the session has no associated profile.")
@@ -9,7 +9,7 @@ export class GroupQueries {
         return await prisma.groups({where:{host:{id:profile.id}}});
     }
 
-    public static async myMemberships(token) {
+    public static async myMemberships(token:string) {
         let profile = await prisma.session({token:token}).profile();
         if (!profile) {
             throw new Error("Invalid token or the session has no associated profile.")
@@ -22,7 +22,7 @@ export class GroupQueries {
         });
     }
 
-    public static async listWorkspaces(token, profileId) {
+    public static async listWorkspaces(token:string, profileId:string) {
         let user = await prisma.session({token: token}).user();
         if (!user) {
             throw new Error("Invalid token");
@@ -30,7 +30,7 @@ export class GroupQueries {
         return prisma.groups({where: {type: "WORKSPACE", host:{id:profileId}}});
     }
 
-    public static async listMemberships(token, profileId) {
+    public static async listMemberships(token:string, profileId:string) {
         let user = await prisma.session({token: token}).user();
         if (!user) {
             throw new Error("Invalid token");
@@ -44,7 +44,7 @@ export class GroupQueries {
         return members;
     }
 
-    public static async listMembers(token, groupId) {
+    public static async listMembers(token:string, groupId:string) {
         let user = await prisma.session({token: token}).user();
         if (!user) {
             throw new Error("Invalid token");
@@ -62,7 +62,7 @@ export class GroupQueries {
         return members;
     }
 
-    public static async listMessages(token, groupId, profileId) {
+    public static async listMessages(token:string, groupId:string, profileId:string, begin?:string, end?:string) {
         let user = await prisma.session({token: token}).user();
         if (!user) {
             throw new Error("Invalid token");
@@ -91,7 +91,7 @@ export class GroupQueries {
         }
     }
 
-    public static async getWorkspace(_, {token, workspaceId}) {
+    public static async getWorkspace(token:string, workspaceId:string) {
         let user = await prisma.session({token: token}).user();
         if (!user) {
             throw new Error("Invalid token");
