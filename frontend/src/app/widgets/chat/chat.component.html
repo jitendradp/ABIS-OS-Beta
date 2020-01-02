@@ -1,5 +1,6 @@
 <!-- todo fix the timestamp of sent message item in chat -->
 <!-- todo create mobile view for chat -->
+<!-- todo !! optimize the textarea in chat input to expand to the top is more than two lines of content is entered -->
 
 <div id="frame"
      fxLayout
@@ -91,25 +92,13 @@
         </li>
       </ul>
     </div>
-    <div class="message-input"
-         fxLayout
-         fxLayout.xs="column"
-         fxLayoutAlign="left"
-         fxLayoutGap="0px"
-         fxLayoutGap.xs="0">
-      <div fxFlex="56px">
-        <button mat-flat-button class="chatButton" color="primary">
-          <mat-icon>attach_file</mat-icon>
-        </button>
-      </div>
-      <div fxFlex>
-        <input class="chatInput" type="text" placeholder="Write your message..."/>
-      </div>
-      <div fxFlex="56px"> <!-- todo !! optimize in mobile view -->
-        <button mat-flat-button class="chatButton" color="primary">
-          <mat-icon>send</mat-icon>
-        </button>
-      </div>
+    <div class="messageInput">
+      <mat-form-field appearance="none" class="messageInputTextarea">
+        <textarea [matTextareaAutosize] matInput placeholder="Write your message..."></textarea>
+      </mat-form-field>
+      <button mat-flat-button class="messageInputButton" color="primary">
+        <mat-icon>send</mat-icon>
+      </button>
     </div>
   </div>
 </div>

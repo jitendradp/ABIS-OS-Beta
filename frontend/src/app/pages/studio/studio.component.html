@@ -7,16 +7,13 @@
          fxLayoutGap.xs="0">
       <div fxFlex='auto' fxFlex.gt-md='50' fxFlex.gt-sm='80'>
         <app-content>
-          <app-card [title]="'Connect your Google Drive'"
-                    [subtitle]="'Create your own cockpit widgets with the data studio by ABIS. Start with connecting a google sheet to your workspace.'"
-                    [showImage]="true"
-                    [image]="'./assets/banners/connect-data.jpg'"
-                    [showIcon]="true"
-                    [icon]="'./assets/logos/google-drive.png'"
-                    [showMaxButton]="true"
-                    [action]="'Authorize'"
-                    [link]='"/"'>
-          </app-card>
+          <app-card-intro
+            [title]="'Connect a Google Drive'"
+            [logo]="'./assets/logos/google-drive.png'"
+            [description]="'Create your own cockpit widgets with the data studio by ABIS. Start with connecting a google sheet to your workspace.'"
+            [image]="'./assets/banners/connect-data.jpg'">
+            <app-button [link]='"/"' [text]="'Authorize'"></app-button>
+          </app-card-intro>
         </app-content>
       </div>
     </div>

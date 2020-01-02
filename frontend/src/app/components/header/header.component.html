@@ -6,7 +6,7 @@
     {{title}}
   </div>
   <span class="fill-remaining-space"></span>
-  <app-button *ngIf="!isLoggedIn" [link]='"/access"'
+  <app-button *ngIf="!isLoggedIn" [link]='"/"'
               [text]="'Sign In / Register'">
   </app-button>
 
@@ -14,7 +14,7 @@
     <button *ngFor="let action of rightActions" mat-icon-button (click)="_actionDispatcher.dispatch(action);">
       <mat-icon>{{action.icon}}</mat-icon>
     </button>
-    <!--
+    <!-- todo add some notification badge on the icons if needed in the header dynamically
     <button mat-icon-button (click)="click.emit('chat');">
       <mat-icon matBadge="15" matBadgePosition="after" matBadgeColor="warn">chat</mat-icon>
     </button>
