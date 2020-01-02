@@ -12,24 +12,6 @@ import {ActionDispatcherService} from "../../services/action-dispatcher.service"
 export class HeaderComponent {
 
   @Input()
-  link: string;
-
-  @Input()
-  image: string;
-
-  @Input()
-  showImage: boolean;
-
-  @Input()
-  showButton: boolean;
-
-  @Input()
-  subtitle: string;
-
-  @Input()
-  showIcon: boolean;
-
-  @Input()
   icon: string;
 
   @Input()

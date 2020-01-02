@@ -1,10 +1,9 @@
-<app-header [link]='"/signin"' [title]="'Login'" [showIcon]="true" [icon]="'arrow_back'"></app-header>
 <div fxLayout
      fxLayout.xs="column"
      fxLayoutAlign="center"
      fxLayoutGap="10px"
      fxLayoutGap.xs="0">
-  <div fxFlex="50%">
+  <div fxFlex='auto' fxFlex.gt-md='50' fxFlex.gt-sm='80'>
     <app-content>
       <app-form [title]="'Forgot password?'">
         <app-input [type]="'email'"

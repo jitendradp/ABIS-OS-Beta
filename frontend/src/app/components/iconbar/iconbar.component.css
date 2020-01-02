@@ -1,16 +1,14 @@
 .quickButtons {
   color: white;
   background: #333;
-  text-align: center;
 }
 
-.aligned-with-icon {
-  position: absolute;
-  margin-top: 14px;
-  font-size: 11px;
-  width: 40px;
+.iconLabelSpacing {
+  padding-left: 4px;
 }
 
-.pullUp {
-  margin-top: -14px;
+/* todo text below the icon if possible */
+
+.material-icons {
+  vertical-align: bottom;
 }

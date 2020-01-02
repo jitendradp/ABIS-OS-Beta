@@ -1,12 +1,10 @@
-<app-header [link]='"/dataspace"' [title]="'Dataspace'" [showIcon]="true" [icon]="'arrow_back'"></app-header>
 <div class="container"
      fxLayout
      fxLayout.xs="column"
      fxLayoutAlign="center"
-     fxLayoutGap="10px"
+     fxLayoutGap="0px"
      fxLayoutGap.xs="0">
-  <div class="item item-1"></div>
-  <div class="item item-2" fxFlex="40%">
+  <div fxFlex='auto' fxFlex.gt-md='50' fxFlex.gt-sm='80'>
     <app-content>
       <mat-card>
         <app-content>
@@ -32,10 +30,11 @@
           <mat-card-actions>
             <app-button [link]="'/upload'" [text]="'Next'"></app-button>
           </mat-card-actions>
-      <mat-hint align="start">Add a location to your dataspace or channel so people can find and enter it on a map.</mat-hint>
+          <mat-hint align="start">Add a location to your dataspace or channel so people can find and enter it on a
+            map.
+          </mat-hint>
         </app-content>
       </mat-card>
     </app-content>
   </div>
-  <div class="item item-3"></div>
 </div>
