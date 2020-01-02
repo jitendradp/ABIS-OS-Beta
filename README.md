@@ -1,18 +1,15 @@
 # AbisStarterkit
-Getting started with Angular 8 and Material Design - Quick Starter Template | Run "npm install" and then "npm serve"
 
-Use Latest Angular CLI
-Run "npm install"
-rund "ng serve"
-git clone https://github.com/DBIAnalytics/AbisStarterkit.git    
-cd AbisStarterkit  
-git checkout dev_dc  
-docker-compose up  
-
-postgres: localhost:5432  
-frontend: http://localhost:80  
-prisma: http://localhost:4466  
-yoga: http://localhost:4000  
-
-
-Access in your local network with any device. Lookup your IP and enter: ng serve --host 192.xxx.xxx.
+To start the frontend, use the @angular/cli tool:  
+```cd``` to the "frontend" directory, then run ```npm install``` and ```ng serve```.  
+If you want to access the frontend from another device is your network, use ```ng serve --host YOUR.IP.ADD.RESS``` instead.
+  
+To start the complete environment, use the "docker-compose.yml" file in the root directory of this repository:  
+```docker-compose up```  
+  
+The ports are mapped like following:  
+* postgres: localhost:5432
+* frontend: http://localhost:80
+* yoga: http://localhost:4000
+* prisma: http://localhost:4466/AbisStarterkit/dev
+* prisma-admin: http://localhost:4466/AbisStarterkit/dev/_admin
