@@ -1,0 +1,22 @@
+.embeddableProfile {
+  border-radius: 0;
+  box-shadow: none;
+  color: white;
+  background-color: #7d56ff;
+}
+
+.embeddableDataspace {
+  border-radius: 0;
+  box-shadow: none;
+  height: 42px;
+}
+
+.fill-remaining-space {
+  /* This fills the remaining space, by using flexbox.
+     Every toolbar row uses a flexbox row layout. */
+  flex: 1 1 auto;
+}
+
+.whiteSubtitle {
+  color: white;
+}
