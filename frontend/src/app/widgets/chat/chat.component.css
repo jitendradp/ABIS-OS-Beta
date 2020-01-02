@@ -1,4 +1,3 @@
-
 #frame {
   width: 100%;
   height: calc(100vh - 112px);
@@ -96,27 +95,23 @@
   line-height: 130%;
 }
 
-#frame .content .message-input {
+#frame .content .messageInput {
   position: absolute;
+  background-color: white;
   height: 56px;
   width: 100%;
   bottom: 0;
   z-index: 99;
 }
 
-.chatButton {
+.messageInputButton {
+  float: right;
   height: 56px;
   border-radius: 0;
   box-shadow: none;
+  padding-right: 16px;
 }
 
-.chatInput {
-  width: 100%;
-  height: 56px;
-  font-size: 0.9em;
+.messageInputTextarea {
   padding-left: 16px;
-}
-
-input:focus {
-  outline: none;
 }

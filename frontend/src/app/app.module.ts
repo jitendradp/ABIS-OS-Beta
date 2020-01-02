@@ -60,7 +60,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {HeaderComponent} from './components/header/header.component';
 import {InputComponent} from './components/input/input.component';
 import {WhitespaceComponent} from './components/whitespace/whitespace.component';
-import {ChatComponent} from './pages/chat/chat.component';
+import {ChatComponent} from './widgets/chat/chat.component';
 import {ChannelEditorComponent} from './editors/channel-editor/channel-editor.component';
 import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';

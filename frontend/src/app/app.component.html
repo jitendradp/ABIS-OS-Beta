@@ -1,11 +1,8 @@
 <app-header [actions]="actions" [title]="title"></app-header>
-
 <mat-sidenav-container>
-
   <mat-sidenav #left position="start" mode="over" class="sidebar">
     Start Sidenav.
   </mat-sidenav>
-
   <mat-drawer-container [hasBackdrop]="false">
     <mat-drawer position="end" #right mode="side" class="sidebar">
       <app-chat></app-chat>
@@ -16,7 +13,6 @@
       </div>
     </mat-drawer-content>
   </mat-drawer-container>
-
   <app-iconbar class="footer"></app-iconbar>
 </mat-sidenav-container>
 
