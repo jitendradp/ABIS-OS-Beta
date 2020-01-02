@@ -1,13 +1,11 @@
 <mat-tab-group>
   <mat-tab label="Connect Sheet">
-    <div class="container"
-         fxLayout
+    <div fxLayout
          fxLayout.xs="column"
          fxLayoutAlign="center"
-         fxLayoutGap="10px"
+         fxLayoutGap="0px"
          fxLayoutGap.xs="0">
-      <div class="item item-1"></div>
-      <div class="item item-2" fxFlex="40%">
+      <div fxFlex='auto' fxFlex.gt-md='50' fxFlex.gt-sm='80'>
         <app-content>
           <app-card [title]="'Connect your Google Drive'"
                     [subtitle]="'Create your own cockpit widgets with the data studio by ABIS. Start with connecting a google sheet to your workspace.'"
@@ -21,7 +19,6 @@
           </app-card>
         </app-content>
       </div>
-      <div class="item item-3"></div>
     </div>
   </mat-tab>
   <mat-tab label="Mix Dataset">
@@ -59,7 +56,7 @@
           </div>
         </app-content>
       </div>
-      <div class="item item-2" fxFlex="20%">
+      <div fxFlex="20%">
         <app-content>
           <div class="example-container">
             <h2>Dataset</h2>
@@ -75,7 +72,7 @@
           </div>
         </app-content>
       </div>
-      <div class="item item-3" fxFlex>
+      <div fxFlex>
         <app-content>
           <h2>Result Preview</h2>
           <app-table></app-table>

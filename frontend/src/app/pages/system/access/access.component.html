@@ -2,21 +2,21 @@
   <div fxLayout
        fxLayout.xs="column"
        fxLayoutAlign="center"
-       fxLayoutGap="10px"
+       fxLayoutGap="0px"
        fxLayoutGap.xs="0">
-    <div fxFlex="50%">
+    <div fxFlex='auto' fxFlex.gt-md='50' fxFlex.gt-sm='80'>
       <app-form>
         <app-whitespace></app-whitespace>
         <div fxLayout
              fxLayout.xs="column"
-             fxLayoutAlign="center"
-             fxLayoutGap="10px"
+             fxLayoutAlign="left"
+             fxLayoutGap="0px"
              fxLayoutGap.xs="0">
-          <div fxFlex="60%">
+          <div fxFlex="50">
             <img mat-card-image src="./assets/banners/access-cockpit.jpg"
                  onError="this.src='./assets/error-images/picture.png';">
           </div>
-          <div fxFlex="50%">
+          <div fxFlex="50">
             <mat-card-title>Access your ABIS Account</mat-card-title>
             <mat-card-subtitle>A collaborative workspace for your lorrem ipsum. A collaborative workspace for your
               lorrem ipsum.
