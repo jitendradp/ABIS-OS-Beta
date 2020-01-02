@@ -5,6 +5,7 @@ import {MatTreeFlatDataSource, MatTreeFlattener} from "@angular/material";
 
 interface DataspaceNode {
   name: string;
+  logo?: string;
   icon?: string;
   channels?: DataspaceNode[];
 }
@@ -12,6 +13,7 @@ interface DataspaceNode {
 const TREE_DATA: DataspaceNode[] = [
   {
     name: 'DBI Analytics GmbH',
+    logo: 'https://marketingplatform.google.com/about/partners/img/company/6027496168357888/assets/5686306919153664',
     channels: [
       {name: 'Chaos', icon: 'bubble_chart'},
       {name: 'General', icon: 'bubble_chart'},
@@ -20,6 +22,7 @@ const TREE_DATA: DataspaceNode[] = [
   },
   {
     name: 'E.ON Energie Deutschland',
+    logo: 'https://i.pinimg.com/280x280_RS/f0/50/5c/f0505ce317dde1b57c017dffe3bc6d34.jpg',
     channels: [
       {name: 'Chaos', icon: 'bubble_chart'},
       {name: 'General', icon: 'bubble_chart'},
@@ -35,7 +38,7 @@ const TREE_DATA: DataspaceNode[] = [
     ]
   },
   {
-    name: 'Dahoam is dahoam',
+    name: 'Dahoam is dahoam', logo: 'https://live.staticflickr.com/8151/7413013712_e55a4f3146_b.jpg',
     channels: [
       {name: 'Chaos', icon: 'bubble_chart'},
       {name: 'General', icon: 'bubble_chart'},
@@ -50,6 +53,7 @@ interface ExampleFlatNode {
   expandable: boolean;
   name: string;
   level: number;
+  logo: string;
 }
 
 /**
@@ -69,6 +73,7 @@ export class TeamsComponent {
       name: node.name,
       icon: node.icon,
       level: level,
+      logo: node.logo
     };
   };
 

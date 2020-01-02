@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
-import {FormControl} from "@angular/forms";
 
 export interface Channel {
   name: string;
@@ -20,8 +19,6 @@ export interface DirectMessage {
 })
 export class ChatComponent {
 
-  teams = new FormControl();
-  teamList: string[] = ['DBI Analytics GmbH', 'Audi Marketing', 'BMW Racing', 'Huber AG', 'FH München', 'Frankfurter Allgemeine'];
 
   constructor(
     protected _actionDispatcher: ActionDispatcherService
