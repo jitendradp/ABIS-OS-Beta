@@ -1,6 +1,6 @@
 <mat-card class="embeddableProfile">
   <mat-card-header>
-    <img mat-card-avatar src="{{profile.picture}}">
+    <img mat-card-avatar style="width: 50px; height: 50px" src="{{profile.picture}}">
     <mat-card-title>
       {{account.firstname}} {{account.lastname}}
     </mat-card-title>
@@ -19,7 +19,7 @@
       <b>{{dataspace.name}}</b>
     </mat-card-subtitle>
     <mat-card-subtitle>
-      {{dataspace.type}}
+      {{dataspace.type}} Dataspace
     </mat-card-subtitle>
     <span class="fill-remaining-space"></span>
     <button mat-icon-button>

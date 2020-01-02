@@ -20,3 +20,7 @@
 .whiteSubtitle {
   color: white;
 }
+
+.mat-list-base {
+  padding-top: unset;
+}
