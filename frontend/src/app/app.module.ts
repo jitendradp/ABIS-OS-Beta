@@ -65,7 +65,8 @@ import {ChannelEditorComponent} from './editors/channel-editor/channel-editor.co
 import {GraphQLModule} from './graphql.module';
 import {HttpClientModule} from '@angular/common/http';
 import {CardIntroComponent} from "./cards/card-intro/card-intro.component";
-import {TeamsComponent} from "./widgets/teams/teams.component";
+import {TeamsComponent} from "./widgets/chat/teams/teams.component";
+import {NavigationComponent} from "./pages/system/navigation/navigation.component";
 
 const defaultActions = [{
   name: "Abis.Sidebar.ToggleVisibility",
@@ -192,6 +193,7 @@ const appRoutes: Routes = [
     ChannelEditorComponent,
     CardIntroComponent,
     TeamsComponent,
+    NavigationComponent,
   ],
   imports: [
     RouterModule.forRoot(

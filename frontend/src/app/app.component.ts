@@ -16,6 +16,8 @@ import {ChannelEditorComponent} from "./editors/channel-editor/channel-editor.co
 })
 export class AppComponent {
 
+  public static readonly Version:number = 20200103;
+
   @ViewChild("left", {static: true})
   left: MatDrawer;
   @ViewChild("right", {static: true})
@@ -50,7 +52,7 @@ export class AppComponent {
           this.right.toggle();
           break;
         case "Abis.Chat.Channel.Create":
-          this.openDialog()
+          this.openDialog();
           break;
       }
     });
