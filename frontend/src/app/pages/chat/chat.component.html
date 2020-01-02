@@ -7,7 +7,7 @@
      fxLayoutAlign="left"
      fxLayoutGap="0px"
      fxLayoutGap.xs="0">
-  <div id="sidepanel" fxFlex>
+  <div id="sidepanel" fxFlex="50%">
     <div id="contacts">
       <app-content>
         <mat-list>
@@ -48,7 +48,7 @@
       </app-content>
     </div>
   </div>
-  <div class="content" fxFlex="300px">
+  <div class="content" fxFlex="50%">
     <div class="messages">
       <ul>
         <li class="sent">
@@ -105,7 +105,7 @@
       <div fxFlex>
         <input class="chatInput" type="text" placeholder="Write your message..."/>
       </div>
-      <div fxFlex="56px"> <!-- todo optimize in mobile view -->
+      <div fxFlex="56px"> <!-- todo !! optimize in mobile view -->
         <button mat-flat-button class="chatButton" color="primary">
           <mat-icon>send</mat-icon>
         </button>
