@@ -47,7 +47,7 @@ import {LineChartComponent} from './charts/line-chart/line-chart.component';
 import {StudioComponent} from './pages/studio/studio.component';
 import {TableComponent} from './charts/table/table.component';
 import {ProfileService} from "./services/profile.service";
-import {MessageComponent} from './components/message/message.component';
+import {MessageComponent} from './cards/message/message.component';
 import {CockpitComponent} from './pages/cockpit/cockpit.component';
 import {MapComponent} from './pages/map/map.component';
 import {InviteComponent} from './pages/system/invite/invite.component';

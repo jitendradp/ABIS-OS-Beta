@@ -1,14 +1,11 @@
 import {Component} from '@angular/core';
-import {DataspaceService} from "../../services/dataspace.service";
-import {Router} from "@angular/router";
-import {AccountService} from "../../services/account.service";
-import {ProfileService} from "../../services/profile.service";
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
+import {FormControl} from "@angular/forms";
 
 export interface Channel {
   name: string;
   icon: string;
-  tag: string;
+  team: string;
 }
 
 export interface DirectMessage {
@@ -23,70 +20,74 @@ export interface DirectMessage {
 })
 export class ChatComponent {
 
+  teams = new FormControl();
+  teamList: string[] = ['DBI Analytics GmbH', 'Audi Marketing', 'BMW Racing', 'Huber AG', 'FH München', 'Frankfurter Allgemeine'];
+
   constructor(
-    protected _actionDispatcher:ActionDispatcherService
-  ) {}
+    protected _actionDispatcher: ActionDispatcherService
+  ) {
+  }
 
   channels: Channel[] = [
     {
-      name: 'Soccer FSB',
+      name: 'General',
       icon: 'bubble_chart',
-      tag: 'Sport, Soccer, Friends'
+      team: 'DBI Analytics GmbH'
     },
     {
-      name: 'Infineon Technologies',
+      name: 'Einkauf',
       icon: 'lock',
-      tag: 'Work, Freelancer'
+      team: 'Audi Marketing'
     },
     {
-      name: 'Fishers Club',
+      name: 'Chaos',
       icon: 'lock',
-      tag: 'Hobby, Family'
+      team: 'BMW Racing'
     },
     {
-      name: 'Soccer FSB',
+      name: 'OEM Plannung',
       icon: 'bubble_chart',
-      tag: 'Sport, Soccer, Friends'
+      team: 'Huber AG'
     },
     {
-      name: 'Soccer FSB',
+      name: 'Zulieferer',
       icon: 'bubble_chart',
-      tag: 'Sport, Soccer, Friends'
+      team: 'Huber AG'
     },
     {
-      name: 'Soccer FSB',
+      name: 'Party',
       icon: 'bubble_chart',
-      tag: 'Sport, Soccer, Friends'
+      team: 'FH München'
     },
     {
-      name: 'Soccer FSB',
+      name: 'News',
       icon: 'bubble_chart',
-      tag: 'Sport, Soccer, Friends'
+      team: 'Frankfurter Allgemeine'
     },
     {
-      name: 'Infineon Technologies',
+      name: 'Alumni',
       icon: 'lock',
-      tag: 'Work, Freelancer'
+      team: 'FH München'
     },
     {
-      name: 'Fishers Club',
+      name: 'General',
       icon: 'lock',
-      tag: 'Hobby, Family'
+      team: 'BMW Racing'
     },
     {
-      name: 'Soccer FSB',
+      name: 'Vertrieb',
       icon: 'bubble_chart',
-      tag: 'Sport, Soccer, Friends'
+      team: 'BMW Racing'
     },
     {
-      name: 'Soccer FSB',
+      name: 'Marketing',
       icon: 'bubble_chart',
-      tag: 'Sport, Soccer, Friends'
+      team: 'BMW Racing'
     },
     {
-      name: 'Soccer FSB',
+      name: 'Kundensupport',
       icon: 'bubble_chart',
-      tag: 'Sport, Soccer, Friends'
+      team: 'DBI Analytics GmbH'
     }
   ];
   members: DirectMessage[] = [
