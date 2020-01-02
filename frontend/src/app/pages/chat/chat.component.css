@@ -8,6 +8,21 @@
   background-color: white;
 }
 
+/* todo set the sidepanel responsive on small screens floating left with icons showing only. view old chat for reference*/
+@media screen and (max-width: 735px) {
+  #frame #sidepanel {
+    width: 58px;
+  }
+
+  #frame .content {
+    height: 100%;
+    width: calc(100% - 58px);
+    overflow: hidden;
+    position: relative;
+    background-color: #e3e8eb;
+  }
+}
+
 #frame #sidepanel #contacts {
   height: 100%;
   overflow-y: scroll;
@@ -25,6 +40,7 @@
 
 #frame .content {
   height: 100%;
+  width: 300px;
   overflow: hidden;
   position: relative;
   background-color: #e3e8eb;
