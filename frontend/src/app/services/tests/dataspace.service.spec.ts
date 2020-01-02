@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ProfileService } from './profile.service';
+import { DataspaceService } from '../dataspace.service';
 
-describe('ProfileService', () => {
+describe('WorkspaceService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: ProfileService = TestBed.get(ProfileService);
+    const service: DataspaceService = TestBed.get(DataspaceService);
     expect(service).toBeTruthy();
   });
 });

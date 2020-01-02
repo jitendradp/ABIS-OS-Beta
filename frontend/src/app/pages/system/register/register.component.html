@@ -6,7 +6,7 @@
   <div fxFlex='auto' fxFlex.gt-md='50' fxFlex.gt-sm='80'>
     <app-content>
       <app-form [title]="'Create your ABIS Account'">
-        <mat-horizontal-stepper [linear]="isLinear" #stepper>
+        <mat-horizontal-stepper [linear]="isLinear" #stepper (selectionChange)="stepChanged($event)">
           <mat-step [stepControl]="firstFormGroup">
             <form [formGroup]="firstFormGroup">
               <ng-template matStepLabel>Signup</ng-template>
@@ -65,7 +65,7 @@
             <app-content>
               <button mat-button matStepperNext class="maxButton">Complete</button>
               <app-whitespace></app-whitespace>
-              <mat-hint align="start">Make it for your colleagues and friends easy to recognize you.</mat-hint>
+              <mat-hint align="start">Make your profile easy to recognize for your colleagues and friends.</mat-hint>
             </app-content>
           </mat-step>
         </mat-horizontal-stepper>
