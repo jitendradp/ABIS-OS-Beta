@@ -1,7 +1,7 @@
 import {prisma} from "../../generated";
 
 export class ProfileMutations {
-    public async createProfile(token: string, name: string, picture: string, timezone: string) {
+    public static async createProfile(token: string, name: string, picture: string, timezone: string) {
         let user = await prisma.session({token: token}).user();
         if (!user) {
             throw new Error("Invalid token");
@@ -24,7 +24,7 @@ export class ProfileMutations {
         return profile.id;
     }
 
-    public async updateProfile(token: string, profileId: string, name: string, picture: string, timezone: string, status: string) {
+    public static async updateProfile(token: string, profileId: string, name: string, picture: string, timezone: string, status: string) {
         let user = await prisma.session({token: token}).user();
         if (!user) {
             throw new Error("Invalid token");

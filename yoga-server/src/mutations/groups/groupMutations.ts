@@ -1,7 +1,7 @@
 import {prisma} from "../../generated";
 
 export class GroupMutations {
-    public async createWorkspace(token: string, hostProfileId: string, name: string, title: string, description: string, logo: string, tags: string) {
+    public static async createWorkspace(token: string, hostProfileId: string, name: string, title: string, description: string, logo: string, tags: string) {
         let user = await prisma.session({token: token}).user();
         if (!user) {
             throw new Error("Invalid token");
@@ -38,7 +38,7 @@ export class GroupMutations {
         return group.id;
     }
 
-    public async updateWorkspace(token: string, workspaceId: string, name: string, title: string, description: string, logo: string, tags: string, isHidden: boolean, isPublic: boolean) {
+    public static async updateWorkspace(token: string, workspaceId: string, name: string, title: string, description: string, logo: string, tags: string, isHidden: boolean, isPublic: boolean) {
         let user = await prisma.session({token: token}).user();
         if (!user) {
             throw new Error("Invalid token");
@@ -60,7 +60,7 @@ export class GroupMutations {
         return workspaceId;
     }
 
-    public async addMember(token: string, groupId: string, memberProfileId: string) {
+    public static async addMember(token: string, groupId: string, memberProfileId: string) {
         let profile = await prisma.session({token:token}).profile();
         if (!profile) {
             throw new Error("Invalid token or the session has no associated profile.")
@@ -116,7 +116,7 @@ export class GroupMutations {
         return membership.id;
     }
 
-    public async removeMember(token: string, groupId: string, memberProfileId: string) {
+    public static async removeMember(token: string, groupId: string, memberProfileId: string) {
         let profile = await prisma.session({token:token}).profile();
         if (!profile) {
             throw new Error("Invalid token or the session has no associated profile.")
