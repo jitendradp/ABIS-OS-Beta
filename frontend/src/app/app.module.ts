@@ -62,8 +62,9 @@ import {InputComponent} from './components/input/input.component';
 import {WhitespaceComponent} from './components/whitespace/whitespace.component';
 import {ChatComponent} from './widgets/chat/chat.component';
 import {ChannelEditorComponent} from './editors/channel-editor/channel-editor.component';
-import { GraphQLModule } from './graphql.module';
-import { HttpClientModule } from '@angular/common/http';
+import {GraphQLModule} from './graphql.module';
+import {HttpClientModule} from '@angular/common/http';
+import {CardIntroComponent} from "./cards/card-intro/card-intro.component";
 
 const defaultActions = [{
   name: "Abis.Sidebar.ToggleVisibility",
@@ -79,8 +80,8 @@ const defaultActions = [{
 
 const appRoutes: Routes = [
   {
-    path: 'access', component: AccessComponent, data: {
-      "title": "Access",
+    path: '', component: AccessComponent, data: {
+      "title": "Welcome",
       "actions": defaultActions
     }
   },
@@ -187,7 +188,8 @@ const appRoutes: Routes = [
     InputComponent,
     WhitespaceComponent,
     ChatComponent,
-    ChannelEditorComponent
+    ChannelEditorComponent,
+    CardIntroComponent,
   ],
   imports: [
     RouterModule.forRoot(
