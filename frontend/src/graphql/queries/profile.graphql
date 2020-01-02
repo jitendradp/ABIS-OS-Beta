@@ -1,0 +1,45 @@
+query getProfile($token:String! $profileId:String!) {
+  getProfile(token:$token profileId:$profileId) {
+    id
+    createdAt
+    updatedAt
+    name
+    timezone
+    status
+    picture
+    memberships {
+      id
+      createdAt
+      group {
+        id
+        name
+        title
+        description
+        logo
+        type
+        tags
+        createdAt
+        host {
+          id
+          name
+          status
+          picture
+          location {
+            id
+            name
+            latitude
+            longitude
+            radius
+          }
+        }
+      }
+    }
+    location {
+      id
+      name
+      latitude
+      longitude
+      radius
+    }
+  }
+}

@@ -1,0 +1,15 @@
+mutation signup($name:String! $email:String! $password:String!) {
+  signup(name:$name email:$email password:$password)
+}
+mutation verifyEmail($code:String!) {
+  verifyEmail(code:$code)
+}
+mutation login($email:String! $password:String!){
+  login(email:$email password:$password)
+}
+mutation logout($token:String!){
+  logout(token:$token)
+}
+mutation setSessionProfile($token:String! $profileId:String!) {
+  setSessionProfile(token:$token profileId:$profileId)
+}

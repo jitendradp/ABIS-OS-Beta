@@ -4,7 +4,7 @@ import {DataspaceService} from "./services/dataspace.service";
 import {AccountService} from "./services/account.service";
 import {MatDrawer} from "@angular/material/sidenav";
 import {ActivationEnd, Router} from "@angular/router";
-import {IAction} from "./interfaces/IAction";
+import {IAction} from "./actions/IAction";
 import {ActionDispatcherService} from "./services/action-dispatcher.service";
 import {MatDialog} from "@angular/material";
 import {ChannelEditorComponent} from "./editors/channel-editor/channel-editor.component";
