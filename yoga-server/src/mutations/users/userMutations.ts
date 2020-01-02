@@ -1,5 +1,5 @@
 import {
-    prisma,
+    prisma, Session,
     SessionCreateInput, User
 } from "../../generated";
 import {Helpers} from "../../helper/Helpers";
@@ -8,6 +8,7 @@ import {Mailer} from "../../helper/Mailer";
 
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const responseDelay = 500;
 
 export class UserMutations {
     /**
@@ -15,26 +16,46 @@ export class UserMutations {
      * @param email
      * @param password
      */
-    public async login(email:string, password:string) : Promise<string> {
-        let delay = new ResponseDelay(500);
+    public async login(email: string, password: string): Promise<string> {
+        let delay = new ResponseDelay(responseDelay);
 
         let user = await prisma.user({email: email});
         let response = "error";
 
-        if (user) {
-            let pwdCheckResult = await bcrypt.compare(password, user.password_hash);
-            if (pwdCheckResult) {
-                response = await this.createSessionForUser(user);
-            }
+        if (!user) {
+            // Wait some time before returning the response (500ms - runtime)
+            await delay.GetPromise();
+            return response;
         }
 
-        // Wait some time before returning the response (500ms - runtime)
-        await delay.GetPromise();
+        if (user.challenge) {
+            // Wait some time before returning the response (500ms - runtime)
+            await delay.GetPromise();
+            return response;
+        }
 
+        let pwdCheckResult = await bcrypt.compare(password, user.password_hash);
+        if (!pwdCheckResult) {
+            // Wait some time before returning the response (500ms - runtime)
+            await delay.GetPromise();
+            return response;
+        }
+
+        let sessions = await this.findValidSessionsForUser(user.id);
+        // If the user already got a valid session then use that
+        // TODO: Assign new sessions if the user logs-in with a new device
+        if (sessions.length == 0) {
+            response = await this.createSessionForUser(user);
+        } else {
+            response = sessions[0].token;
+        }
+
+        // TODO: Is it useful to wait even if the credentials are correct?
+        // await delay.GetPromise();
         return response;
     }
 
-    public async logout(token: string) : Promise<void> {
+    public async logout(token: string): Promise<void> {
         // TODO: Implement logout()
         return new Promise(resolve => resolve());
     }
@@ -45,8 +66,8 @@ export class UserMutations {
      * @param email
      * @param password
      */
-    public async createUser(name: string, email: string, password: string) : Promise<string> {
-        let delay = new ResponseDelay(500);
+    public async createUser(name: string, email: string, password: string): Promise<string> {
+        let delay = new ResponseDelay(responseDelay);
 
         let user = await prisma.user({email: email});
 
@@ -85,14 +106,28 @@ export class UserMutations {
      * Checks the email verification code which is sent out to newly signed up accounts.
      * @param code
      */
-    public async verifyEmail(code: string) : Promise<string> {
-        let delay = new ResponseDelay(500);
+    public async verifyEmail(code: string): Promise<string> {
+        let delay = new ResponseDelay(responseDelay);
+        let response = "error";
 
         let users = Array.from(await prisma.users({where: {challenge: code.trim()}}));
-        if (users.length === 0) {
-            throw new Error("Invalid code");
+        if (users.length !== 1) {
+            await delay.GetPromise();
+            return response;
         }
+
         let user = users[0];
+
+        // clear the challenge when the verification code was right
+        prisma.updateUser({
+            data: {
+                challenge: null
+            },
+            where: {
+                id: user.id
+            }
+        });
+
         let session = await this.createSessionForUser(user);
 
         // Wait some time before returning the response (500ms - runtime)
@@ -101,16 +136,28 @@ export class UserMutations {
         return session;
     }
 
-    private async sendEmailVerificationCode(user: User) : Promise<void> {
+    private async sendEmailVerificationCode(user: User): Promise<void> {
         // TODO: Use proper mail template
         return Mailer.sendMail(user.email, "Your ABIS verification code", user.challenge, user.challenge);
+    }
+
+    private async findValidSessionsForUser(userId: string): Promise<Session[]> {
+        let validUserSessions = await prisma.sessions({
+            where: {
+                user: {
+                    id: userId
+                },
+                validTo_gt: new Date()
+            }
+        });
+        return Array.from(validUserSessions);
     }
 
     /**
      * Creates a new session and session token for the given user.
      * @param user
      */
-    private async createSessionForUser(user) : Promise<string> {
+    private async createSessionForUser(user): Promise<string> {
         let tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
 
@@ -137,13 +184,10 @@ export class UserMutations {
      * Verifies if a session token exists and is valid.
      * @param token
      */
-    public async verifySession(token: string) : Promise<boolean> {
+    public async verifySession(token: string): Promise<boolean> {
         // TODO: Set a new session timeout
-        let session = await prisma.session({token: token}).user();
-        if (!session) {
-            return false;
-        }
-        return true;
+        let sessions = Array.from(await prisma.sessions({where: {token: token, validTo_gt: new Date()}}));
+        return sessions.length > 0;
     }
 
     public async setSessionProfile(token: string, profileId: string) {
@@ -161,7 +205,7 @@ export class UserMutations {
                 token: token
             }
         });
-        await prisma.updateUser({data:{lastUsedProfileId:profileId}, where:{id:user.id}});
+        await prisma.updateUser({data: {lastUsedProfileId: profileId}, where: {id: user.id}});
         return profileId;
     }
 }

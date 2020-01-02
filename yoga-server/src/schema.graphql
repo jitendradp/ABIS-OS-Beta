@@ -117,7 +117,7 @@ type Mutation {
     buy(exchangeId:String! assetId:String! amount:Float!) : Transaction
     sell(exchangeId:String! assetId:String! amount:Float!) : Transaction
 
-    login(username:String password:String) : String
+    login(email:String password:String) : String
     logout(token:String) : Boolean
 
     setSessionProfile(profileId:String) : String
