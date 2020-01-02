@@ -1,0 +1,106 @@
+query listWorkspaces($token:String! $profileId:String!) {
+  listWorkspaces(token:$token profileId:$profileId) {
+    id
+    name
+    title
+    description
+    logo
+    type
+    createdAt
+    host {
+      id
+      name
+      picture
+      status
+      location {
+        id
+        name
+        latitude
+        longitude
+        radius
+      }
+    }
+    is_hidden
+    is_public
+  }
+}
+query listMembers($token:String! $groupId:String!) {
+  listMembers(token:$token groupId:$groupId) {
+    id
+    createdAt
+    member {
+      id
+      name
+      timezone
+      status
+      picture
+      location {
+        id
+        name
+        latitude
+        longitude
+        radius
+      }
+    }
+  }
+}
+query listMessages($token:String! $groupId:String! $profileId:String! $begin:String $end:String) {
+  listMessages(token:$token groupId:$groupId profileId:$profileId begin:$begin end:$end) {
+    id
+    createdAt
+    updatedAt
+    sender {
+      id
+      name
+      picture
+    }
+    subject
+    content
+    tags
+    type
+  }
+}
+query getWorkspace($token:String! $workspaceId:String!) {
+  getWorkspace(token:$token workspaceId:$workspaceId) {
+    id
+    name
+    title
+    description
+    logo
+    type
+    tags
+    createdAt
+    updatedAt
+    host {
+      id
+      name
+      status
+      picture
+      location {
+        id
+        name
+        latitude
+        longitude
+        radius
+      }
+    }
+    members {
+      id
+      createdAt
+      member {
+        id
+        name
+        status
+        picture
+        location {
+          id
+          name
+          latitude
+          longitude
+          radius
+        }
+      }
+    }
+    is_public
+  }
+}
