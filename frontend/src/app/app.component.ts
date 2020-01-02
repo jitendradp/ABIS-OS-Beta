@@ -24,7 +24,7 @@ export class AppComponent {
   @Input()
   isLoggedIn: boolean = true;
 
-  title = 'myapp';
+  title = 'ABIS';
 
   public profile = this._profileService.getProfileInformation();
   public dataspace = this._dataspaceService.getDataspaceInformation();
