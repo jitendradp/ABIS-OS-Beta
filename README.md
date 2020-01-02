@@ -1,4 +1,4 @@
-# AbisStarterkit
+# ABIS OS Alpha SDK
 
 To start the frontend, use the @angular/cli tool:  
 ```cd``` to the "frontend" directory, then run ```npm install``` and ```ng serve```.  
