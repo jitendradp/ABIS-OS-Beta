@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ProfileService} from "../../services/profile.service";
 import {AccountService} from "../../services/account.service";
-import {IAction} from "../../interfaces/IAction";
+import {IAction} from "../../actions/IAction";
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
 
 @Component({
