@@ -1,0 +1,15 @@
+mutation createWorkspace($token:String! $hostProfileId:String! $name:String! $title:String! $description:String! $logo:String! $tags:String!) {
+  createWorkspace(token:$token hostProfileId:$hostProfileId name:$name title:$title description:$description logo:$logo tags:$tags)
+}
+mutation updateWorkspace($token:String! $workspaceId:String! $name:String! $title:String! $description:String! $logo:String! $tags:String! $isHidden:Boolean! $isPublic:Boolean!) {
+  updateWorkspace(token:$token workspaceId:$workspaceId name:$name title:$title description:$description logo:$logo tags:$tags isHidden:$isHidden isPublic:$isPublic)
+}
+mutation addMember($token:String! $groupId:String! $memberProfileId:String!) {
+  addMember(token:$token groupId:$groupId memberProfileId:$memberProfileId)
+}
+mutation removeMember($token:String! $groupId:String! $memberProfileId:String!) {
+  removeMember(token:$token groupId:$groupId memberProfileId:$memberProfileId)
+}
+mutation postMessage($token:String! $groupId:String! $subject:String! $content:String!) {
+  postMessage(token:$token groupId:$groupId subject:$subject content:$content)
+}

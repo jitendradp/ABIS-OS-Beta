@@ -1,0 +1,22 @@
+query getSessionProfile($token:String!) {
+  getSessionProfile(token:$token) {
+    id
+  }
+}
+query listProfiles($token:String!) {
+  listProfiles(token:$token) {
+    id
+    createdAt
+    name
+    timezone
+    status
+    picture
+    location {
+      id
+      name
+      latitude
+      longitude
+      radius
+    }
+  }
+}

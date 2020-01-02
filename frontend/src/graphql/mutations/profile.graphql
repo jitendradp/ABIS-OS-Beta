@@ -1,0 +1,6 @@
+mutation createProfile($token:String! $name:String! $picture:String! $timezone:String!) {
+  createProfile(token:$token name:$name picture:$picture timezone:$timezone)
+}
+mutation updateProfile($token:String! $profileId:String! $name:String! $picture:String! $timezone:String! $status:String!) {
+  updateProfile(token:$token profileId:$profileId name:$name picture:$picture timezone:$timezone status:$status)
+}
