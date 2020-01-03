@@ -69,13 +69,15 @@ import {TeamsComponent} from "./widgets/chat/teams/teams.component";
 import {NavigationComponent} from "./pages/system/navigation/navigation.component";
 import { SwitchProfileComponent } from './pages/system/switch-profile/switch-profile.component';
 import { LogoutComponent } from './pages/system/logout/logout.component';
+import {IAction} from "./actions/IAction";
+import {ToggleVisibility} from "./actions/ui/sidebar/ToggleVisibility";
 
-const defaultActions = [{
+const defaultActions:IAction[] = [<ToggleVisibility>{
   name: "Abis.UI.Sidebar.ToggleVisibility",
   label: "Open/Close Sidebar",
   icon: "menu",
   side: "left"
-}, {
+}, <ToggleVisibility>{
   name: "Abis.UI.Sidebar.ToggleVisibility",
   label: "Open/Close Chat",
   icon: "chat",

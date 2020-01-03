@@ -11,7 +11,7 @@ import {
   Router,
   RouterEvent, Scroll
 } from "@angular/router";
-import {IAction} from "./actions/IAction";
+import {IEvent} from "./actions/IEvent";
 import {ActionDispatcherService} from "./services/action-dispatcher.service";
 import {MatDialog} from "@angular/material";
 import {ChannelEditorComponent} from "./editors/channel-editor/channel-editor.component";
@@ -41,7 +41,7 @@ export class AppComponent {
   public dataspace = this._dataspaceService.getDataspaceInformation();
   public account = this._accountService.getAccountInformation();
 
-  actions: IAction[] = [];
+  actions: IEvent[] = [];
 
   constructor(
     private _profileService: ProfileService,
