@@ -17,6 +17,7 @@ import {MatDialog} from "@angular/material";
 import {ChannelEditorComponent} from "./editors/channel-editor/channel-editor.component";
 import {Home} from "./actions/routes/Home";
 import {ShowNotification} from "./actions/ui/ShowNotification";
+import {SwitchProfile} from "./actions/routes/SwitchProfile";
 
 @Component({
   selector: 'app-root',
@@ -70,6 +71,9 @@ export class AppComponent {
         break;
       case Home.Name:
         this._router.navigate(["/"]);
+        break;
+      case SwitchProfile.Name:
+        this._router.navigate(["/switch-profile"]);
         break;
     }
   }

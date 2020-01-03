@@ -20,11 +20,11 @@ export class AccountService {
 
   private readonly _log:Logger = this.loggerService.createLogger("AccountService");
 
-  get token() : string {
+  public get token() : string {
     return this.clientState.get<string>("AccountService.token", null).data;
   }
 
-  get profileId() : string {
+  public get profileId() : string {
     return this.clientState.get<string>("AccountService.profileId", null).data;
   }
 
