@@ -5,7 +5,7 @@
      fxLayoutGap.xs="0">
   <div fxFlex='auto' fxFlex.gt-md='50' fxFlex.gt-sm='80'>
     <app-content>
-      <app-form [title]="'Invite members'">
+      <app-card-form [title]="'Invite members'">
         <mat-form-field class="full-width">
           <mat-chip-list #chipList>
             <mat-chip *ngFor="let member of members" [selectable]="selectable"
@@ -25,7 +25,7 @@
         </mat-hint>
         <app-whitespace></app-whitespace>
         <app-button [link]="'/studio'" [text]="'Complete'"></app-button>
-      </app-form>
+      </app-card-form>
     </app-content>
   </div>
 </div>

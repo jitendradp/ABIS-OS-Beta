@@ -19,11 +19,11 @@
         *ngIf="_accountService.isLoggedOn"
         [image]="'./assets/banners/access-cockpit.jpg'"
         [logo]="'./assets/logos/abis-logo.png'"
-        [description]="'Welcome back ' + _accountService.getAccountInformation().firstname + '!'"
+        [description]="'Welcome back ' + _accountService.accountInformation.name + '!'"
         [title]="'ABIS Analytics Cloud'">
         Pick up where you left off:<br/>
         <ul>
-          <li>Recent item 1</li>
+          <li><a [routerLink]="'register'">Recent item 1</a></li>
           <li>Recent item 2</li>
           <li>Recent item 3</li>
           <li>Recent item ...</li>

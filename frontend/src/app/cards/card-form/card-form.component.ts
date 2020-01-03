@@ -1,11 +1,11 @@
 import {Component, Input} from '@angular/core';
 
 @Component({
-  selector: 'app-form',
-  templateUrl: './form.component.html',
-  styleUrls: ['./form.component.css']
+  selector: 'app-card-form',
+  templateUrl: './card-form.component.html',
+  styleUrls: ['./card-form.component.css']
 })
-export class FormComponent {
+export class CardFormComponent {
 
   @Input()
   buttonText: string;
@@ -15,5 +15,4 @@ export class FormComponent {
 
   @Input()
   subtitle: string;
-
 }

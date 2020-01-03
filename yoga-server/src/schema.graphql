@@ -1,5 +1,11 @@
 scalar Json
 
+type AccountInformation {
+    id: String!
+    createdAt: String!
+    name: String!
+}
+
 type Profile {
     id: String!
     createdAt: String!
@@ -128,6 +134,7 @@ type Query {
     myWorkspaces(csrfToken:String!):[Group!]!
     myMemberships(csrfToken:String!):[Membership!]!
     getSessionProfile(csrfToken:String!):Profile
+    getAccountInformation(csrfToken:String!):AccountInformation
     listProfiles(csrfToken:String!): [Profile!]!
     listWorkspaces(csrfToken:String! profileId:String!): [Group!]!
     listMemberships(csrfToken:String! profileId:String!): [Membership!]!

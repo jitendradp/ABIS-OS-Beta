@@ -37,9 +37,9 @@ export class ClientStateService {
   public get<T>(key:string, defaultValue:T) : {version:number, data:T} {
     const versions = this._getVersions();
     for (let i = 0; i < versions.length; i++) {
-      let version = versions[i];
-      let state = this._getVersion(version);
-      let data = state.get<T>(key);
+      const version = versions[i];
+      const state = this._getVersion(version);
+      const data = state.get<T>(key);
       if (data === null) {
         continue;
       }
@@ -81,8 +81,8 @@ export class ClientStateService {
     const versions = this._getVersions();
     let deleted = false;
     for (let i = 0; i < versions.length; i++) {
-      let version = versions[i];
-      let state = this._getVersion(version);
+      const version = versions[i];
+      const state = this._getVersion(version);
       if (state.delete(key)) {
         deleted = true;
       }

@@ -5,9 +5,9 @@ export class ShowNotification implements IEvent {
   public static readonly Name: string = "Abis.UI.ShowNotification";
   name:string = ShowNotification.Name;
 
-  logEntry:LogEntry;
+  entry:LogEntry|string;
 
-  constructor(logEntry:LogEntry) {
-    this.logEntry = logEntry;
+  constructor(entry:LogEntry|string) {
+    this.entry = entry;
   }
 }

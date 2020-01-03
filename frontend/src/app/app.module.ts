@@ -25,12 +25,12 @@ import {
   MatSelectModule,
   MatSidenavModule,
   MatSlideToggleModule,
+  MatSnackBarModule,
   MatStepperModule,
   MatTableModule,
   MatTabsModule,
   MatToolbarModule,
-  MatTreeModule,
-  MatSnackBarModule
+  MatTreeModule
 } from "@angular/material";
 import {AccessComponent} from './pages/system/access/access.component';
 import {ContentComponent} from './components/content/content.component';
@@ -38,7 +38,6 @@ import {ButtonComponent} from './components/button/button.component';
 import {RegisterComponent} from './pages/system/register/register.component';
 import {SigninComponent} from './pages/system/signin/signin.component';
 import {ProfileComponent} from './pages/system/profile/profile.component';
-import {CardComponent} from './components/card/card.component';
 import {IconbarComponent} from './components/iconbar/iconbar.component';
 import {StoreComponent} from './pages/store/store.component';
 import {FlexLayoutModule} from "@angular/flex-layout";
@@ -48,11 +47,9 @@ import {LineChartComponent} from './charts/line-chart/line-chart.component';
 import {StudioComponent} from './pages/studio/studio.component';
 import {TableComponent} from './charts/table/table.component';
 import {ProfileService} from "./services/profile.service";
-import {MessageComponent} from './cards/message/message.component';
 import {CockpitComponent} from './pages/cockpit/cockpit.component';
 import {MapComponent} from './pages/map/map.component';
 import {InviteComponent} from './pages/system/invite/invite.component';
-import {FormComponent} from './components/form/form.component';
 import {ResetComponent} from './pages/system/reset/reset.component';
 import {ForgotComponent} from './pages/system/forgot/forgot.component';
 import {LogoComponent} from './components/logo/logo.component';
@@ -68,13 +65,18 @@ import {HttpClientModule} from '@angular/common/http';
 import {CardIntroComponent} from "./cards/card-intro/card-intro.component";
 import {TeamsComponent} from "./widgets/chat/teams/teams.component";
 import {NavigationComponent} from "./pages/system/navigation/navigation.component";
-import { SwitchProfileComponent } from './pages/system/switch-profile/switch-profile.component';
-import { LogoutComponent } from './pages/system/logout/logout.component';
+import {SwitchProfileComponent} from './pages/system/switch-profile/switch-profile.component';
+import {LogoutComponent} from './pages/system/logout/logout.component';
 import {IAction} from "./actions/IAction";
 import {ToggleVisibility} from "./actions/ui/sidebar/ToggleVisibility";
 import {ExplorerComponent} from "./pages/explorer/explorer.component";
 import {TeamEditorComponent} from "./editors/team-editor/team-editor.component";
 import {AvatarsComponent} from "./components/avatars/avatars.component";
+import {LayoutComponent} from "./components/layout/layout.component";
+import {CardMessageComponent} from "./cards/card-message/card-message.component";
+import {CardTeamComponent} from "./cards/card-team/card-team.component";
+import {CardFormComponent} from "./cards/card-form/card-form.component";
+import {CardStoreComponent} from "./cards/card-store/card-store.component";
 
 const defaultActions: IAction[] = [<ToggleVisibility>{
   name: ToggleVisibility.Name,
@@ -203,17 +205,14 @@ const appRoutes: Routes = [
     RegisterComponent,
     SigninComponent,
     ProfileComponent,
-    CardComponent,
     IconbarComponent,
     StoreComponent,
     LineChartComponent,
     StudioComponent,
     TableComponent,
-    MessageComponent,
     CockpitComponent,
     MapComponent,
     InviteComponent,
-    FormComponent,
     ResetComponent,
     ForgotComponent,
     LogoComponent,
@@ -231,6 +230,11 @@ const appRoutes: Routes = [
     ExplorerComponent,
     TeamEditorComponent,
     AvatarsComponent,
+    LayoutComponent,
+    CardMessageComponent,
+    CardTeamComponent,
+    CardFormComponent,
+    CardStoreComponent,
   ],
   imports: [
     RouterModule.forRoot(
