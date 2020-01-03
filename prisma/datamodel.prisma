@@ -1,18 +1,5 @@
 # Account to login to the system
-type User {
-	id: ID! @id @unique
-	createdAt: DateTime! @createdAt
-	updatedAt: DateTime @updatedAt
-	name: String!											#
-	timezone: String!										# The user's local timezone ("UTC +0")
-	email: String! @unique									# Common digital identity ("david.chang@abis.com")
-	password_salt: String!									# Adding a random string to the password hash (*****)
-	password_hash: String!									# A Fully hashed password including salt (bcrypt)
-	is_verified: Boolean!									# The user's email address was verified ("true")
-	challenge: String										# When set, the user has to provide a string that matches this hash (same hash algorithm as for passwords should be used) in order to continue (e.g. verify email, second login factor etc.)
-	profiles: [Profile!]!									# The user's profiles (Arbeit; Privat)
-	sessions:[Session!]!
-	lastUsedProfileId:String
+type
 }
 
 type Session {
