@@ -5,6 +5,8 @@ import {
 import {Helpers} from "../../helper/Helpers";
 import {ResponseDelay} from "../../helper/ResponseDelay";
 import {Mailer} from "../../helper/Mailer";
+import {Request} from "express";
+import {config} from "../../config";
 
 export class UserMutations {
 
@@ -23,14 +25,15 @@ export class UserMutations {
                 user: {
                     id: userId
                 },
-                validTo_gt: new Date()
+                validTo_gt: new Date(),
+                timedOut:null
             }
         });
         return Array.from(validUserSessions);
     }
 
     private static async findUserByToken(token:string) : Promise<User> {
-        let sessions = await prisma.sessions({where: {token: token, validTo_gt: new Date()}});
+        let sessions = await prisma.sessions({where: {token: token, validTo_gt: new Date(), timedOut:null}});
         if (sessions.length > 1) {
             this.abortInvalidRequest(" --- Take a gun and shoot yourself! --- There is more than one session with the same token: " + token);
         }
@@ -119,8 +122,9 @@ export class UserMutations {
      * Checks the username and password and returns a session token or 'error'.
      * @param email
      * @param password
+     * @param request The express request object from the yoga context
      */
-    public static async login(email: string, password: string): Promise<string> {
+    public static async login(email: string, password: string, request:Request): Promise<string> {
         let delay = new ResponseDelay(UserMutations.responseDelay);
         let user = await prisma.user({email: email});
 
@@ -153,16 +157,43 @@ export class UserMutations {
 
         // TODO: Is it useful to wait even if the credentials are correct?
         // await delay.GetPromise();
-        if (sessions.length == 0) {
-            return await UserMutations.createSessionForUser(user);
-        } else {
-            return sessions[0].token;
-        }
+        let token = sessions.length == 0 ? await UserMutations.createSessionForUser(user) : sessions[0].token;
+
+        UserMutations.setTokenCookie(token, request);
+
+        return token;
     }
 
-    public static async logout(token: string): Promise<void> {
-        // TODO: Implement logout()
-        return new Promise(resolve => resolve());
+    private static setTokenCookie(token:string, request:Request) {
+        request.res.cookie('token', token, {
+            maxAge: config.auth.sessionTimeout,
+            httpOnly: true, // cookie is only accessible by the server
+            domain: config.env.domain,
+            secure: process.env.NODE_ENV === 'prod', // only transferred over https
+            sameSite: true, // only sent for requests to the same FQDN as the domain in the cookie
+        });
+    }
+
+    public static async logout(token: string): Promise<boolean> {
+        let user = await this.findUserByToken(token);
+        if (!user) {
+            return false;
+        }
+
+        let validSessions = await prisma.sessions({where:{user:{id:user.id}, validTo_gt: new Date(), timedOut:null}});
+
+        await Promise.all(
+            validSessions.map(async o =>
+                await prisma.updateSession({
+                    where:{
+                        id:o.id
+                    },
+                    data:{
+                        timedOut:new Date()
+                    }
+                })));
+
+        return true;
     }
 
     /**
@@ -202,9 +233,12 @@ export class UserMutations {
      * Verifies if a session token exists and is valid.
      * @param token
      */
-    public static async verifySession(token: string): Promise<boolean> {
+    public static async verifySession(token: string, request:Request): Promise<boolean> {
         // TODO: Set a new session timeout
-        let sessions = Array.from(await prisma.sessions({where: {token: token, validTo_gt: new Date()}}));
+        let sessions = Array.from(await prisma.sessions({where: {token: token, validTo_gt: new Date(), timedOut:null}}));
+        if (sessions.length > 0) {
+            UserMutations.setTokenCookie(token, request);
+        }
         return sessions.length > 0;
     }
 

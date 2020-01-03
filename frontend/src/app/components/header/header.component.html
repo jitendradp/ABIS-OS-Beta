@@ -6,7 +6,7 @@
     {{title}}
   </div>
   <span class="fill-remaining-space"></span>
-  <app-button *ngIf="!isLoggedIn" [link]='"/"'
+  <app-button *ngIf="!accountService.isLoggedOn" [link]='"/"'
               [text]="'Sign In / Register'">
   </app-button>
 

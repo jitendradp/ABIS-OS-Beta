@@ -6,6 +6,7 @@
   <div fxFlex='auto' fxFlex.gt-md='50' fxFlex.gt-sm='80'>
     <app-content>
       <app-card-intro
+        *ngIf="!accountService.isLoggedOn"
         [image]="'./assets/banners/access-cockpit.jpg'"
         [logo]="'./assets/logos/abis-logo.png'"
         [description]="'The collaborative dataspace to discover, share and discuss facts within your teams.'"
@@ -13,6 +14,28 @@
         <app-button [link]='"/register"' [text]="'Register'"></app-button>
         <app-whitespace></app-whitespace>
         <app-button [link]='"/signin"' [text]="'Sign in'"></app-button>
+      </app-card-intro>
+      <app-card-intro
+        *ngIf="accountService.isLoggedOn"
+        [image]="'./assets/banners/access-cockpit.jpg'"
+        [logo]="'./assets/logos/abis-logo.png'"
+        [description]="'Welcome back ' + accountService.getAccountInformation().firstname + '!'"
+        [title]="'ABIS Analytics Cloud'">
+        Pick up where you left off:<br/>
+        <ul>
+          <li>Recent item 1</li>
+          <li>Recent item 2</li>
+          <li>Recent item 3</li>
+          <li>Recent item ...</li>
+        </ul>
+        <br/>
+        or disover something new:<br/>
+        <ul>
+          <li>News feed item 1</li>
+          <li>News feed item 2</li>
+          <li>News feed item 3</li>
+          <li>News feed item ...</li>
+        </ul>
       </app-card-intro>
     </app-content>
   </div>

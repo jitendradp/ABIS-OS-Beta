@@ -21,6 +21,7 @@ import {ChannelEditorComponent} from "./editors/channel-editor/channel-editor.co
 import {Home} from "./actions/routes/Home";
 import {ShowNotification} from "./actions/ui/ShowNotification";
 import {SwitchProfile} from "./actions/routes/SwitchProfile";
+import {ToggleVisibility} from "./actions/ui/sidebar/ToggleVisibility";
 
 @Component({
   selector: 'app-root',
@@ -61,11 +62,12 @@ export class AppComponent {
 
   private handleAction(action) {
     switch (action.name) {
-      case "Abis.UI.Sidebar.ToggleVisibility":
-        this.left.toggle();
-        break;
-      case "Abis.UI.Sidebar.ToggleVisibility":
-        this.right.toggle();
+      case ToggleVisibility.Name:
+        if (action.side == "left") {
+          this.left.toggle();
+        } else if (action.side == "right") {
+          this.right.toggle();
+        }
         break;
       case "Abis.Chat.Channel.Create":
         this.openDialog();

@@ -3,6 +3,7 @@ import {ProfileService} from "../../services/profile.service";
 import {AccountService} from "../../services/account.service";
 import {IAction} from "../../actions/IAction";
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
+import {ToggleVisibility} from "../../actions/ui/sidebar/ToggleVisibility";
 
 @Component({
   selector: 'app-header',
@@ -18,16 +19,13 @@ export class HeaderComponent {
   title: string;
 
   @Input()
-  isLoggedIn: boolean = false;
-
-  @Input()
   actions:IAction[] = [];
 
   get leftActions() : IAction[] {
-    return this.actions.filter(o => o.position == "left");
+    return this.actions.filter((o:IAction) => o.name == ToggleVisibility.Name).filter((o:ToggleVisibility) => o.side == "left");
   }
   get rightActions() : IAction[] {
-    return this.actions.filter(o => o.position == "right");
+    return this.actions.filter((o:IAction) => o.name == ToggleVisibility.Name).filter((o:ToggleVisibility) => o.side == "right");
   }
 
   @Output()
@@ -35,11 +33,11 @@ export class HeaderComponent {
 
 
   public profile = this._profileService.getProfileInformation();
-  public account = this._accountService.getAccountInformation();
+  public account = this.accountService.getAccountInformation();
 
   constructor(
     private _profileService: ProfileService,
-    private _accountService: AccountService,
+    protected accountService: AccountService,
     protected _actionDispatcher: ActionDispatcherService,
   ) {
   }

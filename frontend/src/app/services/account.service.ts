@@ -5,6 +5,7 @@ import {LoginGQL, LogoutGQL, SetSessionProfileGQL, VerifySessionGQL} from "../..
 import {ClientStateService} from "./client-state.service";
 import {Logger, LoggerService, LogSeverity} from "./logger.service";
 import {SessionProfileChanged} from "../actions/account/SessionProfileChanged";
+import {Apollo} from "apollo-angular";
 
 @Injectable({
   providedIn: 'root'
@@ -41,14 +42,17 @@ export class AccountService {
               , private logoutApi:LogoutGQL
               , private setSessionProfileApi:SetSessionProfileGQL
               , private verifySessionApi:VerifySessionGQL
-              , private clientState:ClientStateService) {
+              , private clientState:ClientStateService
+              , private apollo:Apollo) {
 
+    // TODO: this seems to be a bit hacky,, does the service really need to subscribe to its own events to know that?
     this.actionDispatcher.onAction.subscribe(action => {
       if (action instanceof LoginStateChanged) {
         this._isLoggedOn = action.newValue == 1;
       }
     });
 
+    // If we have a stored token from a previous session, try to initialize the AccountService
     if (this.token) {
       this.setToken(this.token)
         .then(result => {
@@ -65,9 +69,17 @@ export class AccountService {
   }
 
   private clearClientState() {
+    this.apollo.getClient().resetStore();
     this.clientState.delete(this.TokenKey);
-    this.clientState.delete(this.ProfileKey);
 
+    const oldProfileId = this.profileId;
+    this.clientState.delete(this.ProfileKey);
+    if (oldProfileId) {
+      this.actionDispatcher.dispatch(new SessionProfileChanged(oldProfileId, null));
+    }
+
+    // If a user was logged on and the client state of the AccountService is cleared, then notify everybody that the user was logged-off.
+    // The server session might be still alive though.
     if (this.isLoggedOn) {
       this.actionDispatcher.dispatch(new LoginStateChanged(LoginState.LoggedOn, LoginState.LoggedOff));
     }
@@ -131,18 +143,21 @@ export class AccountService {
   }
 
   public logout() : Promise<boolean> {
-    return this.logoutApi.mutate({token:this.token})
+    let promsie = this.logoutApi.mutate({token:this.token})
       .toPromise().then(result => {
+        console.clear();
         if (!result.data.logout) {
           throw new Error("An unexpected error occurred during logout.");
         }
-        this.clearClientState();
-        this.actionDispatcher.dispatch(new LoginStateChanged(LoginState.LoggedOn, LoginState.LoggedOff));
         return true;
       }).catch(error => {
+        console.clear();
         this._log(LogSeverity.UserNotification, "The logout failed. Please try it again in a moment. See the log for detailed error messages.");
         this._log(LogSeverity.Error, error);
         return false;
       });
+
+    this.clearClientState();
+    return promsie;
   }
 }
