@@ -84,6 +84,15 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     this.disableCompletedSteps();
   }
 
+  private disableCompletedSteps(upTp?:number) {
+    let steps = this.stepper.steps.toArray();
+    for (let i = 0; i < (upTp ? upTp : this.stepper.selectedIndex); i++) {
+      let step = steps[i];
+      steps[i].completed = true;
+      steps[i].editable = false;
+    }
+  }
+
   private async submitStep1($event: StepperSelectionEvent) {
     // First step completed, create the user
     await this.signupApi.mutate({
@@ -120,15 +129,6 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       });
   }
 
-  private disableCompletedSteps(upTp?:number) {
-    let steps = this.stepper.steps.toArray();
-    for (let i = 0; i < (upTp ? upTp : this.stepper.selectedIndex); i++) {
-      let step = steps[i];
-      steps[i].completed = true;
-      steps[i].editable = false;
-    }
-  }
-
   protected submitStep3($event: MouseEvent) {
     // Thrid step completed, create the profile
     // TODO: Pic and Timezone
@@ -137,14 +137,15 @@ export class RegisterComponent implements OnInit, AfterViewInit {
         if (!result) {
           throw new Error("The profile creation failed unexpectedly.");
         }
-        // Disable the previous steps so that the user can't navigate to them again
-        this.clientState.set("RegisterComponent.stepper.selectedIndex", 2);
-        this.disableCompletedSteps(2);
         this.accountService.setSessionProfile(result)
           .then(r => {
             if (!r) {
               throw new Error("An unexpected error occurred while binding the new profile " + result + " to the session.");
             }
+            // Disable the previous steps so that the user can't navigate to them again
+            this.clientState.set("RegisterComponent.stepper.selectedIndex", 2);
+            this.disableCompletedSteps(2);
+
             this.actionDispatcher.dispatch(new Home());
           })
       })

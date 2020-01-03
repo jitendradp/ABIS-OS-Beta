@@ -3,7 +3,14 @@ import {ProfileService} from "./services/profile.service";
 import {DataspaceService} from "./services/dataspace.service";
 import {AccountService} from "./services/account.service";
 import {MatDrawer} from "@angular/material/sidenav";
-import {ActivationEnd, Router} from "@angular/router";
+import {
+  ActivationEnd, ActivationStart, ChildActivationEnd,
+  ChildActivationStart,
+  RouteConfigLoadEnd,
+  RouteConfigLoadStart,
+  Router,
+  RouterEvent, Scroll
+} from "@angular/router";
 import {IAction} from "./actions/IAction";
 import {ActionDispatcherService} from "./services/action-dispatcher.service";
 import {MatDialog} from "@angular/material";
@@ -43,43 +50,46 @@ export class AppComponent {
     public _dialog: MatDialog
   ) {
     // Listen to actions ...
-    _actionDispatcher.onAction.subscribe(action => {
-      switch (action.name) {
-        case "Abis.Sidebar.ToggleVisibility":
-          this.left.toggle();
-          break;
-        case "Abis.Chat.ToggleVisibility":
-          this.right.toggle();
-          break;
-        case "Abis.Chat.Channel.Create":
-          this.openDialog();
-          break;
-        case ShowNotification.Name:
-          break;
-        case Home.Name:
-          this._router.navigate(["/"]);
-          break;
-      }
-    });
-
+    _actionDispatcher.onAction.subscribe(action => this.handleAction(action));
     // Listen to router events ...
-    _router.events.subscribe(o => {
-      // if the event is of Type "ActivationEnd" ...
-      if (o instanceof ActivationEnd) {
-        // "<Cast>" to the right type to access the "data" property
-        let activationEnd = <ActivationEnd>o;
-        // set the title on the header bar
-        this.title = activationEnd.snapshot.data.title;
-        if (activationEnd.snapshot.data.actions) {
-          this.actions = activationEnd.snapshot.data.actions;
-        } else {
-          this.actions = [];
-        }
-      }
-    });
+    _router.events.subscribe(o => this.handleRouterEvents(o));
   }
 
-  openDialog(): void {
+  private handleAction(action) {
+    switch (action.name) {
+      case "Abis.Sidebar.ToggleVisibility":
+        this.left.toggle();
+        break;
+      case "Abis.Chat.ToggleVisibility":
+        this.right.toggle();
+        break;
+      case "Abis.Chat.Channel.Create":
+        this.openDialog();
+        break;
+      case ShowNotification.Name:
+        break;
+      case Home.Name:
+        this._router.navigate(["/"]);
+        break;
+    }
+  }
+
+  private handleRouterEvents(o: RouterEvent | RouteConfigLoadStart | RouteConfigLoadEnd | ChildActivationStart | ChildActivationEnd | ActivationStart | ActivationEnd | Scroll) {
+    // if the event is of Type "ActivationEnd" ...
+    if (o instanceof ActivationEnd) {
+      // "<Cast>" to the right type to access the "data" property
+      let activationEnd = <ActivationEnd>o;
+      // set the title on the header bar
+      this.title = activationEnd.snapshot.data.title;
+      if (activationEnd.snapshot.data.actions) {
+        this.actions = activationEnd.snapshot.data.actions;
+      } else {
+        this.actions = [];
+      }
+    }
+  }
+
+  public openDialog(): void {
     const dialogRef = this._dialog.open(ChannelEditorComponent, {
       width: '250px'
     });
