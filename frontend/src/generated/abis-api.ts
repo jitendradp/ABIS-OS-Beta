@@ -91,6 +91,7 @@ export type Mutation = {
    __typename?: 'Mutation',
   signup?: Maybe<Scalars['String']>,
   verifyEmail?: Maybe<Scalars['String']>,
+  verifySession?: Maybe<Scalars['Boolean']>,
   createProfile?: Maybe<Scalars['String']>,
   updateProfile?: Maybe<Scalars['String']>,
   createWorkspace?: Maybe<Scalars['String']>,
@@ -108,20 +109,25 @@ export type Mutation = {
 
 
 export type MutationSignupArgs = {
-  name?: Maybe<Scalars['String']>,
-  email?: Maybe<Scalars['String']>,
-  password?: Maybe<Scalars['String']>
+  name: Scalars['String'],
+  email: Scalars['String'],
+  password: Scalars['String']
 };
 
 
 export type MutationVerifyEmailArgs = {
-  code?: Maybe<Scalars['String']>
+  code: Scalars['String']
+};
+
+
+export type MutationVerifySessionArgs = {
+  token: Scalars['String']
 };
 
 
 export type MutationCreateProfileArgs = {
   token: Scalars['String'],
-  name?: Maybe<Scalars['String']>,
+  name: Scalars['String'],
   picture?: Maybe<Scalars['String']>,
   timezone?: Maybe<Scalars['String']>
 };
@@ -129,8 +135,8 @@ export type MutationCreateProfileArgs = {
 
 export type MutationUpdateProfileArgs = {
   token: Scalars['String'],
-  profileId?: Maybe<Scalars['String']>,
-  name?: Maybe<Scalars['String']>,
+  profileId: Scalars['String'],
+  name: Scalars['String'],
   picture?: Maybe<Scalars['String']>,
   timezone?: Maybe<Scalars['String']>,
   status?: Maybe<Scalars['String']>
@@ -139,9 +145,9 @@ export type MutationUpdateProfileArgs = {
 
 export type MutationCreateWorkspaceArgs = {
   token: Scalars['String'],
-  hostProfileId?: Maybe<Scalars['String']>,
-  name?: Maybe<Scalars['String']>,
-  title?: Maybe<Scalars['String']>,
+  hostProfileId: Scalars['String'],
+  name: Scalars['String'],
+  title: Scalars['String'],
   description?: Maybe<Scalars['String']>,
   logo?: Maybe<Scalars['String']>,
   tags?: Maybe<Scalars['String']>
@@ -150,9 +156,9 @@ export type MutationCreateWorkspaceArgs = {
 
 export type MutationUpdateWorkspaceArgs = {
   token: Scalars['String'],
-  workspaceId?: Maybe<Scalars['String']>,
-  name?: Maybe<Scalars['String']>,
-  title?: Maybe<Scalars['String']>,
+  workspaceId: Scalars['String'],
+  name: Scalars['String'],
+  title: Scalars['String'],
   description?: Maybe<Scalars['String']>,
   logo?: Maybe<Scalars['String']>,
   tags?: Maybe<Scalars['String']>,
@@ -163,23 +169,23 @@ export type MutationUpdateWorkspaceArgs = {
 
 export type MutationAddMemberArgs = {
   token: Scalars['String'],
-  groupId?: Maybe<Scalars['String']>,
-  memberProfileId?: Maybe<Scalars['String']>
+  groupId: Scalars['String'],
+  memberProfileId: Scalars['String']
 };
 
 
 export type MutationRemoveMemberArgs = {
   token: Scalars['String'],
-  groupId?: Maybe<Scalars['String']>,
-  memberProfileId?: Maybe<Scalars['String']>
+  groupId: Scalars['String'],
+  memberProfileId: Scalars['String']
 };
 
 
 export type MutationPostMessageArgs = {
   token: Scalars['String'],
-  groupId?: Maybe<Scalars['String']>,
-  subject?: Maybe<Scalars['String']>,
-  content?: Maybe<Scalars['String']>
+  groupId: Scalars['String'],
+  subject: Scalars['String'],
+  content: Scalars['String']
 };
 
 
@@ -206,19 +212,19 @@ export type MutationSellArgs = {
 
 
 export type MutationLoginArgs = {
-  email?: Maybe<Scalars['String']>,
-  password?: Maybe<Scalars['String']>
+  email: Scalars['String'],
+  password: Scalars['String']
 };
 
 
 export type MutationLogoutArgs = {
-  token?: Maybe<Scalars['String']>
+  token: Scalars['String']
 };
 
 
 export type MutationSetSessionProfileArgs = {
   token: Scalars['String'],
-  profileId?: Maybe<Scalars['String']>
+  profileId: Scalars['String']
 };
 
 export type Portfolio = {
@@ -383,6 +389,16 @@ export type SetSessionProfileMutationVariables = {
 export type SetSessionProfileMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'setSessionProfile'>
+);
+
+export type VerifySessionMutationVariables = {
+  token: Scalars['String']
+};
+
+
+export type VerifySessionMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'verifySession'>
 );
 
 export type CreateWorkspaceMutationVariables = {
@@ -708,6 +724,19 @@ export const SetSessionProfileDocument = gql`
   })
   export class SetSessionProfileGQL extends Apollo.Mutation<SetSessionProfileMutation, SetSessionProfileMutationVariables> {
     document = SetSessionProfileDocument;
+    
+  }
+export const VerifySessionDocument = gql`
+    mutation verifySession($token: String!) {
+  verifySession(token: $token)
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class VerifySessionGQL extends Apollo.Mutation<VerifySessionMutation, VerifySessionMutationVariables> {
+    document = VerifySessionDocument;
     
   }
 export const CreateWorkspaceDocument = gql`

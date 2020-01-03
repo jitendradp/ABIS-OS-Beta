@@ -102,25 +102,26 @@ type Portfolio {
 }
 
 type Mutation {
-    signup(name:String email:String password:String) : String
-    verifyEmail(code:String) : String
-    createProfile(token:String! name:String picture:String timezone:String) : String
-    updateProfile(token:String! profileId:String name:String picture:String timezone:String status:String) : String
-    createWorkspace(token:String! hostProfileId: String, name:String title:String description:String logo:String tags:String) : String
-    updateWorkspace(token:String! workspaceId: String, name:String title:String description:String logo:String tags:String isHidden:Boolean isPublic:Boolean) : String
-    addMember(token:String! groupId:String memberProfileId:String) : String
-    removeMember(token:String! groupId:String memberProfileId:String) : String
-    postMessage(token:String! groupId:String subject:String content:String) : String
+    signup(name:String! email:String! password:String!) : String
+    verifyEmail(code:String!) : String
+    verifySession(token:String!) : Boolean
+    createProfile(token:String! name:String! picture:String timezone:String) : String
+    updateProfile(token:String! profileId:String! name:String! picture:String timezone:String status:String) : String
+    createWorkspace(token:String! hostProfileId: String!, name:String! title:String! description:String logo:String tags:String) : String
+    updateWorkspace(token:String! workspaceId: String!, name:String! title:String! description:String logo:String tags:String isHidden:Boolean isPublic:Boolean) : String
+    addMember(token:String! groupId:String! memberProfileId:String!) : String
+    removeMember(token:String! groupId:String! memberProfileId:String!) : String
+    postMessage(token:String! groupId:String! subject:String! content:String!) : String
 
     createPortfolio(token:String! name:String) : String
 
     buy(token:String! exchangeId:String! assetId:String! amount:Float!) : Transaction
     sell(token:String! exchangeId:String! assetId:String! amount:Float!) : Transaction
 
-    login(email:String password:String) : String
-    logout(token:String) : Boolean
+    login(email:String! password:String!) : String
+    logout(token:String!) : Boolean
 
-    setSessionProfile(token:String! profileId:String) : String
+    setSessionProfile(token:String! profileId:String!) : String
 }
 
 type Query {

@@ -7,4 +7,14 @@ export class Helpers {
             .replace(/\//g, '0'); // replace '/' with '0'
         return randomNumbers;
     }
+
+    public static log(msg:string) {
+        console.log("[" + new Date().toISOString() + "] " + msg);
+    }
+
+    public static logId(msg:string) :string {
+        let id = Helpers.getRandomBase64String(8);
+        console.log("[" + new Date().toISOString() + " - Error id: " + id + "] " + msg);
+        return id;
+    }
 }

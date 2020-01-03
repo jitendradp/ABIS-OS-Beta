@@ -2,15 +2,15 @@
   <button *ngFor="let action of leftActions" mat-icon-button (click)="_actionDispatcher.dispatch(action);">
     <mat-icon>{{action.icon}}</mat-icon>
   </button>
-  <div style="margin-left: 32px">
+  <div style="margin-left: 16px">
     {{title}}
   </div>
   <span class="fill-remaining-space"></span>
-  <app-button *ngIf="!isLoggedIn" [link]='"/"'
+  <app-button *ngIf="!accountService.isLoggedOn" [link]='"/"'
               [text]="'Sign In / Register'">
   </app-button>
 
-  <div style="padding-right: 24px; padding-left: 24px">
+  <div style="padding-left: 24px">
     <button *ngFor="let action of rightActions" mat-icon-button (click)="_actionDispatcher.dispatch(action);">
       <mat-icon>{{action.icon}}</mat-icon>
     </button>

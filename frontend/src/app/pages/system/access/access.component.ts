@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {AccountService} from "../../../services/account.service";
 
 @Component({
   selector: 'app-access',
@@ -6,5 +7,7 @@ import {Component} from '@angular/core';
   styleUrls: ['./access.component.css']
 })
 export class AccessComponent {
+  constructor(protected accountService:AccountService) {
+  }
 
 }

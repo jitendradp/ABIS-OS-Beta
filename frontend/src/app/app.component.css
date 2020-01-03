@@ -8,14 +8,25 @@
   background: #222;
 }
 
-.sidebar {
+.sidebarLeft {
+  min-width: 300px;
+  padding-top: 56px;
+  background-color: #fff;
+}
+
+.sidebarRight {
   min-width: 300px;
   padding-top: 56px;
   background-color: #fff;
 }
 
 @media screen and (max-width: 735px) {
-  .sidebar {
+  .sidebarLeft {
+    width: 80%;
+  }
+
+  /* todo change the mode from drawer push to over when in mobile view */
+  .sidebarRight {
     width: 100%;
   }
 }

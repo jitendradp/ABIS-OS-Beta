@@ -3,11 +3,25 @@ import {ProfileService} from "./services/profile.service";
 import {DataspaceService} from "./services/dataspace.service";
 import {AccountService} from "./services/account.service";
 import {MatDrawer} from "@angular/material/sidenav";
-import {ActivationEnd, Router} from "@angular/router";
-import {IAction} from "./actions/IAction";
+import {
+  ActivationEnd,
+  ActivationStart,
+  ChildActivationEnd,
+  ChildActivationStart,
+  RouteConfigLoadEnd,
+  RouteConfigLoadStart,
+  Router,
+  RouterEvent,
+  Scroll
+} from "@angular/router";
+import {IEvent} from "./actions/IEvent";
 import {ActionDispatcherService} from "./services/action-dispatcher.service";
 import {MatDialog} from "@angular/material";
 import {ChannelEditorComponent} from "./editors/channel-editor/channel-editor.component";
+import {Home} from "./actions/routes/Home";
+import {ShowNotification} from "./actions/ui/ShowNotification";
+import {SwitchProfile} from "./actions/routes/SwitchProfile";
+import {ToggleVisibility} from "./actions/ui/sidebar/ToggleVisibility";
 
 @Component({
   selector: 'app-root',
@@ -15,8 +29,6 @@ import {ChannelEditorComponent} from "./editors/channel-editor/channel-editor.co
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-
-  public static readonly Version:number = 20200103;
 
   @ViewChild("left", {static: true})
   left: MatDrawer;
@@ -32,7 +44,7 @@ export class AppComponent {
   public dataspace = this._dataspaceService.getDataspaceInformation();
   public account = this._accountService.getAccountInformation();
 
-  actions: IAction[] = [];
+  actions: IEvent[] = [];
 
   constructor(
     private _profileService: ProfileService,
@@ -43,38 +55,50 @@ export class AppComponent {
     public _dialog: MatDialog
   ) {
     // Listen to actions ...
-    _actionDispatcher.onAction.subscribe(action => {
-      switch (action.name) {
-        case "Abis.Sidebar.ToggleVisibility":
-          this.left.toggle();
-          break;
-        case "Abis.Chat.ToggleVisibility":
-          this.right.toggle();
-          break;
-        case "Abis.Chat.Channel.Create":
-          this.openDialog();
-          break;
-      }
-    });
-
+    _actionDispatcher.onAction.subscribe(action => this.handleAction(action));
     // Listen to router events ...
-    _router.events.subscribe(o => {
-      // if the event is of Type "ActivationEnd" ...
-      if (o instanceof ActivationEnd) {
-        // "<Cast>" to the right type to access the "data" property
-        let activationEnd = <ActivationEnd>o;
-        // set the title on the header bar
-        this.title = activationEnd.snapshot.data.title;
-        if (activationEnd.snapshot.data.actions) {
-          this.actions = activationEnd.snapshot.data.actions;
-        } else {
-          this.actions = [];
-        }
-      }
-    });
+    _router.events.subscribe(o => this.handleRouterEvents(o));
   }
 
-  openDialog(): void {
+  private handleAction(action) {
+    switch (action.name) {
+      case ToggleVisibility.Name:
+        if (action.side == "left") {
+          this.left.toggle();
+        } else if (action.side == "right") {
+          this.right.toggle();
+        }
+        break;
+      case "Abis.Chat.Channel.Create":
+        this.openDialog();
+        break;
+      case ShowNotification.Name:
+        break;
+      case Home.Name:
+        this._router.navigate(["/"]);
+        break;
+      case SwitchProfile.Name:
+        this._router.navigate(["/switch-profile"]);
+        break;
+    }
+  }
+
+  private handleRouterEvents(o: RouterEvent | RouteConfigLoadStart | RouteConfigLoadEnd | ChildActivationStart | ChildActivationEnd | ActivationStart | ActivationEnd | Scroll) {
+    // if the event is of Type "ActivationEnd" ...
+    if (o instanceof ActivationEnd) {
+      // "<Cast>" to the right type to access the "data" property
+      let activationEnd = <ActivationEnd>o;
+      // set the title on the header bar
+      this.title = activationEnd.snapshot.data.title;
+      if (activationEnd.snapshot.data.actions) {
+        this.actions = activationEnd.snapshot.data.actions;
+      } else {
+        this.actions = [];
+      }
+    }
+  }
+
+  public openDialog(): void {
     const dialogRef = this._dialog.open(ChannelEditorComponent, {
       width: '250px'
     });

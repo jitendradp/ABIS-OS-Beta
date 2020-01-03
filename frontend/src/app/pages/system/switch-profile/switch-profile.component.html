@@ -1,0 +1,28 @@
+<div fxLayout
+     fxLayout.xs="column"
+     fxLayoutAlign="center"
+     fxLayoutGap="0px"
+     fxLayoutGap.xs="0">
+  <div fxFlex='auto' fxFlex.gt-md='50' fxFlex.gt-sm='80'>
+    <app-content>
+      <mat-card>
+        <app-content>
+          <mat-card-title>
+            Switch your profile
+          </mat-card-title>
+          <mat-card-actions>
+            <app-button *ngFor="let profile of _profiles" (click)="switchToProfile(profile)" [text]="profile.name"></app-button>
+          </mat-card-actions>
+        </app-content>
+      </mat-card>
+    </app-content>
+  </div>
+</div>
+
+
+
+
+
+
+
+
