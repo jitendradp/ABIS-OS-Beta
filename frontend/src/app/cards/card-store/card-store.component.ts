@@ -1,11 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
-  selector: 'app-card',
-  templateUrl: './card.component.html',
-  styleUrls: ['./card.component.css']
+  selector: 'app-card-store',
+  templateUrl: './card-store.component.html',
+  styleUrls: ['./card-store.component.css']
 })
-export class CardComponent implements OnInit {
+export class CardStoreComponent {
 
   @Input()
   accordionTitle: string;
@@ -75,11 +75,5 @@ export class CardComponent implements OnInit {
 
   @Input()
   subtitle: string;
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 
 }

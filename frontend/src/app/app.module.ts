@@ -38,7 +38,6 @@ import {ButtonComponent} from './components/button/button.component';
 import {RegisterComponent} from './pages/system/register/register.component';
 import {SigninComponent} from './pages/system/signin/signin.component';
 import {ProfileComponent} from './pages/system/profile/profile.component';
-import {CardComponent} from './components/card/card.component';
 import {IconbarComponent} from './components/iconbar/iconbar.component';
 import {StoreComponent} from './pages/store/store.component';
 import {FlexLayoutModule} from "@angular/flex-layout";
@@ -51,7 +50,6 @@ import {ProfileService} from "./services/profile.service";
 import {CockpitComponent} from './pages/cockpit/cockpit.component';
 import {MapComponent} from './pages/map/map.component';
 import {InviteComponent} from './pages/system/invite/invite.component';
-import {FormComponent} from './components/form/form.component';
 import {ResetComponent} from './pages/system/reset/reset.component';
 import {ForgotComponent} from './pages/system/forgot/forgot.component';
 import {LogoComponent} from './components/logo/logo.component';
@@ -77,6 +75,8 @@ import {AvatarsComponent} from "./components/avatars/avatars.component";
 import {LayoutComponent} from "./components/layout/layout.component";
 import {CardMessageComponent} from "./cards/card-message/card-message.component";
 import {CardTeamComponent} from "./cards/card-team/card-team.component";
+import {CardFormComponent} from "./cards/card-form/card-form.component";
+import {CardStoreComponent} from "./cards/card-store/card-store.component";
 
 const defaultActions: IAction[] = [<ToggleVisibility>{
   name: ToggleVisibility.Name,
@@ -205,7 +205,6 @@ const appRoutes: Routes = [
     RegisterComponent,
     SigninComponent,
     ProfileComponent,
-    CardComponent,
     IconbarComponent,
     StoreComponent,
     LineChartComponent,
@@ -214,7 +213,6 @@ const appRoutes: Routes = [
     CockpitComponent,
     MapComponent,
     InviteComponent,
-    FormComponent,
     ResetComponent,
     ForgotComponent,
     LogoComponent,
@@ -235,6 +233,8 @@ const appRoutes: Routes = [
     LayoutComponent,
     CardMessageComponent,
     CardTeamComponent,
+    CardFormComponent,
+    CardStoreComponent,
   ],
   imports: [
     RouterModule.forRoot(

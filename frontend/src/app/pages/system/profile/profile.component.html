@@ -5,16 +5,16 @@
      fxLayoutGap.xs="0">
   <div fxFlex='auto' fxFlex.gt-md='50' fxFlex.gt-sm='80'>
     <app-content>
-      <app-form [title]="'Edit account'">
+      <app-card-form [title]="'Edit account'">
         <app-input
           [type]="'text'"
           [placeholder]="'Full name'"
           [inputValue]="account.firstname + ' ' + account.lastname">
         </app-input>
-      </app-form>
+      </app-card-form>
     </app-content>
     <app-content>
-      <app-form [title]="'Edit profile'">
+      <app-card-form [title]="'Edit profile'">
         <app-input
           [type]="'text'"
           [placeholder]="'Display name'"
@@ -43,7 +43,7 @@
           [inputValue]="profile.phone">
         </app-input>
 
-      </app-form>
+      </app-card-form>
     </app-content>
   </div>
   <div fxFlex="50%">

@@ -9,9 +9,6 @@
   <button *ngFor="let action of rightActions" mat-icon-button (click)="_actionDispatcher.dispatch(action);">
     <mat-icon>{{action.icon}}</mat-icon>
   </button>
+  <span>Chat</span>
   <!-- todo add some notification badge on the icons if needed in the header dynamically -->
-  <button mat-icon-button routerLink="/explorer">
-    <mat-icon>people</mat-icon>
-  </button>
 </mat-toolbar>
-

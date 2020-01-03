@@ -5,14 +5,14 @@
      fxLayoutGap.xs="0">
   <div fxFlex='auto' fxFlex.gt-md='50' fxFlex.gt-sm='80'>
     <app-content>
-      <app-form [title]="'Forgot password?'">
+      <app-card-form [title]="'Forgot password?'">
         <app-input [type]="'email'"
                    [placeholder]="'Email'"
                    [showHint]="true"
                    [hint]="'Enter your account email address. There you will then receive a link to reset your password.'">
         </app-input>
         <app-button [link]="'/reset-password'" [text]="'Confirm'"></app-button>
-      </app-form>
+      </app-card-form>
     </app-content>
   </div>
 </div>
