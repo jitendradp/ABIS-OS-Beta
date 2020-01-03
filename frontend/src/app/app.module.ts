@@ -53,7 +53,6 @@ import {InviteComponent} from './pages/system/invite/invite.component';
 import {ResetComponent} from './pages/system/reset/reset.component';
 import {ForgotComponent} from './pages/system/forgot/forgot.component';
 import {LogoComponent} from './components/logo/logo.component';
-import {LocationComponent} from './pages/system/location/location.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {HeaderComponent} from './components/header/header.component';
 import {InputComponent} from './components/input/input.component';
@@ -158,12 +157,6 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'location', component: LocationComponent, data: {
-      "title": "Add location",
-      "actions": defaultActions
-    }
-  },
-  {
     path: 'channel-editor', component: ChannelEditorComponent, data: {
       "title": "Create new channel",
       "actions": defaultActions
@@ -216,7 +209,6 @@ const appRoutes: Routes = [
     ResetComponent,
     ForgotComponent,
     LogoComponent,
-    LocationComponent,
     HeaderComponent,
     InputComponent,
     WhitespaceComponent,
