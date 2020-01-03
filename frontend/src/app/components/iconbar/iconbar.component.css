@@ -4,6 +4,15 @@
   bottom: 0;
 }
 
+.tileButton {
+  width: 100%;
+  height: 100%;
+}
+
+mat-grid-tile {
+  outline: none;
+}
+
 .iconLabelSpacing {
   padding-left: 4px;
 }
@@ -23,14 +32,16 @@
   width: 100%;
 }
 
+/* todo start the animation in the center and ease out to left and right*/
+
 @keyframes pulseLine {
   0% {
-    background-color: #222222;
+    background-color: #204AAB;
   }
   50% {
     background-color: #2ecc71;
   }
   100% {
-    background-color: #204AAB;
+    background-color: #222222;
   }
 }

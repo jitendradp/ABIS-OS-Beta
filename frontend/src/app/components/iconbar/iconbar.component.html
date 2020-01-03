@@ -1,23 +1,33 @@
 <div class="subline"></div>
 <mat-grid-list class="quickButtons" cols="5" rowHeight="56px">
-  <mat-grid-tile routerLink="/cockpit">
-    <mat-icon>bar_chart</mat-icon>
-    <span class="iconLabelSpacing">Cockpit</span>
+  <mat-grid-tile>
+    <button routerLink="/cockpit" mat-button class="tileButton">
+      <mat-icon>bar_chart</mat-icon>
+      <span fxHide fxShow.gt-sm class="iconLabelSpacing">Cockpit</span>
+    </button>
   </mat-grid-tile>
-  <mat-grid-tile routerLink="/store">
-    <mat-icon>apps</mat-icon>
-    <span class="iconLabelSpacing">Apps</span>
+  <mat-grid-tile>
+    <button routerLink="/store" mat-button class="tileButton">
+      <mat-icon>apps</mat-icon>
+      <span fxHide fxShow.gt-sm class="iconLabelSpacing">Apps</span>
+    </button>
   </mat-grid-tile>
-  <mat-grid-tile (click)="openBottomSheet()">
-    <mat-icon>graphic_eq</mat-icon>
-    <span class="iconLabelSpacing">Search</span>
+  <mat-grid-tile>
+    <button (click)="openBottomSheet()" mat-button class="tileButton">
+      <mat-icon>graphic_eq</mat-icon>
+      <span fxHide fxShow.gt-sm class="iconLabelSpacing">Search</span>
+    </button>
   </mat-grid-tile>
-  <mat-grid-tile routerLink="/map">
-    <mat-icon>map</mat-icon>
-    <span class="iconLabelSpacing">Map</span>
+  <mat-grid-tile>
+    <button routerLink="/map" mat-button class="tileButton">
+      <mat-icon>map</mat-icon>
+      <span fxHide fxShow.gt-sm class="iconLabelSpacing">Map</span>
+    </button>
   </mat-grid-tile>
-  <mat-grid-tile routerLink="/studio">
-    <mat-icon>donut_small</mat-icon>
-    <span class="iconLabelSpacing">Studio</span>
+  <mat-grid-tile>
+    <button routerLink="/studio" mat-button class="tileButton">
+      <mat-icon>donut_small</mat-icon>
+      <span fxHide fxShow.gt-sm class="iconLabelSpacing">Studio</span>
+    </button>
   </mat-grid-tile>
 </mat-grid-list>

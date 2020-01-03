@@ -14,9 +14,9 @@
     width: 80%;
   }
 
-  /* todo change the mode from drawer push to over when in mobile view */
+  /* todo change the mode from drawer push to over when in mobile view and I have no clue why 101 works */
   .sidebarRight {
-    width: 100%;
+    width: 101%;
   }
 }
 
