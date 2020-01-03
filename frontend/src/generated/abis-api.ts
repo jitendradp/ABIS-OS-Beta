@@ -121,12 +121,12 @@ export type MutationVerifyEmailArgs = {
 
 
 export type MutationVerifySessionArgs = {
-  token: Scalars['String']
+  csrfToken: Scalars['String']
 };
 
 
 export type MutationCreateProfileArgs = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   name: Scalars['String'],
   picture?: Maybe<Scalars['String']>,
   timezone?: Maybe<Scalars['String']>
@@ -134,7 +134,7 @@ export type MutationCreateProfileArgs = {
 
 
 export type MutationUpdateProfileArgs = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   profileId: Scalars['String'],
   name: Scalars['String'],
   picture?: Maybe<Scalars['String']>,
@@ -144,7 +144,7 @@ export type MutationUpdateProfileArgs = {
 
 
 export type MutationCreateWorkspaceArgs = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   hostProfileId: Scalars['String'],
   name: Scalars['String'],
   title: Scalars['String'],
@@ -155,7 +155,7 @@ export type MutationCreateWorkspaceArgs = {
 
 
 export type MutationUpdateWorkspaceArgs = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   workspaceId: Scalars['String'],
   name: Scalars['String'],
   title: Scalars['String'],
@@ -168,21 +168,21 @@ export type MutationUpdateWorkspaceArgs = {
 
 
 export type MutationAddMemberArgs = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   groupId: Scalars['String'],
   memberProfileId: Scalars['String']
 };
 
 
 export type MutationRemoveMemberArgs = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   groupId: Scalars['String'],
   memberProfileId: Scalars['String']
 };
 
 
 export type MutationPostMessageArgs = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   groupId: Scalars['String'],
   subject: Scalars['String'],
   content: Scalars['String']
@@ -190,13 +190,13 @@ export type MutationPostMessageArgs = {
 
 
 export type MutationCreatePortfolioArgs = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   name?: Maybe<Scalars['String']>
 };
 
 
 export type MutationBuyArgs = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   exchangeId: Scalars['String'],
   assetId: Scalars['String'],
   amount: Scalars['Float']
@@ -204,7 +204,7 @@ export type MutationBuyArgs = {
 
 
 export type MutationSellArgs = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   exchangeId: Scalars['String'],
   assetId: Scalars['String'],
   amount: Scalars['Float']
@@ -218,12 +218,12 @@ export type MutationLoginArgs = {
 
 
 export type MutationLogoutArgs = {
-  token: Scalars['String']
+  csrfToken: Scalars['String']
 };
 
 
 export type MutationSetSessionProfileArgs = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   profileId: Scalars['String']
 };
 
@@ -264,45 +264,45 @@ export type Query = {
 
 
 export type QueryMyWorkspacesArgs = {
-  token: Scalars['String']
+  csrfToken: Scalars['String']
 };
 
 
 export type QueryMyMembershipsArgs = {
-  token: Scalars['String']
+  csrfToken: Scalars['String']
 };
 
 
 export type QueryGetSessionProfileArgs = {
-  token: Scalars['String']
+  csrfToken: Scalars['String']
 };
 
 
 export type QueryListProfilesArgs = {
-  token: Scalars['String']
+  csrfToken: Scalars['String']
 };
 
 
 export type QueryListWorkspacesArgs = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   profileId: Scalars['String']
 };
 
 
 export type QueryListMembershipsArgs = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   profileId: Scalars['String']
 };
 
 
 export type QueryListMembersArgs = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   groupId: Scalars['String']
 };
 
 
 export type QueryListMessagesArgs = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   groupId: Scalars['String'],
   profileId: Scalars['String'],
   begin?: Maybe<Scalars['String']>,
@@ -311,13 +311,13 @@ export type QueryListMessagesArgs = {
 
 
 export type QueryGetProfileArgs = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   profileId: Scalars['String']
 };
 
 
 export type QueryGetWorkspaceArgs = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   workspaceId: Scalars['String']
 };
 
@@ -371,7 +371,7 @@ export type LoginMutation = (
 );
 
 export type LogoutMutationVariables = {
-  token: Scalars['String']
+  csrfToken: Scalars['String']
 };
 
 
@@ -381,7 +381,7 @@ export type LogoutMutation = (
 );
 
 export type SetSessionProfileMutationVariables = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   profileId: Scalars['String']
 };
 
@@ -392,7 +392,7 @@ export type SetSessionProfileMutation = (
 );
 
 export type VerifySessionMutationVariables = {
-  token: Scalars['String']
+  csrfToken: Scalars['String']
 };
 
 
@@ -402,7 +402,7 @@ export type VerifySessionMutation = (
 );
 
 export type CreateWorkspaceMutationVariables = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   hostProfileId: Scalars['String'],
   name: Scalars['String'],
   title: Scalars['String'],
@@ -418,7 +418,7 @@ export type CreateWorkspaceMutation = (
 );
 
 export type UpdateWorkspaceMutationVariables = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   workspaceId: Scalars['String'],
   name: Scalars['String'],
   title: Scalars['String'],
@@ -436,7 +436,7 @@ export type UpdateWorkspaceMutation = (
 );
 
 export type AddMemberMutationVariables = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   groupId: Scalars['String'],
   memberProfileId: Scalars['String']
 };
@@ -448,7 +448,7 @@ export type AddMemberMutation = (
 );
 
 export type RemoveMemberMutationVariables = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   groupId: Scalars['String'],
   memberProfileId: Scalars['String']
 };
@@ -460,7 +460,7 @@ export type RemoveMemberMutation = (
 );
 
 export type PostMessageMutationVariables = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   groupId: Scalars['String'],
   subject: Scalars['String'],
   content: Scalars['String']
@@ -473,7 +473,7 @@ export type PostMessageMutation = (
 );
 
 export type CreateProfileMutationVariables = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   name: Scalars['String'],
   picture: Scalars['String'],
   timezone: Scalars['String']
@@ -486,7 +486,7 @@ export type CreateProfileMutation = (
 );
 
 export type UpdateProfileMutationVariables = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   profileId: Scalars['String'],
   name: Scalars['String'],
   picture: Scalars['String'],
@@ -501,7 +501,7 @@ export type UpdateProfileMutation = (
 );
 
 export type GetSessionProfileQueryVariables = {
-  token: Scalars['String']
+  csrfToken: Scalars['String']
 };
 
 
@@ -514,7 +514,7 @@ export type GetSessionProfileQuery = (
 );
 
 export type ListProfilesQueryVariables = {
-  token: Scalars['String']
+  csrfToken: Scalars['String']
 };
 
 
@@ -531,7 +531,7 @@ export type ListProfilesQuery = (
 );
 
 export type GetProfileQueryVariables = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   profileId: Scalars['String']
 };
 
@@ -564,7 +564,7 @@ export type GetProfileQuery = (
 );
 
 export type ListWorkspacesQueryVariables = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   profileId: Scalars['String']
 };
 
@@ -586,7 +586,7 @@ export type ListWorkspacesQuery = (
 );
 
 export type ListMembersQueryVariables = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   groupId: Scalars['String']
 };
 
@@ -608,7 +608,7 @@ export type ListMembersQuery = (
 );
 
 export type ListMessagesQueryVariables = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   groupId: Scalars['String'],
   profileId: Scalars['String'],
   begin?: Maybe<Scalars['String']>,
@@ -629,7 +629,7 @@ export type ListMessagesQuery = (
 );
 
 export type GetWorkspaceQueryVariables = {
-  token: Scalars['String'],
+  csrfToken: Scalars['String'],
   workspaceId: Scalars['String']
 };
 
@@ -701,8 +701,8 @@ export const LoginDocument = gql`
     
   }
 export const LogoutDocument = gql`
-    mutation logout($token: String!) {
-  logout(token: $token)
+    mutation logout($csrfToken: String!) {
+  logout(csrfToken: $csrfToken)
 }
     `;
 
@@ -714,8 +714,8 @@ export const LogoutDocument = gql`
     
   }
 export const SetSessionProfileDocument = gql`
-    mutation setSessionProfile($token: String!, $profileId: String!) {
-  setSessionProfile(token: $token, profileId: $profileId)
+    mutation setSessionProfile($csrfToken: String!, $profileId: String!) {
+  setSessionProfile(csrfToken: $csrfToken, profileId: $profileId)
 }
     `;
 
@@ -727,8 +727,8 @@ export const SetSessionProfileDocument = gql`
     
   }
 export const VerifySessionDocument = gql`
-    mutation verifySession($token: String!) {
-  verifySession(token: $token)
+    mutation verifySession($csrfToken: String!) {
+  verifySession(csrfToken: $csrfToken)
 }
     `;
 
@@ -740,8 +740,8 @@ export const VerifySessionDocument = gql`
     
   }
 export const CreateWorkspaceDocument = gql`
-    mutation createWorkspace($token: String!, $hostProfileId: String!, $name: String!, $title: String!, $description: String!, $logo: String!, $tags: String!) {
-  createWorkspace(token: $token, hostProfileId: $hostProfileId, name: $name, title: $title, description: $description, logo: $logo, tags: $tags)
+    mutation createWorkspace($csrfToken: String!, $hostProfileId: String!, $name: String!, $title: String!, $description: String!, $logo: String!, $tags: String!) {
+  createWorkspace(csrfToken: $csrfToken, hostProfileId: $hostProfileId, name: $name, title: $title, description: $description, logo: $logo, tags: $tags)
 }
     `;
 
@@ -753,8 +753,8 @@ export const CreateWorkspaceDocument = gql`
     
   }
 export const UpdateWorkspaceDocument = gql`
-    mutation updateWorkspace($token: String!, $workspaceId: String!, $name: String!, $title: String!, $description: String!, $logo: String!, $tags: String!, $isHidden: Boolean!, $isPublic: Boolean!) {
-  updateWorkspace(token: $token, workspaceId: $workspaceId, name: $name, title: $title, description: $description, logo: $logo, tags: $tags, isHidden: $isHidden, isPublic: $isPublic)
+    mutation updateWorkspace($csrfToken: String!, $workspaceId: String!, $name: String!, $title: String!, $description: String!, $logo: String!, $tags: String!, $isHidden: Boolean!, $isPublic: Boolean!) {
+  updateWorkspace(csrfToken: $csrfToken, workspaceId: $workspaceId, name: $name, title: $title, description: $description, logo: $logo, tags: $tags, isHidden: $isHidden, isPublic: $isPublic)
 }
     `;
 
@@ -766,8 +766,8 @@ export const UpdateWorkspaceDocument = gql`
     
   }
 export const AddMemberDocument = gql`
-    mutation addMember($token: String!, $groupId: String!, $memberProfileId: String!) {
-  addMember(token: $token, groupId: $groupId, memberProfileId: $memberProfileId)
+    mutation addMember($csrfToken: String!, $groupId: String!, $memberProfileId: String!) {
+  addMember(csrfToken: $csrfToken, groupId: $groupId, memberProfileId: $memberProfileId)
 }
     `;
 
@@ -779,8 +779,8 @@ export const AddMemberDocument = gql`
     
   }
 export const RemoveMemberDocument = gql`
-    mutation removeMember($token: String!, $groupId: String!, $memberProfileId: String!) {
-  removeMember(token: $token, groupId: $groupId, memberProfileId: $memberProfileId)
+    mutation removeMember($csrfToken: String!, $groupId: String!, $memberProfileId: String!) {
+  removeMember(csrfToken: $csrfToken, groupId: $groupId, memberProfileId: $memberProfileId)
 }
     `;
 
@@ -792,8 +792,8 @@ export const RemoveMemberDocument = gql`
     
   }
 export const PostMessageDocument = gql`
-    mutation postMessage($token: String!, $groupId: String!, $subject: String!, $content: String!) {
-  postMessage(token: $token, groupId: $groupId, subject: $subject, content: $content)
+    mutation postMessage($csrfToken: String!, $groupId: String!, $subject: String!, $content: String!) {
+  postMessage(csrfToken: $csrfToken, groupId: $groupId, subject: $subject, content: $content)
 }
     `;
 
@@ -805,8 +805,8 @@ export const PostMessageDocument = gql`
     
   }
 export const CreateProfileDocument = gql`
-    mutation createProfile($token: String!, $name: String!, $picture: String!, $timezone: String!) {
-  createProfile(token: $token, name: $name, picture: $picture, timezone: $timezone)
+    mutation createProfile($csrfToken: String!, $name: String!, $picture: String!, $timezone: String!) {
+  createProfile(csrfToken: $csrfToken, name: $name, picture: $picture, timezone: $timezone)
 }
     `;
 
@@ -818,8 +818,8 @@ export const CreateProfileDocument = gql`
     
   }
 export const UpdateProfileDocument = gql`
-    mutation updateProfile($token: String!, $profileId: String!, $name: String!, $picture: String!, $timezone: String!, $status: String!) {
-  updateProfile(token: $token, profileId: $profileId, name: $name, picture: $picture, timezone: $timezone, status: $status)
+    mutation updateProfile($csrfToken: String!, $profileId: String!, $name: String!, $picture: String!, $timezone: String!, $status: String!) {
+  updateProfile(csrfToken: $csrfToken, profileId: $profileId, name: $name, picture: $picture, timezone: $timezone, status: $status)
 }
     `;
 
@@ -831,8 +831,8 @@ export const UpdateProfileDocument = gql`
     
   }
 export const GetSessionProfileDocument = gql`
-    query getSessionProfile($token: String!) {
-  getSessionProfile(token: $token) {
+    query getSessionProfile($csrfToken: String!) {
+  getSessionProfile(csrfToken: $csrfToken) {
     id
   }
 }
@@ -846,8 +846,8 @@ export const GetSessionProfileDocument = gql`
     
   }
 export const ListProfilesDocument = gql`
-    query listProfiles($token: String!) {
-  listProfiles(token: $token) {
+    query listProfiles($csrfToken: String!) {
+  listProfiles(csrfToken: $csrfToken) {
     id
     createdAt
     name
@@ -873,8 +873,8 @@ export const ListProfilesDocument = gql`
     
   }
 export const GetProfileDocument = gql`
-    query getProfile($token: String!, $profileId: String!) {
-  getProfile(token: $token, profileId: $profileId) {
+    query getProfile($csrfToken: String!, $profileId: String!) {
+  getProfile(csrfToken: $csrfToken, profileId: $profileId) {
     id
     createdAt
     updatedAt
@@ -928,8 +928,8 @@ export const GetProfileDocument = gql`
     
   }
 export const ListWorkspacesDocument = gql`
-    query listWorkspaces($token: String!, $profileId: String!) {
-  listWorkspaces(token: $token, profileId: $profileId) {
+    query listWorkspaces($csrfToken: String!, $profileId: String!) {
+  listWorkspaces(csrfToken: $csrfToken, profileId: $profileId) {
     id
     name
     title
@@ -964,8 +964,8 @@ export const ListWorkspacesDocument = gql`
     
   }
 export const ListMembersDocument = gql`
-    query listMembers($token: String!, $groupId: String!) {
-  listMembers(token: $token, groupId: $groupId) {
+    query listMembers($csrfToken: String!, $groupId: String!) {
+  listMembers(csrfToken: $csrfToken, groupId: $groupId) {
     id
     createdAt
     member {
@@ -994,8 +994,8 @@ export const ListMembersDocument = gql`
     
   }
 export const ListMessagesDocument = gql`
-    query listMessages($token: String!, $groupId: String!, $profileId: String!, $begin: String, $end: String) {
-  listMessages(token: $token, groupId: $groupId, profileId: $profileId, begin: $begin, end: $end) {
+    query listMessages($csrfToken: String!, $groupId: String!, $profileId: String!, $begin: String, $end: String) {
+  listMessages(csrfToken: $csrfToken, groupId: $groupId, profileId: $profileId, begin: $begin, end: $end) {
     id
     createdAt
     updatedAt
@@ -1020,8 +1020,8 @@ export const ListMessagesDocument = gql`
     
   }
 export const GetWorkspaceDocument = gql`
-    query getWorkspace($token: String!, $workspaceId: String!) {
-  getWorkspace(token: $token, workspaceId: $workspaceId) {
+    query getWorkspace($csrfToken: String!, $workspaceId: String!) {
+  getWorkspace(csrfToken: $csrfToken, workspaceId: $workspaceId) {
     id
     name
     title

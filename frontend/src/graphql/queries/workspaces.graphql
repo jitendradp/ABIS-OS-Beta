@@ -1,5 +1,5 @@
-query listWorkspaces($token:String! $profileId:String!) {
-  listWorkspaces(token:$token profileId:$profileId) {
+query listWorkspaces($csrfToken:String!  $profileId:String!) {
+  listWorkspaces(csrfToken:$csrfToken profileId:$profileId) {
     id
     name
     title
@@ -24,8 +24,8 @@ query listWorkspaces($token:String! $profileId:String!) {
     is_public
   }
 }
-query listMembers($token:String! $groupId:String!) {
-  listMembers(token:$token groupId:$groupId) {
+query listMembers($csrfToken:String!  $groupId:String!) {
+  listMembers(csrfToken:$csrfToken groupId:$groupId) {
     id
     createdAt
     member {
@@ -44,8 +44,8 @@ query listMembers($token:String! $groupId:String!) {
     }
   }
 }
-query listMessages($token:String! $groupId:String! $profileId:String! $begin:String $end:String) {
-  listMessages(token:$token groupId:$groupId profileId:$profileId begin:$begin end:$end) {
+query listMessages($csrfToken:String!  $groupId:String! $profileId:String! $begin:String $end:String) {
+  listMessages(csrfToken:$csrfToken groupId:$groupId profileId:$profileId begin:$begin end:$end) {
     id
     createdAt
     updatedAt
@@ -60,8 +60,8 @@ query listMessages($token:String! $groupId:String! $profileId:String! $begin:Str
     type
   }
 }
-query getWorkspace($token:String! $workspaceId:String!) {
-  getWorkspace(token:$token workspaceId:$workspaceId) {
+query getWorkspace($csrfToken:String!  $workspaceId:String!) {
+  getWorkspace(csrfToken:$csrfToken workspaceId:$workspaceId) {
     id
     name
     title

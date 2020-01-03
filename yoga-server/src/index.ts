@@ -7,38 +7,39 @@ import {ContextParameters} from "graphql-yoga/dist/types";
 import {GroupQueries} from "./queries/groups/groupQueries";
 import {ProfileQueries} from "./queries/profiles/profileQueries";
 import {config} from "./config";
+var cookie = require('cookie');
 
 const resolvers = {
   Query: {
-    async myWorkspaces(root, {token}, ctx) {
-      return GroupQueries.myWorkspaces(token);
+    async myWorkspaces(root, {csrfToken}, ctx) {
+      return GroupQueries.myWorkspaces(csrfToken, ctx.authToken);
     },
-    async myMemberships(root, {token}, ctx) {
-      return GroupQueries.myMemberships(token);
+    async myMemberships(root, {csrfToken}, ctx) {
+      return GroupQueries.myMemberships(csrfToken, ctx.authToken);
     },
-    async getSessionProfile(root, {token}, ctx) {
-      return ProfileQueries.getSessionProfile(token);
+    async getSessionProfile(root, {csrfToken}, ctx) {
+      return ProfileQueries.getSessionProfile(csrfToken, ctx.authToken);
     },
-    async listProfiles(root, {token}, ctx) {
-      return ProfileQueries.listProfiles(token);
+    async listProfiles(root, {csrfToken}, ctx) {
+      return ProfileQueries.listProfiles(csrfToken, ctx.authToken);
     },
-    async listWorkspaces(root, {token, profileId}, ctx) {
-      return GroupQueries.listWorkspaces(token, profileId);
+    async listWorkspaces(root, {csrfToken, profileId}, ctx) {
+      return GroupQueries.listWorkspaces(csrfToken, ctx.authToken, profileId);
     },
-    async listMemberships(root, {token, profileId}, ctx) {
-      return GroupQueries.listMemberships(token, profileId);
+    async listMemberships(root, {csrfToken, profileId}, ctx) {
+      return GroupQueries.listMemberships(csrfToken, ctx.authToken, profileId);
     },
-    async listMembers(root, {token, groupId}, ctx) {
-      return GroupQueries.listMembers(token, groupId);
+    async listMembers(root, {csrfToken, groupId}, ctx) {
+      return GroupQueries.listMembers(csrfToken, ctx.authToken, groupId);
     },
-    async listMessages(root, {token, groupId, profileId, begin, end}, ctx) {
-      return GroupQueries.listMessages(token, groupId, profileId, begin, end);
+    async listMessages(root, {csrfToken, groupId, profileId, begin, end}, ctx) {
+      return GroupQueries.listMessages(csrfToken, ctx.authToken, groupId, profileId, begin, end);
     },
-    async getProfile(root, {token, profileId}, ctx) {
-      return ProfileQueries.getProfile(token, profileId);
+    async getProfile(root, {csrfToken, profileId}, ctx) {
+      return ProfileQueries.getProfile(csrfToken, ctx.authToken, profileId);
     },
-    async getWorkspace(root, {token, workspaceId}, ctx) {
-      return GroupQueries.getWorkspace(token, workspaceId);
+    async getWorkspace(root, {csrfToken, workspaceId}, ctx) {
+      return GroupQueries.getWorkspace(csrfToken, ctx.authToken, workspaceId);
     }
   },
   Mutation: {
@@ -46,37 +47,37 @@ const resolvers = {
       return UserMutations.createUser(name, email, password);
     },
     async verifyEmail(root, {code}, ctx) {
-      return UserMutations.verifyEmail(code);
+      return UserMutations.verifyEmail(code, ctx.request);
     },
-    async verifySession(root, {token}, ctx) {
-      return UserMutations.verifySession(token, ctx.request);
+    async verifySession(root, {csrfToken}, ctx) {
+      return UserMutations.verifySession(csrfToken, ctx.authToken, ctx.request);
     },
     async login(root, {email, password}, ctx) {
       return UserMutations.login(email, password, ctx.request);
     },
-    async logout(root, {token}, ctx) {
-      return UserMutations.logout(token);
+    async logout(root, {csrfToken}, ctx) {
+      return UserMutations.logout(ctx.authToken, ctx.request);
     },
-    async setSessionProfile(root, {token, profileId}, ctx) {
-      return UserMutations.setSessionProfile(token, profileId);
+    async setSessionProfile(root, {csrfToken, profileId}, ctx) {
+      return UserMutations.setSessionProfile(csrfToken, ctx.authToken, profileId);
     },
-    async createProfile(root, {token, name, picture, timezone}, ctx) {
-      return ProfileMutations.createProfile(token, name, picture, timezone);
+    async createProfile(root, {csrfToken, name, picture, timezone}, ctx) {
+      return ProfileMutations.createProfile(csrfToken, ctx.authToken, name, picture, timezone);
     },
-    async updateProfile(_, {token, profileId, name, picture, timezone, status}, ctx) {
-      return ProfileMutations.updateProfile(token, profileId, name, picture, timezone, status);
+    async updateProfile(_, {csrfToken, profileId, name, picture, timezone, status}, ctx) {
+      return ProfileMutations.updateProfile(csrfToken, ctx.authToken, profileId, name, picture, timezone, status);
     },
-    async createWorkspace(root, {token, hostProfileId, name, title, description, logo, tags}, ctx) {
-      return GroupMutations.createWorkspace(token, hostProfileId, name, title, description, logo, tags);
+    async createWorkspace(root, {csrfToken, hostProfileId, name, title, description, logo, tags}, ctx) {
+      return GroupMutations.createWorkspace(csrfToken, ctx.authToken, hostProfileId, name, title, description, logo, tags);
     },
-    async updateWorkspace(root, {token, workspaceId, name, title, description, logo, tags, isHidden, isPublic}, ctx) {
-      return GroupMutations.updateWorkspace(token, workspaceId, name, title, description, logo, tags, isHidden, isPublic);
+    async updateWorkspace(root, {csrfToken, workspaceId, name, title, description, logo, tags, isHidden, isPublic}, ctx) {
+      return GroupMutations.updateWorkspace(csrfToken, ctx.authToken, workspaceId, name, title, description, logo, tags, isHidden, isPublic);
     },
-    async addMember(_, {token, groupId, memberProfileId}, ctx) {
-      return GroupMutations.addMember(token, groupId, memberProfileId);
+    async addMember(_, {csrfToken, groupId, memberProfileId}, ctx) {
+      return GroupMutations.addMember(csrfToken, ctx.authToken, groupId, memberProfileId);
     },
-    async removeMember(_, {token, groupId, memberProfileId}, ctx) {
-      return GroupMutations.removeMember(token, groupId, memberProfileId);
+    async removeMember(_, {csrfToken, groupId, memberProfileId}, ctx) {
+      return GroupMutations.removeMember(csrfToken, ctx.authToken, groupId, memberProfileId);
     }
   },
 };
@@ -89,7 +90,8 @@ const server = new GraphQLServer({
       prisma,
       request: req.request,
       response: req.response,
-      connection: req.connection
+      connection: req.connection,
+      authToken: req.request.headers.cookie ? cookie.parse(req.request.headers.cookie).authToken : null
     };
   }
 });

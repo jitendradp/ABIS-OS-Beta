@@ -5,6 +5,7 @@
   },
   "dependencies": {
     "@types/bcrypt": "^3.0.0",
+    "@types/cookie": "^0.3.3",
     "@types/morgan": "^1.7.37",
     "@types/nodemailer": "^6.4.0",
     "bcrypt": "^3.0.7",
