@@ -1,53 +1,20 @@
 import {
-    prisma, Session,
-    SessionCreateInput, User
+    prisma, SessionCreateInput, User
 } from "../../generated";
 import {Helpers} from "../../helper/Helpers";
 import {ResponseDelay} from "../../helper/ResponseDelay";
 import {Mailer} from "../../helper/Mailer";
 import {Request} from "express";
 import {config} from "../../config";
+import {CommonQueries} from "../../queries/commonQueries";
 
-export class UserMutations {
+export class AccountMutations {
 
     private static readonly bcrypt = require('bcrypt');
-    private static readonly saltRounds = 10;
-    private static readonly responseDelay = 500;
 
     private static abortInvalidRequest(msg:string) {
-        let logId = Helpers.logId(msg);
+        const logId = Helpers.logId(msg);
         throw "Invalid request. Error id: " + logId;
-    }
-
-    private static async findValidSessionsForUser(userId: string): Promise<Session[]> {
-        let validUserSessions = await prisma.sessions({
-            where: {
-                user: {
-                    id: userId
-                },
-                validTo_gt: new Date(),
-                timedOut:null
-            }
-        });
-        return Array.from(validUserSessions);
-    }
-
-    private static async findUserByToken(authToken:string) : Promise<User> {
-        let sessions = await prisma.sessions({where: {authToken: authToken, validTo_gt: new Date(), timedOut:null}});
-        if (sessions.length > 1) {
-            this.abortInvalidRequest(" --- Take a gun and shoot yourself! --- There is more than one session with the same csrfToken: " + authToken);
-        }
-        if (sessions.length == 0) {
-            return null;
-        }
-
-        let user = await prisma.session({authToken:authToken}).user();
-        if (!user) {
-            this.abortInvalidRequest(" --- Take a gun and shoot yourself! --- There is no associated user for session " + authToken);
-        }
-
-        // TODO: Set a new session timeout
-        return user;
     }
 
     /**
@@ -55,12 +22,11 @@ export class UserMutations {
      * @param user
      */
     private static async createSessionForUser(user): Promise<{authToken:string, csrfToken:string}> {
-        let tomorrow = new Date();
+        const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
 
-        let len = 64;
-        let csrfToken = Helpers.getRandomBase64String(len);
-        let authToken = Helpers.getRandomBase64String(len);
+        const csrfToken = Helpers.getRandomBase64String(config.auth.tokenLength);
+        const authToken = Helpers.getRandomBase64String(config.auth.tokenLength);
 
         const session = <SessionCreateInput>{
             timedOut: null,
@@ -89,7 +55,7 @@ export class UserMutations {
      * @param password
      */
     public static async createUser(name: string, email: string, password: string): Promise<string> {
-        let delay = new ResponseDelay(UserMutations.responseDelay);
+        const delay = new ResponseDelay(config.auth.normalizedResponseTime);
 
         let user = await prisma.user({email: email});
         if (user) {
@@ -99,8 +65,8 @@ export class UserMutations {
             this.abortInvalidRequest("There is already a registered account with the email address: " + email);
         }
 
-        let salt = await UserMutations.bcrypt.genSalt(UserMutations.saltRounds);
-        let hash = await UserMutations.bcrypt.hash(password, salt);
+        const salt = await AccountMutations.bcrypt.genSalt(config.auth.bcryptRounds);
+        const hash = await AccountMutations.bcrypt.hash(password, salt);
 
         user = <User>{
             email: email.trim(),
@@ -131,8 +97,8 @@ export class UserMutations {
      * @param request The express request object from the yoga context
      */
     public static async login(email: string, password: string, request:Request): Promise<string> {
-        let delay = new ResponseDelay(UserMutations.responseDelay);
-        let user = await prisma.user({email: email});
+        const delay = new ResponseDelay(config.auth.normalizedResponseTime);
+        const user = await prisma.user({email: email});
 
         if (!user) {
             // Wait some time before returning the response (500ms - runtime)
@@ -150,7 +116,7 @@ export class UserMutations {
             this.abortInvalidRequest("User " + user.id + " tried to log-in before verifying the email address.");
         }
 
-        let pwdCheckResult = await UserMutations.bcrypt.compare(password, user.password_hash);
+        const pwdCheckResult = await AccountMutations.bcrypt.compare(password, user.password_hash);
         if (!pwdCheckResult) {
             // Wait some time before returning the response (500ms - runtime)
             await delay.GetPromise();
@@ -159,13 +125,13 @@ export class UserMutations {
 
         // If the user already got a valid session then use that
         // TODO: Assign new sessions if the user logs-in with a new device
-        let sessions = await UserMutations.findValidSessionsForUser(user.id);
+        const sessions = await CommonQueries.findUserSessions(user.id);
 
         // TODO: Is it useful to wait even if the credentials are correct?
         // await delay.GetPromise();
-        let session = sessions.length == 0 ? await UserMutations.createSessionForUser(user) : sessions[0];
+        const session = sessions.length == 0 ? await AccountMutations.createSessionForUser(user) : sessions[0];
 
-        UserMutations.setAuthTokenCookie(session.authToken, request);
+        AccountMutations.setAuthTokenCookie(session.authToken, request);
 
         return session.csrfToken;
     }
@@ -190,13 +156,13 @@ export class UserMutations {
         });
     }
 
-    public static async logout(authToken: string, request:Request): Promise<boolean> {
-        let user = await this.findUserByToken(authToken);
-        if (!user) {
+    public static async logout(csrfToken:string, authToken: string, request:Request): Promise<boolean> {
+        const sessionAndUser = await CommonQueries.findUserBySession(csrfToken, authToken);
+        if (!sessionAndUser) {
             return false;
         }
 
-        let validSessions = await prisma.sessions({where:{user:{id:user.id}, validTo_gt: new Date(), timedOut:null}});
+        const validSessions = await CommonQueries.findUserSessions(sessionAndUser.user.id);
 
         await Promise.all(
             validSessions.map(async o =>
@@ -220,15 +186,15 @@ export class UserMutations {
      * @param request
      */
     public static async verifyEmail(code: string, request:Request): Promise<string> {
-        let delay = new ResponseDelay(UserMutations.responseDelay);
+        const delay = new ResponseDelay(config.auth.normalizedResponseTime);
 
-        let users = Array.from(await prisma.users({where: {challenge: code.trim()}}));
+        const users = await prisma.users({where: {challenge: code.trim()}});
         if (users.length !== 1) {
             await delay.GetPromise();
             this.abortInvalidRequest("Found no matching user for the specified email verification code " + code + ".");
         }
 
-        let user = users[0];
+        const user = users[0];
 
         // clear the challenge when the verification code was right
         await prisma.updateUser({
@@ -240,8 +206,8 @@ export class UserMutations {
             }
         });
 
-        let session = await UserMutations.createSessionForUser(user);
-        UserMutations.setAuthTokenCookie(session.authToken, request);
+        const session = await AccountMutations.createSessionForUser(user);
+        AccountMutations.setAuthTokenCookie(session.authToken, request);
 
         // Wait some time before returning the response (500ms - runtime)
         await delay.GetPromise();
@@ -257,25 +223,14 @@ export class UserMutations {
      */
     public static async verifySession(csrfToken: string, authToken: string, request:Request): Promise<boolean> {
         // TODO: Set a new session timeout
-        let sessions = await prisma.sessions({
-            where: {
-                csrfToken: csrfToken,
-                authToken: authToken,
-                validTo_gt: new Date(),
-                timedOut:null
-            }});
-
-        if (sessions.length > 0) {
-            UserMutations.setAuthTokenCookie(authToken, request);
-        }
-
-        return sessions.length > 0;
+        const session = await CommonQueries.findSession(csrfToken, authToken);
+        return !!session;
     }
 
     public static async setSessionProfile(csrfToken: string, authToken:string, profileId: string) {
-        let user = await this.findUserByToken(authToken);
+        const sessionAndUser = await CommonQueries.findUserBySession(csrfToken, authToken);
 
-        if (user == null) {
+        if (sessionAndUser == null) {
             this.abortInvalidRequest("Couldn't find a valid session for csrfToken: " + authToken);
         }
 
@@ -290,7 +245,7 @@ export class UserMutations {
             }
         });
 
-        await prisma.updateUser({data: {lastUsedProfileId: profileId}, where: {id: user.id}});
+        await prisma.updateUser({data: {lastUsedProfileId: profileId}, where: {id: sessionAndUser.user.id}});
 
         return profileId;
     }
