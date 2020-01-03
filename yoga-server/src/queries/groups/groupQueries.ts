@@ -1,18 +1,18 @@
 import {prisma} from "../../generated";
 
 export class GroupQueries {
-    public static async myWorkspaces(token:string) {
-        let profile = await prisma.session({token:token}).profile();
+    public static async myWorkspaces(csrfToken: string, authToken:string) {
+        let profile = await prisma.session({csrfToken, authToken}).profile();
         if (!profile) {
-            throw new Error("Invalid token or the session has no associated profile.")
+            throw new Error("Invalid csrfToken or the session has no associated profile.")
         }
         return await prisma.groups({where:{host:{id:profile.id}}});
     }
 
-    public static async myMemberships(token:string) {
-        let profile = await prisma.session({token:token}).profile();
+    public static async myMemberships(csrfToken: string, authToken:string) {
+        let profile = await prisma.session({csrfToken, authToken}).profile();
         if (!profile) {
-            throw new Error("Invalid token or the session has no associated profile.")
+            throw new Error("Invalid csrfToken or the session has no associated profile.")
         }
         let memberships = await prisma.memberships({where: {member: {id: profile.id}}});
         return await memberships.map(async (o:any) => {
@@ -22,18 +22,18 @@ export class GroupQueries {
         });
     }
 
-    public static async listWorkspaces(token:string, profileId:string) {
-        let user = await prisma.session({token: token}).user();
+    public static async listWorkspaces(csrfToken: string, authToken:string, profileId:string) {
+        let user = await prisma.session({csrfToken, authToken}).user();
         if (!user) {
-            throw new Error("Invalid token");
+            throw new Error("Invalid csrfToken");
         }
         return prisma.groups({where: {type: "WORKSPACE", host:{id:profileId}}});
     }
 
-    public static async listMemberships(token:string, profileId:string) {
-        let user = await prisma.session({token: token}).user();
+    public static async listMemberships(csrfToken: string, authToken:string, profileId:string) {
+        let user = await prisma.session({csrfToken, authToken}).user();
         if (!user) {
-            throw new Error("Invalid token");
+            throw new Error("Invalid csrfToken");
         }
         let memberships = await prisma.memberships({where: {member: {id: profileId}}});
         let members = await memberships.map(async (m:any) => {
@@ -44,10 +44,10 @@ export class GroupQueries {
         return members;
     }
 
-    public static async listMembers(token:string, groupId:string) {
-        let user = await prisma.session({token: token}).user();
+    public static async listMembers(csrfToken: string, authToken:string, groupId:string) {
+        let user = await prisma.session({csrfToken, authToken}).user();
         if (!user) {
-            throw new Error("Invalid token");
+            throw new Error("Invalid csrfToken");
         }
         let memberships = await prisma.memberships({where: {group: {id: groupId}}});
         let members = await memberships.map(async m => {
@@ -62,10 +62,10 @@ export class GroupQueries {
         return members;
     }
 
-    public static async listMessages(token:string, groupId:string, profileId:string, begin?:string, end?:string) {
-        let user = await prisma.session({token: token}).user();
+    public static async listMessages(csrfToken: string, authToken:string, groupId:string, profileId:string, begin?:string, end?:string) {
+        let user = await prisma.session({csrfToken, authToken}).user();
         if (!user) {
-            throw new Error("Invalid token");
+            throw new Error("Invalid csrfToken");
         }
         if ((!groupId || groupId === "undefined") && (!profileId || profileId === "undefined")) {
             throw new Error("Neither 'groupId' nor 'profileId' was supplied.");
@@ -91,10 +91,10 @@ export class GroupQueries {
         }
     }
 
-    public static async getWorkspace(token:string, workspaceId:string) {
-        let user = await prisma.session({token: token}).user();
+    public static async getWorkspace(csrfToken: string, authToken:string, workspaceId:string) {
+        let user = await prisma.session({csrfToken, authToken}).user();
         if (!user) {
-            throw new Error("Invalid token");
+            throw new Error("Invalid csrfToken");
         }
         let group = <any>await prisma.group({id: workspaceId});
         let host = await prisma.group({id: workspaceId}).host();

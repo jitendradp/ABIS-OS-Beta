@@ -1,10 +1,10 @@
 import {prisma} from "../../generated";
 
 export class GroupMutations {
-    public static async createWorkspace(token: string, hostProfileId: string, name: string, title: string, description: string, logo: string, tags: string) {
-        let user = await prisma.session({token: token}).user();
+    public static async createWorkspace(csrfToken: string, authToken:string, hostProfileId: string, name: string, title: string, description: string, logo: string, tags: string) {
+        let user = await prisma.session({csrfToken, authToken}).user();
         if (!user) {
-            throw new Error("Invalid token");
+            throw new Error("Invalid csrfToken");
         }
         let group = await prisma.createGroup({
             host: {
@@ -38,10 +38,10 @@ export class GroupMutations {
         return group.id;
     }
 
-    public static async updateWorkspace(token: string, workspaceId: string, name: string, title: string, description: string, logo: string, tags: string, isHidden: boolean, isPublic: boolean) {
-        let user = await prisma.session({token: token}).user();
+    public static async updateWorkspace(csrfToken: string, authToken:string, workspaceId: string, name: string, title: string, description: string, logo: string, tags: string, isHidden: boolean, isPublic: boolean) {
+        let user = await prisma.session({csrfToken, authToken}).user();
         if (!user) {
-            throw new Error("Invalid token");
+            throw new Error("Invalid csrfToken");
         }
         await prisma.updateGroup({
             data: {
@@ -60,10 +60,10 @@ export class GroupMutations {
         return workspaceId;
     }
 
-    public static async addMember(token: string, groupId: string, memberProfileId: string) {
-        let profile = await prisma.session({token:token}).profile();
+    public static async addMember(csrfToken: string, authToken:string, groupId: string, memberProfileId: string) {
+        let profile = await prisma.session({csrfToken, authToken}).profile();
         if (!profile) {
-            throw new Error("Invalid token or the session has no associated profile.")
+            throw new Error("Invalid csrfToken or the session has no associated profile.")
         }
         let membership = await prisma.createMembership({
             group: {
@@ -116,10 +116,10 @@ export class GroupMutations {
         return membership.id;
     }
 
-    public static async removeMember(token: string, groupId: string, memberProfileId: string) {
-        let profile = await prisma.session({token:token}).profile();
+    public static async removeMember(csrfToken: string, authToken:string, groupId: string, memberProfileId: string) {
+        let profile = await prisma.session({csrfToken, authToken}).profile();
         if (!profile) {
-            throw new Error("Invalid token or the session has no associated profile.")
+            throw new Error("Invalid csrfToken or the session has no associated profile.")
         }
         let memberships = await prisma.group({id: groupId}).members({where: {member: {id: memberProfileId}}});
         for (const o of memberships) {
