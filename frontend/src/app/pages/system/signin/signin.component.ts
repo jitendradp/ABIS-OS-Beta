@@ -48,6 +48,7 @@ export class SigninComponent implements OnInit {
       if (userProfiles.length == 1) {
         let result = await this.accountService.setSessionProfile(userProfiles[0].id);
         if (!result) {
+          // noinspection ExceptionCaughtLocallyJS
           throw new Error("Unexpected error while setting the session profile.")
         }
         this.actionDispatcherr.dispatch(new Home());
@@ -56,7 +57,7 @@ export class SigninComponent implements OnInit {
 
       this.actionDispatcherr.dispatch(new SwitchProfile());
     } catch (e) {
-      this._log(LogSeverity.UserNotification, "An error occured during log-on. See the log for detailed error messages.");
+      this._log(LogSeverity.UserNotification, "An error occurred during log-on. See the log for detailed error messages.");
       this._log(LogSeverity.Error, e);
       throw e;
     }

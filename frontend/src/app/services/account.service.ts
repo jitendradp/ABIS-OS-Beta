@@ -30,6 +30,11 @@ export class AccountService {
   }
   private readonly ProfileKey = "AccountService.profileId";
 
+  public get isLoggedOn(): boolean {
+    return this._isLoggedOn;
+  }
+  private _isLoggedOn:boolean;
+
   constructor(private actionDispatcher:ActionDispatcherService
               , private loggerService:LoggerService
               , private loginApi:LoginGQL
@@ -37,6 +42,12 @@ export class AccountService {
               , private setSessionProfileApi:SetSessionProfileGQL
               , private verifySessionApi:VerifySessionGQL
               , private clientState:ClientStateService) {
+
+    this.actionDispatcher.onAction.subscribe(action => {
+      if (action instanceof LoginStateChanged) {
+        this._isLoggedOn = action.newValue == 1;
+      }
+    });
 
     if (this.token) {
       this.setToken(this.token)
@@ -56,6 +67,10 @@ export class AccountService {
   private clearClientState() {
     this.clientState.delete(this.TokenKey);
     this.clientState.delete(this.ProfileKey);
+
+    if (this.isLoggedOn) {
+      this.actionDispatcher.dispatch(new LoginStateChanged(LoginState.LoggedOn, LoginState.LoggedOff));
+    }
   }
 
   public login(email: string, password: string) : Promise<boolean> {
@@ -120,7 +135,6 @@ export class AccountService {
       .toPromise().then(result => {
         if (!result.data.logout) {
           throw new Error("An unexpected error occurred during logout.");
-          return false;
         }
         this.clearClientState();
         this.actionDispatcher.dispatch(new LoginStateChanged(LoginState.LoggedOn, LoginState.LoggedOff));
