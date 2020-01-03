@@ -18,9 +18,6 @@ export class HeaderComponent {
   title: string;
 
   @Input()
-  isLoggedIn: boolean = false;
-
-  @Input()
   actions:IAction[] = [];
 
   get leftActions() : IAction[] {
@@ -35,11 +32,11 @@ export class HeaderComponent {
 
 
   public profile = this._profileService.getProfileInformation();
-  public account = this._accountService.getAccountInformation();
+  public account = this.accountService.getAccountInformation();
 
   constructor(
     private _profileService: ProfileService,
-    private _accountService: AccountService,
+    protected accountService: AccountService,
     protected _actionDispatcher: ActionDispatcherService,
   ) {
   }

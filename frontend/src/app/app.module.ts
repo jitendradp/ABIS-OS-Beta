@@ -68,6 +68,7 @@ import {CardIntroComponent} from "./cards/card-intro/card-intro.component";
 import {TeamsComponent} from "./widgets/chat/teams/teams.component";
 import {NavigationComponent} from "./pages/system/navigation/navigation.component";
 import { SwitchProfileComponent } from './pages/system/switch-profile/switch-profile.component';
+import { LogoutComponent } from './pages/system/logout/logout.component';
 
 const defaultActions = [{
   name: "Abis.UI.Sidebar.ToggleVisibility",
@@ -165,6 +166,12 @@ const appRoutes: Routes = [
       "title": "Switch profile",
       "actions": defaultActions
     }
+  },
+  {
+    path: 'logout', component: LogoutComponent, data: {
+      "title": "Logout",
+      "actions": defaultActions
+    }
   }
 ];
 
@@ -202,6 +209,7 @@ const appRoutes: Routes = [
     TeamsComponent,
     NavigationComponent,
     SwitchProfileComponent,
+    LogoutComponent,
   ],
   imports: [
     RouterModule.forRoot(
