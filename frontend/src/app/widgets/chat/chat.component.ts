@@ -1,11 +1,6 @@
 import {Component} from '@angular/core';
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
 
-export interface Channel {
-  name: string;
-  icon: string;
-  team: string;
-}
 
 export interface DirectMessage {
   name: string;
@@ -25,68 +20,7 @@ export class ChatComponent {
   ) {
   }
 
-  channels: Channel[] = [
-    {
-      name: 'General',
-      icon: 'bubble_chart',
-      team: 'DBI Analytics GmbH'
-    },
-    {
-      name: 'Einkauf',
-      icon: 'lock',
-      team: 'Audi Marketing'
-    },
-    {
-      name: 'Chaos',
-      icon: 'lock',
-      team: 'BMW Racing'
-    },
-    {
-      name: 'OEM Plannung',
-      icon: 'bubble_chart',
-      team: 'Huber AG'
-    },
-    {
-      name: 'Zulieferer',
-      icon: 'bubble_chart',
-      team: 'Huber AG'
-    },
-    {
-      name: 'Party',
-      icon: 'bubble_chart',
-      team: 'FH München'
-    },
-    {
-      name: 'News',
-      icon: 'bubble_chart',
-      team: 'Frankfurter Allgemeine'
-    },
-    {
-      name: 'Alumni',
-      icon: 'lock',
-      team: 'FH München'
-    },
-    {
-      name: 'General',
-      icon: 'lock',
-      team: 'BMW Racing'
-    },
-    {
-      name: 'Vertrieb',
-      icon: 'bubble_chart',
-      team: 'BMW Racing'
-    },
-    {
-      name: 'Marketing',
-      icon: 'bubble_chart',
-      team: 'BMW Racing'
-    },
-    {
-      name: 'Kundensupport',
-      icon: 'bubble_chart',
-      team: 'DBI Analytics GmbH'
-    }
-  ];
+
   members: DirectMessage[] = [
     {
       name: 'Daniel Janz',
