@@ -1,6 +1,7 @@
 .quickButtons {
   color: white;
   background: #333;
+  bottom: 0;
 }
 
 .iconLabelSpacing {
@@ -11,4 +12,25 @@
 
 .material-icons {
   vertical-align: bottom;
+}
+
+.subline {
+  height: 3px;
+  z-index: 997;
+  animation: pulseLine infinite 12s alternate;
+  transition: all .6s ease;
+  overflow: hidden;
+  width: 100%;
+}
+
+@keyframes pulseLine {
+  0% {
+    background-color: #222222;
+  }
+  50% {
+    background-color: #2ecc71;
+  }
+  100% {
+    background-color: #204AAB;
+  }
 }

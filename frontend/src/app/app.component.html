@@ -7,10 +7,8 @@
     <mat-drawer position="end" #right mode="side" class="sidebarRight">
       <app-chat></app-chat>
     </mat-drawer>
-    <mat-drawer-content>
-      <div class="body">
-        <router-outlet></router-outlet>
-      </div>
+    <mat-drawer-content class="body">
+      <router-outlet></router-outlet>
     </mat-drawer-content>
   </mat-drawer-container>
   <!--todo hide and show icon bar when scrolling down or up -->

@@ -115,3 +115,7 @@
 .messageInputTextarea {
   padding-left: 16px;
 }
+
+::placeholder { /* Firefox, Chrome, Opera */
+  color: white;
+}
