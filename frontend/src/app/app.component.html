@@ -1,10 +1,10 @@
 <app-header [actions]="actions" [title]="title"></app-header>
 <mat-sidenav-container>
-  <mat-sidenav #left position="start" mode="over" class="sidebar">
+  <mat-sidenav #left position="start" mode="over" class="sidebarLeft">
     <app-navigation></app-navigation>
   </mat-sidenav>
   <mat-drawer-container [hasBackdrop]="false">
-    <mat-drawer position="end" #right mode="side" class="sidebar">
+    <mat-drawer position="end" #right mode="side" class="sidebarRight">
       <app-chat></app-chat>
     </mat-drawer>
     <mat-drawer-content>
