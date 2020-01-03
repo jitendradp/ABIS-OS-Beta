@@ -72,6 +72,8 @@ import {LogoutComponent} from './pages/system/logout/logout.component';
 import {IAction} from "./actions/IAction";
 import {ToggleVisibility} from "./actions/ui/sidebar/ToggleVisibility";
 import {ExplorerComponent} from "./pages/explorer/explorer.component";
+import {TeamEditorComponent} from "./editors/team-editor/team-editor.component";
+import {AvatarsComponent} from "./components/avatars/avatars.component";
 
 const defaultActions: IAction[] = [<ToggleVisibility>{
   name: "Abis.UI.Sidebar.ToggleVisibility",
@@ -181,6 +183,12 @@ const appRoutes: Routes = [
       "title": "Teams",
       "actions": defaultActions
     }
+  },
+  {
+    path: 'team-editor', component: TeamEditorComponent, data: {
+      "title": "Create new team",
+      "actions": defaultActions
+    }
   }
 ];
 
@@ -220,6 +228,8 @@ const appRoutes: Routes = [
     SwitchProfileComponent,
     LogoutComponent,
     ExplorerComponent,
+    TeamEditorComponent,
+    AvatarsComponent,
   ],
   imports: [
     RouterModule.forRoot(
