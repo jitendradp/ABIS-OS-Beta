@@ -29,7 +29,8 @@ import {
   MatTableModule,
   MatTabsModule,
   MatToolbarModule,
-  MatTreeModule
+  MatTreeModule,
+  MatSnackBarModule
 } from "@angular/material";
 import {AccessComponent} from './pages/system/access/access.component';
 import {ContentComponent} from './components/content/content.component';
@@ -267,6 +268,7 @@ const appRoutes: Routes = [
     MatStepperModule,
     ReactiveFormsModule,
     MatTreeModule,
+    MatSnackBarModule,
     GraphQLModule,
     HttpClientModule
   ],

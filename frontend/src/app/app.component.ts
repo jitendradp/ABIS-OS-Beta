@@ -22,6 +22,7 @@ import {Home} from "./actions/routes/Home";
 import {ShowNotification} from "./actions/ui/ShowNotification";
 import {SwitchProfile} from "./actions/routes/SwitchProfile";
 import {ToggleVisibility} from "./actions/ui/sidebar/ToggleVisibility";
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-root',
@@ -52,7 +53,8 @@ export class AppComponent {
     private _accountService: AccountService,
     private _router: Router,
     private _actionDispatcher: ActionDispatcherService,
-    public _dialog: MatDialog
+    public _dialog: MatDialog,
+    private _snackBar: MatSnackBar
   ) {
     // Listen to actions ...
     _actionDispatcher.onAction.subscribe(action => this.handleAction(action));
@@ -73,6 +75,10 @@ export class AppComponent {
         this.openDialog();
         break;
       case ShowNotification.Name:
+        let msg = <ShowNotification>action;
+        this._snackBar.open(msg.logEntry.source + ": " + msg.logEntry.message, null, {
+          duration: 10 * 1000
+        });
         break;
       case Home.Name:
         this._router.navigate(["/"]);

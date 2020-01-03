@@ -93,6 +93,7 @@ export class UserMutations {
 
         let user = await prisma.user({email: email});
         if (user) {
+            // noinspection ES6MissingAwait - Fire and forget to not block the request
             Mailer.sendAccountReminder(user);
             await delay.GetPromise();
             this.abortInvalidRequest("There is already a registered account with the email address: " + email);
@@ -204,7 +205,7 @@ export class UserMutations {
                         id:o.id
                     },
                     data:{
-                        timedOut:new Date()
+                        loggedOut:new Date()
                     }
                 })));
 
@@ -216,6 +217,7 @@ export class UserMutations {
     /**
      * Checks the email verification code which is sent out to newly signed up accounts.
      * @param code
+     * @param request
      */
     public static async verifyEmail(code: string, request:Request): Promise<string> {
         let delay = new ResponseDelay(UserMutations.responseDelay);
