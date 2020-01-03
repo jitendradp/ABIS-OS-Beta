@@ -21,10 +21,10 @@ export class AccountService {
 
   private readonly _log:Logger = this.loggerService.createLogger("AccountService");
 
-  public get token() : string {
-    return this.clientState.get<string>(this.TokenKey, null).data;
+  public get csrfToken() : string {
+    return this.clientState.get<string>(this.CsrfTokenKey, null).data;
   }
-  private readonly TokenKey = "AccountService.token";
+  private readonly CsrfTokenKey = "AccountService.csrfToken";
 
   public get profileId() : string {
     return this.clientState.get<string>(this.ProfileKey, null).data;
@@ -52,9 +52,9 @@ export class AccountService {
       }
     });
 
-    // If we have a stored token from a previous session, try to initialize the AccountService
-    if (this.token) {
-      this.setToken(this.token)
+    // If we have a stored csrfToken from a previous session, try to initialize the AccountService
+    if (this.csrfToken) {
+      this.setToken(this.csrfToken)
         .then(result => {
           if (!result) {
             return;
@@ -70,7 +70,7 @@ export class AccountService {
 
   private clearClientState() {
     this.apollo.getClient().resetStore();
-    this.clientState.delete(this.TokenKey);
+    this.clientState.delete(this.CsrfTokenKey);
 
     const oldProfileId = this.profileId;
     this.clientState.delete(this.ProfileKey);
@@ -101,17 +101,17 @@ export class AccountService {
     });
   }
 
-  public setToken(token: string) : Promise<boolean> {
+  public setToken(csrfToken: string) : Promise<boolean> {
     return this.verifySessionApi.mutate({
-      token
+      csrfToken: csrfToken
     }).toPromise()
       .then(result => {
         if (!result.data.verifySession) {
-          this.clientState.delete(this.TokenKey);
+          this.clientState.delete(this.CsrfTokenKey);
           this.clientState.delete(this.ProfileKey);
           return false;
         }
-        this.clientState.set(this.TokenKey, token);
+        this.clientState.set(this.CsrfTokenKey, csrfToken);
         this.actionDispatcher.dispatch(new LoginStateChanged(LoginState.LoggedOff, LoginState.LoggedOn));
         return true;
       })
@@ -125,7 +125,7 @@ export class AccountService {
 
   public setSessionProfile(profileId:string) : Promise<boolean> {
     return this.setSessionProfileApi.mutate({
-      token: this.token,
+      csrfToken: this.csrfToken,
       profileId: profileId
     })
       .toPromise()
@@ -143,7 +143,9 @@ export class AccountService {
   }
 
   public logout() : Promise<boolean> {
-    let promsie = this.logoutApi.mutate({token:this.token})
+    let promsie = this.logoutApi.mutate({
+      csrfToken: this.csrfToken
+    })
       .toPromise().then(result => {
         console.clear();
         if (!result.data.logout) {

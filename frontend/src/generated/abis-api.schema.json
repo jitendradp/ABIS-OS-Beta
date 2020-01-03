@@ -18,7 +18,7 @@
             "description": "",
             "args": [
               {
-                "name": "token",
+                "name": "csrfToken",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -57,7 +57,7 @@
             "description": "",
             "args": [
               {
-                "name": "token",
+                "name": "csrfToken",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -96,7 +96,7 @@
             "description": "",
             "args": [
               {
-                "name": "token",
+                "name": "csrfToken",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -123,7 +123,7 @@
             "description": "",
             "args": [
               {
-                "name": "token",
+                "name": "csrfToken",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -162,7 +162,7 @@
             "description": "",
             "args": [
               {
-                "name": "token",
+                "name": "csrfToken",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -215,7 +215,7 @@
             "description": "",
             "args": [
               {
-                "name": "token",
+                "name": "csrfToken",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -268,7 +268,7 @@
             "description": "",
             "args": [
               {
-                "name": "token",
+                "name": "csrfToken",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -321,7 +321,7 @@
             "description": "",
             "args": [
               {
-                "name": "token",
+                "name": "csrfToken",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -408,7 +408,7 @@
             "description": "",
             "args": [
               {
-                "name": "token",
+                "name": "csrfToken",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -449,7 +449,7 @@
             "description": "",
             "args": [
               {
-                "name": "token",
+                "name": "csrfToken",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -1323,7 +1323,7 @@
             "description": "",
             "args": [
               {
-                "name": "token",
+                "name": "csrfToken",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -1350,7 +1350,7 @@
             "description": "",
             "args": [
               {
-                "name": "token",
+                "name": "csrfToken",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -1411,7 +1411,7 @@
             "description": "",
             "args": [
               {
-                "name": "token",
+                "name": "csrfToken",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -1496,7 +1496,7 @@
             "description": "",
             "args": [
               {
-                "name": "token",
+                "name": "csrfToken",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -1595,7 +1595,7 @@
             "description": "",
             "args": [
               {
-                "name": "token",
+                "name": "csrfToken",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -1714,7 +1714,7 @@
             "description": "",
             "args": [
               {
-                "name": "token",
+                "name": "csrfToken",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -1769,7 +1769,7 @@
             "description": "",
             "args": [
               {
-                "name": "token",
+                "name": "csrfToken",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -1824,7 +1824,7 @@
             "description": "",
             "args": [
               {
-                "name": "token",
+                "name": "csrfToken",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -1893,7 +1893,7 @@
             "description": "",
             "args": [
               {
-                "name": "token",
+                "name": "csrfToken",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -1930,7 +1930,7 @@
             "description": "",
             "args": [
               {
-                "name": "token",
+                "name": "csrfToken",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -1999,7 +1999,7 @@
             "description": "",
             "args": [
               {
-                "name": "token",
+                "name": "csrfToken",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -2109,7 +2109,7 @@
             "description": "",
             "args": [
               {
-                "name": "token",
+                "name": "csrfToken",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -2136,7 +2136,7 @@
             "description": "",
             "args": [
               {
-                "name": "token",
+                "name": "csrfToken",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",

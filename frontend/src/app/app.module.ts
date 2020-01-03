@@ -67,8 +67,8 @@ import {HttpClientModule} from '@angular/common/http';
 import {CardIntroComponent} from "./cards/card-intro/card-intro.component";
 import {TeamsComponent} from "./widgets/chat/teams/teams.component";
 import {NavigationComponent} from "./pages/system/navigation/navigation.component";
-import {SwitchProfileComponent} from './pages/system/switch-profile/switch-profile.component';
-import {LogoutComponent} from './pages/system/logout/logout.component';
+import { SwitchProfileComponent } from './pages/system/switch-profile/switch-profile.component';
+import { LogoutComponent } from './pages/system/logout/logout.component';
 import {IAction} from "./actions/IAction";
 import {ToggleVisibility} from "./actions/ui/sidebar/ToggleVisibility";
 import {ExplorerComponent} from "./pages/explorer/explorer.component";
@@ -76,12 +76,12 @@ import {TeamEditorComponent} from "./editors/team-editor/team-editor.component";
 import {AvatarsComponent} from "./components/avatars/avatars.component";
 
 const defaultActions: IAction[] = [<ToggleVisibility>{
-  name: "Abis.UI.Sidebar.ToggleVisibility",
+  name: ToggleVisibility.Name,
   label: "Open/Close Sidebar",
   icon: "menu",
   side: "left"
 }, <ToggleVisibility>{
-  name: "Abis.UI.Sidebar.ToggleVisibility",
+  name: ToggleVisibility.Name,
   label: "Open/Close Chat",
   icon: "question_answer",
   side: "right"

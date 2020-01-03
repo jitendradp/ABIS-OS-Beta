@@ -33,14 +33,13 @@ export class ProfileService {
 
   /**
    * Creates a profile and returns its id.
-   * @param token
    * @param name
    * @param picture
    * @param timezone
    */
-  public createProfile(token:string, name:string, picture?:string, timezone?:string) : Promise<string> {
+  public createProfile(name:string, picture?:string, timezone?:string) : Promise<string> {
     return this.createProfileApi.mutate({
-      token,
+      csrfToken: this.accountService.csrfToken,
       name,
       picture,
       timezone
@@ -55,9 +54,9 @@ export class ProfileService {
       });
   }
 
-  updateProfile(token:string, profileId:string, name:string, picture?:string, timezone?:string) : Promise<boolean> {
+  updateProfile(profileId:string, name:string, picture?:string, timezone?:string) : Promise<boolean> {
     return this.updateProfileApi.mutate({
-      token,
+      csrfToken: this.accountService.csrfToken,
       profileId,
       name,
       picture,
@@ -76,7 +75,7 @@ export class ProfileService {
   }
 
   listProfiles() : Promise<Profile[]> {
-    return this.listProfilesApi.fetch({token:this.accountService.token})
+    return this.listProfilesApi.fetch({csrfToken:this.accountService.csrfToken})
       .toPromise()
       .then(result => {
         return result.data.listProfiles;
@@ -90,7 +89,7 @@ export class ProfileService {
 
   getProfile(profileId:string) : Promise<Profile> {
     return this.getProfileApi.fetch({
-      token: this.accountService.token,
+      csrfToken: this.accountService.csrfToken,
       profileId
     })
       .toPromise()

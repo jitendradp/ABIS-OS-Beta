@@ -1,10 +1,10 @@
-query getSessionProfile($token:String!) {
-  getSessionProfile(token:$token) {
+query getSessionProfile($csrfToken:String! ) {
+  getSessionProfile(csrfToken:$csrfToken) {
     id
   }
 }
-query listProfiles($token:String!) {
-  listProfiles(token:$token) {
+query listProfiles($csrfToken:String! ) {
+  listProfiles(csrfToken:$csrfToken) {
     id
     createdAt
     name

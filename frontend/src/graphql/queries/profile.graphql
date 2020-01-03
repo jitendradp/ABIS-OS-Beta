@@ -1,5 +1,5 @@
-query getProfile($token:String! $profileId:String!) {
-  getProfile(token:$token profileId:$profileId) {
+query getProfile($csrfToken:String!  $profileId:String!) {
+  getProfile(csrfToken:$csrfToken profileId:$profileId) {
     id
     createdAt
     updatedAt
