@@ -47,6 +47,9 @@ const resolvers = {
     async verifyEmail(root, {code}, ctx) {
       return UserMutations.verifyEmail(code);
     },
+    async verifySession(root, {token}, ctx) {
+      return UserMutations.verifySession(token);
+    },
     async login(root, {email, password}, ctx) {
       return UserMutations.login(email, password);
     },
@@ -89,6 +92,9 @@ const server = new GraphQLServer({
     };
   }
 });
+
+var morgan = require('morgan');
+server.use(morgan('combined'));
 
 server.start({
   cors: {

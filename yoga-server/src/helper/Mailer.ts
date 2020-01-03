@@ -1,4 +1,5 @@
 import {config} from "../config";
+import {User} from "../generated";
 
 var nodemailer = require('nodemailer');
 
@@ -21,5 +22,20 @@ export class Mailer {
                 error ? reject(error) : resolve();
             });
         }));
+    }
+
+    public static async sendEmailVerificationCode(user: User): Promise<void> {
+        // TODO: Use proper mail template
+        const txt = "";
+        return Mailer.sendMail(user.email, "Your ABIS verification code", user.challenge, user.challenge);
+    }
+
+    public static async sendAccountReminder(user:User) : Promise<void> {
+        // TODO: Use proper mail template
+        const txt = "You already have an account at ABIS. " +
+            "Simply use your email address and password to login." +
+            "If you forgot your password, please use the 'Password reset' link on our login page:" +
+            "https://!§$%&/()=?.com";
+        return Mailer.sendMail(user.email, "Abis account reminder", txt, txt);
     }
 }
