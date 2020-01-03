@@ -16,6 +16,12 @@ export class ButtonComponent {
   @Input()
   stepper: string;
 
+  @Input()
+  icon: string;
+
+  @Input()
+  showButtonIcon: string;
+
   @Output()
   click:EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 

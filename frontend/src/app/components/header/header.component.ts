@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ProfileService} from "../../services/profile.service";
 import {AccountService} from "../../services/account.service";
-import {IEvent} from "../../actions/IEvent";
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
 import {ToggleVisibility} from "../../actions/ui/sidebar/ToggleVisibility";
 import {IAction} from "../../actions/IAction";
@@ -20,17 +19,18 @@ export class HeaderComponent {
   title: string;
 
   @Input()
-  actions:IAction[] = [];
+  actions: IAction[] = [];
 
-  get leftActions() : IAction[] {
-    return this.actions.filter((o:IAction) => o.name == ToggleVisibility.Name).filter((o:ToggleVisibility) => o.side == "left");
+  get leftActions(): IAction[] {
+    return this.actions.filter((o: IAction) => o.name == ToggleVisibility.Name).filter((o: ToggleVisibility) => o.side == "left");
   }
-  get rightActions() : IAction[] {
-    return this.actions.filter((o:IAction) => o.name == ToggleVisibility.Name).filter((o:ToggleVisibility) => o.side == "right");
+
+  get rightActions(): IAction[] {
+    return this.actions.filter((o: IAction) => o.name == ToggleVisibility.Name).filter((o: ToggleVisibility) => o.side == "right");
   }
 
   @Output()
-  click:EventEmitter<any> = new EventEmitter<any>();
+  click: EventEmitter<any> = new EventEmitter<any>();
 
 
   public profile = this._profileService.getProfileInformation();
