@@ -6,6 +6,7 @@ import {GroupMutations} from "./mutations/groups/groupMutations";
 import {ContextParameters} from "graphql-yoga/dist/types";
 import {GroupQueries} from "./queries/groups/groupQueries";
 import {ProfileQueries} from "./queries/profiles/profileQueries";
+import {config} from "./config";
 
 const resolvers = {
   Query: {
@@ -48,10 +49,10 @@ const resolvers = {
       return UserMutations.verifyEmail(code);
     },
     async verifySession(root, {token}, ctx) {
-      return UserMutations.verifySession(token);
+      return UserMutations.verifySession(token, ctx.request);
     },
     async login(root, {email, password}, ctx) {
-      return UserMutations.login(email, password);
+      return UserMutations.login(email, password, ctx.request);
     },
     async logout(root, {token}, ctx) {
       return UserMutations.logout(token);
@@ -98,9 +99,10 @@ server.use(morgan('combined'));
 
 server.start({
   cors: {
-    methods: "POST",
-    origin: "*",
-    allowedHeaders: "*",
-    optionsSuccessStatus: 200
-  },
+    methods: ["OPTIONS","POST"],
+    origin:  "http://" + config.env.domain + ":4200",
+    allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept",
+    optionsSuccessStatus: 200,
+    credentials: true
+  }
 },() => console.log('Server is running on http://localhost:4000'));
