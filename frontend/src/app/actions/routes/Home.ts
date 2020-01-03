@@ -1,6 +1,6 @@
-import {IAction} from "../IAction";
+import {IEvent} from "../IEvent";
 
-export class Home implements IAction {
+export class Home implements IEvent {
   public static readonly Name: string = "Abis.Routes.Home";
   name:string = Home.Name;
 }

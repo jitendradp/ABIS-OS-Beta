@@ -1,9 +1,10 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ProfileService} from "../../services/profile.service";
 import {AccountService} from "../../services/account.service";
-import {IAction} from "../../actions/IAction";
+import {IEvent} from "../../actions/IEvent";
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
 import {ToggleVisibility} from "../../actions/ui/sidebar/ToggleVisibility";
+import {IAction} from "../../actions/IAction";
 
 @Component({
   selector: 'app-header',
