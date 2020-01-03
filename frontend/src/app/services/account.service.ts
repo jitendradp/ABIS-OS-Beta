@@ -4,6 +4,7 @@ import {LoginState, LoginStateChanged} from "../actions/account/LoginStateChange
 import {LoginGQL, LogoutGQL, SetSessionProfileGQL, VerifySessionGQL} from "../../generated/abis-api";
 import {ClientStateService} from "./client-state.service";
 import {Logger, LoggerService, LogSeverity} from "./logger.service";
+import {SessionProfileChanged} from "../actions/account/SessionProfileChanged";
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,10 @@ export class AccountService {
 
   get token() : string {
     return this.clientState.get<string>("AccountService.token", null).data;
+  }
+
+  get profileId() : string {
+    return this.clientState.get<string>("AccountService.profileId", null).data;
   }
 
   constructor(private actionDispatcher:ActionDispatcherService
@@ -46,6 +51,7 @@ export class AccountService {
                  .catch(_ => false);
     }).catch(error => {
       this.clientState.delete("AccountService.token");
+      this.clientState.delete("AccountService.profileId");
       this._log(LogSeverity.Error, "Login failed. Please check your username and password and try again or try the password reset link. See the log for detailed error messages.");
       this._log(LogSeverity.Warning, error);
       return false;
@@ -59,6 +65,7 @@ export class AccountService {
       .then(result => {
         if (!result.data.verifySession) {
           this.clientState.delete("AccountService.token");
+          this.clientState.delete("AccountService.profileId");
           return;
         }
         this.clientState.set("AccountService.token", token);
@@ -66,6 +73,7 @@ export class AccountService {
       })
       .catch(error => {
         this.clientState.delete("AccountService.token");
+        this.clientState.delete("AccountService.profileId");
         this._log(LogSeverity.Error, "Login failed. Please check your username and password and try again or use the password reset link. See the log for detailed error messages.");
         this._log(LogSeverity.Warning, error);
       });
@@ -78,6 +86,9 @@ export class AccountService {
     })
       .toPromise()
       .then(result => {
+        const oldProfileId = this.profileId;
+        this.clientState.set("AccountService.profileId", result.data.setSessionProfile);
+        this.actionDispatcher.dispatch(new SessionProfileChanged(oldProfileId, result.data.setSessionProfile));
         return true;
       })
       .catch(error => {
@@ -91,6 +102,7 @@ export class AccountService {
     return this.logoutApi.mutate({token:this.token})
       .toPromise().then(result => {
         this.clientState.delete("AccountService.token");
+        this.clientState.delete("AccountService.profileId");
         this.actionDispatcher.dispatch(new LoginStateChanged(LoginState.LoggedOn, LoginState.LoggedOff));
         return true;
       }).catch(error => {

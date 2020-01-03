@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
-import {CreateProfileGQL, GetProfileGQL, ListProfilesGQL, UpdateProfileGQL} from "../../generated/abis-api";
+import {CreateProfileGQL, GetProfileGQL, ListProfilesGQL, Profile, UpdateProfileGQL} from "../../generated/abis-api";
 import {Logger, LoggerService, LogSeverity} from "./logger.service";
 import {ClientStateService} from "./client-state.service";
-import {Profile} from "../generated/api";
 import {AccountService} from "./account.service";
 
 @Injectable({
@@ -30,8 +29,7 @@ export class ProfileService {
             , private listProfilesApi:ListProfilesGQL
             , private getProfileApi:GetProfileGQL
             , private accountService:AccountService
-            , private loggerService:LoggerService
-            , private clientState:ClientStateService) {
+            , private loggerService:LoggerService) {
   }
 
   /**
@@ -49,8 +47,7 @@ export class ProfileService {
       timezone
     }).toPromise()
       .then(result => {
-        const profileId = result.data.createProfile;
-        return profileId;
+        return result.data.createProfile;
       })
       .catch(error => {
         this._log(LogSeverity.Error, "The profile creation failed. See the log for detailed error messages.");
@@ -69,7 +66,7 @@ export class ProfileService {
       timezone
     })
       .toPromise()
-      .then(result => {
+      .then(() => {
         return true;
       })
       .catch(error => {

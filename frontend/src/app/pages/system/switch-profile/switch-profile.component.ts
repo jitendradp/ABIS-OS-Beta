@@ -1,0 +1,39 @@
+import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {Profile} from "../../../../generated/abis-api";
+import {AccountService} from "../../../services/account.service";
+import {ProfileService} from "../../../services/profile.service";
+import {Logger, LoggerService, LogSeverity} from "../../../services/logger.service";
+
+@Component({
+  selector: 'app-switch-profile',
+  templateUrl: './switch-profile.component.html',
+  styleUrls: ['./switch-profile.component.css']
+})
+export class SwitchProfileComponent implements OnInit, AfterViewInit {
+  protected _profiles:Profile[] = [];
+
+  private readonly _log:Logger = this.loggerService.createLogger("SwitchProfileComponent");
+
+  constructor(private profileService:ProfileService
+              , private accountService:AccountService
+              , private loggerService:LoggerService) { }
+
+  ngOnInit() {
+  }
+
+  ngAfterViewInit(): void {
+    this.profileService.listProfiles()
+      .then(o => this._profiles = o);
+  }
+
+  switchToProfile(profile: Profile) {
+    this.accountService.setSessionProfile(profile.id)
+      .then(result => {
+
+      })
+      .catch(error => {
+        this._log(LogSeverity.Error, "The profiles couldn't be listed. See the log for detailed error messages.");
+        this._log(LogSeverity.Warning, error);
+      });
+  }
+}

@@ -67,6 +67,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {CardIntroComponent} from "./cards/card-intro/card-intro.component";
 import {TeamsComponent} from "./widgets/chat/teams/teams.component";
 import {NavigationComponent} from "./pages/system/navigation/navigation.component";
+import { SwitchProfileComponent } from './pages/system/switch-profile/switch-profile.component';
 
 const defaultActions = [{
   name: "Abis.Sidebar.ToggleVisibility",
@@ -158,6 +159,12 @@ const appRoutes: Routes = [
       "title": "Create new channel",
       "actions": defaultActions
     }
+  },
+  {
+    path: 'switch-profile', component: SwitchProfileComponent, data: {
+      "title": "Switch profile",
+      "actions": defaultActions
+    }
   }
 ];
 
@@ -194,6 +201,7 @@ const appRoutes: Routes = [
     CardIntroComponent,
     TeamsComponent,
     NavigationComponent,
+    SwitchProfileComponent,
   ],
   imports: [
     RouterModule.forRoot(
