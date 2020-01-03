@@ -1,16 +1,19 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
+import {MatBottomSheet} from "@angular/material";
+import {SearchComponent} from "../../widgets/search/search.component";
 
 @Component({
   selector: 'app-iconbar',
   templateUrl: './iconbar.component.html',
   styleUrls: ['./iconbar.component.css']
 })
-export class IconbarComponent implements OnInit {
+export class IconbarComponent {
 
-  constructor() {
+  constructor(private bottomSheet: MatBottomSheet) {
   }
 
-  ngOnInit() {
+  openBottomSheet() {
+  this.bottomSheet.open(SearchComponent)
   }
 
 }

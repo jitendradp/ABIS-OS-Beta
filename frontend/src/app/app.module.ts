@@ -5,7 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-  MatBadgeModule,
+  MatBadgeModule, MatBottomSheetModule,
   MatButtonModule,
   MatButtonToggleModule,
   MatCardModule,
@@ -76,6 +76,7 @@ import {CardMessageComponent} from "./cards/card-message/card-message.component"
 import {CardTeamComponent} from "./cards/card-team/card-team.component";
 import {CardFormComponent} from "./cards/card-form/card-form.component";
 import {CardStoreComponent} from "./cards/card-store/card-store.component";
+import {SearchComponent} from "./widgets/search/search.component";
 
 const defaultActions: IAction[] = [<ToggleVisibility>{
   name: ToggleVisibility.Name,
@@ -227,6 +228,7 @@ const appRoutes: Routes = [
     CardTeamComponent,
     CardFormComponent,
     CardStoreComponent,
+    SearchComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -266,9 +268,11 @@ const appRoutes: Routes = [
     MatTreeModule,
     MatSnackBarModule,
     GraphQLModule,
-    HttpClientModule
+    HttpClientModule,
+    MatBottomSheetModule
   ],
   providers: [ProfileService],
+  entryComponents: [SearchComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {
