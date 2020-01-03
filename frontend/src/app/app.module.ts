@@ -74,12 +74,12 @@ const defaultActions = [{
   name: "Abis.UI.Sidebar.ToggleVisibility",
   label: "Open/Close Sidebar",
   icon: "menu",
-  position: "left"
+  side: "left"
 }, {
   name: "Abis.UI.Sidebar.ToggleVisibility",
   label: "Open/Close Chat",
   icon: "chat",
-  position: "right"
+  side: "right"
 }];
 
 const appRoutes: Routes = [

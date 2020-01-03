@@ -3,6 +3,7 @@ import {ProfileService} from "../../services/profile.service";
 import {AccountService} from "../../services/account.service";
 import {IAction} from "../../actions/IAction";
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
+import {ToggleVisibility} from "../../actions/ui/sidebar/ToggleVisibility";
 
 @Component({
   selector: 'app-header',
@@ -21,10 +22,10 @@ export class HeaderComponent {
   actions:IAction[] = [];
 
   get leftActions() : IAction[] {
-    return this.actions.filter(o => o.position == "left");
+    return this.actions.filter((o:IAction) => o.name == ToggleVisibility.Name).filter((o:ToggleVisibility) => o.side == "left");
   }
   get rightActions() : IAction[] {
-    return this.actions.filter(o => o.position == "right");
+    return this.actions.filter((o:IAction) => o.name == ToggleVisibility.Name).filter((o:ToggleVisibility) => o.side == "right");
   }
 
   @Output()
