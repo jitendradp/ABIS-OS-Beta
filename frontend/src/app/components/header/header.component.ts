@@ -1,6 +1,4 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ProfileService} from "../../services/profile.service";
-import {AccountService} from "../../services/account.service";
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
 import {ToggleVisibility} from "../../actions/ui/sidebar/ToggleVisibility";
 import {IAction} from "../../actions/IAction";
@@ -32,13 +30,7 @@ export class HeaderComponent {
   @Output()
   click: EventEmitter<any> = new EventEmitter<any>();
 
-
-  public profile = this._profileService.getProfileInformation();
-  public account = this.accountService.getAccountInformation();
-
   constructor(
-    private _profileService: ProfileService,
-    protected accountService: AccountService,
     protected _actionDispatcher: ActionDispatcherService,
   ) {
   }

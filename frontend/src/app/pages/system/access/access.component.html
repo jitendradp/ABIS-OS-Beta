@@ -1,4 +1,4 @@
-<div fxLayout
+<div *ngIf="!isButton" fxLayout
      fxLayout.xs="column"
      fxLayoutAlign="center"
      fxLayoutGap="0px"
@@ -6,7 +6,7 @@
   <div fxFlex='auto' fxFlex.gt-md='50' fxFlex.gt-sm='80'>
     <app-content>
       <app-card-intro
-        *ngIf="!accountService.isLoggedOn"
+        *ngIf="!_accountService.isLoggedOn"
         [image]="'./assets/banners/access-cockpit.jpg'"
         [logo]="'./assets/logos/abis-logo.png'"
         [description]="'The collaborative dataspace to discover, share and discuss facts within your teams.'"
@@ -16,10 +16,10 @@
         <app-button [link]='"/signin"' [text]="'Sign in'"></app-button>
       </app-card-intro>
       <app-card-intro
-        *ngIf="accountService.isLoggedOn"
+        *ngIf="_accountService.isLoggedOn"
         [image]="'./assets/banners/access-cockpit.jpg'"
         [logo]="'./assets/logos/abis-logo.png'"
-        [description]="'Welcome back ' + accountService.getAccountInformation().firstname + '!'"
+        [description]="'Welcome back ' + _accountService.getAccountInformation().firstname + '!'"
         [title]="'ABIS Analytics Cloud'">
         Pick up where you left off:<br/>
         <ul>
@@ -40,4 +40,8 @@
     </app-content>
   </div>
 </div>
+
+<app-button *ngIf="isButton" [lessStyle]="true" [link]='"/"'
+            [text]="'Sign In / Register'">
+</app-button>
 

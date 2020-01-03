@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {AccountService} from "../../../services/account.service";
 
 @Component({
@@ -7,7 +7,10 @@ import {AccountService} from "../../../services/account.service";
   styleUrls: ['./access.component.css']
 })
 export class AccessComponent {
-  constructor(protected accountService:AccountService) {
+  constructor(protected _accountService: AccountService) {
   }
+
+  @Input()
+  isButton: string;
 
 }

@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {AccountService} from "../../services/account.service";
 
 @Component({
   selector: 'app-button',
@@ -22,7 +23,14 @@ export class ButtonComponent {
   @Input()
   showButtonIcon: string;
 
+  @Input()
+  lessStyle: boolean = false;
+
+
   @Output()
   click:EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
+
+  constructor(protected _accountService: AccountService) {
+  }
 
 }
