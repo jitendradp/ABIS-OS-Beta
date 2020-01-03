@@ -132,7 +132,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   protected submitStep3($event: MouseEvent) {
     // Thrid step completed, create the profile
     // TODO: Pic and Timezone
-    this.profileService.createProfile(this.accountService.token, this._step3Data.name, "pic", "UTC")
+    this.profileService.createProfile(this._step3Data.name, "pic", "UTC")
       .then(result => {
         if (!result) {
           throw new Error("The profile creation failed unexpectedly.");

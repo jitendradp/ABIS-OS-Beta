@@ -2678,9 +2678,11 @@ type Session {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime
-  token: String!
+  csrfToken: String!
+  authToken: String!
   validTo: DateTime!
   timedOut: DateTime
+  loggedOut: DateTime
   user: User!
   profile: Profile
 }
@@ -2693,9 +2695,11 @@ type SessionConnection {
 
 input SessionCreateInput {
   id: ID
-  token: String!
+  csrfToken: String!
+  authToken: String!
   validTo: DateTime!
   timedOut: DateTime
+  loggedOut: DateTime
   user: UserCreateOneWithoutSessionsInput!
   profile: ProfileCreateOneInput
 }
@@ -2707,9 +2711,11 @@ input SessionCreateManyWithoutUserInput {
 
 input SessionCreateWithoutUserInput {
   id: ID
-  token: String!
+  csrfToken: String!
+  authToken: String!
   validTo: DateTime!
   timedOut: DateTime
+  loggedOut: DateTime
   profile: ProfileCreateOneInput
 }
 
@@ -2725,21 +2731,27 @@ enum SessionOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
-  token_ASC
-  token_DESC
+  csrfToken_ASC
+  csrfToken_DESC
+  authToken_ASC
+  authToken_DESC
   validTo_ASC
   validTo_DESC
   timedOut_ASC
   timedOut_DESC
+  loggedOut_ASC
+  loggedOut_DESC
 }
 
 type SessionPreviousValues {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime
-  token: String!
+  csrfToken: String!
+  authToken: String!
   validTo: DateTime!
   timedOut: DateTime
+  loggedOut: DateTime
 }
 
 input SessionScalarWhereInput {
@@ -2773,20 +2785,34 @@ input SessionScalarWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
-  token: String
-  token_not: String
-  token_in: [String!]
-  token_not_in: [String!]
-  token_lt: String
-  token_lte: String
-  token_gt: String
-  token_gte: String
-  token_contains: String
-  token_not_contains: String
-  token_starts_with: String
-  token_not_starts_with: String
-  token_ends_with: String
-  token_not_ends_with: String
+  csrfToken: String
+  csrfToken_not: String
+  csrfToken_in: [String!]
+  csrfToken_not_in: [String!]
+  csrfToken_lt: String
+  csrfToken_lte: String
+  csrfToken_gt: String
+  csrfToken_gte: String
+  csrfToken_contains: String
+  csrfToken_not_contains: String
+  csrfToken_starts_with: String
+  csrfToken_not_starts_with: String
+  csrfToken_ends_with: String
+  csrfToken_not_ends_with: String
+  authToken: String
+  authToken_not: String
+  authToken_in: [String!]
+  authToken_not_in: [String!]
+  authToken_lt: String
+  authToken_lte: String
+  authToken_gt: String
+  authToken_gte: String
+  authToken_contains: String
+  authToken_not_contains: String
+  authToken_starts_with: String
+  authToken_not_starts_with: String
+  authToken_ends_with: String
+  authToken_not_ends_with: String
   validTo: DateTime
   validTo_not: DateTime
   validTo_in: [DateTime!]
@@ -2803,6 +2829,14 @@ input SessionScalarWhereInput {
   timedOut_lte: DateTime
   timedOut_gt: DateTime
   timedOut_gte: DateTime
+  loggedOut: DateTime
+  loggedOut_not: DateTime
+  loggedOut_in: [DateTime!]
+  loggedOut_not_in: [DateTime!]
+  loggedOut_lt: DateTime
+  loggedOut_lte: DateTime
+  loggedOut_gt: DateTime
+  loggedOut_gte: DateTime
   AND: [SessionScalarWhereInput!]
   OR: [SessionScalarWhereInput!]
   NOT: [SessionScalarWhereInput!]
@@ -2827,23 +2861,29 @@ input SessionSubscriptionWhereInput {
 }
 
 input SessionUpdateInput {
-  token: String
+  csrfToken: String
+  authToken: String
   validTo: DateTime
   timedOut: DateTime
+  loggedOut: DateTime
   user: UserUpdateOneRequiredWithoutSessionsInput
   profile: ProfileUpdateOneInput
 }
 
 input SessionUpdateManyDataInput {
-  token: String
+  csrfToken: String
+  authToken: String
   validTo: DateTime
   timedOut: DateTime
+  loggedOut: DateTime
 }
 
 input SessionUpdateManyMutationInput {
-  token: String
+  csrfToken: String
+  authToken: String
   validTo: DateTime
   timedOut: DateTime
+  loggedOut: DateTime
 }
 
 input SessionUpdateManyWithoutUserInput {
@@ -2864,9 +2904,11 @@ input SessionUpdateManyWithWhereNestedInput {
 }
 
 input SessionUpdateWithoutUserDataInput {
-  token: String
+  csrfToken: String
+  authToken: String
   validTo: DateTime
   timedOut: DateTime
+  loggedOut: DateTime
   profile: ProfileUpdateOneInput
 }
 
@@ -2912,20 +2954,34 @@ input SessionWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
-  token: String
-  token_not: String
-  token_in: [String!]
-  token_not_in: [String!]
-  token_lt: String
-  token_lte: String
-  token_gt: String
-  token_gte: String
-  token_contains: String
-  token_not_contains: String
-  token_starts_with: String
-  token_not_starts_with: String
-  token_ends_with: String
-  token_not_ends_with: String
+  csrfToken: String
+  csrfToken_not: String
+  csrfToken_in: [String!]
+  csrfToken_not_in: [String!]
+  csrfToken_lt: String
+  csrfToken_lte: String
+  csrfToken_gt: String
+  csrfToken_gte: String
+  csrfToken_contains: String
+  csrfToken_not_contains: String
+  csrfToken_starts_with: String
+  csrfToken_not_starts_with: String
+  csrfToken_ends_with: String
+  csrfToken_not_ends_with: String
+  authToken: String
+  authToken_not: String
+  authToken_in: [String!]
+  authToken_not_in: [String!]
+  authToken_lt: String
+  authToken_lte: String
+  authToken_gt: String
+  authToken_gte: String
+  authToken_contains: String
+  authToken_not_contains: String
+  authToken_starts_with: String
+  authToken_not_starts_with: String
+  authToken_ends_with: String
+  authToken_not_ends_with: String
   validTo: DateTime
   validTo_not: DateTime
   validTo_in: [DateTime!]
@@ -2942,6 +2998,14 @@ input SessionWhereInput {
   timedOut_lte: DateTime
   timedOut_gt: DateTime
   timedOut_gte: DateTime
+  loggedOut: DateTime
+  loggedOut_not: DateTime
+  loggedOut_in: [DateTime!]
+  loggedOut_not_in: [DateTime!]
+  loggedOut_lt: DateTime
+  loggedOut_lte: DateTime
+  loggedOut_gt: DateTime
+  loggedOut_gte: DateTime
   user: UserWhereInput
   profile: ProfileWhereInput
   AND: [SessionWhereInput!]
@@ -2951,7 +3015,8 @@ input SessionWhereInput {
 
 input SessionWhereUniqueInput {
   id: ID
-  token: String
+  csrfToken: String
+  authToken: String
 }
 
 type Subscription {

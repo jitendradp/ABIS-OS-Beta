@@ -32,18 +32,18 @@ export class UserMutations {
         return Array.from(validUserSessions);
     }
 
-    private static async findUserByToken(token:string) : Promise<User> {
-        let sessions = await prisma.sessions({where: {token: token, validTo_gt: new Date(), timedOut:null}});
+    private static async findUserByToken(authToken:string) : Promise<User> {
+        let sessions = await prisma.sessions({where: {authToken: authToken, validTo_gt: new Date(), timedOut:null}});
         if (sessions.length > 1) {
-            this.abortInvalidRequest(" --- Take a gun and shoot yourself! --- There is more than one session with the same token: " + token);
+            this.abortInvalidRequest(" --- Take a gun and shoot yourself! --- There is more than one session with the same csrfToken: " + authToken);
         }
         if (sessions.length == 0) {
             return null;
         }
 
-        let user = await prisma.session({token:token}).user();
+        let user = await prisma.session({authToken:authToken}).user();
         if (!user) {
-            this.abortInvalidRequest(" --- Take a gun and shoot yourself! --- There is no associated user for session " + token);
+            this.abortInvalidRequest(" --- Take a gun and shoot yourself! --- There is no associated user for session " + authToken);
         }
 
         // TODO: Set a new session timeout
@@ -51,19 +51,21 @@ export class UserMutations {
     }
 
     /**
-     * Creates a new session and session token for the given user.
+     * Creates a new session and session csrfToken for the given user.
      * @param user
      */
-    private static async createSessionForUser(user): Promise<string> {
+    private static async createSessionForUser(user): Promise<{authToken:string, csrfToken:string}> {
         let tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
 
         let len = 64;
-        let randomNumbers = Helpers.getRandomBase64String(len);
+        let csrfToken = Helpers.getRandomBase64String(len);
+        let authToken = Helpers.getRandomBase64String(len);
 
         const session = <SessionCreateInput>{
             timedOut: null,
-            token: randomNumbers,
+            csrfToken: csrfToken,
+            authToken: authToken,
             validTo: tomorrow,
             user: {
                 connect: {
@@ -74,7 +76,10 @@ export class UserMutations {
         };
         await prisma.createSession(session);
 
-        return randomNumbers;
+        return {
+            authToken,
+            csrfToken
+        };
     }
 
     /**
@@ -88,6 +93,7 @@ export class UserMutations {
 
         let user = await prisma.user({email: email});
         if (user) {
+            // noinspection ES6MissingAwait - Fire and forget to not block the request
             Mailer.sendAccountReminder(user);
             await delay.GetPromise();
             this.abortInvalidRequest("There is already a registered account with the email address: " + email);
@@ -119,7 +125,7 @@ export class UserMutations {
     }
 
     /**
-     * Checks the username and password and returns a session token or 'error'.
+     * Checks the username and password and returns a session csrfToken or 'error'.
      * @param email
      * @param password
      * @param request The express request object from the yoga context
@@ -157,15 +163,15 @@ export class UserMutations {
 
         // TODO: Is it useful to wait even if the credentials are correct?
         // await delay.GetPromise();
-        let token = sessions.length == 0 ? await UserMutations.createSessionForUser(user) : sessions[0].token;
+        let session = sessions.length == 0 ? await UserMutations.createSessionForUser(user) : sessions[0];
 
-        UserMutations.setTokenCookie(token, request);
+        UserMutations.setAuthTokenCookie(session.authToken, request);
 
-        return token;
+        return session.csrfToken;
     }
 
-    private static setTokenCookie(token:string, request:Request) {
-        request.res.cookie('token', token, {
+    private static setAuthTokenCookie(authToken:string, request:Request) {
+        request.res.cookie('authToken', authToken, {
             maxAge: config.auth.sessionTimeout,
             httpOnly: true, // cookie is only accessible by the server
             domain: config.env.domain,
@@ -174,8 +180,18 @@ export class UserMutations {
         });
     }
 
-    public static async logout(token: string): Promise<boolean> {
-        let user = await this.findUserByToken(token);
+    private static clearAuthTokenCookie(request:Request) {
+        request.res.cookie('authToken', "", {
+            maxAge: 0,
+            httpOnly: true, // cookie is only accessible by the server
+            domain: config.env.domain,
+            secure: process.env.NODE_ENV === 'prod', // only transferred over https
+            sameSite: true, // only sent for requests to the same FQDN as the domain in the cookie
+        });
+    }
+
+    public static async logout(authToken: string, request:Request): Promise<boolean> {
+        let user = await this.findUserByToken(authToken);
         if (!user) {
             return false;
         }
@@ -189,9 +205,11 @@ export class UserMutations {
                         id:o.id
                     },
                     data:{
-                        timedOut:new Date()
+                        loggedOut:new Date()
                     }
                 })));
+
+        this.clearAuthTokenCookie(request);
 
         return true;
     }
@@ -199,8 +217,9 @@ export class UserMutations {
     /**
      * Checks the email verification code which is sent out to newly signed up accounts.
      * @param code
+     * @param request
      */
-    public static async verifyEmail(code: string): Promise<string> {
+    public static async verifyEmail(code: string, request:Request): Promise<string> {
         let delay = new ResponseDelay(UserMutations.responseDelay);
 
         let users = Array.from(await prisma.users({where: {challenge: code.trim()}}));
@@ -222,31 +241,42 @@ export class UserMutations {
         });
 
         let session = await UserMutations.createSessionForUser(user);
+        UserMutations.setAuthTokenCookie(session.authToken, request);
 
         // Wait some time before returning the response (500ms - runtime)
         await delay.GetPromise();
 
-        return session;
+        return session.csrfToken;
     }
 
     /**
-     * Verifies if a session token exists and is valid.
-     * @param token
+     * Verifies if a session csrfToken exists and is valid.
+     * @param csrfToken
+     * @param authToken
+     * @param request
      */
-    public static async verifySession(token: string, request:Request): Promise<boolean> {
+    public static async verifySession(csrfToken: string, authToken: string, request:Request): Promise<boolean> {
         // TODO: Set a new session timeout
-        let sessions = Array.from(await prisma.sessions({where: {token: token, validTo_gt: new Date(), timedOut:null}}));
+        let sessions = await prisma.sessions({
+            where: {
+                csrfToken: csrfToken,
+                authToken: authToken,
+                validTo_gt: new Date(),
+                timedOut:null
+            }});
+
         if (sessions.length > 0) {
-            UserMutations.setTokenCookie(token, request);
+            UserMutations.setAuthTokenCookie(authToken, request);
         }
+
         return sessions.length > 0;
     }
 
-    public static async setSessionProfile(token: string, profileId: string) {
-        let user = await this.findUserByToken(token);
+    public static async setSessionProfile(csrfToken: string, authToken:string, profileId: string) {
+        let user = await this.findUserByToken(authToken);
 
         if (user == null) {
-            this.abortInvalidRequest("Couldn't find a valid session for token: " + token);
+            this.abortInvalidRequest("Couldn't find a valid session for csrfToken: " + authToken);
         }
 
         await prisma.updateSession({
@@ -256,7 +286,7 @@ export class UserMutations {
                 }
             },
             where: {
-                token: token
+                authToken: authToken
             }
         });
 

@@ -762,12 +762,16 @@ export type SessionOrderByInput =
   | "createdAt_DESC"
   | "updatedAt_ASC"
   | "updatedAt_DESC"
-  | "token_ASC"
-  | "token_DESC"
+  | "csrfToken_ASC"
+  | "csrfToken_DESC"
+  | "authToken_ASC"
+  | "authToken_DESC"
   | "validTo_ASC"
   | "validTo_DESC"
   | "timedOut_ASC"
-  | "timedOut_DESC";
+  | "timedOut_DESC"
+  | "loggedOut_ASC"
+  | "loggedOut_DESC";
 
 export interface LocationUpsertNestedInput {
   update: LocationUpdateDataInput;
@@ -1383,9 +1387,11 @@ export interface ProfileUpdateOneRequiredInput {
 }
 
 export interface SessionUpdateWithoutUserDataInput {
-  token?: Maybe<String>;
+  csrfToken?: Maybe<String>;
+  authToken?: Maybe<String>;
   validTo?: Maybe<DateTimeInput>;
   timedOut?: Maybe<DateTimeInput>;
+  loggedOut?: Maybe<DateTimeInput>;
   profile?: Maybe<ProfileUpdateOneInput>;
 }
 
@@ -1705,9 +1711,11 @@ export interface ProfileUpdateWithoutMembershipsDataInput {
 }
 
 export interface SessionUpdateInput {
-  token?: Maybe<String>;
+  csrfToken?: Maybe<String>;
+  authToken?: Maybe<String>;
   validTo?: Maybe<DateTimeInput>;
   timedOut?: Maybe<DateTimeInput>;
+  loggedOut?: Maybe<DateTimeInput>;
   user?: Maybe<UserUpdateOneRequiredWithoutSessionsInput>;
   profile?: Maybe<ProfileUpdateOneInput>;
 }
@@ -1748,7 +1756,8 @@ export interface TransactionUpdateDataInput {
 
 export type SessionWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
-  token?: Maybe<String>;
+  csrfToken?: Maybe<String>;
+  authToken?: Maybe<String>;
 }>;
 
 export interface ProfileUpsertWithoutMembershipsInput {
@@ -2548,9 +2557,11 @@ export interface ReactionUpdateDataInput {
 }
 
 export interface SessionUpdateManyDataInput {
-  token?: Maybe<String>;
+  csrfToken?: Maybe<String>;
+  authToken?: Maybe<String>;
   validTo?: Maybe<DateTimeInput>;
   timedOut?: Maybe<DateTimeInput>;
+  loggedOut?: Maybe<DateTimeInput>;
 }
 
 export interface ReactionUpsertWithWhereUniqueNestedInput {
@@ -2650,9 +2661,11 @@ export interface ReactionUpdateManyDataInput {
 }
 
 export interface SessionUpdateManyMutationInput {
-  token?: Maybe<String>;
+  csrfToken?: Maybe<String>;
+  authToken?: Maybe<String>;
   validTo?: Maybe<DateTimeInput>;
   timedOut?: Maybe<DateTimeInput>;
+  loggedOut?: Maybe<DateTimeInput>;
 }
 
 export interface MessageUpsertWithWhereUniqueNestedInput {
@@ -2854,9 +2867,11 @@ export interface GroupUpsertNestedInput {
 
 export interface SessionCreateInput {
   id?: Maybe<ID_Input>;
-  token: String;
+  csrfToken: String;
+  authToken: String;
   validTo: DateTimeInput;
   timedOut?: Maybe<DateTimeInput>;
+  loggedOut?: Maybe<DateTimeInput>;
   user: UserCreateOneWithoutSessionsInput;
   profile?: Maybe<ProfileCreateOneInput>;
 }
@@ -2897,20 +2912,34 @@ export interface SessionWhereInput {
   updatedAt_lte?: Maybe<DateTimeInput>;
   updatedAt_gt?: Maybe<DateTimeInput>;
   updatedAt_gte?: Maybe<DateTimeInput>;
-  token?: Maybe<String>;
-  token_not?: Maybe<String>;
-  token_in?: Maybe<String[] | String>;
-  token_not_in?: Maybe<String[] | String>;
-  token_lt?: Maybe<String>;
-  token_lte?: Maybe<String>;
-  token_gt?: Maybe<String>;
-  token_gte?: Maybe<String>;
-  token_contains?: Maybe<String>;
-  token_not_contains?: Maybe<String>;
-  token_starts_with?: Maybe<String>;
-  token_not_starts_with?: Maybe<String>;
-  token_ends_with?: Maybe<String>;
-  token_not_ends_with?: Maybe<String>;
+  csrfToken?: Maybe<String>;
+  csrfToken_not?: Maybe<String>;
+  csrfToken_in?: Maybe<String[] | String>;
+  csrfToken_not_in?: Maybe<String[] | String>;
+  csrfToken_lt?: Maybe<String>;
+  csrfToken_lte?: Maybe<String>;
+  csrfToken_gt?: Maybe<String>;
+  csrfToken_gte?: Maybe<String>;
+  csrfToken_contains?: Maybe<String>;
+  csrfToken_not_contains?: Maybe<String>;
+  csrfToken_starts_with?: Maybe<String>;
+  csrfToken_not_starts_with?: Maybe<String>;
+  csrfToken_ends_with?: Maybe<String>;
+  csrfToken_not_ends_with?: Maybe<String>;
+  authToken?: Maybe<String>;
+  authToken_not?: Maybe<String>;
+  authToken_in?: Maybe<String[] | String>;
+  authToken_not_in?: Maybe<String[] | String>;
+  authToken_lt?: Maybe<String>;
+  authToken_lte?: Maybe<String>;
+  authToken_gt?: Maybe<String>;
+  authToken_gte?: Maybe<String>;
+  authToken_contains?: Maybe<String>;
+  authToken_not_contains?: Maybe<String>;
+  authToken_starts_with?: Maybe<String>;
+  authToken_not_starts_with?: Maybe<String>;
+  authToken_ends_with?: Maybe<String>;
+  authToken_not_ends_with?: Maybe<String>;
   validTo?: Maybe<DateTimeInput>;
   validTo_not?: Maybe<DateTimeInput>;
   validTo_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -2927,6 +2956,14 @@ export interface SessionWhereInput {
   timedOut_lte?: Maybe<DateTimeInput>;
   timedOut_gt?: Maybe<DateTimeInput>;
   timedOut_gte?: Maybe<DateTimeInput>;
+  loggedOut?: Maybe<DateTimeInput>;
+  loggedOut_not?: Maybe<DateTimeInput>;
+  loggedOut_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  loggedOut_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  loggedOut_lt?: Maybe<DateTimeInput>;
+  loggedOut_lte?: Maybe<DateTimeInput>;
+  loggedOut_gt?: Maybe<DateTimeInput>;
+  loggedOut_gte?: Maybe<DateTimeInput>;
   user?: Maybe<UserWhereInput>;
   profile?: Maybe<ProfileWhereInput>;
   AND?: Maybe<SessionWhereInput[] | SessionWhereInput>;
@@ -3125,20 +3162,34 @@ export interface SessionScalarWhereInput {
   updatedAt_lte?: Maybe<DateTimeInput>;
   updatedAt_gt?: Maybe<DateTimeInput>;
   updatedAt_gte?: Maybe<DateTimeInput>;
-  token?: Maybe<String>;
-  token_not?: Maybe<String>;
-  token_in?: Maybe<String[] | String>;
-  token_not_in?: Maybe<String[] | String>;
-  token_lt?: Maybe<String>;
-  token_lte?: Maybe<String>;
-  token_gt?: Maybe<String>;
-  token_gte?: Maybe<String>;
-  token_contains?: Maybe<String>;
-  token_not_contains?: Maybe<String>;
-  token_starts_with?: Maybe<String>;
-  token_not_starts_with?: Maybe<String>;
-  token_ends_with?: Maybe<String>;
-  token_not_ends_with?: Maybe<String>;
+  csrfToken?: Maybe<String>;
+  csrfToken_not?: Maybe<String>;
+  csrfToken_in?: Maybe<String[] | String>;
+  csrfToken_not_in?: Maybe<String[] | String>;
+  csrfToken_lt?: Maybe<String>;
+  csrfToken_lte?: Maybe<String>;
+  csrfToken_gt?: Maybe<String>;
+  csrfToken_gte?: Maybe<String>;
+  csrfToken_contains?: Maybe<String>;
+  csrfToken_not_contains?: Maybe<String>;
+  csrfToken_starts_with?: Maybe<String>;
+  csrfToken_not_starts_with?: Maybe<String>;
+  csrfToken_ends_with?: Maybe<String>;
+  csrfToken_not_ends_with?: Maybe<String>;
+  authToken?: Maybe<String>;
+  authToken_not?: Maybe<String>;
+  authToken_in?: Maybe<String[] | String>;
+  authToken_not_in?: Maybe<String[] | String>;
+  authToken_lt?: Maybe<String>;
+  authToken_lte?: Maybe<String>;
+  authToken_gt?: Maybe<String>;
+  authToken_gte?: Maybe<String>;
+  authToken_contains?: Maybe<String>;
+  authToken_not_contains?: Maybe<String>;
+  authToken_starts_with?: Maybe<String>;
+  authToken_not_starts_with?: Maybe<String>;
+  authToken_ends_with?: Maybe<String>;
+  authToken_not_ends_with?: Maybe<String>;
   validTo?: Maybe<DateTimeInput>;
   validTo_not?: Maybe<DateTimeInput>;
   validTo_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -3155,6 +3206,14 @@ export interface SessionScalarWhereInput {
   timedOut_lte?: Maybe<DateTimeInput>;
   timedOut_gt?: Maybe<DateTimeInput>;
   timedOut_gte?: Maybe<DateTimeInput>;
+  loggedOut?: Maybe<DateTimeInput>;
+  loggedOut_not?: Maybe<DateTimeInput>;
+  loggedOut_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  loggedOut_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  loggedOut_lt?: Maybe<DateTimeInput>;
+  loggedOut_lte?: Maybe<DateTimeInput>;
+  loggedOut_gt?: Maybe<DateTimeInput>;
+  loggedOut_gte?: Maybe<DateTimeInput>;
   AND?: Maybe<SessionScalarWhereInput[] | SessionScalarWhereInput>;
   OR?: Maybe<SessionScalarWhereInput[] | SessionScalarWhereInput>;
   NOT?: Maybe<SessionScalarWhereInput[] | SessionScalarWhereInput>;
@@ -3196,9 +3255,11 @@ export interface AssetScalarWhereInput {
 
 export interface SessionCreateWithoutUserInput {
   id?: Maybe<ID_Input>;
-  token: String;
+  csrfToken: String;
+  authToken: String;
   validTo: DateTimeInput;
   timedOut?: Maybe<DateTimeInput>;
+  loggedOut?: Maybe<DateTimeInput>;
   profile?: Maybe<ProfileCreateOneInput>;
 }
 
@@ -4852,18 +4913,22 @@ export interface Session {
   id: ID_Output;
   createdAt: DateTimeOutput;
   updatedAt?: DateTimeOutput;
-  token: String;
+  csrfToken: String;
+  authToken: String;
   validTo: DateTimeOutput;
   timedOut?: DateTimeOutput;
+  loggedOut?: DateTimeOutput;
 }
 
 export interface SessionPromise extends Promise<Session>, Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
-  token: () => Promise<String>;
+  csrfToken: () => Promise<String>;
+  authToken: () => Promise<String>;
   validTo: () => Promise<DateTimeOutput>;
   timedOut: () => Promise<DateTimeOutput>;
+  loggedOut: () => Promise<DateTimeOutput>;
   user: <T = UserPromise>() => T;
   profile: <T = ProfilePromise>() => T;
 }
@@ -4874,9 +4939,11 @@ export interface SessionSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  token: () => Promise<AsyncIterator<String>>;
+  csrfToken: () => Promise<AsyncIterator<String>>;
+  authToken: () => Promise<AsyncIterator<String>>;
   validTo: () => Promise<AsyncIterator<DateTimeOutput>>;
   timedOut: () => Promise<AsyncIterator<DateTimeOutput>>;
+  loggedOut: () => Promise<AsyncIterator<DateTimeOutput>>;
   user: <T = UserSubscription>() => T;
   profile: <T = ProfileSubscription>() => T;
 }
@@ -4887,9 +4954,11 @@ export interface SessionNullablePromise
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
-  token: () => Promise<String>;
+  csrfToken: () => Promise<String>;
+  authToken: () => Promise<String>;
   validTo: () => Promise<DateTimeOutput>;
   timedOut: () => Promise<DateTimeOutput>;
+  loggedOut: () => Promise<DateTimeOutput>;
   user: <T = UserPromise>() => T;
   profile: <T = ProfilePromise>() => T;
 }
@@ -5439,9 +5508,11 @@ export interface SessionPreviousValues {
   id: ID_Output;
   createdAt: DateTimeOutput;
   updatedAt?: DateTimeOutput;
-  token: String;
+  csrfToken: String;
+  authToken: String;
   validTo: DateTimeOutput;
   timedOut?: DateTimeOutput;
+  loggedOut?: DateTimeOutput;
 }
 
 export interface SessionPreviousValuesPromise
@@ -5450,9 +5521,11 @@ export interface SessionPreviousValuesPromise
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
-  token: () => Promise<String>;
+  csrfToken: () => Promise<String>;
+  authToken: () => Promise<String>;
   validTo: () => Promise<DateTimeOutput>;
   timedOut: () => Promise<DateTimeOutput>;
+  loggedOut: () => Promise<DateTimeOutput>;
 }
 
 export interface SessionPreviousValuesSubscription
@@ -5461,9 +5534,11 @@ export interface SessionPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  token: () => Promise<AsyncIterator<String>>;
+  csrfToken: () => Promise<AsyncIterator<String>>;
+  authToken: () => Promise<AsyncIterator<String>>;
   validTo: () => Promise<AsyncIterator<DateTimeOutput>>;
   timedOut: () => Promise<AsyncIterator<DateTimeOutput>>;
+  loggedOut: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface ReactionPreviousValues {
