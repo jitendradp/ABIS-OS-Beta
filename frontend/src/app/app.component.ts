@@ -4,12 +4,15 @@ import {DataspaceService} from "./services/dataspace.service";
 import {AccountService} from "./services/account.service";
 import {MatDrawer} from "@angular/material/sidenav";
 import {
-  ActivationEnd, ActivationStart, ChildActivationEnd,
+  ActivationEnd,
+  ActivationStart,
+  ChildActivationEnd,
   ChildActivationStart,
   RouteConfigLoadEnd,
   RouteConfigLoadStart,
   Router,
-  RouterEvent, Scroll
+  RouterEvent,
+  Scroll
 } from "@angular/router";
 import {IEvent} from "./actions/IEvent";
 import {ActionDispatcherService} from "./services/action-dispatcher.service";
