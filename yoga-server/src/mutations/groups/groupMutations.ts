@@ -1,12 +1,13 @@
 import {prisma} from "../../generated";
+import {CommonQueries} from "../../queries/commonQueries";
 
 export class GroupMutations {
     public static async createWorkspace(csrfToken: string, authToken:string, hostProfileId: string, name: string, title: string, description: string, logo: string, tags: string) {
-        let user = await prisma.session({csrfToken, authToken}).user();
+        const user = CommonQueries.findUserBySession(csrfToken, authToken);
         if (!user) {
-            throw new Error("Invalid csrfToken");
+            throw new Error("Invalid csrf- or auth token");
         }
-        let group = await prisma.createGroup({
+        const group = await prisma.createGroup({
             host: {
                 connect: {
                     id: hostProfileId
@@ -21,7 +22,7 @@ export class GroupMutations {
             is_hidden: true,
             is_public: false
         });
-        let membership = await prisma.createMembership({
+        const membership = await prisma.createMembership({
             member:{
                 connect:{
                     id:hostProfileId
@@ -39,9 +40,9 @@ export class GroupMutations {
     }
 
     public static async updateWorkspace(csrfToken: string, authToken:string, workspaceId: string, name: string, title: string, description: string, logo: string, tags: string, isHidden: boolean, isPublic: boolean) {
-        let user = await prisma.session({csrfToken, authToken}).user();
+        const user = await CommonQueries.findUserBySession(csrfToken, authToken);
         if (!user) {
-            throw new Error("Invalid csrfToken");
+            throw new Error("Invalid csrf- or auth token");
         }
         await prisma.updateGroup({
             data: {
@@ -61,11 +62,11 @@ export class GroupMutations {
     }
 
     public static async addMember(csrfToken: string, authToken:string, groupId: string, memberProfileId: string) {
-        let profile = await prisma.session({csrfToken, authToken}).profile();
+        const profile = await CommonQueries.findProfileBySession(csrfToken, authToken);
         if (!profile) {
-            throw new Error("Invalid csrfToken or the session has no associated profile.")
+            throw new Error("Invalid csrf- or auth token nor the session has no associated profile.");
         }
-        let membership = await prisma.createMembership({
+        const membership = await prisma.createMembership({
             group: {
                 connect: {
                     id: groupId
@@ -78,7 +79,7 @@ export class GroupMutations {
             },
             show_history: false
         });
-        let group = await prisma.updateGroup({
+        const group = await prisma.updateGroup({
             data: {
                 members: {
                     connect: {
@@ -117,13 +118,13 @@ export class GroupMutations {
     }
 
     public static async removeMember(csrfToken: string, authToken:string, groupId: string, memberProfileId: string) {
-        let profile = await prisma.session({csrfToken, authToken}).profile();
+        const profile = await CommonQueries.findProfileBySession(csrfToken, authToken);
         if (!profile) {
             throw new Error("Invalid csrfToken or the session has no associated profile.")
         }
-        let memberships = await prisma.group({id: groupId}).members({where: {member: {id: memberProfileId}}});
+        const memberships = await prisma.group({id: groupId}).members({where: {member: {id: memberProfileId}}});
         for (const o of memberships) {
-            let group = await  prisma.membership({id: o.id}).group();
+            const group = await prisma.membership({id: o.id}).group();
             await prisma.deleteMembership({id: o.id});
             await prisma.updateGroup({
                 data: {

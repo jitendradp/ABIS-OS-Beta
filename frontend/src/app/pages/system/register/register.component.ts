@@ -9,6 +9,8 @@ import {ProfileService} from "../../../services/profile.service";
 import {Logger, LoggerService, LogSeverity} from "../../../services/logger.service";
 import {ActionDispatcherService} from "../../../services/action-dispatcher.service";
 import {Home} from "../../../actions/routes/Home";
+import {ShowNotification} from "../../../actions/ui/ShowNotification";
+import {Back} from "../../../actions/routes/Back";
 
 @Component({
   selector: 'app-register',
@@ -80,14 +82,27 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    const f = () => {
+      if (this.accountService.isLoggedOn) {
+        this.actionDispatcher.dispatch(new ShowNotification("You cannot sign up a new user while being logged-on. Log out first and then create a new user. Also try if another profile fits your need."));
+        this.actionDispatcher.dispatch(new Back());
+        return;
+      }
+    };
+    if (document.referrer == "") {
+      setTimeout(f, 500);
+    } else {
+      f();
+    }
+
     // Disable the previous steps (loaded from clientState) so that the user can't navigate to them again
     this.disableCompletedSteps();
   }
 
   private disableCompletedSteps(upTp?:number) {
-    let steps = this.stepper.steps.toArray();
+    const steps = this.stepper.steps.toArray();
     for (let i = 0; i < (upTp ? upTp : this.stepper.selectedIndex); i++) {
-      let step = steps[i];
+      const step = steps[i];
       steps[i].completed = true;
       steps[i].editable = false;
     }
@@ -143,7 +158,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
               throw new Error("An unexpected error occurred while binding the new profile " + result + " to the session.");
             }
             // Disable the previous steps so that the user can't navigate to them again
-            this.clientState.set("RegisterComponent.stepper.selectedIndex", 2);
+            this.clientState.delete("RegisterComponent.stepper.selectedIndex");
             this.disableCompletedSteps(2);
 
             this.actionDispatcher.dispatch(new Home());

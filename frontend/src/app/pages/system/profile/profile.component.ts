@@ -9,9 +9,7 @@ import {AccountService} from "../../../services/account.service";
 })
 export class ProfileComponent implements OnInit {
 
-
   public profile = {};
-
   public account = {};
 
   constructor(
@@ -22,7 +20,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.profile = this._profileService.getProfileInformation();
-    this.account = this._accountService.getAccountInformation()
+    this.account = this._accountService.accountInformation
   }
 
 }

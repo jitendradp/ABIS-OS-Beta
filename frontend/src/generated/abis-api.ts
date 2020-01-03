@@ -15,6 +15,13 @@ export type Scalars = {
 
 
 
+export type AccountInformation = {
+   __typename?: 'AccountInformation',
+  id: Scalars['String'],
+  createdAt: Scalars['String'],
+  name: Scalars['String'],
+};
+
 export type Asset = {
    __typename?: 'Asset',
   id: Scalars['String'],
@@ -253,6 +260,7 @@ export type Query = {
   myWorkspaces: Array<Group>,
   myMemberships: Array<Membership>,
   getSessionProfile?: Maybe<Profile>,
+  getAccountInformation?: Maybe<AccountInformation>,
   listProfiles: Array<Profile>,
   listWorkspaces: Array<Group>,
   listMemberships: Array<Membership>,
@@ -274,6 +282,11 @@ export type QueryMyMembershipsArgs = {
 
 
 export type QueryGetSessionProfileArgs = {
+  csrfToken: Scalars['String']
+};
+
+
+export type QueryGetAccountInformationArgs = {
   csrfToken: Scalars['String']
 };
 
@@ -498,6 +511,19 @@ export type UpdateProfileMutationVariables = {
 export type UpdateProfileMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'updateProfile'>
+);
+
+export type GetAccountInformationQueryVariables = {
+  csrfToken: Scalars['String']
+};
+
+
+export type GetAccountInformationQuery = (
+  { __typename?: 'Query' }
+  & { getAccountInformation: Maybe<(
+    { __typename?: 'AccountInformation' }
+    & Pick<AccountInformation, 'id' | 'createdAt' | 'name'>
+  )> }
 );
 
 export type GetSessionProfileQueryVariables = {
@@ -828,6 +854,23 @@ export const UpdateProfileDocument = gql`
   })
   export class UpdateProfileGQL extends Apollo.Mutation<UpdateProfileMutation, UpdateProfileMutationVariables> {
     document = UpdateProfileDocument;
+    
+  }
+export const GetAccountInformationDocument = gql`
+    query getAccountInformation($csrfToken: String!) {
+  getAccountInformation(csrfToken: $csrfToken) {
+    id
+    createdAt
+    name
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetAccountInformationGQL extends Apollo.Query<GetAccountInformationQuery, GetAccountInformationQueryVariables> {
+    document = GetAccountInformationDocument;
     
   }
 export const GetSessionProfileDocument = gql`

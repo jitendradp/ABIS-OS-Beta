@@ -11,7 +11,14 @@ export enum LogSeverity {
   UserNotification = 100
 }
 
-export type LogEntry = {timestamp:Date, source:string, severity:LogSeverity, message:string };
+export class LogEntry
+{
+  timestamp:Date;
+  source:string;
+  severity:LogSeverity;
+  message:string
+}
+
 export type Logger = (severity:LogSeverity, message:string) => void;
 
 @Injectable({
@@ -26,12 +33,13 @@ export class LoggerService {
     if (!this._logger[source]) {
       this._logger[source] = new CircularBuffer<LogEntry>(50);
     }
-    const logEntry:LogEntry = {
-      timestamp: new Date(),
-      source:source,
-      severity: severity,
-      message: message
-    };
+
+    const logEntry = new LogEntry();
+    logEntry.timestamp = new Date();
+    logEntry.source = source;
+    logEntry.severity = severity;
+    logEntry.message = message;
+
     this._logger[source].enq(logEntry);
 
     // If it is an error or a user notification, display it to the user

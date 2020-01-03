@@ -1,18 +1,14 @@
 import {prisma} from "../../generated";
+import {CommonQueries} from "../../queries/commonQueries";
 
 export class ProfileMutations {
     public static async createProfile(csrfToken: string, authToken:string, name: string, picture: string, timezone: string) {
-        let sessionQuery = prisma.session({authToken:authToken});
-        let user = await sessionQuery.user();
-        if (!user) {
-            throw new Error("Invalid authToken");
+        const userAndSession = await CommonQueries.findUserBySession(csrfToken, authToken);
+        if (!userAndSession) {
+            throw new Error("Invalid csrf- or auth token");
         }
 
-        let session = await prisma.session({authToken:authToken});
-        if (session.csrfToken !== csrfToken) {
-            throw new Error("Invalid csrfToken");
-        }
-        let profile = await prisma.createProfile({
+        const profile = await prisma.createProfile({
             name: name,
             picture: picture,
             timezone: timezone
@@ -25,21 +21,15 @@ export class ProfileMutations {
                     }
                 }
             },
-            where: {id: user.id}
+            where: {id: userAndSession.user.id}
         });
         return profile.id;
     }
 
     public static async updateProfile(csrfToken: string, authToken:string, profileId: string, name: string, picture: string, timezone: string, status: string) {
-        let sessionQuery = prisma.session({authToken:authToken});
-        let user = await sessionQuery.user();
-        if (!user) {
-            throw new Error("Invalid authToken");
-        }
-
-        let session = await sessionQuery;
-        if (session.csrfToken !== csrfToken) {
-            throw new Error("Invalid csrfToken");
+        const userAndSession = await CommonQueries.findUserBySession(csrfToken, authToken);
+        if (!userAndSession) {
+            throw new Error("Invalid csrf- or auth token");
         }
 
         return await prisma.updateProfile({

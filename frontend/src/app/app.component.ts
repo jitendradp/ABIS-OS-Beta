@@ -23,6 +23,8 @@ import {ShowNotification} from "./actions/ui/ShowNotification";
 import {SwitchProfile} from "./actions/routes/SwitchProfile";
 import {ToggleVisibility} from "./actions/ui/sidebar/ToggleVisibility";
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {LogEntry} from "./services/logger.service";
+import {Back} from "./actions/routes/Back";
 
 @Component({
   selector: 'app-root',
@@ -43,7 +45,6 @@ export class AppComponent {
 
   public profile = this._profileService.getProfileInformation();
   public dataspace = this._dataspaceService.getDataspaceInformation();
-  public account = this._accountService.getAccountInformation();
 
   actions: IEvent[] = [];
 
@@ -75,13 +76,27 @@ export class AppComponent {
         this.openDialog();
         break;
       case ShowNotification.Name:
-        let msg = <ShowNotification>action;
-        this._snackBar.open(msg.logEntry.source + ": " + msg.logEntry.message, null, {
-          duration: 10 * 1000
-        });
+        if (action instanceof ShowNotification) {
+          if (action.entry instanceof LogEntry) {
+            this._snackBar.open(action.entry.source + ": " + action.entry.message, null, {
+              duration: 10 * 1000
+            });
+          } else {
+            this._snackBar.open(action.entry, null, {
+              duration: 10 * 1000
+            });
+          }
+        }
         break;
       case Home.Name:
         this._router.navigate(["/"]);
+        break;
+      case Back.Name:
+        if (document.referrer == "") {
+          this._actionDispatcher.dispatch(new Home());
+          return;
+        }
+        history.back();
         break;
       case SwitchProfile.Name:
         this._router.navigate(["/switch-profile"]);
@@ -93,7 +108,7 @@ export class AppComponent {
     // if the event is of Type "ActivationEnd" ...
     if (o instanceof ActivationEnd) {
       // "<Cast>" to the right type to access the "data" property
-      let activationEnd = <ActivationEnd>o;
+      const activationEnd = <ActivationEnd>o;
       // set the title on the header bar
       this.title = activationEnd.snapshot.data.title;
       if (activationEnd.snapshot.data.actions) {

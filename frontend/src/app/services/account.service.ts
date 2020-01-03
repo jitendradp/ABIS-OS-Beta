@@ -1,23 +1,31 @@
 import {Injectable} from '@angular/core';
 import {ActionDispatcherService} from "./action-dispatcher.service";
 import {LoginState, LoginStateChanged} from "../actions/account/LoginStateChanged";
-import {LoginGQL, LogoutGQL, SetSessionProfileGQL, VerifySessionGQL} from "../../generated/abis-api";
+import {
+  AccountInformation,
+  GetAccountInformationGQL,
+  LoginGQL,
+  LogoutGQL,
+  SetSessionProfileGQL,
+  VerifySessionGQL
+} from "../../generated/abis-api";
 import {ClientStateService} from "./client-state.service";
 import {Logger, LoggerService, LogSeverity} from "./logger.service";
 import {SessionProfileChanged} from "../actions/account/SessionProfileChanged";
 import {Apollo} from "apollo-angular";
+import {AccountInformationChanged} from "../actions/account/AccountInformationChanged";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
-  getAccountInformation() {
-    return {
-      "email": "jessica@gmail.com",
-      "firstname": "Jesscia",
-      "lastname": "Cohen",
-    }
-  }
+  public accountInformation:AccountInformation = <any>{
+    id: "hello world",
+    createdAt: new Date().toISOString(),
+    email: "jess88@gmail.com",
+    firstname: "Jesscia",
+    lastname: "Cohen"
+  };
 
   private readonly _log:Logger = this.loggerService.createLogger("AccountService");
 
@@ -42,6 +50,7 @@ export class AccountService {
               , private logoutApi:LogoutGQL
               , private setSessionProfileApi:SetSessionProfileGQL
               , private verifySessionApi:VerifySessionGQL
+              , private getAccountInformationApi:GetAccountInformationGQL
               , private clientState:ClientStateService
               , private apollo:Apollo) {
 
@@ -113,6 +122,14 @@ export class AccountService {
         }
         this.clientState.set(this.CsrfTokenKey, csrfToken);
         this.actionDispatcher.dispatch(new LoginStateChanged(LoginState.LoggedOff, LoginState.LoggedOn));
+
+        this.loadAccountInformation()
+          .then(accInfo => true)
+          .catch(error => {
+            this._log(LogSeverity.UserNotification, "An error occurred while loading the account information. See the log for detailed error messages.");
+            this._log(LogSeverity.Error, error);
+          });
+
         return true;
       })
       .catch(error => {
@@ -121,6 +138,16 @@ export class AccountService {
         this._log(LogSeverity.Error, error);
         return false;
       });
+  }
+
+  public async loadAccountInformation() : Promise<AccountInformation> {
+    const accountInfo = await this.getAccountInformationApi.fetch({
+      csrfToken: this.csrfToken
+    }).toPromise();
+    const oldAccountInfo = this.accountInformation;
+    this.accountInformation = { ...accountInfo.data.getAccountInformation };
+    this.actionDispatcher.dispatch(new AccountInformationChanged(oldAccountInfo, this.accountInformation));
+    return this.accountInformation;
   }
 
   public setSessionProfile(profileId:string) : Promise<boolean> {
@@ -143,7 +170,7 @@ export class AccountService {
   }
 
   public logout() : Promise<boolean> {
-    let promsie = this.logoutApi.mutate({
+    const promsie = this.logoutApi.mutate({
       csrfToken: this.csrfToken
     })
       .toPromise().then(result => {
