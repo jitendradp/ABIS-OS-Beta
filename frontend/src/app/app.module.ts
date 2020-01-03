@@ -70,12 +70,12 @@ import {NavigationComponent} from "./pages/system/navigation/navigation.componen
 import { SwitchProfileComponent } from './pages/system/switch-profile/switch-profile.component';
 
 const defaultActions = [{
-  name: "Abis.Sidebar.ToggleVisibility",
+  name: "Abis.UI.Sidebar.ToggleVisibility",
   label: "Open/Close Sidebar",
   icon: "menu",
   position: "left"
 }, {
-  name: "Abis.Chat.ToggleVisibility",
+  name: "Abis.UI.Sidebar.ToggleVisibility",
   label: "Open/Close Chat",
   icon: "chat",
   position: "right"

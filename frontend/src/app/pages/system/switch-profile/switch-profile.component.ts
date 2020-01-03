@@ -25,16 +25,16 @@ export class SwitchProfileComponent implements OnInit, AfterViewInit {
     this.profileService.listProfiles()
       .then(o => this._profiles = o)
       .catch(error => {
-        this._log(LogSeverity.Error, "The profiles couldn't be listed. See the log for detailed error messages.");
-        this._log(LogSeverity.Warning, error);
+        this._log(LogSeverity.UserNotification, "The profiles couldn't be listed. See the log for detailed error messages.");
+        this._log(LogSeverity.Error, error);
       });
   }
 
   switchToProfile(profile: Profile) {
     this.accountService.setSessionProfile(profile.id)
       .catch(error => {
-        this._log(LogSeverity.Error, "Couldn't switch profile. See the log for detailed error messages.");
-        this._log(LogSeverity.Warning, error);
+        this._log(LogSeverity.UserNotification, "Couldn't switch profile. See the log for detailed error messages.");
+        this._log(LogSeverity.Error, error);
       });
   }
 }

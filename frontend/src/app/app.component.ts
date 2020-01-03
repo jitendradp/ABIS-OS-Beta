@@ -58,10 +58,10 @@ export class AppComponent {
 
   private handleAction(action) {
     switch (action.name) {
-      case "Abis.Sidebar.ToggleVisibility":
+      case "Abis.UI.Sidebar.ToggleVisibility":
         this.left.toggle();
         break;
-      case "Abis.Chat.ToggleVisibility":
+      case "Abis.UI.Sidebar.ToggleVisibility":
         this.right.toggle();
         break;
       case "Abis.Chat.Channel.Create":

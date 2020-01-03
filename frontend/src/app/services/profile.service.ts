@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {CreateProfileGQL, GetProfileGQL, ListProfilesGQL, Profile, UpdateProfileGQL} from "../../generated/abis-api";
 import {Logger, LoggerService, LogSeverity} from "./logger.service";
-import {ClientStateService} from "./client-state.service";
 import {AccountService} from "./account.service";
 
 @Injectable({
@@ -50,8 +49,8 @@ export class ProfileService {
         return result.data.createProfile;
       })
       .catch(error => {
-        this._log(LogSeverity.Error, "The profile creation failed. See the log for detailed error messages.");
-        this._log(LogSeverity.Warning, error);
+        this._log(LogSeverity.UserNotification, "The profile creation failed. See the log for detailed error messages.");
+        this._log(LogSeverity.Error, error);
         return null;
       });
   }
@@ -70,8 +69,8 @@ export class ProfileService {
         return true;
       })
       .catch(error => {
-        this._log(LogSeverity.Error, "The profile couldn't be updated. See the log for detailed error messages.");
-        this._log(LogSeverity.Warning, error);
+        this._log(LogSeverity.UserNotification, "The profile couldn't be updated. See the log for detailed error messages.");
+        this._log(LogSeverity.Error, error);
         return false;
       });
   }
@@ -83,8 +82,8 @@ export class ProfileService {
         return result.data.listProfiles;
       })
       .catch(error => {
-        this._log(LogSeverity.Error, "The profiles couldn't be listed. See the log for detailed error messages.");
-        this._log(LogSeverity.Warning, error);
+        this._log(LogSeverity.UserNotification, "The profiles couldn't be listed. See the log for detailed error messages.");
+        this._log(LogSeverity.Error, error);
         return null;
       });
   }
@@ -99,8 +98,8 @@ export class ProfileService {
         return result.data.getProfile;
       })
       .catch(error => {
-        this._log(LogSeverity.Error, "The profiles couldn't be read. See the log for detailed error messages.");
-        this._log(LogSeverity.Warning, error);
+        this._log(LogSeverity.UserNotification, "The profiles couldn't be read. See the log for detailed error messages.");
+        this._log(LogSeverity.Error, error);
         return null;
       });
   }

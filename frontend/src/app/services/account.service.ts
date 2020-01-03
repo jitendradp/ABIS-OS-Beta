@@ -21,12 +21,14 @@ export class AccountService {
   private readonly _log:Logger = this.loggerService.createLogger("AccountService");
 
   public get token() : string {
-    return this.clientState.get<string>("AccountService.token", null).data;
+    return this.clientState.get<string>(this.TokenKey, null).data;
   }
+  private readonly TokenKey = "AccountService.token";
 
   public get profileId() : string {
-    return this.clientState.get<string>("AccountService.profileId", null).data;
+    return this.clientState.get<string>(this.ProfileKey, null).data;
   }
+  private readonly ProfileKey = "AccountService.profileId";
 
   constructor(private actionDispatcher:ActionDispatcherService
               , private loggerService:LoggerService
@@ -35,10 +37,25 @@ export class AccountService {
               , private setSessionProfileApi:SetSessionProfileGQL
               , private verifySessionApi:VerifySessionGQL
               , private clientState:ClientStateService) {
-    let persistedSession = this.token;
-    if (persistedSession) {
-      this.setToken(persistedSession);
+
+    if (this.token) {
+      this.setToken(this.token)
+        .then(result => {
+          if (!result) {
+            return;
+          }
+          if (!this.profileId) {
+            return;
+          }
+          // noinspection JSIgnoredPromiseFromCall
+          this.setSessionProfile(this.profileId);
+        });
     }
+  }
+
+  private clearClientState() {
+    this.clientState.delete(this.TokenKey);
+    this.clientState.delete(this.ProfileKey);
   }
 
   public login(email: string, password: string) : Promise<boolean> {
@@ -50,32 +67,32 @@ export class AccountService {
                  .then(_ => true)
                  .catch(_ => false);
     }).catch(error => {
-      this.clientState.delete("AccountService.token");
-      this.clientState.delete("AccountService.profileId");
-      this._log(LogSeverity.Error, "Login failed. Please check your username and password and try again or try the password reset link. See the log for detailed error messages.");
-      this._log(LogSeverity.Warning, error);
+      this.clearClientState();
+      this._log(LogSeverity.UserNotification, "Login failed. Please check your username and password and try again or try the password reset link. See the log for detailed error messages.");
+      this._log(LogSeverity.Error, error);
       return false;
     });
   }
 
-  public setToken(token: string) : Promise<void> {
+  public setToken(token: string) : Promise<boolean> {
     return this.verifySessionApi.mutate({
       token
     }).toPromise()
       .then(result => {
         if (!result.data.verifySession) {
-          this.clientState.delete("AccountService.token");
-          this.clientState.delete("AccountService.profileId");
-          return;
+          this.clientState.delete(this.TokenKey);
+          this.clientState.delete(this.ProfileKey);
+          return false;
         }
-        this.clientState.set("AccountService.token", token);
+        this.clientState.set(this.TokenKey, token);
         this.actionDispatcher.dispatch(new LoginStateChanged(LoginState.LoggedOff, LoginState.LoggedOn));
+        return true;
       })
       .catch(error => {
-        this.clientState.delete("AccountService.token");
-        this.clientState.delete("AccountService.profileId");
-        this._log(LogSeverity.Error, "Login failed. Please check your username and password and try again or use the password reset link. See the log for detailed error messages.");
-        this._log(LogSeverity.Warning, error);
+        this.clearClientState();
+        this._log(LogSeverity.UserNotification, "Login failed. Please check your username and password and try again or use the password reset link. See the log for detailed error messages.");
+        this._log(LogSeverity.Error, error);
+        return false;
       });
   }
 
@@ -87,13 +104,13 @@ export class AccountService {
       .toPromise()
       .then(result => {
         const oldProfileId = this.profileId;
-        this.clientState.set("AccountService.profileId", result.data.setSessionProfile);
+        this.clientState.set(this.ProfileKey, result.data.setSessionProfile);
         this.actionDispatcher.dispatch(new SessionProfileChanged(oldProfileId, result.data.setSessionProfile));
         return true;
       })
       .catch(error => {
-        this._log(LogSeverity.Error, "Couldn't set the session profile. Please check your username and password and try again or use the password reset link. See the log for detailed error messages.");
-        this._log(LogSeverity.Warning, error);
+        this._log(LogSeverity.UserNotification, "Couldn't set the session profile. Please check your username and password and try again or use the password reset link. See the log for detailed error messages.");
+        this._log(LogSeverity.Error, error);
         return false;
       });
   }
@@ -101,13 +118,16 @@ export class AccountService {
   public logout() : Promise<boolean> {
     return this.logoutApi.mutate({token:this.token})
       .toPromise().then(result => {
-        this.clientState.delete("AccountService.token");
-        this.clientState.delete("AccountService.profileId");
+        if (!result.data.logout) {
+          throw new Error("An unexpected error occurred during logout.");
+          return false;
+        }
+        this.clearClientState();
         this.actionDispatcher.dispatch(new LoginStateChanged(LoginState.LoggedOn, LoginState.LoggedOff));
         return true;
       }).catch(error => {
-        this._log(LogSeverity.Error, "The logout failed. Please try it again in a moment. See the log for detailed error messages.");
-        this._log(LogSeverity.Warning, error);
+        this._log(LogSeverity.UserNotification, "The logout failed. Please try it again in a moment. See the log for detailed error messages.");
+        this._log(LogSeverity.Error, error);
         return false;
       });
   }

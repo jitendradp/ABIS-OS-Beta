@@ -106,8 +106,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       })
       .catch(e => {
         this.stepper.selectedIndex = this.clientState.get<number>("RegisterComponent.stepper.selectedIndex", 0).data;
-        this._log(LogSeverity.Error, "An error occured during step 1 of the registration wizard (basic sign-up). See the log for detailed error messages.");
-        this._log(LogSeverity.Warning, e);
+        this._log(LogSeverity.UserNotification, "An error occured during step 1 of the registration wizard (basic sign-up). See the log for detailed error messages.");
+        this._log(LogSeverity.Error, e);
       });
   }
 
@@ -124,8 +124,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       })
       .catch(e => {
         this.stepper.selectedIndex = this.clientState.get<number>("RegisterComponent.stepper.selectedIndex", 0).data;
-        this._log(LogSeverity.Error, "An error occured during step 2 of the registration wizard (verify email address). See the log for detailed error messages.");
-        this._log(LogSeverity.Warning, e);
+        this._log(LogSeverity.UserNotification, "An error occured during step 2 of the registration wizard (verify email address). See the log for detailed error messages.");
+        this._log(LogSeverity.Error, e);
       });
   }
 
@@ -151,8 +151,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       })
       .catch(e => {
         this.stepper.selectedIndex = this.clientState.get<number>("RegisterComponent.stepper.selectedIndex", 1).data;
-        this._log(LogSeverity.Error, "An error occured during step 3 of the registration wizard (create profile). See the log for detailed error messages.");
-        this._log(LogSeverity.Warning, e);
+        this._log(LogSeverity.UserNotification, "An error occured during step 3 of the registration wizard (create profile). See the log for detailed error messages.");
+        this._log(LogSeverity.Error, e);
       });
   }
 
