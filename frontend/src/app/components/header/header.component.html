@@ -14,24 +14,10 @@
     <button *ngFor="let action of rightActions" mat-icon-button (click)="_actionDispatcher.dispatch(action);">
       <mat-icon>{{action.icon}}</mat-icon>
     </button>
-    <!-- todo add some notification badge on the icons if needed in the header dynamically
-    <button mat-icon-button (click)="click.emit('chat');">
-      <mat-icon matBadge="15" matBadgePosition="after" matBadgeColor="warn">chat</mat-icon>
+    <button mat-icon-button routerLink="/explorer">
+      <mat-icon>explore</mat-icon>
     </button>
-    -->
+    <!-- todo add some notification badge on the icons if needed in the header dynamically -->
   </div>
-  <!--<button mat-icon-button [matMenuTriggerFor]="menu">
-    <mat-icon>more_vert</mat-icon>
-  </button>
-  <mat-menu #menu="matMenu">
-    <mat-card-header style="padding: 12px">
-      <img mat-card-avatar src="{{profile.picture}}">
-      <mat-card-title>{{account.firstname}} {{account.lastname}}</mat-card-title>
-      <mat-card-subtitle>{{account.email}}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-divider></mat-divider>
-    <button mat-menu-item routerLink="/profile">Settings</button>
-    <button mat-menu-item routerLink="/signin">Logout</button>
-  </mat-menu>-->
 </mat-toolbar>
 

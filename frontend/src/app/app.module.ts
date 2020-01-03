@@ -67,12 +67,13 @@ import {HttpClientModule} from '@angular/common/http';
 import {CardIntroComponent} from "./cards/card-intro/card-intro.component";
 import {TeamsComponent} from "./widgets/chat/teams/teams.component";
 import {NavigationComponent} from "./pages/system/navigation/navigation.component";
-import { SwitchProfileComponent } from './pages/system/switch-profile/switch-profile.component';
-import { LogoutComponent } from './pages/system/logout/logout.component';
+import {SwitchProfileComponent} from './pages/system/switch-profile/switch-profile.component';
+import {LogoutComponent} from './pages/system/logout/logout.component';
 import {IAction} from "./actions/IAction";
 import {ToggleVisibility} from "./actions/ui/sidebar/ToggleVisibility";
+import {ExplorerComponent} from "./pages/explorer/explorer.component";
 
-const defaultActions:IAction[] = [<ToggleVisibility>{
+const defaultActions: IAction[] = [<ToggleVisibility>{
   name: "Abis.UI.Sidebar.ToggleVisibility",
   label: "Open/Close Sidebar",
   icon: "menu",
@@ -80,7 +81,7 @@ const defaultActions:IAction[] = [<ToggleVisibility>{
 }, <ToggleVisibility>{
   name: "Abis.UI.Sidebar.ToggleVisibility",
   label: "Open/Close Chat",
-  icon: "chat",
+  icon: "question_answer",
   side: "right"
 }];
 
@@ -174,6 +175,12 @@ const appRoutes: Routes = [
       "title": "Logout",
       "actions": defaultActions
     }
+  },
+  {
+    path: 'explorer', component: ExplorerComponent, data: {
+      "title": "Teams",
+      "actions": defaultActions
+    }
   }
 ];
 
@@ -212,6 +219,7 @@ const appRoutes: Routes = [
     NavigationComponent,
     SwitchProfileComponent,
     LogoutComponent,
+    ExplorerComponent,
   ],
   imports: [
     RouterModule.forRoot(
