@@ -8,6 +8,8 @@ import {IAction} from "./actions/IAction";
 import {ActionDispatcherService} from "./services/action-dispatcher.service";
 import {MatDialog} from "@angular/material";
 import {ChannelEditorComponent} from "./editors/channel-editor/channel-editor.component";
+import {Home} from "./actions/routes/Home";
+import {ShowNotification} from "./actions/ui/ShowNotification";
 
 @Component({
   selector: 'app-root',
@@ -15,8 +17,6 @@ import {ChannelEditorComponent} from "./editors/channel-editor/channel-editor.co
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-
-  public static readonly Version:number = 20200103;
 
   @ViewChild("left", {static: true})
   left: MatDrawer;
@@ -53,6 +53,11 @@ export class AppComponent {
           break;
         case "Abis.Chat.Channel.Create":
           this.openDialog();
+          break;
+        case ShowNotification.Name:
+          break;
+        case Home.Name:
+          this._router.navigate(["/"]);
           break;
       }
     });

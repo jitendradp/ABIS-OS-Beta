@@ -13,3 +13,6 @@ mutation logout($token:String!){
 mutation setSessionProfile($token:String! $profileId:String!) {
   setSessionProfile(token:$token profileId:$profileId)
 }
+mutation verifySession($token:String!) {
+  verifySession(token:$token)
+}

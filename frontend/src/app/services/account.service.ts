@@ -1,48 +1,102 @@
-import {EventEmitter, Injectable} from '@angular/core';
-import {Apollo} from "apollo-angular";
-import gql from "graphql-tag";
+import {Injectable} from '@angular/core';
 import {ActionDispatcherService} from "./action-dispatcher.service";
 import {LoginState, LoginStateChanged} from "../actions/account/LoginStateChanged";
+import {LoginGQL, LogoutGQL, SetSessionProfileGQL, VerifySessionGQL} from "../../generated/abis-api";
+import {ClientStateService} from "./client-state.service";
+import {Logger, LoggerService, LogSeverity} from "./logger.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
-  private _token: string;
-
-  constructor(private apollo: Apollo, private actionDispatcher:ActionDispatcherService) {
-  }
-
-  login(email: string, password: string) {
-    const loginMutation = gql`
-    mutation login($email:String! $password:String!) {
-      login(email:$email password:$password)
-    }`;
-    this.apollo.mutate({
-      mutation: loginMutation,
-      variables: {
-        "email": email,
-        "password": password
-      }
-    }).subscribe(({data}) => {
-      console.log('logged in', data);
-      this._token = <string>(<any>data).login;
-      this.actionDispatcher.dispatch(new LoginStateChanged(LoginState.LoggedOff, LoginState.LoggedOn));
-    }, (error) => {
-      console.log('there was an error sending the query', error);
-    });
-  }
-
-  logout() {
-    this._token = null;
-    this.actionDispatcher.dispatch(new LoginStateChanged(LoginState.LoggedOn, LoginState.LoggedOff));
-  }
-
   getAccountInformation() {
     return {
       "email": "jessica@gmail.com",
       "firstname": "Jesscia",
       "lastname": "Cohen",
     }
+  }
+
+  private readonly _log:Logger = this.loggerService.createLogger("AccountService");
+
+  get token() : string {
+    return this.clientState.get<string>("AccountService.token", null).data;
+  }
+
+  constructor(private actionDispatcher:ActionDispatcherService
+              , private loggerService:LoggerService
+              , private loginApi:LoginGQL
+              , private logoutApi:LogoutGQL
+              , private setSessionProfileApi:SetSessionProfileGQL
+              , private verifySessionApi:VerifySessionGQL
+              , private clientState:ClientStateService) {
+    let persistedSession = this.token;
+    if (persistedSession) {
+      this.setToken(persistedSession);
+    }
+  }
+
+  public login(email: string, password: string) : Promise<boolean> {
+    return this.loginApi.mutate({
+      email,
+      password
+    }).toPromise().then(result => {
+      return this.setToken(result.data.login)
+                 .then(_ => true)
+                 .catch(_ => false);
+    }).catch(error => {
+      this.clientState.delete("AccountService.token");
+      this._log(LogSeverity.Error, "Login failed. Please check your username and password and try again or try the password reset link. See the log for detailed error messages.");
+      this._log(LogSeverity.Warning, error);
+      return false;
+    });
+  }
+
+  public setToken(token: string) : Promise<void> {
+    return this.verifySessionApi.mutate({
+      token
+    }).toPromise()
+      .then(result => {
+        if (!result.data.verifySession) {
+          this.clientState.delete("AccountService.token");
+          return;
+        }
+        this.clientState.set("AccountService.token", token);
+        this.actionDispatcher.dispatch(new LoginStateChanged(LoginState.LoggedOff, LoginState.LoggedOn));
+      })
+      .catch(error => {
+        this.clientState.delete("AccountService.token");
+        this._log(LogSeverity.Error, "Login failed. Please check your username and password and try again or use the password reset link. See the log for detailed error messages.");
+        this._log(LogSeverity.Warning, error);
+      });
+  }
+
+  public setSessionProfile(profileId:string) : Promise<boolean> {
+    return this.setSessionProfileApi.mutate({
+      token: this.token,
+      profileId: profileId
+    })
+      .toPromise()
+      .then(result => {
+        return true;
+      })
+      .catch(error => {
+        this._log(LogSeverity.Error, "Couldn't set the session profile. Please check your username and password and try again or use the password reset link. See the log for detailed error messages.");
+        this._log(LogSeverity.Warning, error);
+        return false;
+      });
+  }
+
+  public logout() : Promise<boolean> {
+    return this.logoutApi.mutate({token:this.token})
+      .toPromise().then(result => {
+        this.clientState.delete("AccountService.token");
+        this.actionDispatcher.dispatch(new LoginStateChanged(LoginState.LoggedOn, LoginState.LoggedOff));
+        return true;
+      }).catch(error => {
+        this._log(LogSeverity.Error, "The logout failed. Please try it again in a moment. See the log for detailed error messages.");
+        this._log(LogSeverity.Warning, error);
+        return false;
+      });
   }
 }

@@ -7,66 +7,68 @@
     <app-content>
       <app-form [title]="'Create your ABIS Account'">
         <mat-horizontal-stepper [linear]="isLinear" #stepper (selectionChange)="stepChanged($event)">
-          <mat-step [stepControl]="firstFormGroup">
-            <form [formGroup]="firstFormGroup">
+          <mat-step [stepControl]="step1FormGroup">
+            <form [formGroup]="step1FormGroup">
               <ng-template matStepLabel>Signup</ng-template>
               <mat-form-field class="halfWidth">
-                <input matInput type="text" placeholder="First name" required formControlName="firstCtrl">
+                <input matInput type="text" placeholder="First name" required formControlName="firstName">
               </mat-form-field>
               <mat-form-field class="halfWidth">
-                <input matInput type="text" placeholder="Last name" required formControlName="firstCtrl">
+                <input matInput type="text" placeholder="Last name" required formControlName="lastName">
               </mat-form-field>
               <mat-form-field class="fullWidth">
-                <input matInput type="email" placeholder="Your email address" required formControlName="firstCtrl">
+                <input matInput type="email" placeholder="Your email address" required formControlName="emailAddress">
               </mat-form-field>
               <mat-form-field class="halfWidth">
-                <input matInput type="password" placeholder="Password" required formControlName="firstCtrl">
+                <input matInput type="password" placeholder="Password" required formControlName="password">
               </mat-form-field>
               <mat-form-field class="halfWidth">
-                <input matInput type="text" placeholder="Confirm" required formControlName="firstCtrl">
+                <input matInput type="text" placeholder="Confirm" required formControlName="passwordConfirmation">
               </mat-form-field>
               <app-content>
-                <button mat-button matStepperNext class="maxButton">Next</button>
-                <app-whitespace></app-whitespace>
-                <mat-hint align="center">By continuing, you are agreeing to our Customer Terms of Services, Privacy
-                  Policy and Cookie Policy.
+                <mat-hint align="center">By continuing, you are agreeing to our Terms of Service, Privacy Policy and Cookie Policy.
+                  <app-whitespace></app-whitespace>
                 </mat-hint>
+                <button mat-button matStepperNext class="maxButton">Next</button>
               </app-content>
             </form>
           </mat-step>
-          <mat-step [stepControl]="secondFormGroup">
-            <form [formGroup]="secondFormGroup">
+          <mat-step [stepControl]="step2FormGroup">
+            <form [formGroup]="step2FormGroup">
               <ng-template matStepLabel>Verify</ng-template>
               <mat-form-field class="fullWidth">
                 <input matInput type="password" placeholder="Your verification code" required
-                       formControlName="secondCtrl">
+                       formControlName="code">
               </mat-form-field>
               <app-content>
                 <button mat-button matStepperNext class="maxButton">Next</button>
                 <app-whitespace></app-whitespace>
-                <mat-hint align="start">Please check your email inbox and click on the registration link or enter the
-                  code to confirm that it is you.
-                </mat-hint>
+                <mat-hint align="start">Please check your inbox and click the confirmation link or enter the code manually to confirm that it is you.</mat-hint>
               </app-content>
             </form>
           </mat-step>
-          <mat-step>
-            <ng-template matStepLabel>Profile</ng-template>
-            <mat-form-field class="halfWidth">
-              <input matInput type="text" placeholder="Display name" required>
-            </mat-form-field>
-            <mat-form-field class="halfWidth">
-              <input matInput type="tel" placeholder="Phone number">
-            </mat-form-field>
-            <mat-form-field class="fullWidth">
-              <input matInput type="email" placeholder="Your slogan">
-            </mat-form-field>
-            <button mat-button>Upload Picture</button>
-            <app-content>
-              <button mat-button matStepperNext class="maxButton">Complete</button>
-              <app-whitespace></app-whitespace>
-              <mat-hint align="start">Make your profile easy to recognize for your colleagues and friends.</mat-hint>
-            </app-content>
+          <mat-step [stepControl]="step3FormGroup">
+            <form [formGroup]="step3FormGroup">
+              <ng-template matStepLabel>Profile</ng-template>
+              <mat-form-field class="halfWidth">
+                <input matInput type="text" placeholder="Display name" required
+                       formControlName="name">
+              </mat-form-field>
+              <mat-form-field class="halfWidth">
+                <input matInput type="tel" placeholder="Phone number"
+                       formControlName="phone">
+              </mat-form-field>
+              <mat-form-field class="fullWidth">
+                <input matInput type="email" placeholder="Your slogan"
+                       formControlName="slogan">
+              </mat-form-field>
+              <button mat-button>Upload Picture</button>
+              <app-content>
+                <button [disabled]="!_step3Data || !_step3Data.name" mat-button matStepperNext class="maxButton" (click)="submitStep3($event)">Complete</button>
+                <app-whitespace></app-whitespace>
+                <mat-hint align="start">Make your profile easy to recogniza for your colleagues and friends.</mat-hint>
+              </app-content>
+            </form>
           </mat-step>
         </mat-horizontal-stepper>
       </app-form>

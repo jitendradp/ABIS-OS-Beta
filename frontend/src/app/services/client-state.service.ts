@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import {AppComponent} from "../app.component";
+import {tokenReference} from "@angular/compiler";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClientStateService {
 
+  public static readonly Version:number = 202001;
   private static readonly Prefix = "Abis.ClientState.";
 
   constructor() { }
@@ -62,7 +63,7 @@ export class ClientStateService {
     const versions = this._getVersions();
 
     let latestState = versions.length > 0 ? this._getVersion(versions[0]) : null;
-    if (!latestState || latestState.version < AppComponent.Version) {
+    if (!latestState || latestState.version <  ClientStateService.Version) {
       latestState = new ClientState();
     }
 
@@ -76,13 +77,20 @@ export class ClientStateService {
    * Deletes a value from the client state (affects all versions)
    * @param key The key
    */
-  public delete(key:string) {
+  public delete(key:string) : boolean {
     const versions = this._getVersions();
+    let deleted = false;
     for (let i = 0; i < versions.length; i++) {
       let version = versions[i];
       let state = this._getVersion(version);
-      state.delete(key);
+      if (state.delete(key)) {
+        deleted = true;
+      }
+      const json = JSON.stringify(state);
+      localStorage.setItem(ClientStateService.Prefix + state.version, json);
     }
+
+    return deleted;
   }
 }
 
@@ -101,7 +109,7 @@ export class ClientState {
   }
 
   constructor(version?:number, entries?:ClientStateEntries) {
-    this.version = !version ? AppComponent.Version : version;
+    this.version = !version ? ClientStateService.Version : version;
     this.entries = !entries ? {} : entries;
   }
 
@@ -117,7 +125,9 @@ export class ClientState {
     return this.entries[key];
   }
 
-  public delete(key:string) {
+  public delete(key:string) : boolean {
+    const exists:boolean = this.entries[key];
     delete this.entries[key];
+    return exists;
   }
 }
