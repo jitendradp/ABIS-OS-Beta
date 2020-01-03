@@ -2,10 +2,10 @@
   <mat-card-header>
     <img mat-card-avatar style="width: 50px; height: 50px" src="{{profile.picture}}">
     <mat-card-title>
-      {{account.firstname}} {{account.lastname}}
+      {{accountService.accountInformation.name}}
     </mat-card-title>
     <mat-card-subtitle class="whiteSubtitle">
-      {{account.email}}
+      {{accountService.accountInformation.createdAt | date: 'dd.MM.yyyy'}}
     </mat-card-subtitle>
     <span class="fill-remaining-space"></span>
     <button mat-icon-button>

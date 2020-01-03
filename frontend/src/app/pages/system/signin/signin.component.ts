@@ -32,12 +32,12 @@ export class SigninComponent implements OnInit {
 
   async login() : Promise<void> {
     try {
-      let loginResult = await this.accountService.login(this.email.nativeElement.value, this.password.nativeElement.value);
+      const loginResult = await this.accountService.login(this.email.nativeElement.value, this.password.nativeElement.value);
       if (!loginResult) {
         return;
       }
 
-      let userProfiles = await this.profileService.listProfiles();
+      const  userProfiles = await this.profileService.listProfiles();
 
       if (userProfiles.length == 0) {
         this._log(LogSeverity.UserNotification, "You're successfully logged-in, but you don't yet have any profiles. Create a profile to proceed.");
@@ -46,7 +46,7 @@ export class SigninComponent implements OnInit {
       }
 
       if (userProfiles.length == 1) {
-        let result = await this.accountService.setSessionProfile(userProfiles[0].id);
+        const  result = await this.accountService.setSessionProfile(userProfiles[0].id);
         if (!result) {
           // noinspection ExceptionCaughtLocallyJS
           throw new Error("Unexpected error while setting the session profile.")
