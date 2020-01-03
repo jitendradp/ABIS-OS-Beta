@@ -6,10 +6,6 @@
     {{title}}
   </div>
   <span class="fill-remaining-space"></span>
-  <app-button *ngIf="!accountService.isLoggedOn" [link]='"/"'
-              [text]="'Sign In / Register'">
-  </app-button>
-
   <div style="padding-left: 24px">
     <button *ngFor="let action of rightActions" mat-icon-button (click)="_actionDispatcher.dispatch(action);">
       <mat-icon>{{action.icon}}</mat-icon>

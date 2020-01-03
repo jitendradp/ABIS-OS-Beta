@@ -10,7 +10,6 @@
 
 .sidebarLeft {
   min-width: 300px;
-  padding-top: 56px;
   background-color: #fff;
 }
 
@@ -66,3 +65,9 @@
      Every toolbar row uses a flexbox row layout. */
   flex: 1 1 auto;
 }
+
+/* todo
+.mat-sidenav:not(.mat-sidenav-side) {
+  position: fixed;
+}
+*/
