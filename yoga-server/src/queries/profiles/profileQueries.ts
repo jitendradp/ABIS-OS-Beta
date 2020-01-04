@@ -1,4 +1,5 @@
 import {prisma} from "../../generated";
+import {CommonQueries} from "../commonQueries";
 
 export class ProfileQueries {
     public static async getSessionProfile(csrfToken:string, authToken:string) {
@@ -10,7 +11,7 @@ export class ProfileQueries {
 
         const session = await sessionQuery;
         if (session.csrfToken !== csrfToken) {
-            throw new Error("Invalid csrfToken");
+            throw new Error("Invalid csrf- or auth token");
         }
         let currentProfile = await prisma.session({authToken}).profile();
         if (!currentProfile) {
@@ -34,21 +35,16 @@ export class ProfileQueries {
 
         const session = await prisma.session({authToken:authToken});
         if (session.csrfToken !== csrfToken) {
-            throw new Error("Invalid csrfToken");
+            throw new Error("Invalid csrf- or auth token");
         }
 
         return profiles;
     }
 
     public static async getProfile(csrfToken:string, authToken:string, profileId:string) {
-        const sessionQuery = prisma.session({authToken:authToken});
-        const user = await sessionQuery.user();
-        if (!user) {
-            throw new Error("Invalid authToken");
-        }
-        const session = await sessionQuery;
-        if (session.csrfToken !== csrfToken) {
-            throw new Error("Invalid csrfToken");
+        const session = await CommonQueries.findSession(csrfToken, authToken);
+        if (!session) {
+            throw new Error("Invalid csrf- or auth token");
         }
 
         return prisma.profile({id: profileId});

@@ -8,11 +8,10 @@
       <button mat-menu-item>Set me online</button>
     </mat-menu>
     <mat-card-title>
-      {{accountService.accountInformation.firstname}}
-      {{accountService.accountInformation.lastname}}
+      {{accountService.accountInformation.name}}
     </mat-card-title>
-    <mat-card-subtitle>
-      {{profile.name}}@{{profile.type}}
+    <mat-card-subtitle class="whiteSubtitle">
+      {{profileService.profileInformation.name}}@{{profileService.profileInformation.type}}
     </mat-card-subtitle>
     <span class="fill-remaining-space"></span>
     <button mat-icon-button>
