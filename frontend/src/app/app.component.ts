@@ -135,7 +135,8 @@ export class AppComponent {
 
   public openTeamCreateDialog(): void {
     const dialogRef = this._dialog.open(TeamEditorComponent, {
-      width: '50%'
+      width: '50%',
+      minWidth: '300px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
