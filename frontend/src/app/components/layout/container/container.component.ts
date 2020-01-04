@@ -8,12 +8,12 @@ import {Component, Input} from '@angular/core';
 export class ContainerComponent {
 
   @Input()
-  flexRegular: string = "auto";
+  flexRegular: string = "100";
 
   @Input()
-  flexMedium: string = "33";
+  flexMedium: string = "100";
 
   @Input()
-  flexSmall: string = "50";
+  flexSmall: string = "100";
 
 }
