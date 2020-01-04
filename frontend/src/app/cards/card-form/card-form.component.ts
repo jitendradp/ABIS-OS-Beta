@@ -15,4 +15,7 @@ export class CardFormComponent {
 
   @Input()
   subtitle: string;
+
+  @Input()
+  showHeader: boolean;
 }

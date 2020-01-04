@@ -8,18 +8,15 @@ import {Component, Input} from '@angular/core';
 export class LayoutComponent {
 
   @Input()
-  alignTiles: string = "left";
+  alignContainer: string = "space-around stretch"; // Options: left, right, center, space-around center | For more visit: https://tburleson-layouts-demos.firebaseapp.com/#/docs
 
   @Input()
-  gapWidth: number = 10;
+  gapWidth: number = 0;
 
   @Input()
-  flexRegular: string = "auto";
+  layoutWidth: string = "100%";
 
   @Input()
-  flexMedium: string = "33";
-
-  @Input()
-  flexSmall: string = "50";
+  layoutHeight: string = "100%";
 
 }

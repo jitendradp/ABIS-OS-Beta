@@ -1,9 +1,10 @@
-<div fxLayout
-     fxLayout.xs="column"
-     fxLayoutAlign="{{alignTiles}}"
-     fxLayoutGap="{{gapWidth}}px"
-     fxLayoutGap.xs="0">
-  <div fxFlex='{{flexRegular}}' fxFlex.gt-md='{{flexMedium}}' fxFlex.gt-sm='{{flexSmall}}'>
+<div [style.height]="layoutHeight" [style.width]="layoutWidth">
+  <div fxLayout
+       fxFill
+       fxLayout.xs="column"
+       fxLayoutAlign="{{alignContainer}}"
+       fxLayoutGap="{{gapWidth}}px"
+       fxLayoutGap.xs="0">
     <ng-content></ng-content>
   </div>
 </div>
