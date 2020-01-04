@@ -1,7 +1,7 @@
 <mat-card class="embeddableProfile">
   <mat-card-header>
-    <span class="contact-status online"></span>
-    <img mat-card-avatar class="profilePicture" src="{{profile.picture}}" [matMenuTriggerFor]="statusMenu">
+    <img mat-card-avatar class="profilePicture mat-elevation-z10" src="{{profile.picture}}"
+         [matMenuTriggerFor]="statusMenu">
     <mat-menu #statusMenu="matMenu">
       <button mat-menu-item>Set my self away</button>
       <button mat-menu-item>Set my self busy</button>
@@ -11,7 +11,7 @@
       {{accountService.accountInformation.firstname}}
       {{accountService.accountInformation.lastname}}
     </mat-card-title>
-    <mat-card-subtitle class="whiteSubtitle">
+    <mat-card-subtitle>
       {{profile.name}}@{{profile.type}}
     </mat-card-subtitle>
     <span class="fill-remaining-space"></span>
@@ -20,6 +20,7 @@
     </button>
   </mat-card-header>
 </mat-card>
+<mat-divider></mat-divider>
 <mat-card class="embeddableDataspace">
   <mat-card-header>
     <mat-card-subtitle>

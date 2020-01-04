@@ -80,6 +80,7 @@ import {CardStoreComponent} from "./cards/card-store/card-store.component";
 import {SearchComponent} from "./widgets/search/search.component";
 import {NgxMapboxGLModule} from "ngx-mapbox-gl";
 import {ContainerComponent} from "./components/layout/container/container.component";
+import {CardComponent} from "./cards/card/card.component";
 
 const defaultActions: IAction[] = [<ToggleVisibility>{
   name: ToggleVisibility.Name,
@@ -232,7 +233,8 @@ const appRoutes: Routes = [
     CardFormComponent,
     CardStoreComponent,
     SearchComponent,
-    ContainerComponent
+    ContainerComponent,
+    CardComponent
   ],
   imports: [
     RouterModule.forRoot(

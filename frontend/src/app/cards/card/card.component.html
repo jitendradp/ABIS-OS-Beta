@@ -1,0 +1,31 @@
+<mat-card class="dbiCard">
+  <app-content>
+    <mat-card-header *ngIf="showHeader">
+      <img mat-card-avatar class="dbiAvatar mat-elevation-z10" [matMenuTriggerFor]="statusMenu"
+           src="{{picture}}">
+      <!-- todo make button list for flexible use -->
+      <mat-menu #statusMenu="matMenu" *ngIf="showContext">
+        <button mat-menu-item>Set my self away</button>
+        <button mat-menu-item>Set my self busy</button>
+        <button mat-menu-item>Set me online</button>
+      </mat-menu>
+      <mat-card-title>{{title}}</mat-card-title>
+      <mat-card-subtitle>{{subtitle}}</mat-card-subtitle>
+      <span class="fillRemainingSpace"></span>
+      <button mat-icon-button (click)="collapsed = !collapsed">
+        <mat-icon *ngIf="!collapsed">arrow_drop_up</mat-icon>
+        <mat-icon *ngIf="collapsed">arrow_drop_down</mat-icon>
+      </button>
+    </mat-card-header>
+    <div *ngIf="showContent">
+      <mat-card-content *ngIf="!collapsed">
+        <ng-content select="[contentCollapsed]"></ng-content>
+      </mat-card-content>
+      <mat-card-content>
+        <ng-content select="[content]"></ng-content>
+      </mat-card-content>
+    </div>
+  </app-content>
+</mat-card>
+
+
