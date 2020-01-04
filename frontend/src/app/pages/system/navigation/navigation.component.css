@@ -2,8 +2,16 @@
   border-radius: 0;
   box-shadow: none;
   color: white;
-  background-color: #7d56ff;
+  background-color: #2d2d2d;
 }
+
+.profilePicture {
+  width: 42px;
+  height: 42px;
+  border: solid #2ecc71 3px;
+}
+/* todo Status Indicator of the profile in the sidebar with border color*/
+
 
 .embeddableDataspace {
   border-radius: 0;

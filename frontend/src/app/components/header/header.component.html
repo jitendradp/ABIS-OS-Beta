@@ -1,4 +1,4 @@
-<mat-toolbar class="header" color="primary">
+<mat-toolbar class="header">
   <button *ngFor="let action of leftActions" mat-icon-button (click)="_actionDispatcher.dispatch(action);">
     <mat-icon>{{action.icon}}</mat-icon>
   </button>
@@ -6,9 +6,9 @@
     {{title}}
   </div>
   <span class="fill-remaining-space"></span>
+  <app-access style="padding-right: 16px" [isButton]="true"></app-access>
   <button *ngFor="let action of rightActions" mat-icon-button (click)="_actionDispatcher.dispatch(action);">
     <mat-icon>{{action.icon}}</mat-icon>
   </button>
-  <span>Chat</span>
   <!-- todo add some notification badge on the icons if needed in the header dynamically -->
 </mat-toolbar>

@@ -10,7 +10,7 @@ export class ProfileService {
 
   getProfileInformation() {
     return {
-      "name": "Jessica",
+      "name": "Jessy",
       "type": "Work",
       "slogan": "Having fun with friends",
       "picture": "./assets/profile_default.jpg",
@@ -21,14 +21,14 @@ export class ProfileService {
     }
   }
 
-  private readonly _log:Logger = this.loggerService.createLogger("ProfileService");
+  private readonly _log: Logger = this.loggerService.createLogger("ProfileService");
 
-  constructor(private createProfileApi:CreateProfileGQL
-            , private updateProfileApi:UpdateProfileGQL
-            , private listProfilesApi:ListProfilesGQL
-            , private getProfileApi:GetProfileGQL
-            , private accountService:AccountService
-            , private loggerService:LoggerService) {
+  constructor(private createProfileApi: CreateProfileGQL
+    , private updateProfileApi: UpdateProfileGQL
+    , private listProfilesApi: ListProfilesGQL
+    , private getProfileApi: GetProfileGQL
+    , private accountService: AccountService
+    , private loggerService: LoggerService) {
   }
 
   /**
@@ -37,7 +37,7 @@ export class ProfileService {
    * @param picture
    * @param timezone
    */
-  public createProfile(name:string, picture?:string, timezone?:string) : Promise<string> {
+  public createProfile(name: string, picture?: string, timezone?: string): Promise<string> {
     return this.createProfileApi.mutate({
       csrfToken: this.accountService.csrfToken,
       name,
@@ -54,7 +54,7 @@ export class ProfileService {
       });
   }
 
-  updateProfile(profileId:string, name:string, picture?:string, timezone?:string) : Promise<boolean> {
+  updateProfile(profileId: string, name: string, picture?: string, timezone?: string): Promise<boolean> {
     return this.updateProfileApi.mutate({
       csrfToken: this.accountService.csrfToken,
       profileId,
@@ -74,8 +74,8 @@ export class ProfileService {
       });
   }
 
-  listProfiles() : Promise<Profile[]> {
-    return this.listProfilesApi.fetch({csrfToken:this.accountService.csrfToken})
+  listProfiles(): Promise<Profile[]> {
+    return this.listProfilesApi.fetch({csrfToken: this.accountService.csrfToken})
       .toPromise()
       .then(result => {
         return result.data.listProfiles;
@@ -87,7 +87,7 @@ export class ProfileService {
       });
   }
 
-  getProfile(profileId:string) : Promise<Profile> {
+  getProfile(profileId: string): Promise<Profile> {
     return this.getProfileApi.fetch({
       csrfToken: this.accountService.csrfToken,
       profileId

@@ -1,71 +1,66 @@
-<!-- Create your new public or private room. Invite friends and colleagues to chat. -->
-
-<div class="container"
-     fxLayout
-     fxLayout.xs="column"
-     fxLayoutAlign="center"
-     fxLayoutGap="10px"
-     fxLayoutGap.xs="0">
-  <div class="item item-1"></div>
-  <div class="item item-2" fxFlex="40%">
+<!-- Create your new public or private team. Invite friends and colleagues to chat. -->
+<!-- todo optimize on mobile view. maybe make the stepper vertical instead -->
+<mat-horizontal-stepper [linear]="isLinear" #stepper>
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Create team</ng-template>
+      <mat-form-field class="halfWidth">
+        <input matInput type="text" placeholder="Team name" required formControlName="firstCtrl">
+      </mat-form-field>
+      <mat-form-field class="halfWidth">
+        <input matInput type="text" placeholder="Nickname @" required formControlName="firstCtrl">
+      </mat-form-field>
+      <div class="fullWidth">
+        <mat-radio-group aria-label="Select an option">
+          <mat-radio-button value="1" [checked]="true">Private team</mat-radio-button>
+          <mat-radio-button value="2" style="padding-left: 16px">Public team</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <app-content>
+        <small>Anybody can view and join public teams. Private teams are only available to invited members. You
+          can always change these settings later.
+        </small>
+      </app-content>
+      <app-content>
+        <button mat-button matStepperNext class="maxButton">Next</button>
+      </app-content>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Set location</ng-template>
+      <mat-form-field class="fullWidth">
+        <input matInput type="password" placeholder="Type in your address" required
+               formControlName="secondCtrl">
+      </mat-form-field>
+      <mat-form-field class="fullWidth">
+        <mat-label>Country</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let country of countries" [value]="country.value">
+            {{country.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <app-content>
+        <button mat-button matStepperNext class="maxButton">Next</button>
+      </app-content>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Add details</ng-template>
+    <!-- todo add chips with autocomplete -->
+    <mat-form-field class="halfWidth">
+      <input matInput type="text" placeholder="Hashtags..." required>
+    </mat-form-field>
+    <mat-form-field class="halfWidth">
+      <input matInput type="url" placeholder="Your website">
+    </mat-form-field>
+    <mat-form-field class="fullWidth">
+      <input matInput type="email" placeholder="Your description">
+    </mat-form-field>
+    <button mat-button>Upload Picture</button>
     <app-content>
-      <mat-horizontal-stepper [linear]="isLinear" #stepper>
-        <mat-step [stepControl]="firstFormGroup">
-          <form [formGroup]="firstFormGroup">
-            <ng-template matStepLabel>Create room</ng-template>
-            <mat-form-field class="halfWidth">
-              <input matInput type="text" placeholder="Room name" required formControlName="firstCtrl">
-            </mat-form-field>
-            <mat-form-field class="halfWidth">
-              <input matInput type="text" placeholder="Nickname @" required formControlName="firstCtrl">
-            </mat-form-field>
-            <div class="fullWidth">
-              <mat-radio-group aria-label="Select an option">
-                <mat-radio-button value="1" [checked]="true">Private room</mat-radio-button>
-                <mat-radio-button value="2" style="padding-left: 16px">Public room</mat-radio-button>
-              </mat-radio-group>
-            </div>
-            <app-content>
-              <small>Anybody can view and join public rooms. Private rooms are only available to invited members. You
-                can always change these settings later.
-              </small>
-            </app-content>
-            <app-content>
-              <button mat-button matStepperNext class="maxButton">Next</button>
-            </app-content>
-          </form>
-        </mat-step>
-        <mat-step [stepControl]="secondFormGroup">
-          <form [formGroup]="secondFormGroup">
-            <ng-template matStepLabel>Set location</ng-template>
-            <mat-form-field class="fullWidth">
-              <input matInput type="password" placeholder="Type in your address" required
-                     formControlName="secondCtrl">
-            </mat-form-field>
-            <app-content>
-              <button mat-button matStepperNext class="maxButton">Next</button>
-            </app-content>
-          </form>
-        </mat-step>
-        <mat-step>
-          <ng-template matStepLabel>Add details</ng-template>
-          <!-- todo add chips with autocomplete -->
-          <mat-form-field class="halfWidth">
-            <input matInput type="text" placeholder="Hashtags..." required>
-          </mat-form-field>
-          <mat-form-field class="halfWidth">
-            <input matInput type="url" placeholder="Your website">
-          </mat-form-field>
-          <mat-form-field class="fullWidth">
-            <input matInput type="email" placeholder="Your description">
-          </mat-form-field>
-          <button mat-button>Upload Picture</button>
-          <app-content>
-            <button mat-button routerLink="/chat" class="maxButton">Complete</button>
-          </app-content>
-        </mat-step>
-      </mat-horizontal-stepper>
+      <button mat-button routerLink="/chat" class="maxButton">Complete</button>
     </app-content>
-  </div>
-  <div class="item item-3"></div>
-</div>
+  </mat-step>
+</mat-horizontal-stepper>

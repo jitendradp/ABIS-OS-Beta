@@ -2,7 +2,6 @@
 <!-- todo create mobile view for chat: Swipe Sidepanel up and down on mobile view that the chat area is more visible -->
 <!-- todo !! optimize the textarea in chat input to expand to the top is more than two lines of content is entered -->
 
-
 <div id="frame"
      fxLayout
      fxLayout.xs="column"
@@ -17,7 +16,7 @@
             <h3 style="margin-left: -24px; margin-top: -3px" mat-subheader>TEAMS</h3>
             <div class="flex-item"
                  fxFlex fxLayoutAlign="end start">
-              <button (click)="_actionDispatcher.dispatch({name:'Abis.Chat.Channel.Create'})" mat-icon-button>
+              <button (click)="_actionDispatcher.dispatch({name:'Abis.Chat.Team.Create'})" mat-icon-button>
                 <mat-icon>add_circle_outline</mat-icon>
               </button>
             </div>
@@ -91,7 +90,7 @@
     </div>
     <div class="messageInput">
       <mat-form-field appearance="none" class="messageInputTextarea">
-        <textarea [matTextareaAutosize] matInput placeholder="Write your message..."></textarea>
+        <textarea style="color: white;" [matTextareaAutosize] matInput placeholder="Write your message..."></textarea>
       </mat-form-field>
       <button mat-flat-button class="messageInputButton" color="primary">
         <mat-icon>send</mat-icon>

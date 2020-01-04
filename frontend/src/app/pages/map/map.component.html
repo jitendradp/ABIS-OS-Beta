@@ -1,1 +1,16 @@
-<p>map works!</p>
+<mgl-map
+  [style]="'mapbox://styles/mapbox/streets-v9'"
+  [zoom]="[9]"
+  [center]="[11.5116141, 48.1541385]">
+  <mgl-control
+    mglGeolocate>
+  </mgl-control>
+  <mgl-control
+    mglNavigation>
+  </mgl-control>
+  <mgl-control
+    mglScale
+    unit="metric"
+    position="bottom-right">
+  </mgl-control>
+</mgl-map>

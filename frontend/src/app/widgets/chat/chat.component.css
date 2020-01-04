@@ -97,7 +97,7 @@
 
 #frame .content .messageInput {
   position: absolute;
-  background-color: white;
+  background-color: #4e4c56;
   height: 56px;
   width: 100%;
   bottom: 0;
@@ -114,4 +114,8 @@
 
 .messageInputTextarea {
   padding-left: 16px;
+}
+
+::placeholder { /* Firefox, Chrome, Opera */
+  color: white;
 }

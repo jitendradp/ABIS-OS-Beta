@@ -8,7 +8,6 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 })
 export class TeamEditorComponent {
 
-
   isLinear = true;
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
@@ -24,4 +23,10 @@ export class TeamEditorComponent {
       secondCtrl: ['', Validators.required]
     });
   }
+
+  countries = [
+    {value: 'de', viewValue: 'Germany'},
+    {value: 'us', viewValue: 'United States'},
+    {value: 'gb', viewValue: 'Great Britain'}
+  ];
 }

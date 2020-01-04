@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LocationComponent } from './location.component';
+import { SearchComponent } from './search.component';
 
-describe('LocationComponent', () => {
-  let component: LocationComponent;
-  let fixture: ComponentFixture<LocationComponent>;
+describe('SearchComponent', () => {
+  let component: SearchComponent;
+  let fixture: ComponentFixture<SearchComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LocationComponent ]
+      declarations: [ SearchComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LocationComponent);
+    fixture = TestBed.createComponent(SearchComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

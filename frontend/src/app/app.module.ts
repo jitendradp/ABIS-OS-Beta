@@ -6,6 +6,7 @@ import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
   MatBadgeModule,
+  MatBottomSheetModule,
   MatButtonModule,
   MatButtonToggleModule,
   MatCardModule,
@@ -53,7 +54,6 @@ import {InviteComponent} from './pages/system/invite/invite.component';
 import {ResetComponent} from './pages/system/reset/reset.component';
 import {ForgotComponent} from './pages/system/forgot/forgot.component';
 import {LogoComponent} from './components/logo/logo.component';
-import {LocationComponent} from './pages/system/location/location.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {HeaderComponent} from './components/header/header.component';
 import {InputComponent} from './components/input/input.component';
@@ -77,6 +77,8 @@ import {CardMessageComponent} from "./cards/card-message/card-message.component"
 import {CardTeamComponent} from "./cards/card-team/card-team.component";
 import {CardFormComponent} from "./cards/card-form/card-form.component";
 import {CardStoreComponent} from "./cards/card-store/card-store.component";
+import {SearchComponent} from "./widgets/search/search.component";
+import {NgxMapboxGLModule} from "ngx-mapbox-gl";
 
 const defaultActions: IAction[] = [<ToggleVisibility>{
   name: ToggleVisibility.Name,
@@ -158,12 +160,6 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'location', component: LocationComponent, data: {
-      "title": "Add location",
-      "actions": defaultActions
-    }
-  },
-  {
     path: 'channel-editor', component: ChannelEditorComponent, data: {
       "title": "Create new channel",
       "actions": defaultActions
@@ -216,7 +212,6 @@ const appRoutes: Routes = [
     ResetComponent,
     ForgotComponent,
     LogoComponent,
-    LocationComponent,
     HeaderComponent,
     InputComponent,
     WhitespaceComponent,
@@ -235,6 +230,7 @@ const appRoutes: Routes = [
     CardTeamComponent,
     CardFormComponent,
     CardStoreComponent,
+    SearchComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -274,9 +270,15 @@ const appRoutes: Routes = [
     MatTreeModule,
     MatSnackBarModule,
     GraphQLModule,
-    HttpClientModule
+    HttpClientModule,
+    MatBottomSheetModule,
+    NgxMapboxGLModule.withConfig({
+      accessToken: 'pk.eyJ1IjoiZGF2ZXdhdmVhYmlzY2xvdWQiLCJhIjoiY2s0eXY0aTM0MDRhdzNtcDJ3dDIxNWJtMSJ9.iFJwp8_cZI2UHThXjyO35w', // Optionnal, can also be set per map (accessToken input of mgl-map)
+      geocoderAccessToken: 'pk.eyJ1IjoiZGF2ZXdhdmVhYmlzY2xvdWQiLCJhIjoiY2s0eXY0aTM0MDRhdzNtcDJ3dDIxNWJtMSJ9.iFJwp8_cZI2UHThXjyO35w' // Optionnal, specify if different from the map access token, can also be set per mgl-geocoder (accessToken input of mgl-geocoder)
+    })
   ],
   providers: [ProfileService],
+  entryComponents: [SearchComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {
