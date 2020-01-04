@@ -10,11 +10,10 @@ import {DataspaceService} from "../../../services/dataspace.service";
 })
 export class NavigationComponent {
 
-  public profile = this._profileService.getProfileInformation();
   public dataspace = this._dataspaceService.getDataspaceInformation();
 
   constructor(
-    private _profileService: ProfileService,
+    protected profileService: ProfileService,
     protected accountService: AccountService,
     private _dataspaceService: DataspaceService,
   ) {

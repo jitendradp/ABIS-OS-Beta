@@ -160,6 +160,7 @@ export class AccountService {
         const oldProfileId = this.profileId;
         this.clientState.set(this.ProfileKey, result.data.setSessionProfile);
         this.actionDispatcher.dispatch(new SessionProfileChanged(oldProfileId, result.data.setSessionProfile));
+        
         return true;
       })
       .catch(error => {

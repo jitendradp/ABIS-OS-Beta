@@ -14,7 +14,7 @@ type Profile {
     timezone: String
     status: String
     picture: String!
-    memberships: [Membership!]!
+    memberships: [Membership!]
     location: Location
 }
 
