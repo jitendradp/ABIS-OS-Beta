@@ -78,6 +78,7 @@ import {CardTeamComponent} from "./cards/card-team/card-team.component";
 import {CardFormComponent} from "./cards/card-form/card-form.component";
 import {CardStoreComponent} from "./cards/card-store/card-store.component";
 import {SearchComponent} from "./widgets/search/search.component";
+import {NgxMapboxGLModule} from "ngx-mapbox-gl";
 
 const defaultActions: IAction[] = [<ToggleVisibility>{
   name: ToggleVisibility.Name,
@@ -270,7 +271,11 @@ const appRoutes: Routes = [
     MatSnackBarModule,
     GraphQLModule,
     HttpClientModule,
-    MatBottomSheetModule
+    MatBottomSheetModule,
+    NgxMapboxGLModule.withConfig({
+      accessToken: 'pk.eyJ1IjoiZGF2ZXdhdmVhYmlzY2xvdWQiLCJhIjoiY2s0eXY0aTM0MDRhdzNtcDJ3dDIxNWJtMSJ9.iFJwp8_cZI2UHThXjyO35w', // Optionnal, can also be set per map (accessToken input of mgl-map)
+      geocoderAccessToken: 'pk.eyJ1IjoiZGF2ZXdhdmVhYmlzY2xvdWQiLCJhIjoiY2s0eXY0aTM0MDRhdzNtcDJ3dDIxNWJtMSJ9.iFJwp8_cZI2UHThXjyO35w' // Optionnal, specify if different from the map access token, can also be set per mgl-geocoder (accessToken input of mgl-geocoder)
+    })
   ],
   providers: [ProfileService],
   entryComponents: [SearchComponent],

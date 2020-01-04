@@ -1,4 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~mapbox-gl/dist/mapbox-gl.css";
+@import "~@mapbox/mapbox-gl-geocoder/lib/mapbox-gl-geocoder.css";
 
 html, body {
   height: 100%;
@@ -13,3 +15,4 @@ mat-bottom-sheet-container {
   height: 400px;
   border-radius: 0;
 }
+
