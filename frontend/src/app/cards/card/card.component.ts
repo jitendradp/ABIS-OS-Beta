@@ -11,6 +11,9 @@ export class CardComponent {
   picture: string;
 
   @Input()
+  cardHeight: string = "100%";
+
+  @Input()
   title: string;
 
   @Input()
@@ -20,7 +23,10 @@ export class CardComponent {
   showHeader: boolean;
 
   @Input()
-  showContext: boolean;
+  showPicture: boolean;
+
+  @Input()
+  showOverlayMenu: boolean;
 
   @Input()
   showContent: boolean;

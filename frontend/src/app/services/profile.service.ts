@@ -5,7 +5,7 @@ import {AccountService} from "./account.service";
 import {ActionDispatcherService} from "./action-dispatcher.service";
 import {SessionProfileChanged} from "../actions/account/SessionProfileChanged";
 
-export type ProfileInormation =  {
+export type ProfileInformation =  {
   name: string,
   type: string,
   slogan: string,
@@ -21,7 +21,7 @@ export type ProfileInormation =  {
 })
 export class ProfileService {
 
-  public profileInformation:ProfileInormation = {
+  public profileInformation:ProfileInformation = {
       "name": "Jessica",
       "type": "Work",
       "slogan": "Having fun with friends",

@@ -1,14 +1,16 @@
-<mat-card class="dbiCard">
+<mat-card class="dbiCard" [style.height]="cardHeight">
   <app-content>
     <mat-card-header *ngIf="showHeader">
-      <img mat-card-avatar class="dbiAvatar mat-elevation-z10" [matMenuTriggerFor]="statusMenu"
-           src="{{picture}}">
+      <img *ngIf="showPicture" mat-card-avatar class="dbiAvatar mat-elevation-z10" [matMenuTriggerFor]="statusMenu"
+           src="{{picture}}" onError="this.src='./assets/error-images/picture.png';">
       <!-- todo make button list for flexible use -->
-      <mat-menu #statusMenu="matMenu" *ngIf="showContext">
-        <button mat-menu-item>Set my self away</button>
-        <button mat-menu-item>Set my self busy</button>
-        <button mat-menu-item>Set me online</button>
-      </mat-menu>
+      <div *ngIf="showOverlayMenu">
+        <mat-menu #statusMenu="matMenu">
+          <button mat-menu-item>Set my self away</button>
+          <button mat-menu-item>Set my self busy</button>
+          <button mat-menu-item>Set me online</button>
+        </mat-menu>
+      </div>
       <mat-card-title>{{title}}</mat-card-title>
       <mat-card-subtitle>{{subtitle}}</mat-card-subtitle>
       <span class="fillRemainingSpace"></span>
@@ -19,7 +21,7 @@
     </mat-card-header>
     <div *ngIf="showContent">
       <mat-card-content *ngIf="!collapsed">
-        <ng-content select="[contentCollapsed]"></ng-content>
+        <ng-content onselect="collapsed"></ng-content>
       </mat-card-content>
       <mat-card-content>
         <ng-content select="[content]"></ng-content>

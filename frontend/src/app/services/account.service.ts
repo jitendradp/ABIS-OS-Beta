@@ -19,7 +19,7 @@ import {AccountInformationChanged} from "../actions/account/AccountInformationCh
   providedIn: 'root'
 })
 export class AccountService {
-  public accountInformation:AccountInformation = <any>{
+  public accountInformation: AccountInformation = <any>{
     id: "hello world",
     createdAt: new Date().toISOString(),
     email: "jess88@gmail.com",
@@ -27,32 +27,35 @@ export class AccountService {
     lastname: "Cohen"
   };
 
-  private readonly _log:Logger = this.loggerService.createLogger("AccountService");
+  private readonly _log: Logger = this.loggerService.createLogger("AccountService");
 
-  public get csrfToken() : string {
+  public get csrfToken(): string {
     return this.clientState.get<string>(this.CsrfTokenKey, null).data;
   }
+
   private readonly CsrfTokenKey = "AccountService.csrfToken";
 
-  public get profileId() : string {
+  public get profileId(): string {
     return this.clientState.get<string>(this.ProfileKey, null).data;
   }
+
   private readonly ProfileKey = "AccountService.profileId";
 
   public get isLoggedOn(): boolean {
     return this._isLoggedOn;
   }
-  private _isLoggedOn:boolean;
 
-  constructor(private actionDispatcher:ActionDispatcherService
-              , private loggerService:LoggerService
-              , private loginApi:LoginGQL
-              , private logoutApi:LogoutGQL
-              , private setSessionProfileApi:SetSessionProfileGQL
-              , private verifySessionApi:VerifySessionGQL
-              , private getAccountInformationApi:GetAccountInformationGQL
-              , private clientState:ClientStateService
-              , private apollo:Apollo) {
+  private _isLoggedOn: boolean;
+
+  constructor(private actionDispatcher: ActionDispatcherService
+    , private loggerService: LoggerService
+    , private loginApi: LoginGQL
+    , private logoutApi: LogoutGQL
+    , private setSessionProfileApi: SetSessionProfileGQL
+    , private verifySessionApi: VerifySessionGQL
+    , private getAccountInformationApi: GetAccountInformationGQL
+    , private clientState: ClientStateService
+    , private apollo: Apollo) {
 
     // TODO: this seems to be a bit hacky,, does the service really need to subscribe to its own events to know that?
     this.actionDispatcher.onAction.subscribe(action => {
@@ -94,14 +97,14 @@ export class AccountService {
     }
   }
 
-  public login(email: string, password: string) : Promise<boolean> {
+  public login(email: string, password: string): Promise<boolean> {
     return this.loginApi.mutate({
       email,
       password
     }).toPromise().then(result => {
       return this.setToken(result.data.login)
-                 .then(_ => true)
-                 .catch(_ => false);
+        .then(_ => true)
+        .catch(_ => false);
     }).catch(error => {
       this.clearClientState();
       this._log(LogSeverity.UserNotification, "Login failed. Please check your username and password and try again or try the password reset link. See the log for detailed error messages.");
@@ -110,7 +113,7 @@ export class AccountService {
     });
   }
 
-  public setToken(csrfToken: string) : Promise<boolean> {
+  public setToken(csrfToken: string): Promise<boolean> {
     return this.verifySessionApi.mutate({
       csrfToken: csrfToken
     }).toPromise()
@@ -140,17 +143,17 @@ export class AccountService {
       });
   }
 
-  public async loadAccountInformation() : Promise<AccountInformation> {
+  public async loadAccountInformation(): Promise<AccountInformation> {
     const accountInfo = await this.getAccountInformationApi.fetch({
       csrfToken: this.csrfToken
     }).toPromise();
     const oldAccountInfo = this.accountInformation;
-    this.accountInformation = { ...accountInfo.data.getAccountInformation };
+    this.accountInformation = {...accountInfo.data.getAccountInformation};
     this.actionDispatcher.dispatch(new AccountInformationChanged(oldAccountInfo, this.accountInformation));
     return this.accountInformation;
   }
 
-  public setSessionProfile(profileId:string) : Promise<boolean> {
+  public setSessionProfile(profileId: string): Promise<boolean> {
     return this.setSessionProfileApi.mutate({
       csrfToken: this.csrfToken,
       profileId: profileId
@@ -160,7 +163,7 @@ export class AccountService {
         const oldProfileId = this.profileId;
         this.clientState.set(this.ProfileKey, result.data.setSessionProfile);
         this.actionDispatcher.dispatch(new SessionProfileChanged(oldProfileId, result.data.setSessionProfile));
-        
+
         return true;
       })
       .catch(error => {
@@ -170,7 +173,7 @@ export class AccountService {
       });
   }
 
-  public logout() : Promise<boolean> {
+  public logout(): Promise<boolean> {
     const promsie = this.logoutApi.mutate({
       csrfToken: this.csrfToken
     })
