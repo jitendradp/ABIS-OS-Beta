@@ -64,7 +64,7 @@
               </mat-form-field>
               <button mat-button>Upload Picture</button>
               <app-content>
-                <button [disabled]="!_step3Data || !_step3Data.name" mat-button matStepperNext class="maxButton" (click)="submitStep3($event)">Complete</button>
+                <button [disabled]="!step3Data || !step3Data.name" mat-button matStepperNext class="maxButton" (click)="submitStep3($event)">Complete</button>
                 <app-whitespace></app-whitespace>
                 <mat-hint align="start">Make your profile easy to recogniza for your colleagues and friends.</mat-hint>
               </app-content>

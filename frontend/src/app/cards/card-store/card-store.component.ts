@@ -75,5 +75,6 @@ export class CardStoreComponent {
 
   @Input()
   subtitle: string;
+  panelOpenState: boolean;
 
 }

@@ -30,6 +30,8 @@ export class CardComponent {
 
   @Input()
   showContent: boolean;
+  collapsed: boolean;
+  statusMenu: any;
 }
 
 

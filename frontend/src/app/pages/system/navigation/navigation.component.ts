@@ -13,8 +13,8 @@ export class NavigationComponent {
   public dataspace = this._dataspaceService.getDataspaceInformation();
 
   constructor(
-    protected profileService: ProfileService,
-    protected accountService: AccountService,
+    public profileService: ProfileService,
+    public accountService: AccountService,
     private _dataspaceService: DataspaceService,
   ) {
   }

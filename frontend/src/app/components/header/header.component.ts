@@ -30,9 +30,7 @@ export class HeaderComponent {
   @Output()
   click: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(
-    protected _actionDispatcher: ActionDispatcherService,
-  ) {
+  constructor(public actionDispatcher: ActionDispatcherService) {
   }
 
 }
