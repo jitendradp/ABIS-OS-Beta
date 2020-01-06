@@ -1,5 +1,6 @@
+<!-- todo color of the placeholder is not really working -->
 <mat-form-field class="full-width">
-  <input matInput type="{{type}}" placeholder="{{placeholder}}" value="{{inputValue}}">
+  <input [style.color]="color" matInput type="{{type}}" placeholder="{{placeholder}}" value="{{inputValue}}">
 </mat-form-field>
 <div *ngIf="showHint" style="padding-bottom: 16px">
   <mat-hint align="start">{{hint}}</mat-hint>
