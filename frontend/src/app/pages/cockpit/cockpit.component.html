@@ -9,7 +9,7 @@
                 [subtitle]="'My crypto smart app cockpit widget'"
                 [headerBackground]="'white'" [headerTextColor]="'#333'">
         <app-whitespace></app-whitespace>
-        <app-chart-line [chartHeight]="'400px'"></app-chart-line>
+        <app-chart-line [chartHeight]="'500px'"></app-chart-line>
       </app-card>
     </app-content>
   </div>
@@ -19,7 +19,17 @@
                 [subtitle]="'My climate change smart alert widget for the next 7 days'"
                 [headerBackground]="'white'" [headerTextColor]="'#333'">
         <app-whitespace></app-whitespace>
-        <app-chart-map></app-chart-map>
+        <app-chart-map [chartHeight]="'500px'"></app-chart-map>
+      </app-card>
+    </app-content>
+  </div>
+  <div fxFlex='auto' fxFlex.gt-md='50' fxFlex.gt-sm='80'>
+    <app-content>
+      <app-card [showContent]="true" [showHeader]="true" [title]="'Social Media Connections'"
+                [subtitle]="'My network on social media'"
+                [headerBackground]="'white'" [headerTextColor]="'#333'">
+        <app-whitespace></app-whitespace>
+        <app-chart-graph-force [chartHeight]="'500px'"></app-chart-graph-force>
       </app-card>
     </app-content>
   </div>

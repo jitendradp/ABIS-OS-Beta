@@ -14,7 +14,6 @@ export class ChartMapComponent implements OnInit {
 
   @Input()
   chartHeight: string;
-  autoResize: any;
 
   // show loading spinner:
   mapLoaded = false;

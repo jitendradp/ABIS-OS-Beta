@@ -81,6 +81,7 @@ import {ChartTableComponent} from "./charts/chart-table/chart-table.component";
 import {ChartLineComponent} from "./charts/chart-line/chart-line.component";
 import {ChartMapComponent} from "./charts/chart-map/chart-map.component";
 import {CommandComponent} from "./widgets/command/command.component";
+import {ChartGraphForceComponent} from "./charts/chart-graph-force/chart-graph-force.component";
 
 const defaultActions: IAction[] = [<ToggleVisibility>{
   name: ToggleVisibility.Name,
@@ -241,6 +242,7 @@ const appRoutes: Routes = [
     ChartLineComponent,
     ChartMapComponent,
     CommandComponent,
+    ChartGraphForceComponent,
   ],
   imports: [
     RouterModule.forRoot(
