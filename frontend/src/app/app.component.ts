@@ -138,7 +138,8 @@ export class AppComponent {
 
   public openCockpitCommandDialog(): void {
     const dialogRef = this._dialog.open(CommandComponent, {
-      width: '250px'
+      width: '50%',
+      minWidth: '300px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
