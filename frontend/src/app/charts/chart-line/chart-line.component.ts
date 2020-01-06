@@ -12,7 +12,7 @@ export class ChartLineComponent implements OnInit {
   @Input()
   chartHeight: string;
 
-
+  autoResize: any;
   options: any;
 
   constructor() {

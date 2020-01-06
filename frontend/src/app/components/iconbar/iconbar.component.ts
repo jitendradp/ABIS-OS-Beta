@@ -47,13 +47,11 @@ export class IconbarComponent {
     }
   ];
 
-
   constructor(private bottomSheet: MatBottomSheet) {
   }
 
   openBottomSheet() {
     this.bottomSheet.open(SearchComponent)
   }
-
 
 }

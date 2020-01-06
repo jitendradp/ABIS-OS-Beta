@@ -79,6 +79,7 @@ import {NgxMapboxGLModule} from "ngx-mapbox-gl";
 import {CardComponent} from "./cards/card/card.component";
 import {ChartTableComponent} from "./charts/chart-table/chart-table.component";
 import {ChartLineComponent} from "./charts/chart-line/chart-line.component";
+import {ChartMapComponent} from "./charts/chart-map/chart-map.component";
 
 const defaultActions: IAction[] = [<ToggleVisibility>{
   name: ToggleVisibility.Name,
@@ -230,7 +231,8 @@ const appRoutes: Routes = [
     SearchComponent,
     CardComponent,
     ChartTableComponent,
-    ChartLineComponent
+    ChartLineComponent,
+    ChartMapComponent,
   ],
   imports: [
     RouterModule.forRoot(
