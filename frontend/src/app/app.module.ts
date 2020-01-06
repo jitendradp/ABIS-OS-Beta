@@ -9,7 +9,7 @@ import {
   MatBottomSheetModule,
   MatButtonModule,
   MatButtonToggleModule,
-  MatCardModule,
+  MatCardModule, MatCheckboxModule,
   MatChipsModule,
   MatDatepickerModule,
   MatDividerModule,
@@ -24,7 +24,7 @@ import {
   MatOptionModule,
   MatRadioModule,
   MatSelectModule,
-  MatSidenavModule,
+  MatSidenavModule, MatSliderModule,
   MatSlideToggleModule,
   MatSnackBarModule,
   MatStepperModule,
@@ -44,9 +44,7 @@ import {StoreComponent} from './pages/store/store.component';
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {NgxEchartsModule} from "ngx-echarts";
-import {LineChartComponent} from './charts/line-chart/line-chart.component';
 import {StudioComponent} from './pages/studio/studio.component';
-import {TableComponent} from './charts/table/table.component';
 import {ProfileService} from "./services/profile.service";
 import {CockpitComponent} from './pages/cockpit/cockpit.component';
 import {MapComponent} from './pages/map/map.component';
@@ -54,7 +52,7 @@ import {InviteComponent} from './pages/system/invite/invite.component';
 import {ResetComponent} from './pages/system/reset/reset.component';
 import {ForgotComponent} from './pages/system/forgot/forgot.component';
 import {LogoComponent} from './components/logo/logo.component';
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HeaderComponent} from './components/header/header.component';
 import {InputComponent} from './components/input/input.component';
 import {WhitespaceComponent} from './components/whitespace/whitespace.component';
@@ -79,6 +77,10 @@ import {CardStoreComponent} from "./cards/card-store/card-store.component";
 import {SearchComponent} from "./widgets/search/search.component";
 import {NgxMapboxGLModule} from "ngx-mapbox-gl";
 import {CardComponent} from "./cards/card/card.component";
+import {ChartTableComponent} from "./charts/chart-table/chart-table.component";
+import {ChartLineComponent} from "./charts/chart-line/chart-line.component";
+import {ChartMapComponent} from "./charts/chart-map/chart-map.component";
+import {CommandComponent} from "./widgets/command/command.component";
 
 const defaultActions: IAction[] = [<ToggleVisibility>{
   name: ToggleVisibility.Name,
@@ -188,7 +190,13 @@ const appRoutes: Routes = [
       "title": "Create new team",
       "actions": defaultActions
     }
-  }
+  },
+  {
+    path: 'command', component: CommandComponent, data: {
+      "title": "New command",
+      "actions": defaultActions
+    }
+  },
 ];
 
 
@@ -203,9 +211,7 @@ const appRoutes: Routes = [
     ProfileComponent,
     IconbarComponent,
     StoreComponent,
-    LineChartComponent,
     StudioComponent,
-    TableComponent,
     CockpitComponent,
     MapComponent,
     InviteComponent,
@@ -230,7 +236,11 @@ const appRoutes: Routes = [
     CardFormComponent,
     CardStoreComponent,
     SearchComponent,
-    CardComponent
+    CardComponent,
+    ChartTableComponent,
+    ChartLineComponent,
+    ChartMapComponent,
+    CommandComponent,
   ],
   imports: [
     RouterModule.forRoot(
@@ -272,6 +282,9 @@ const appRoutes: Routes = [
     GraphQLModule,
     HttpClientModule,
     MatBottomSheetModule,
+    MatSliderModule,
+    FormsModule,
+    MatCheckboxModule,
     NgxMapboxGLModule.withConfig({
       accessToken: 'pk.eyJ1IjoiZGF2ZXdhdmVhYmlzY2xvdWQiLCJhIjoiY2s0eXYycjhzMDRhczNkbXF6dzNkMzlzayJ9.nyAc-uTfNfDTF0lxmZ3a3Q', // Optionnal, can also be set per map (accessToken input of mgl-map)
       geocoderAccessToken: 'pk.eyJ1IjoiZGF2ZXdhdmVhYmlzY2xvdWQiLCJhIjoiY2s0eXYycjhzMDRhczNkbXF6dzNkMzlzayJ9.nyAc-uTfNfDTF0lxmZ3a3Q' // Optionnal, specify if different from the map access token, can also be set per mgl-geocoder (accessToken input of mgl-geocoder)

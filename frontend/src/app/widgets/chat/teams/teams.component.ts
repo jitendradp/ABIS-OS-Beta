@@ -12,7 +12,7 @@ interface DataspaceNode {
 
 const TREE_DATA: DataspaceNode[] = [
   {
-    name: 'DBI Analytics GmbH',
+    name: 'My Company',
     logo: 'https://marketingplatform.google.com/about/partners/img/company/6027496168357888/assets/5686306919153664',
     channels: [
       {name: 'Chaos', icon: 'bubble_chart'},
@@ -21,8 +21,8 @@ const TREE_DATA: DataspaceNode[] = [
     ]
   },
   {
-    name: 'E.ON Energie Deutschland',
-    logo: 'https://i.pinimg.com/280x280_RS/f0/50/5c/f0505ce317dde1b57c017dffe3bc6d34.jpg',
+    name: 'Favorite pizza place',
+    logo: 'https://images-platform.99static.com/Ng85_ZR79gbqye5j9TVlBB4uoqU=/500x500/top/smart/99designs-contests-attachments/38/38987/attachment_38987002',
     channels: [
       {name: 'Chaos', icon: 'bubble_chart'},
       {name: 'General', icon: 'bubble_chart'},
