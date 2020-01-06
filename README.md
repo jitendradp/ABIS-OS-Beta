@@ -1,6 +1,6 @@
 # ABIS OS Alpha SDK
 
-Live-Demo: https://dbidev.github.io/
+Live-Demo of the template: https://dbidev.github.io/
 
 To start the frontend, use the @angular/cli tool:  
 ```cd``` to the "frontend" directory, then run ```npm install``` and ```ng serve```.  
