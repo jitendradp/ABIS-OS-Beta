@@ -1,33 +1,30 @@
 <mat-card class="dbiCard" [style.height]="cardHeight">
-  <app-content>
-    <mat-card-header *ngIf="showHeader">
-      <img *ngIf="showPicture" mat-card-avatar class="dbiAvatar mat-elevation-z10" [matMenuTriggerFor]="statusMenu"
-           src="{{picture}}" onError="this.src='./assets/error-images/picture.png';">
-      <!-- todo make button list for flexible use -->
-      <div *ngIf="showOverlayMenu">
-        <mat-menu #statusMenu="matMenu">
-          <button mat-menu-item>Set my self away</button>
-          <button mat-menu-item>Set my self busy</button>
-          <button mat-menu-item>Set me online</button>
-        </mat-menu>
-      </div>
-      <mat-card-title>{{title}}</mat-card-title>
-      <mat-card-subtitle>{{subtitle}}</mat-card-subtitle>
-      <span class="fillRemainingSpace"></span>
-      <button mat-icon-button (click)="collapsed = !collapsed">
-        <mat-icon *ngIf="!collapsed">arrow_drop_up</mat-icon>
-        <mat-icon *ngIf="collapsed">arrow_drop_down</mat-icon>
-      </button>
-    </mat-card-header>
-    <div *ngIf="showContent">
-      <mat-card-content *ngIf="!collapsed">
-        <ng-content onselect="collapsed"></ng-content>
-      </mat-card-content>
-      <mat-card-content>
-        <ng-content select="[content]"></ng-content>
-      </mat-card-content>
-    </div>
-  </app-content>
+  <mat-card-header *ngIf="showHeader" [style.background]="headerBackground">
+    <img *ngIf="showPicture" mat-card-avatar class="dbiAvatar mat-elevation-z10"
+         src="{{picture}}" onError="this.src='./assets/error-images/picture.png';">
+    <!-- todo make button list for flexible use
+    <div *ngIf="showOverlayMenu" [matMenuTriggerFor]="statusMenu">
+      <mat-menu #statusMenu="matMenu">
+        <button mat-menu-item>Set my self away</button>
+        <button mat-menu-item>Set my self busy</button>
+        <button mat-menu-item>Set me online</button>
+      </mat-menu>
+    </div> -->
+    <mat-card-title [style.color]="headerTextColor" style="padding-top: 7px">{{title}}</mat-card-title>
+    <mat-card-subtitle [style.color]="headerTextColor">{{subtitle}}</mat-card-subtitle>
+    <span class="fillRemainingSpace"></span>
+    <button [style.color]="headerTextColor" mat-icon-button (click)="collapsed = !collapsed">
+      <mat-icon *ngIf="!collapsed">arrow_drop_up</mat-icon>
+      <mat-icon *ngIf="collapsed">arrow_drop_down</mat-icon>
+    </button>
+  </mat-card-header>
+  <mat-divider></mat-divider>
+  <div *ngIf="showContent">
+    <mat-card-content *ngIf="!collapsed">
+      <app-iconbar [onCockpit]="true"></app-iconbar>
+    </mat-card-content>
+    <mat-card-content>
+      <ng-content></ng-content>
+    </mat-card-content>
+  </div>
 </mat-card>
-
-

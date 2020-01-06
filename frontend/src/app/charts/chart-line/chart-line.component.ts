@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 declare const require: any;
 
@@ -8,6 +8,9 @@ declare const require: any;
   styleUrls: ['./chart-line.component.css']
 })
 export class ChartLineComponent implements OnInit {
+
+  @Input()
+  chartHeight: string;
 
 
   options: any;
@@ -28,7 +31,7 @@ export class ChartLineComponent implements OnInit {
 
     this.options = {
       legend: {
-        data: ['bar', 'bar2'],
+        data: ['Portfolio 1', 'Portfolio 2'],
         align: 'left'
       },
       tooltip: {},
@@ -41,15 +44,15 @@ export class ChartLineComponent implements OnInit {
       },
       yAxis: {},
       series: [{
-        name: 'bar',
-        type: 'bar',
+        name: 'Portfolio 1',
+        type: 'line',
         data: data1,
         animationDelay: function (idx) {
           return idx * 10;
         }
       }, {
-        name: 'bar2',
-        type: 'bar',
+        name: 'Portfolio 2',
+        type: 'line',
         data: data2,
         animationDelay: function (idx) {
           return idx * 10 + 100;

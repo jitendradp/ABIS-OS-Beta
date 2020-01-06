@@ -30,8 +30,18 @@ export class CardComponent {
 
   @Input()
   showContent: boolean;
+
+  @Input()
   collapsed: boolean;
+
+  @Input()
   statusMenu: any;
+
+  @Input()
+  headerBackground: string;
+
+  @Input()
+  headerTextColor: string;
 }
 
 
