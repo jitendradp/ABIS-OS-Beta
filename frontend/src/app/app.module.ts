@@ -21,7 +21,7 @@ import {
   MatListModule,
   MatMenuModule,
   MatNativeDateModule,
-  MatOptionModule,
+  MatOptionModule, MatProgressBarModule,
   MatRadioModule,
   MatSelectModule,
   MatSidenavModule, MatSliderModule,
@@ -285,6 +285,7 @@ const appRoutes: Routes = [
     MatSliderModule,
     FormsModule,
     MatCheckboxModule,
+    MatProgressBarModule,
     NgxMapboxGLModule.withConfig({
       accessToken: 'pk.eyJ1IjoiZGF2ZXdhdmVhYmlzY2xvdWQiLCJhIjoiY2s0eXYycjhzMDRhczNkbXF6dzNkMzlzayJ9.nyAc-uTfNfDTF0lxmZ3a3Q', // Optionnal, can also be set per map (accessToken input of mgl-map)
       geocoderAccessToken: 'pk.eyJ1IjoiZGF2ZXdhdmVhYmlzY2xvdWQiLCJhIjoiY2s0eXYycjhzMDRhczNkbXF6dzNkMzlzayJ9.nyAc-uTfNfDTF0lxmZ3a3Q' // Optionnal, specify if different from the map access token, can also be set per mgl-geocoder (accessToken input of mgl-geocoder)

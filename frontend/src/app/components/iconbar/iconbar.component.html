@@ -1,10 +1,10 @@
 <div *ngIf="onCockpit">
   <mat-grid-list class="embeddableQuickButtons" cols="3" rowHeight="42px">
-    <mat-grid-tile *ngFor="let icon of icons" [style.background]="icon.color">
+    <mat-grid-tile *ngFor="let icon of icons" [style.background]="icon.color" matTooltip="icon.metric +' '+ icon.label">
       <button mat-button class="tileButton">
-        <span>{{icon.metric}}</span>
-        <mat-icon fxHide fxShow.gt-sm>{{icon.name}}</mat-icon>
-        <span class="iconLabelSpacing">{{icon.label}}</span>
+        <span fxHide fxShow.gt-sm>{{icon.metric}}</span>
+        <mat-icon>{{icon.name}}</mat-icon>
+        <span  fxHide fxShow.gt-sm class="iconLabelSpacing">{{icon.label}}</span>
       </button>
     </mat-grid-tile>
   </mat-grid-list>
@@ -28,7 +28,7 @@
     <mat-grid-tile>
       <button (click)="openBottomSheet()" mat-button class="tileButton">
         <mat-icon>graphic_eq</mat-icon>
-        <span fxHide fxShow.gt-sm class="iconLabelSpacing">Search</span>
+        <span fxHide fxShow.gt-sm class="iconLabelSpacing">AI Search</span>
       </button>
     </mat-grid-tile>
     <mat-grid-tile>

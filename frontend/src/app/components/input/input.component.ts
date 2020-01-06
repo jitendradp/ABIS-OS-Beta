@@ -11,6 +11,9 @@ export class InputComponent {
   inputValue: string;
 
   @Input()
+  color: string;
+
+  @Input()
   type: string;
 
   @Input()

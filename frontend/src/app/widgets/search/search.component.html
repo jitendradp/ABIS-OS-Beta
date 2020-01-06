@@ -1,1 +1,28 @@
-<app-input [placeholder]="'Search in ABIS...'"></app-input>
+<app-input [placeholder]="'Search and command ABIS...'"></app-input>
+<div id="frame">
+  <div class="content" fxFlex="100%">
+    <div class="messages">
+      <ul>
+        <li class="replies">
+          <img style="width: 80px" src="./assets/abisBot.gif"/>
+          <p>Hi Tom, how can I assist you today?</p>
+        </li><!-- todo timestamp of sent message align with content -->
+        <li class="sent">
+          <img
+            src="https://media.wired.com/photos/598e35fb99d76447c4eb1f28/1:1/w_722,h_722,c_limit/phonepicutres-TA.jpg"
+            alt=""/>
+          <p>Please schedule my CCIS report for next week!</p>
+        </li>
+        <li class="replies">
+          <img style="width: 80px" src="./assets/abisBot.gif"/>
+          <p>Sure, no problem. I am scheduling it now!</p>
+        </li>
+      </ul>
+    </div>
+    <div style="background-color: #204AAB">
+      <mat-progress-bar style="width: 100%" color="black" mode="buffer">
+      </mat-progress-bar>
+    </div>
+  </div>
+</div>
+
