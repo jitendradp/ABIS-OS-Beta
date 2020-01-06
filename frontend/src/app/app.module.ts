@@ -141,7 +141,7 @@ const appRoutes: Routes = [
   },
   {
     path: 'map', component: MapComponent, data: {
-      "title": "Map",
+      "title": "Earthquake Map",
       "actions": defaultActions
     }
   },

@@ -1,10 +1,11 @@
+<!-- todo add a timeslider https://docs.mapbox.com/mapbox-gl-js/example/timeline-animation/ -->
+<!-- todo no reaction on the div container padding in the view of the map to push the controls more to the left -->
+<!--
 <mgl-map
   [style]="'mapbox://styles/mapbox/streets-v9'"
   [zoom]="[9]"
   [center]="[11.5116141, 48.1541385]">
 
-
-  <!-- todo no reaction on that -->
   <div class="mapControlContainer">
     <mgl-control
       mglGeolocate>
@@ -18,4 +19,51 @@
       position="bottom-right">
     </mgl-control>
   </div>
+</mgl-map>
+-->
+<mgl-map
+  style="mapbox://styles/mapbox/dark-v9"
+  [zoom]="[3]"
+  [center]="[-103.59179687498357, 40.66995747013945]">
+  <mgl-control
+    mglGeolocate>
+  </mgl-control>
+  <mgl-control
+    mglNavigation>
+  </mgl-control>
+  <mgl-control
+    mglScale
+    unit="metric"
+    position="bottom-right">
+  </mgl-control>
+  <ng-container *ngIf="earthquakes">
+    <mgl-geojson-source
+      id="earthquakes"
+      [data]="earthquakes"
+      [cluster]="true"
+      [clusterMaxZoom]="15"
+      [clusterRadius]="20">
+    </mgl-geojson-source>
+    <mgl-layer
+      *ngFor="let layer of clusterLayers"
+      [id]="layer.id"
+      type="circle"
+      source="earthquakes"
+      [filter]="layer.filter"
+      [paint]="layer.paint"
+      before="waterway-label"
+    ></mgl-layer>
+    <mgl-layer
+      id="unclustered-point"
+      type="circle"
+      source="earthquakes"
+      [filter]="['!=', 'cluster', true]"
+      [paint]="{
+          'circle-color': 'rgba(0,255,0,0.5)',
+          'circle-radius': 20,
+          'circle-blur': 1
+        }"
+      before="waterway-label"
+    ></mgl-layer>
+  </ng-container>
 </mgl-map>
