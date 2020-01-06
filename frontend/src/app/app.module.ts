@@ -80,6 +80,7 @@ import {CardComponent} from "./cards/card/card.component";
 import {ChartTableComponent} from "./charts/chart-table/chart-table.component";
 import {ChartLineComponent} from "./charts/chart-line/chart-line.component";
 import {ChartMapComponent} from "./charts/chart-map/chart-map.component";
+import {CommandComponent} from "./widgets/command/command.component";
 
 const defaultActions: IAction[] = [<ToggleVisibility>{
   name: ToggleVisibility.Name,
@@ -189,7 +190,13 @@ const appRoutes: Routes = [
       "title": "Create new team",
       "actions": defaultActions
     }
-  }
+  },
+  {
+    path: 'command', component: CommandComponent, data: {
+      "title": "New command",
+      "actions": defaultActions
+    }
+  },
 ];
 
 
@@ -233,6 +240,7 @@ const appRoutes: Routes = [
     ChartTableComponent,
     ChartLineComponent,
     ChartMapComponent,
+    CommandComponent,
   ],
   imports: [
     RouterModule.forRoot(

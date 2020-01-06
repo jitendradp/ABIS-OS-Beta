@@ -26,6 +26,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {LogEntry} from "./services/logger.service";
 import {Back} from "./actions/routes/Back";
 import {TeamEditorComponent} from "./editors/team-editor/team-editor.component";
+import {CommandComponent} from "./widgets/command/command.component";
 
 @Component({
   selector: 'app-root',
@@ -78,6 +79,9 @@ export class AppComponent {
       case "Abis.Chat.Team.Create":
         this.openTeamCreateDialog();
         break;
+      case "Abis.Cockpit.Command.Create":
+        this.openCockpitCommandDialog();
+        break;
       case ShowNotification.Name:
         if (action instanceof ShowNotification) {
           if (action.entry instanceof LogEntry) {
@@ -124,6 +128,16 @@ export class AppComponent {
 
   public openChannelCreateDialog(): void {
     const dialogRef = this._dialog.open(ChannelEditorComponent, {
+      width: '250px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  public openCockpitCommandDialog(): void {
+    const dialogRef = this._dialog.open(CommandComponent, {
       width: '250px'
     });
 
