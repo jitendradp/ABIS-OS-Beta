@@ -1,4 +1,4 @@
-<app-card
+<!--<app-card
   [cardHeight]="'94px'"
   [showHeader]="true"
   [showPicture]="true"
@@ -7,12 +7,13 @@
   [subtitle]="profileService.profileInformation.name + '@' + profileService.profileInformation.type">
   <div collapsed>This should be rendered in collapsed selection of ng-content</div>
   <div content>This should be rendered in content selection of ng-content</div>
-</app-card>
+</app-card>-->
 
-<!--
+
 <mat-card class="embeddableProfile">
   <mat-card-header>
-    <img mat-card-avatar class="profilePicture mat-elevation-z10" src="https://media.wired.com/photos/598e35fb99d76447c4eb1f28/1:1/w_722,h_722,c_limit/phonepicutres-TA.jpg"
+    <img mat-card-avatar class="profilePicture mat-elevation-z10"
+         src="https://media.wired.com/photos/598e35fb99d76447c4eb1f28/1:1/w_722,h_722,c_limit/phonepicutres-TA.jpg"
          [matMenuTriggerFor]="statusMenu">
     <mat-menu #statusMenu="matMenu">
       <button mat-menu-item>Set my self away</button>
@@ -21,16 +22,16 @@
     </mat-menu>
     <mat-card-title>
       Thomas Cook <!--{{accountService.accountInformation.name}}-->
-<!-- </mat-card-title>
-<mat-card-subtitle class="whiteSubtitle">
-  {{profileService.profileInformation.name}}@{{profileService.profileInformation.type}}
-</mat-card-subtitle>
-<span class="fill-remaining-space"></span>
-<button mat-icon-button>
-  <mat-icon>arrow_drop_down</mat-icon>
-</button>
-</mat-card-header>
-</mat-card> -->
+    </mat-card-title>
+    <mat-card-subtitle class="whiteSubtitle">
+      {{profileService.profileInformation.name}}@{{profileService.profileInformation.type}}
+    </mat-card-subtitle>
+    <span class="fill-remaining-space"></span>
+    <button mat-icon-button>
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+  </mat-card-header>
+</mat-card>
 
 <mat-divider></mat-divider>
 <mat-card class="embeddableDataspace">

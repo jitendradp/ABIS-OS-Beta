@@ -1,5 +1,5 @@
 <mat-tab-group>
-  <mat-tab label="Connect Sheet">
+  <mat-tab label="CONNECT SHEET">
     <div fxLayout
          fxLayout.xs="column"
          fxLayoutAlign="center"
@@ -12,15 +12,13 @@
             [logo]="'./assets/logos/google-drive-logo.png'"
             [description]="'Create your own cockpit widgets with the data studio by ABIS. Start with connecting a google sheet to your workspace.'"
             [image]="'./assets/banners/connect-data.jpg'">
-            <app-button [link]='"/"' [text]="'Authorize'"></app-button>
+            <app-button [link]='"-"' [text]="'Authorize'"></app-button>
           </app-card-intro>
         </app-content>
       </div>
     </div>
   </mat-tab>
-
-<!--
-  <mat-tab label="Mix Dataset">
+  <mat-tab label="MIX DATASET">
     <div class="container"
          fxLayout
          fxLayout.xs="column"
@@ -79,9 +77,9 @@
       </div>
     </div>
   </mat-tab>
-  <mat-tab label="Create Widget">
+  <mat-tab label="CREATE CHART">
     <app-content>
       <app-chart></app-chart>
     </app-content>
-  </mat-tab>-->
+  </mat-tab>
 </mat-tab-group>

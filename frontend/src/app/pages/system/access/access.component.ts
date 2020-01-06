@@ -7,7 +7,7 @@ import {AccountService} from "../../../services/account.service";
   styleUrls: ['./access.component.css']
 })
 export class AccessComponent {
-  constructor(protected _accountService: AccountService) {
+  constructor(public _accountService: AccountService) {
   }
 
   @Input()
