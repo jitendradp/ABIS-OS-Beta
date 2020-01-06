@@ -25,5 +25,8 @@ export class CardMessageComponent {
   @Input()
   message: string;
 
+  @Input()
+  picture: string;
+
 
 }

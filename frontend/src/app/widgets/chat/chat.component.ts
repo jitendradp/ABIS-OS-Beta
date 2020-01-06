@@ -15,9 +15,7 @@ export interface DirectMessage {
 export class ChatComponent {
 
 
-  constructor(
-    protected _actionDispatcher: ActionDispatcherService
-  ) {
+  constructor(public actionDispatcher: ActionDispatcherService) {
   }
 
 

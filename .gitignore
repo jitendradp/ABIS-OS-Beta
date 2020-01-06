@@ -4,3 +4,4 @@ AbisStarterkit.iml
 .idea
 yoga-server/src/config.ts
 /yoga-server/src/config.ts
+.env

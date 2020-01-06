@@ -1,5 +1,5 @@
 <mat-toolbar class="header">
-  <button *ngFor="let action of leftActions" mat-icon-button (click)="_actionDispatcher.dispatch(action);">
+  <button *ngFor="let action of leftActions" mat-icon-button (click)="actionDispatcher.dispatch(action);">
     <mat-icon>{{action.icon}}</mat-icon>
   </button>
   <div style="margin-left: 16px">

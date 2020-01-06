@@ -10,7 +10,7 @@ import {Logger, LoggerService, LogSeverity} from "../../../services/logger.servi
   styleUrls: ['./switch-profile.component.css']
 })
 export class SwitchProfileComponent implements OnInit, AfterViewInit {
-  protected _profiles:Profile[] = [];
+  public profiles:Profile[] = [];
 
   private readonly _log:Logger = this.loggerService.createLogger("SwitchProfileComponent");
 
@@ -23,7 +23,7 @@ export class SwitchProfileComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.profileService.listProfiles()
-      .then(o => this._profiles = o)
+      .then(o => this.profiles = o)
       .catch(error => {
         this._log(LogSeverity.UserNotification, "The profiles couldn't be listed. See the log for detailed error messages.");
         this._log(LogSeverity.Error, error);

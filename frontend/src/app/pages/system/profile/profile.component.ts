@@ -9,8 +9,8 @@ import {AccountService} from "../../../services/account.service";
 })
 export class ProfileComponent implements OnInit {
 
-  public profile = {};
-  public account = {};
+  public profile:{name?:string,job?:string,slogan?:string,phone?:string} = {};
+  public account:{name?:string} = {};
 
   constructor(
     private _profileService: ProfileService,
