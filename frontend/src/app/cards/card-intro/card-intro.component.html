@@ -1,21 +1,26 @@
 <app-card-form>
-  <app-layout>
-    <app-container>
+  <app-whitespace></app-whitespace>
+  <div fxLayout
+       fxLayout.xs="column"
+       fxLayoutAlign="left"
+       fxLayoutGap="16px"
+       fxLayoutGap.xs="0">
+    <div fxFlex="50">
       <img mat-card-image src="{{image}}"
            onError="this.src='./assets/error-images/picture.png';">
-    </app-container>
+    </div>
     <mat-divider [vertical]="true"></mat-divider>
-    <app-container>
+    <div fxFlex="50">
       <mat-card-header>
         <app-logo mat-card-avatar [url]="logo"></app-logo>
         <mat-card-title>{{title}}</mat-card-title>
         <mat-card-subtitle>{{description}}
         </mat-card-subtitle>
       </mat-card-header>
+      <!-- todo Will need some list for buttons and actions -->
       <app-content>
-        <!-- todo Will need some list for buttons and actions -->
         <ng-content></ng-content>
       </app-content>
-    </app-container>
-  </app-layout>
+    </div>
+  </div>
 </app-card-form>

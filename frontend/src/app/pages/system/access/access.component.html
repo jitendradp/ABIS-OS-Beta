@@ -1,21 +1,5 @@
-<app-card>
-</app-card>
-
-<!--
-<app-card-intro
-  *ngIf="!_accountService.isLoggedOn"
-  [image]="'./assets/banners/access-cockpit.jpg'"
-  [logo]="'./assets/logos/abis-logo.png'"
-  [description]="'The collaborative dataspace to discover, share and discuss facts within your teams.'"
-  [title]="'ABIS Analytics Cloud'">
-  <app-button [link]='"/register"' [text]="'Register'"></app-button>
-  <app-whitespace></app-whitespace>
-  <app-button [link]='"/signin"' [text]="'Sign in'"></app-button>
-</app-card-intro>
--->
-
-<!--
-<div *ngIf="!isButton" fxLayout
+<div *ngIf="!isButton"
+     fxLayout
      fxLayout.xs="column"
      fxLayoutAlign="center"
      fxLayoutGap="0px"
@@ -61,4 +45,3 @@
 <app-button *ngIf="isButton" [lessStyle]="true" [link]='"/"'
             [text]="'Sign In / Register'">
 </app-button>
--->
