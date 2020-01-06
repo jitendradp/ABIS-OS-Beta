@@ -3,11 +3,11 @@ import {Component, OnInit} from '@angular/core';
 declare const require: any;
 
 @Component({
-  selector: 'app-chart',
-  templateUrl: './line-chart.component.html',
-  styleUrls: ['./line-chart.component.css']
+  selector: 'app-chart-line',
+  templateUrl: './chart-line.component.html',
+  styleUrls: ['./chart-line.component.css']
 })
-export class LineChartComponent implements OnInit {
+export class ChartLineComponent implements OnInit {
 
 
   options: any;

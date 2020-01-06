@@ -44,9 +44,7 @@ import {StoreComponent} from './pages/store/store.component';
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {NgxEchartsModule} from "ngx-echarts";
-import {LineChartComponent} from './charts/line-chart/line-chart.component';
 import {StudioComponent} from './pages/studio/studio.component';
-import {TableComponent} from './charts/table/table.component';
 import {ProfileService} from "./services/profile.service";
 import {CockpitComponent} from './pages/cockpit/cockpit.component';
 import {MapComponent} from './pages/map/map.component';
@@ -79,6 +77,8 @@ import {CardStoreComponent} from "./cards/card-store/card-store.component";
 import {SearchComponent} from "./widgets/search/search.component";
 import {NgxMapboxGLModule} from "ngx-mapbox-gl";
 import {CardComponent} from "./cards/card/card.component";
+import {ChartTableComponent} from "./charts/chart-table/chart-table.component";
+import {ChartLineComponent} from "./charts/chart-line/chart-line.component";
 
 const defaultActions: IAction[] = [<ToggleVisibility>{
   name: ToggleVisibility.Name,
@@ -203,9 +203,7 @@ const appRoutes: Routes = [
     ProfileComponent,
     IconbarComponent,
     StoreComponent,
-    LineChartComponent,
     StudioComponent,
-    TableComponent,
     CockpitComponent,
     MapComponent,
     InviteComponent,
@@ -230,7 +228,9 @@ const appRoutes: Routes = [
     CardFormComponent,
     CardStoreComponent,
     SearchComponent,
-    CardComponent
+    CardComponent,
+    ChartTableComponent,
+    ChartLineComponent
   ],
   imports: [
     RouterModule.forRoot(
