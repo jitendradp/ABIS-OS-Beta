@@ -6,7 +6,7 @@
     {{title}}
   </div>
   <span class="fill-remaining-space"></span>
-  <app-access style="padding-right: 16px" [isButton]="true"></app-access>
+  <app-access fxHide fxShow.gt-sm style="padding-right: 16px" [isButton]="true"></app-access>
   <button *ngFor="let action of rightActions" mat-icon-button (click)="actionDispatcher.dispatch(action);">
     <mat-icon matBadge="15" matBadgePosition="after" matBadgeColor="warn">{{action.icon}}</mat-icon>
   </button>
