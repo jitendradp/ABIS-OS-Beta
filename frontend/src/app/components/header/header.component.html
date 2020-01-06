@@ -1,5 +1,5 @@
 <mat-toolbar class="header">
-  <button *ngFor="let action of leftActions" mat-icon-button (click)="_actionDispatcher.dispatch(action);">
+  <button *ngFor="let action of leftActions" mat-icon-button (click)="actionDispatcher.dispatch(action);">
     <mat-icon>{{action.icon}}</mat-icon>
   </button>
   <div style="margin-left: 16px">
@@ -7,8 +7,8 @@
   </div>
   <span class="fill-remaining-space"></span>
   <app-access style="padding-right: 16px" [isButton]="true"></app-access>
-  <button *ngFor="let action of rightActions" mat-icon-button (click)="_actionDispatcher.dispatch(action);">
-    <mat-icon>{{action.icon}}</mat-icon>
+  <button *ngFor="let action of rightActions" mat-icon-button (click)="actionDispatcher.dispatch(action);">
+    <mat-icon matBadge="15" matBadgePosition="after" matBadgeColor="warn">{{action.icon}}</mat-icon>
   </button>
   <!-- todo add some notification badge on the icons if needed in the header dynamically -->
 </mat-toolbar>

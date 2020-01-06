@@ -1,70 +1,42 @@
 <mat-card style="border-radius: 0">
-  <div *ngIf="showImage">
-    <img mat-card-image src="{{image}}" onError="this.src='./assets/error-images/picture.png';">
+  <img mat-card-image src="https://cdn.syncfusion.com/boldbi/solutions/financial-management.png"
+       onError="this.src='./assets/error-images/picture.png';">
+  <small><b>Creator:</b> {{creator}}</small>
+  <div style="padding-bottom: 12px">
+    <span>{{creationDate}}</span>
   </div>
-
-  <div class="information">
-    <small><b>{{creator}}</b></small>
-    <div style="padding-bottom: 12px">
-      <span style="font-size: 12px">{{creationDate}}</span>
-    </div>
-    <mat-card-header>
-      <div *ngIf="showIcon" mat-card-avatar><img class="headerIcon" src="{{icon}}"
-                                                 onError="this.src='./assets/error-images/picture.png';"></div>
-      <mat-card-title>{{title}}</mat-card-title>
-      <mat-card-subtitle>{{subtitle}}</mat-card-subtitle>
-      <mat-chip *ngIf="showStatus" color="accent" selected>{{status}}</mat-chip>
-    </mat-card-header>
-  </div>
-
-  <mat-card-content *ngIf="showContent" class="profileContent">
-    <mat-divider></mat-divider>
-    <app-content>
-      <div *ngIf="lockedContent">
-        <mat-icon>lock</mat-icon>
-        <p>This content is hidden</p>
-      </div>
-    </app-content>
-
-    <ng-content></ng-content>
-
-    <mat-expansion-panel *ngIf="showAccordion" class="mat-elevation-z0 custom-header" hideToggle="false"
-                         (opened)="panelOpenState = true"
-                         (closed)="panelOpenState = false">
-      <mat-expansion-panel-header style="background-color: #4caf50">
-        <mat-panel-title>
-          <mat-icon>{{statsIcon}}</mat-icon>
-          <h4 style="padding-left: 16px">{{statsLeft}}</h4>
-        </mat-panel-title>
-
-        <mat-panel-description>
-          <h4>{{statsRight}}</h4>
-        </mat-panel-description>
-
-      </mat-expansion-panel-header>
-    </mat-expansion-panel>
+  <mat-card-header>
+    <img mat-card-avatar src="https://www.designevo.com/res/templates/thumb_small/brown-circle-and-chocolate-coffee.png"
+         onError="this.src='./assets/error-images/picture.png';">
+    <mat-card-title>{{title}}</mat-card-title>
+    <mat-card-subtitle>{{subtitle}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-divider></mat-divider>
+  <app-whitespace></app-whitespace>
+  <mat-card-content>
+    <mat-grid-list style="font-size: 0.8em" cols="4" rowHeight="28px">
+      <mat-grid-tile>
+        <mat-icon class="iconSpaceRight">shopping_cart</mat-icon>
+        Free Trial
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-icon class="iconSpaceRight">cloud_download</mat-icon>
+        38.345 Installs
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-icon class="iconSpaceRight">money</mat-icon>
+        19,99 € per user
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-icon class="iconSpaceRight">autorenew</mat-icon>
+        Monthly renew
+      </mat-grid-tile>
+    </mat-grid-list>
+    <p><b>Description:</b> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+      invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua.</p>
   </mat-card-content>
-
   <mat-card-actions>
-    <app-content>
-      <mat-grid-list style="padding-top: 16px" *ngIf="showActionList" cols="3" rowHeight="2:1">
-        <mat-grid-tile>
-          <button mat-button>
-            <mat-icon>visibility</mat-icon>
-          </button>
-        </mat-grid-tile>
-        <mat-grid-tile>
-          <button mat-button>
-            <mat-icon>notifications_off</mat-icon>
-          </button>
-        </mat-grid-tile>
-        <mat-grid-tile>
-          <button mat-button>
-            <mat-icon>star</mat-icon>
-          </button>
-        </mat-grid-tile>
-      </mat-grid-list>
-      <span *ngIf="showMaxButton"><app-button routerLink="{{link}}" [text]="action"></app-button></span>
-    </app-content>
+    <app-button routerLink="-" [text]="action"></app-button>
   </mat-card-actions>
 </mat-card>

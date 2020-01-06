@@ -72,14 +72,13 @@ import {ToggleVisibility} from "./actions/ui/sidebar/ToggleVisibility";
 import {ExplorerComponent} from "./pages/explorer/explorer.component";
 import {TeamEditorComponent} from "./editors/team-editor/team-editor.component";
 import {AvatarsComponent} from "./components/avatars/avatars.component";
-import {LayoutComponent} from "./components/layout/layout.component";
 import {CardMessageComponent} from "./cards/card-message/card-message.component";
 import {CardTeamComponent} from "./cards/card-team/card-team.component";
 import {CardFormComponent} from "./cards/card-form/card-form.component";
 import {CardStoreComponent} from "./cards/card-store/card-store.component";
 import {SearchComponent} from "./widgets/search/search.component";
 import {NgxMapboxGLModule} from "ngx-mapbox-gl";
-import {ContainerComponent} from "./components/layout/container/container.component";
+import {CardComponent} from "./cards/card/card.component";
 
 const defaultActions: IAction[] = [<ToggleVisibility>{
   name: ToggleVisibility.Name,
@@ -226,13 +225,12 @@ const appRoutes: Routes = [
     ExplorerComponent,
     TeamEditorComponent,
     AvatarsComponent,
-    LayoutComponent,
     CardMessageComponent,
     CardTeamComponent,
     CardFormComponent,
     CardStoreComponent,
     SearchComponent,
-    ContainerComponent
+    CardComponent
   ],
   imports: [
     RouterModule.forRoot(

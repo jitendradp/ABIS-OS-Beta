@@ -8,7 +8,7 @@ import {TeamService} from "../../services/team.service";
 })
 export class CardTeamComponent {
 
-  public team = {};
+  public team:{name?:string,logo?:string,nickname?:string,description?:string,tags?:string,address?:string,city?:string,activeUsers?:number} = {};
 
 
   constructor(

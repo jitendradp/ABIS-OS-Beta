@@ -35,13 +35,13 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   }
 
   public step1FormGroup: FormGroup;
-  private _step1Data: {firstName:string, lastName:string, emailAddress:string, password:string, passwordConfirmation:string};
+  public step1Data: {firstName:string, lastName:string, emailAddress:string, password:string, passwordConfirmation:string};
 
   public step2FormGroup: FormGroup;
-  private _step2Data: {code:string};
+  public step2Data: {code:string};
 
   public step3FormGroup: FormGroup;
-  private _step3Data: {name:string, phone:string, slogan:string};
+  public step3Data: {name:string, phone:string, slogan:string};
 
   private _stepperIndex:number;
 
@@ -55,7 +55,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     });
 
     this.step1FormGroup.valueChanges.subscribe(change => {
-      this._step1Data = change;
+      this.step1Data = change;
     });
 
     this.step2FormGroup = this._formBuilder.group({
@@ -63,7 +63,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     });
 
     this.step2FormGroup.valueChanges.subscribe(change => {
-      this._step2Data = change;
+      this.step2Data = change;
     });
 
     this.step3FormGroup = this._formBuilder.group({
@@ -73,7 +73,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     });
 
     this.step3FormGroup.valueChanges.subscribe(change => {
-      this._step3Data = change;
+      this.step3Data = change;
     });
 
     // Restore the previously opened page in the stepper or open page '0' as default
@@ -111,9 +111,9 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   private async submitStep1($event: StepperSelectionEvent) {
     // First step completed, create the user
     await this.signupApi.mutate({
-      email: this._step1Data.emailAddress,
-      name: this._step1Data.firstName + " " + this._step1Data.lastName,
-      password: this._step1Data.password
+      email: this.step1Data.emailAddress,
+      name: this.step1Data.firstName + " " + this.step1Data.lastName,
+      password: this.step1Data.password
     }).toPromise()
       .then(result => {
         this.clientState.set("RegisterComponent.stepper.selectedIndex", $event.selectedIndex);
@@ -129,7 +129,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   private submitStep2($event: StepperSelectionEvent) {
     // Second step completed, verify the email address
     this.verifyEmailApi.mutate({
-      code: this._step2Data.code
+      code: this.step2Data.code
     }).toPromise()
       .then(result => {
         // Disable the previous steps so that the user can't navigate to them again
@@ -144,10 +144,10 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       });
   }
 
-  protected submitStep3($event: MouseEvent) {
+  public submitStep3($event: MouseEvent) {
     // Thrid step completed, create the profile
     // TODO: Pic and Timezone
-    this.profileService.createProfile(this._step3Data.name, "pic", "UTC")
+    this.profileService.createProfile(this.step3Data.name, "pic", "UTC")
       .then(result => {
         if (!result) {
           throw new Error("The profile creation failed unexpectedly.");

@@ -1,28 +1,3 @@
-.profileContent {
-  text-align: center;
-}
-
-.profession {
-  font-size: 1.5em;
-}
-
-.information {
-  padding-top: 0px;
-}
-
-.headerIcon {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-}
-
-.custom-header .mat-expansion-panel-header-title,
-.custom-header .mat-expansion-panel-header-description {
-  flex-basis: 0;
-}
-
-.custom-header .mat-expansion-panel-header-title,
-.custom-header .mat-expansion-panel-header-description {
-  justify-content: left;
-  align-items: center;
+.iconSpaceRight {
+  padding-right: 8px;
 }

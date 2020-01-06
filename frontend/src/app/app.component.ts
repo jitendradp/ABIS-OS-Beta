@@ -44,13 +44,12 @@ export class AppComponent {
 
   title = 'ABIS';
 
-  public profile = this._profileService.getProfileInformation();
   public dataspace = this._dataspaceService.getDataspaceInformation();
 
   actions: IEvent[] = [];
 
   constructor(
-    private _profileService: ProfileService,
+    protected profileService: ProfileService,
     private _dataspaceService: DataspaceService,
     private _accountService: AccountService,
     private _router: Router,
@@ -143,5 +142,4 @@ export class AppComponent {
       console.log('The dialog was closed');
     });
   }
-
 }
