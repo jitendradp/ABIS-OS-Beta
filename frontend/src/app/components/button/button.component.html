@@ -4,6 +4,13 @@
   <mat-icon *ngIf="showButtonIcon">{{icon}}</mat-icon>{{text}}
 </button>
 -->
-<button (click)="click.emit($event)" routerLink="{{link}}" [ngClass]="{'maxButton':lessStyle == false, 'maxButtonClean':lessStyle == true}" mat-raised-button>
+<button *ngIf="link && click.observers.length == 0" routerLink="{{link}}" [ngClass]="{'maxButton':lessStyle == false, 'maxButtonClean':lessStyle == true}" mat-raised-button>
   <mat-icon *ngIf="showButtonIcon">{{icon}}</mat-icon>{{text}}
 </button>
+<button *ngIf="!link && click.observers.length > 0" (click)="click.emit($event)" [ngClass]="{'maxButton':lessStyle == false, 'maxButtonClean':lessStyle == true}" mat-raised-button>
+  <mat-icon *ngIf="showButtonIcon">{{icon}}</mat-icon>{{text}}
+</button>
+<div *ngIf="link && click.observers.length > 0" style="color:red;">
+  This button has at least one attached 'click' handler and a 'link'. <br/>
+  You can use either the 'link' property or the 'click' event but not both.
+</div>

@@ -1,27 +1,22 @@
 #############
 ### build ###
 #############
-
-# base image
 FROM node:12.2.0 as build
 
-# set working directory
-WORKDIR /app
+WORKDIR /frontend
 
-# add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
+ENV PATH /frontend/node_modules/.bin:$PATH
 
-# install and cache app dependencies
-COPY package.json /app/package.json
+COPY ./package.json /frontend/package.json
+COPY ./angular.json /frontend
+COPY ./tsconfig.json /frontend
+COPY ./tsconfig.app.json /frontend
+COPY ./src /frontend/src
 
-RUN npm install
 RUN npm install -g @angular/cli
+RUN npm install
 
-# add app
-COPY . /app
-
-# generate build
-RUN ng build --output-path=dist
+RUN ng build --prod --output-path=dist
 
 ############
 ### prod ###
@@ -31,7 +26,7 @@ RUN ng build --output-path=dist
 FROM nginx:1.16.0-alpine
 
 # copy artifact build from the 'build environment'
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=build /frontend/dist /usr/share/nginx/html
 
 # expose port 80
 EXPOSE 80
