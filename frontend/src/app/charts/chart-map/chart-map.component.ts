@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 
 import * as echarts from 'echarts';
@@ -11,6 +11,10 @@ declare const require: any;
   styleUrls: ['./chart-map.component.css']
 })
 export class ChartMapComponent implements OnInit {
+
+  @Input()
+  chartHeight: string;
+  autoResize: any;
 
   // show loading spinner:
   mapLoaded = false;
@@ -30,11 +34,6 @@ export class ChartMapComponent implements OnInit {
         echarts.registerMap('HK', geoJson);
         // update options:
         this.options = {
-          title: {
-            text: '香港18区人口密度 （2011）',
-            subtext: '人口密度数据来自Wikipedia',
-            sublink: 'http://zh.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF%E8%A1%8C%E6%94%BF%E5%8D%80%E5%8A%83#cite_note-12'
-          },
           tooltip: {
             trigger: 'item',
             formatter: '{b}<br/>{c} (p / km2)'
@@ -62,7 +61,7 @@ export class ChartMapComponent implements OnInit {
           },
           series: [
             {
-              name: '香港18区人口密度',
+              name: 'China',
               type: 'map',
               mapType: 'HK', // map type should be registered
               itemStyle: {

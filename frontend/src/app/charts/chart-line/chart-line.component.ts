@@ -24,7 +24,7 @@ export class ChartLineComponent implements OnInit {
     const data2 = [];
 
     for (let i = 0; i < 100; i++) {
-      xAxisData.push('category' + i);
+      xAxisData.push('WK-2020' + i);
       data1.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 5);
       data2.push((Math.cos(i / 5) * (i / 5 - 10) + i / 6) * 5);
     }

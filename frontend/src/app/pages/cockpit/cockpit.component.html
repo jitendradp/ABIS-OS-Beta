@@ -5,16 +5,18 @@
      fxLayoutGap.xs="0">
   <div fxFlex='auto' fxFlex.gt-md='50' fxFlex.gt-sm='80'>
     <app-content>
-      <app-card [showContent]="true" [showHeader]="true" [title]="'My Crypto Portfolios'"
+      <app-card [showContent]="true" [showHeader]="true" [title]="'Portfolio Overview'"
+                [subtitle]="'My crypto smart app cockpit widget'"
                 [headerBackground]="'white'" [headerTextColor]="'#333'">
         <app-whitespace></app-whitespace>
-        <app-chart-line [chartHeight]="'250px'"></app-chart-line>
+        <app-chart-line [chartHeight]="'50vh'"></app-chart-line>
       </app-card>
     </app-content>
   </div>
   <div fxFlex='auto' fxFlex.gt-md='50' fxFlex.gt-sm='80'>
     <app-content>
-      <app-card [showContent]="true" [showHeader]="true" [title]="'My Crypto Portfolios'"
+      <app-card [showContent]="true" [showHeader]="true" [title]="'Earthquake Forecast'"
+                [subtitle]="'My climate change smart alert widget for the next 7 days'"
                 [headerBackground]="'white'" [headerTextColor]="'#333'">
         <app-whitespace></app-whitespace>
         <app-chart-map></app-chart-map>

@@ -1,1 +1,5 @@
-<div echarts [options]="options" [loading]="!mapLoaded" class="demo-chart"></div>
+<div [style.height]="chartHeight">
+  <app-content>
+    <div echarts [options]="options" [loading]="!mapLoaded" [autoResize]="autoResize"></div>
+  </app-content>
+</div>
