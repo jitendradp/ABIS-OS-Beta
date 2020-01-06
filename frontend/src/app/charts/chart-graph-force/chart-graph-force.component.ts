@@ -27,7 +27,7 @@ export class ChartGraphForceComponent implements OnInit {
         const categories = [];
         for (let i = 0; i < 9; i++) {
           categories[i] = {
-            name: 'category' + i
+            name: 'Network' + i
           };
         }
         graph.nodes.forEach(function (node) {

@@ -30,7 +30,7 @@ import {
   MatStepperModule,
   MatTableModule,
   MatTabsModule,
-  MatToolbarModule,
+  MatToolbarModule, MatTooltipModule,
   MatTreeModule
 } from "@angular/material";
 import {AccessComponent} from './pages/system/access/access.component';
@@ -82,6 +82,7 @@ import {ChartLineComponent} from "./charts/chart-line/chart-line.component";
 import {ChartMapComponent} from "./charts/chart-map/chart-map.component";
 import {CommandComponent} from "./widgets/command/command.component";
 import {ChartGraphForceComponent} from "./charts/chart-graph-force/chart-graph-force.component";
+import {ChartSankeyComponent} from "./charts/chart-sankey/chart-sankey.component";
 
 const defaultActions: IAction[] = [<ToggleVisibility>{
   name: ToggleVisibility.Name,
@@ -243,6 +244,7 @@ const appRoutes: Routes = [
     ChartMapComponent,
     CommandComponent,
     ChartGraphForceComponent,
+    ChartSankeyComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -288,6 +290,7 @@ const appRoutes: Routes = [
     FormsModule,
     MatCheckboxModule,
     MatProgressBarModule,
+    MatTooltipModule,
     NgxMapboxGLModule.withConfig({
       accessToken: 'pk.eyJ1IjoiZGF2ZXdhdmVhYmlzY2xvdWQiLCJhIjoiY2s0eXYycjhzMDRhczNkbXF6dzNkMzlzayJ9.nyAc-uTfNfDTF0lxmZ3a3Q', // Optionnal, can also be set per map (accessToken input of mgl-map)
       geocoderAccessToken: 'pk.eyJ1IjoiZGF2ZXdhdmVhYmlzY2xvdWQiLCJhIjoiY2s0eXYycjhzMDRhczNkbXF6dzNkMzlzayJ9.nyAc-uTfNfDTF0lxmZ3a3Q' // Optionnal, specify if different from the map access token, can also be set per mgl-geocoder (accessToken input of mgl-geocoder)
