@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Layer} from "mapbox-gl";
+import {MatSlideToggleChange} from "@angular/material/slide-toggle";
 
 
 @Component({
@@ -9,11 +10,15 @@ import {Layer} from "mapbox-gl";
 })
 export class MapComponent implements OnInit {
 
+  mapStyle = "mapbox://styles/mapbox/streets-v9";
+  dark:boolean = false;
+
   earthquakes: object;
   clusterLayers: Layer[];
 
   async ngOnInit() {
-    //this.earthquakes = await import('./earthquakes.json');
+    // @ts-ignore
+    this.earthquakes = await import('./earthquakes.json');
     const layersData: [number, string][] = [
       [0, 'green'],
       [20, 'orange'],
@@ -33,5 +38,15 @@ export class MapComponent implements OnInit {
           ['<', 'point_count', layersData[index + 1][0]]
         ]
     }));
+  }
+
+  mapStyleChanged($event: MatSlideToggleChange) {
+    if ($event.checked) {
+      this.mapStyle="mapbox://styles/mapbox/dark-v9";
+      this.dark = true;
+    } else {
+      this.mapStyle="mapbox://styles/mapbox/streets-v9";
+      this.dark = false;
+    }
   }
 }

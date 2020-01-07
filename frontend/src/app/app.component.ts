@@ -27,6 +27,8 @@ import {Back} from "./actions/routes/Back";
 import {TeamEditorComponent} from "./editors/team-editor/team-editor.component";
 import {CommandComponent} from "./widgets/command/command.component";
 import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
+import {DeviceDetectorService} from "ngx-device-detector";
+import {RouteChanged} from "./actions/routes/RouteChanged";
 
 @Component({
   selector: 'app-root',
@@ -56,6 +58,7 @@ export class AppComponent {
     private _router: Router,
     private _actionDispatcher: ActionDispatcherService,
     public _dialog: MatDialog,
+    private deviceService: DeviceDetectorService,
     private _snackBar: MatSnackBar
   ) {
     // Listen to actions ...
@@ -66,6 +69,19 @@ export class AppComponent {
 
   private handleAction(action) {
     switch (action.name) {
+      case RouteChanged.Name:
+        // set the title on the header bar
+        this.title = action.data.title;
+        if (action.data.actions) {
+          this.actions = action.data.actions;
+        } else {
+          this.actions = [];
+        }
+
+        if (this.deviceService.isMobile() && this.right.opened) {
+          this._actionDispatcher.dispatch(new SetVisibility("right", "invisible"));
+        }
+        break;
       case SetVisibility.Name:
         let visibility:boolean = false;
         switch (action.state) {
@@ -120,15 +136,7 @@ export class AppComponent {
   private handleRouterEvents(o: RouterEvent | RouteConfigLoadStart | RouteConfigLoadEnd | ChildActivationStart | ChildActivationEnd | ActivationStart | ActivationEnd | Scroll) {
     // if the event is of Type "ActivationEnd" ...
     if (o instanceof ActivationEnd) {
-      // "<Cast>" to the right type to access the "data" property
-      const activationEnd = <ActivationEnd>o;
-      // set the title on the header bar
-      this.title = activationEnd.snapshot.data.title;
-      if (activationEnd.snapshot.data.actions) {
-        this.actions = activationEnd.snapshot.data.actions;
-      } else {
-        this.actions = [];
-      }
+      this._actionDispatcher.dispatch(new RouteChanged(o.snapshot.data));
     }
   }
 

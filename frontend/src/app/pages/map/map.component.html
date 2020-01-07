@@ -22,9 +22,12 @@
 </mgl-map>
 -->
 <mgl-map
-  style="mapbox://styles/mapbox/dark-v9"
+  [style]="mapStyle"
   [zoom]="[3]"
   [center]="[-103.59179687498357, 40.66995747013945]">
+  <mgl-control>
+    <mat-slide-toggle (change)="mapStyleChanged($event)"></mat-slide-toggle>
+  </mgl-control>
   <mgl-control
     mglGeolocate>
   </mgl-control>
@@ -36,7 +39,7 @@
     unit="metric"
     position="bottom-right">
   </mgl-control>
-  <ng-container *ngIf="earthquakes">
+  <ng-container *ngIf="dark">
     <mgl-geojson-source
       id="earthquakes"
       [data]="earthquakes"
@@ -51,8 +54,8 @@
       source="earthquakes"
       [filter]="layer.filter"
       [paint]="layer.paint"
-      before="waterway-label"
-    ></mgl-layer>
+      before="waterway-label">
+    </mgl-layer>
     <mgl-layer
       id="unclustered-point"
       type="circle"

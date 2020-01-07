@@ -83,6 +83,7 @@ import {CommandComponent} from "./widgets/command/command.component";
 import {ChartGraphForceComponent} from "./charts/chart-graph-force/chart-graph-force.component";
 import {ChartSankeyComponent} from "./charts/chart-sankey/chart-sankey.component";
 import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
+import {DeviceDetectorModule} from "ngx-device-detector";
 
 const defaultActions: IAction[] = [<SetVisibility>{
   name: SetVisibility.Name,
@@ -252,6 +253,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(
       appRoutes
     ),
+    DeviceDetectorModule.forRoot(),
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
