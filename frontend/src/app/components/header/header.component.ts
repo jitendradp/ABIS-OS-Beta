@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
-import {ToggleVisibility} from "../../actions/ui/sidebar/ToggleVisibility";
 import {IAction} from "../../actions/IAction";
+import {SetVisibility} from "../../actions/ui/sidebar/SetVisibility";
 
 @Component({
   selector: 'app-header',
@@ -20,11 +20,11 @@ export class HeaderComponent {
   actions: IAction[] = [];
 
   get leftActions(): IAction[] {
-    return this.actions.filter((o: IAction) => o.name == ToggleVisibility.Name).filter((o: ToggleVisibility) => o.side == "left");
+    return this.actions.filter((o: IAction) => o.name == SetVisibility.Name).filter((o: SetVisibility) => o.side == "left");
   }
 
   get rightActions(): IAction[] {
-    return this.actions.filter((o: IAction) => o.name == ToggleVisibility.Name).filter((o: ToggleVisibility) => o.side == "right");
+    return this.actions.filter((o: IAction) => o.name == SetVisibility.Name).filter((o: SetVisibility) => o.side == "right");
   }
 
   @Output()

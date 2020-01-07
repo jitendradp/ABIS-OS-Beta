@@ -66,7 +66,6 @@ import {NavigationComponent} from "./pages/system/navigation/navigation.componen
 import {SwitchProfileComponent} from './pages/system/switch-profile/switch-profile.component';
 import {LogoutComponent} from './pages/system/logout/logout.component';
 import {IAction} from "./actions/IAction";
-import {ToggleVisibility} from "./actions/ui/sidebar/ToggleVisibility";
 import {ExplorerComponent} from "./pages/explorer/explorer.component";
 import {TeamEditorComponent} from "./editors/team-editor/team-editor.component";
 import {AvatarsComponent} from "./components/avatars/avatars.component";
@@ -83,17 +82,20 @@ import {ChartMapComponent} from "./charts/chart-map/chart-map.component";
 import {CommandComponent} from "./widgets/command/command.component";
 import {ChartGraphForceComponent} from "./charts/chart-graph-force/chart-graph-force.component";
 import {ChartSankeyComponent} from "./charts/chart-sankey/chart-sankey.component";
+import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
 
-const defaultActions: IAction[] = [<ToggleVisibility>{
-  name: ToggleVisibility.Name,
+const defaultActions: IAction[] = [<SetVisibility>{
+  name: SetVisibility.Name,
   label: "Open/Close Sidebar",
   icon: "menu",
-  side: "left"
-}, <ToggleVisibility>{
-  name: ToggleVisibility.Name,
+  side: "left",
+  state: "toggle"
+}, <SetVisibility>{
+  name: SetVisibility.Name,
   label: "Open/Close Chat",
   icon: "question_answer",
-  side: "right"
+  side: "right",
+  state: "toggle"
 }];
 
 const appRoutes: Routes = [

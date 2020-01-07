@@ -12,7 +12,7 @@ export class MapComponent implements OnInit {
   clusterLayers: Layer[];
 
   async ngOnInit() {
-    this.earthquakes = await import('./earthquakes.json');
+    //this.earthquakes = await import('./earthquakes.json');
     const layersData: [number, string][] = [
       [0, 'green'],
       [20, 'orange'],
