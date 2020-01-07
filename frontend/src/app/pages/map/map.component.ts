@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Layer} from "mapbox-gl";
 
+
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
