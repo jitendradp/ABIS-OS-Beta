@@ -23,8 +23,8 @@
 -->
 <mgl-map
   [style]="mapStyle"
-  [zoom]="[3]"
-  [center]="[-103.59179687498357, 40.66995747013945]">
+  [zoom]="[12]"
+  [center]="[10.27739, 47.41156]">
   <mgl-control>
     <mat-slide-toggle (change)="mapStyleChanged($event)"></mat-slide-toggle>
   </mgl-control>
@@ -39,6 +39,26 @@
     unit="metric"
     position="bottom-right">
   </mgl-control>
+
+  <mgl-markers-for-clusters
+    source="earthquakes">
+    <ng-template mglPoint let-feature>
+      <div
+        class="marker"
+        [title]="feature.properties['Primary ID']">
+        {{ feature.properties['Secondary ID'] }}
+      </div>
+    </ng-template>
+    <ng-template mglClusterPoint let-feature>
+      <div
+        class="marker-cluster"
+        (click)="selectCluster($event, feature)">
+        {{ feature.properties?.point_count }}
+      </div>
+    </ng-template>
+  </mgl-markers-for-clusters>
+
+
   <ng-container *ngIf="dark">
     <mgl-geojson-source
       id="earthquakes"
