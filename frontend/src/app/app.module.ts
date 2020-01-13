@@ -21,7 +21,7 @@ import {
   MatListModule,
   MatMenuModule,
   MatNativeDateModule,
-  MatOptionModule, MatProgressBarModule,
+  MatOptionModule, MatPaginatorModule, MatProgressBarModule,
   MatRadioModule,
   MatSelectModule,
   MatSidenavModule, MatSliderModule,
@@ -84,6 +84,7 @@ import {ChartGraphForceComponent} from "./charts/chart-graph-force/chart-graph-f
 import {ChartSankeyComponent} from "./charts/chart-sankey/chart-sankey.component";
 import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
 import {DeviceDetectorModule} from "ngx-device-detector";
+import {ClusterPopupComponent} from "./pages/map/cluster-popup/cluster-popup.component";
 
 const defaultActions: IAction[] = [<SetVisibility>{
   name: SetVisibility.Name,
@@ -144,7 +145,7 @@ const appRoutes: Routes = [
   },
   {
     path: 'map', component: MapComponent, data: {
-      "title": "Earthquake Map",
+      "title": "Map",
       "actions": defaultActions
     }
   },
@@ -247,7 +248,8 @@ const appRoutes: Routes = [
     ChartMapComponent,
     CommandComponent,
     ChartGraphForceComponent,
-    ChartSankeyComponent
+    ChartSankeyComponent,
+    ClusterPopupComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -295,6 +297,7 @@ const appRoutes: Routes = [
     MatCheckboxModule,
     MatProgressBarModule,
     MatTooltipModule,
+    MatPaginatorModule,
     NgxMapboxGLModule.withConfig({
       accessToken: 'pk.eyJ1IjoiZGF2ZXdhdmVhYmlzY2xvdWQiLCJhIjoiY2s0eXYycjhzMDRhczNkbXF6dzNkMzlzayJ9.nyAc-uTfNfDTF0lxmZ3a3Q', // Optionnal, can also be set per map (accessToken input of mgl-map)
       geocoderAccessToken: 'pk.eyJ1IjoiZGF2ZXdhdmVhYmlzY2xvdWQiLCJhIjoiY2s0eXYycjhzMDRhczNkbXF6dzNkMzlzayJ9.nyAc-uTfNfDTF0lxmZ3a3Q' // Optionnal, specify if different from the map access token, can also be set per mgl-geocoder (accessToken input of mgl-geocoder)

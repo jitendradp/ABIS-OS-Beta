@@ -35,7 +35,7 @@ export class ChartMapComponent implements OnInit {
             formatter: '{b}<br/>{c} (p / km2)'
           },
           toolbox: {
-            show: true,
+            show: false,
             orient: 'vertical',
             left: 'right',
             top: 'center',

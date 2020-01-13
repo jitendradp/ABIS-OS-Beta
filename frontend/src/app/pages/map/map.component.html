@@ -25,8 +25,18 @@
   [style]="mapStyle"
   [zoom]="[12]"
   [center]="[10.27739, 47.41156]">
-  <mgl-control>
-    <mat-slide-toggle (change)="mapStyleChanged($event)"></mat-slide-toggle>
+  <mgl-control position="bottom-left">
+    <div style="background-color: #e3ebf1">
+      <app-content>
+        <mat-slide-toggle (change)="mapStyleChanged($event)"><b>Switch to Hashtag Heatmap</b> - Category: Heimat
+          entdecken - Most posted Hashtags from this Region by Data from Instagram
+        </mat-slide-toggle>
+        <p>Most posted tags ( > 10 Mentions): <b>Top sorted desc.: 1. #oberstdorf 2. #allgäu Top 3. #mountains #berge </b> #bayern
+          #urlaub #nature #wandern #quarz #nebelhorn #heimatliebe
+          #bergliebe
+          #bayernistschön #glücklich </p>
+      </app-content>
+    </div>
   </mgl-control>
   <mgl-control
     mglGeolocate>
@@ -40,26 +50,32 @@
     position="bottom-right">
   </mgl-control>
 
-  <mgl-markers-for-clusters
-    source="earthquakes">
-    <ng-template mglPoint let-feature>
-      <div
-        class="marker"
-        [title]="feature.properties['Primary ID']">
-        {{ feature.properties['Secondary ID'] }}
-      </div>
-    </ng-template>
-    <ng-template mglClusterPoint let-feature>
-      <div
-        class="marker-cluster"
-        (click)="selectCluster($event, feature)">
-        {{ feature.properties?.point_count }}
-      </div>
-    </ng-template>
-  </mgl-markers-for-clusters>
-
-
   <ng-container *ngIf="dark">
+    <mgl-markers-for-clusters
+      source="earthquakes">
+      <ng-template mglPoint let-feature>
+        <div
+          class="marker"
+          [title]="feature.properties['Secondary ID']">
+        </div>
+      </ng-template>
+      <ng-template mglClusterPoint let-feature>
+        <div
+          class="marker-cluster"
+          (click)="selectCluster($event, feature)">
+          {{ feature.properties?.point_count }}
+        </div>
+      </ng-template>
+    </mgl-markers-for-clusters>
+
+    <mgl-popup
+      *ngIf="selectedCluster"
+      [feature]="selectedCluster">
+      <showcase-cluster-popup
+        [clusterComponent]="clusterComponent"
+        [selectedCluster]="selectedCluster">
+      </showcase-cluster-popup>
+    </mgl-popup>
     <mgl-geojson-source
       id="earthquakes"
       [data]="earthquakes"

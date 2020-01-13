@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {StoreItemService} from "../../services/store-item.service";
 
 @Component({
   selector: 'app-store',
@@ -7,5 +8,11 @@ import {Component} from '@angular/core';
 })
 export class StoreComponent {
 
+  public storeItem = this.storeItemService.getStoreItemInformation();
+
+  constructor(
+    public storeItemService: StoreItemService,
+  ) {
+  }
 
 }

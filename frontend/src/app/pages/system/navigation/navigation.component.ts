@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {AccountService} from "../../../services/account.service";
 import {ProfileService} from "../../../services/profile.service";
 import {DataspaceService} from "../../../services/dataspace.service";
 import {ActionDispatcherService} from "../../../services/action-dispatcher.service";
@@ -16,7 +15,6 @@ export class NavigationComponent {
 
   constructor(
     public profileService: ProfileService,
-    public accountService: AccountService,
     private dataspaceService: DataspaceService,
     private actionDispatcher: ActionDispatcherService,
   ) {

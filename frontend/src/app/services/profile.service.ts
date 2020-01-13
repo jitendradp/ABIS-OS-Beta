@@ -5,7 +5,7 @@ import {AccountService} from "./account.service";
 import {ActionDispatcherService} from "./action-dispatcher.service";
 import {SessionProfileChanged} from "../actions/account/SessionProfileChanged";
 
-export type ProfileInformation =  {
+export type ProfileInformation = {
   name: string,
   type: string,
   slogan: string,
@@ -21,27 +21,27 @@ export type ProfileInformation =  {
 })
 export class ProfileService {
 
-  public profileInformation:ProfileInformation = {
-      "name": "Jessica",
-      "type": "Work",
-      "slogan": "Having fun with friends",
-      "picture": "./assets/profile_default.jpg",
-      "banner": "https://i.redd.it/s867gu6siij21.jpg",
-      "status": "Online",
-      "job": "Founder",
-      "phone": "+49 0159 5467 464587"
+  public profileInformation: ProfileInformation = {
+    "name": "Jessica",
+    "type": "Work",
+    "slogan": "Having fun with friends",
+    "picture": "./assets/profile_default.jpg",
+    "banner": "https://i.redd.it/s867gu6siij21.jpg",
+    "status": "Online",
+    "job": "Founder",
+    "phone": "+49 0159 5467 464587"
   };
 
-  private readonly _log:Logger = this.loggerService.createLogger("ProfileService");
+  private readonly _log: Logger = this.loggerService.createLogger("ProfileService");
 
-  constructor(private createProfileApi:CreateProfileGQL
-            , private updateProfileApi:UpdateProfileGQL
-            , private listProfilesApi:ListProfilesGQL
-            , private getProfileApi:GetProfileGQL
-            , private accountService:AccountService
-            , private actionDispatcher:ActionDispatcherService
-            , private loggerService:LoggerService) {
-    this.actionDispatcher.onAction.subscribe(event =>  {
+  constructor(private createProfileApi: CreateProfileGQL
+    , private updateProfileApi: UpdateProfileGQL
+    , private listProfilesApi: ListProfilesGQL
+    , private getProfileApi: GetProfileGQL
+    , private accountService: AccountService
+    , private actionDispatcher: ActionDispatcherService
+    , private loggerService: LoggerService) {
+    this.actionDispatcher.onAction.subscribe(event => {
       if (event instanceof SessionProfileChanged) {
         this.getProfile(event.newValue)
           .then(result => {
@@ -61,7 +61,7 @@ export class ProfileService {
    * @param picture
    * @param timezone
    */
-  public createProfile(name:string, picture?:string, timezone?:string) : Promise<string> {
+  public createProfile(name: string, picture?: string, timezone?: string): Promise<string> {
     return this.createProfileApi.mutate({
       csrfToken: this.accountService.csrfToken,
       name,
@@ -78,7 +78,7 @@ export class ProfileService {
       });
   }
 
-  updateProfile(profileId:string, name:string, picture?:string, timezone?:string) : Promise<boolean> {
+  updateProfile(profileId: string, name: string, picture?: string, timezone?: string): Promise<boolean> {
     return this.updateProfileApi.mutate({
       csrfToken: this.accountService.csrfToken,
       profileId,
@@ -98,8 +98,8 @@ export class ProfileService {
       });
   }
 
-  listProfiles() : Promise<Profile[]> {
-    return this.listProfilesApi.fetch({csrfToken:this.accountService.csrfToken})
+  listProfiles(): Promise<Profile[]> {
+    return this.listProfilesApi.fetch({csrfToken: this.accountService.csrfToken})
       .toPromise()
       .then(result => {
         return result.data.listProfiles;
@@ -111,7 +111,7 @@ export class ProfileService {
       });
   }
 
-  getProfile(profileId:string) : Promise<Profile> {
+  getProfile(profileId: string): Promise<Profile> {
     return this.getProfileApi.fetch({
       csrfToken: this.accountService.csrfToken,
       profileId

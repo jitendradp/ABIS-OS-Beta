@@ -8,73 +8,45 @@ import {Component, Input} from '@angular/core';
 export class CardStoreComponent {
 
   @Input()
-  accordionTitle: string;
+  title: string;
 
   @Input()
-  accordionDescription: string;
+  subtitle: string;
 
   @Input()
-  showAccordion: boolean;
+  publisher: string;
 
   @Input()
-  lockedContent: boolean;
+  websiteUrl: string;
 
   @Input()
-  status: string;
+  releaseDate: string;
 
   @Input()
-  showStatus: boolean;
+  description: string;
 
   @Input()
-  action: string;
-
-  @Input()
-  link: string;
-
-  @Input()
-  showMaxButton: boolean;
-
-  @Input()
-  showActionList: boolean;
-
-  @Input()
-  showContent: boolean;
+  logo: string;
 
   @Input()
   image: string;
 
   @Input()
-  statsIcon: string;
+  buttonTitle: string;
 
   @Input()
-  statsLeft: string;
+  buttonLink: string;
 
   @Input()
-  statsRight: string;
+  installsCount: number;
 
   @Input()
-  icon: string;
+  pricePerMonth: number;
 
   @Input()
-  showImage: boolean;
+  autoRenew: string;
 
   @Input()
-  showIcon: boolean;
-
-  @Input()
-  creator: string;
-
-  @Input()
-  creationDate: string;
-
-  @Input()
-  showStats: boolean;
-
-  @Input()
-  title: string;
-
-  @Input()
-  subtitle: string;
-  panelOpenState: boolean;
+  subscription: string;
 
 }

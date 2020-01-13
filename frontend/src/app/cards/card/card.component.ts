@@ -11,8 +11,8 @@ export class CardComponent {
   constructor(private actionDispatcher: ActionDispatcherService) {
   }
 
-  sendCreate($event){
-    this.actionDispatcher.dispatch({name:'Abis.Cockpit.Command.Create'});
+  sendCreate($event) {
+    this.actionDispatcher.dispatch({name: 'Abis.Cockpit.Command.Create'});
     $event.stopPropagation();
   }
 
