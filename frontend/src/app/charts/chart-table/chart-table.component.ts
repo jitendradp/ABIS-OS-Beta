@@ -18,7 +18,6 @@ export class ChartTableComponent {
     {coin: 'LTC', holdings: 893.34, price: 93.43}
   ];
 
-
 }
 
 

@@ -10,27 +10,30 @@
   <mat-divider></mat-divider>
   <app-whitespace></app-whitespace>
   <mat-card-content>
-    <mat-grid-list style="font-size: 0.8em" cols="4" rowHeight="28px">
-      <mat-grid-tile>
+    <!--<div fxLayout
+         fxLayout.xs="column"
+         fxLayoutAlign="left"
+         fxLayoutGap="0px"
+         fxLayoutGap.xs="0">
+      <div fxFlex="25%">
         <mat-icon class="iconSpaceRight">shopping_cart</mat-icon>
         {{subscription}}
-      </mat-grid-tile>
-      <mat-grid-tile>
+      </div>
+      <div fxFlex="25%">
         <mat-icon class="iconSpaceRight">cloud_download</mat-icon>
         {{installsCount}} Installs
-      </mat-grid-tile>
-      <mat-grid-tile>
+      </div>
+      <div fxFlex="25%">
         <mat-icon class="iconSpaceRight">money</mat-icon>
         {{pricePerMonth}} € per user
-      </mat-grid-tile>
-      <mat-grid-tile>
+      </div>
+      <div fxFlex="25%">
         <mat-icon class="iconSpaceRight">autorenew</mat-icon>
         {{autoRenew}} renew
-      </mat-grid-tile>
-    </mat-grid-list>
-    <p>{{description}}</p>
-    <small><a href="{{websiteUrl}}" target="_blank" style="text-decoration: none">{{publisher}}</a> {{releaseDate}}
-    </small>
+      </div>
+    </div>-->
+    <p>{{description}}</p>{{installStatus}}
+    <small><a href="{{website}}" target="_blank" style="text-decoration: none">{{publisher}}</a></small>
   </mat-card-content>
   <mat-card-actions>
     <app-button routerLink="{{buttonLink}}" [text]="buttonTitle"></app-button>

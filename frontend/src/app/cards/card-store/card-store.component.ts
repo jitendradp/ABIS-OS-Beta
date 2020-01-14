@@ -11,16 +11,16 @@ export class CardStoreComponent {
   title: string;
 
   @Input()
+  installStatus: string;
+
+  @Input()
   subtitle: string;
 
   @Input()
   publisher: string;
 
   @Input()
-  websiteUrl: string;
-
-  @Input()
-  releaseDate: string;
+  website: string;
 
   @Input()
   description: string;
@@ -29,24 +29,9 @@ export class CardStoreComponent {
   logo: string;
 
   @Input()
-  image: string;
-
-  @Input()
   buttonTitle: string;
 
   @Input()
   buttonLink: string;
-
-  @Input()
-  installsCount: number;
-
-  @Input()
-  pricePerMonth: number;
-
-  @Input()
-  autoRenew: string;
-
-  @Input()
-  subscription: string;
 
 }

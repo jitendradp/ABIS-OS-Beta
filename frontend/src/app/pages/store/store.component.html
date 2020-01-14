@@ -1,79 +1,23 @@
 <!-- todo hard coded first send from api later -->
 <!-- todo move card to label if installed. How can this be done? -->
 <!-- todo map for pharmacy smart app should be filtered on right data -->
-<mat-tab-group>
-  <mat-tab label="INSTALLED">
-    <div fxLayout
-         fxLayout.xs="column"
-         fxLayoutAlign="left"
-         fxLayoutGap="10px"
-         fxLayoutGap.xs="0">
-      <div fxFlex="33">
-        <app-content>
-          <app-card-store
-            [logo]="'./assets/logos/apowi.png'"
-            [title]="'Smart Pharmacy App'"
-            [subtitle]="'Market data for german pharmacies'"
-            [publisher]="'Apowi - Campus Essen'"
-            [websiteUrl]="'https://apowi.net/'"
-            [releaseDate]="'2020-05-01'"
-            [installsCount]="0"
-            [pricePerMonth]="0.00"
-            [subscription]="'Free'"
-            [description]="'Discover monthly results from surveys of more than 800 local pharmacies all around Germany.'"
-            [autoRenew]="'Monthly'"
-            [buttonLink]="'/map'"
-            [buttonTitle]="'Discover'">
-          </app-card-store>
-        </app-content>
-      </div>
-    </div>
-  </mat-tab>
-  <mat-tab label="NEW">
-    <div class="container"
-         fxLayout
-         fxLayout.xs="column"
-         fxLayoutAlign="left"
-         fxLayoutGap="10px"
-         fxLayoutGap.xs="0">
-      <div fxFlex="33">
-        <app-content>
-          <app-card-store
-            [logo]="''"
-            [title]="'Smart Crypto App'"
-            [subtitle]="'Your portfolio simulation for crypto currency markets'"
-            [publisher]="'DynaGroup Information Technologies GmbH'"
-            [websiteUrl]="'https://www.dynagroup.de/'"
-            [releaseDate]="'2020-02-01'"
-            [installsCount]="0"
-            [pricePerMonth]="0.00"
-            [subscription]="'Free'"
-            [description]="'Discover worldwide crypto markets and boost your portfolio analysis.'"
-            [autoRenew]="'Monthly'"
-            [buttonLink]="'-'"
-            [buttonTitle]="'Setup'">
-          </app-card-store>
-        </app-content>
-      </div>
-      <div fxFlex="33">
-        <app-content>
-          <app-card-store
-            [logo]="'./assets/logos/munichMotorsport.png'"
-            [title]="'Smart Budget App'"
-            [subtitle]="'Your budget and financial controlling tool'"
-            [publisher]="'municHMotorsport e.V.'"
-            [websiteUrl]="'https://www.munichmotorsport.de/'"
-            [releaseDate]="'2020-09-01'"
-            [installsCount]="0"
-            [pricePerMonth]="0.00"
-            [subscription]="'Free'"
-            [description]="'Discover worldwide crypto markets and boost your portfolio analysis.'"
-            [autoRenew]="'Monthly'"
-            [buttonLink]="'-'"
-            [buttonTitle]="'Setup'">
-          </app-card-store>
-        </app-content>
-      </div>
-    </div>
-  </mat-tab>
-</mat-tab-group>
+<div fxLayout
+     fxLayout.xs="column"
+     fxLayoutAlign="left"
+     fxLayoutGap="10px"
+     fxLayoutGap.xs="0">
+  <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" *ngFor="let item of items">
+    <app-content>
+      <app-card-store
+        [logo]="item.logo"
+        [title]="item.name"
+        [subtitle]="item.shortDescription"
+        [publisher]="item.publisher"
+        [website]="item.website"
+        [description]="item.description"
+        [buttonLink]="item.buttonLink"
+        [buttonTitle]="item.buttonTitle">
+      </app-card-store>
+    </app-content>
+  </div>
+</div>

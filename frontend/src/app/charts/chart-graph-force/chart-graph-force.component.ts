@@ -70,5 +70,4 @@ export class ChartGraphForceComponent implements OnInit {
       })
     );
   }
-
 }
