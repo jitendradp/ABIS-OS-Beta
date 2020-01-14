@@ -1,42 +1,17 @@
 <mat-card style="border-radius: 0">
-  <img mat-card-image src="https://cdn.syncfusion.com/boldbi/solutions/financial-management.png"
-       onError="this.src='./assets/error-images/picture.png';">
-  <small><b>Creator:</b> {{creator}}</small>
-  <div style="padding-bottom: 12px">
-    <span>{{creationDate}}</span>
-  </div>
   <mat-card-header>
-    <img mat-card-avatar src="https://www.designevo.com/res/templates/thumb_small/brown-circle-and-chocolate-coffee.png"
-         onError="this.src='./assets/error-images/picture.png';">
+    <app-logo mat-card-avatar [url]=logo></app-logo>
     <mat-card-title>{{title}}</mat-card-title>
     <mat-card-subtitle>{{subtitle}}</mat-card-subtitle>
   </mat-card-header>
   <mat-divider></mat-divider>
   <app-whitespace></app-whitespace>
   <mat-card-content>
-    <mat-grid-list style="font-size: 0.8em" cols="4" rowHeight="28px">
-      <mat-grid-tile>
-        <mat-icon class="iconSpaceRight">shopping_cart</mat-icon>
-        Free Trial
-      </mat-grid-tile>
-      <mat-grid-tile>
-        <mat-icon class="iconSpaceRight">cloud_download</mat-icon>
-        38.345 Installs
-      </mat-grid-tile>
-      <mat-grid-tile>
-        <mat-icon class="iconSpaceRight">money</mat-icon>
-        19,99 € per user
-      </mat-grid-tile>
-      <mat-grid-tile>
-        <mat-icon class="iconSpaceRight">autorenew</mat-icon>
-        Monthly renew
-      </mat-grid-tile>
-    </mat-grid-list>
-    <p><b>Description:</b> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-      invidunt ut labore et
-      dolore magna aliquyam erat, sed diam voluptua.</p>
+    <p>{{description}}</p>
+    <small><a routerLink="{{team}}" style="text-decoration: none">{{publisher}}</a></small>
   </mat-card-content>
   <mat-card-actions>
-    <app-button routerLink="-" [text]="action"></app-button>
+    <app-button [isDisabled]="isDisabled" routerLink="{{link}}"
+                [text]="'Discover'"></app-button>
   </mat-card-actions>
 </mat-card>

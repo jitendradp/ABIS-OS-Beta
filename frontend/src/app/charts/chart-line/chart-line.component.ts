@@ -1,7 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 
-declare const require: any;
-
 @Component({
   selector: 'app-chart-line',
   templateUrl: './chart-line.component.html',

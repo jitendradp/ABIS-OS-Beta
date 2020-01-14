@@ -1,24 +1,9 @@
-import {Component} from '@angular/core';
+import {Component} from "@angular/core";
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];
+// Find more properties for the ag-grid here: https://www.ag-grid.com/javascript-grid-column-properties/
+// todo add cell conditional style on numeric fields: https://www.ag-grid.com/javascript-grid-cell-styles/
+// todo add second child row to cell to indicate the change over the day
 
 @Component({
   selector: 'app-chart-table',
@@ -26,6 +11,78 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./chart-table.component.css']
 })
 export class ChartTableComponent {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = ELEMENT_DATA;
+  columnDefs = [
+    {headerName: 'Coin', field: 'coin', sortable: true, filter: true,},
+    {headerName: 'Exchange', field: 'exchange', sortable: true, filter: true},
+    {headerName: 'Holdings', field: 'holdings', sortable: true, filter: false},
+    {headerName: 'Price', field: 'price', sortable: true, filter: false},
+  ];
+
+  rowData = [
+    {coin: 'BTC', exchange: 'Kraken', holdings: 83.343, price: 19.23},
+    {coin: 'ETH', exchange: 'Bitfinex', holdings: 793.34, price: 23.34},
+    {coin: 'LTC', exchange: 'SIK', holdings: 893.34, price: 93.43},
+    {coin: 'BTC', exchange: 'Kraken', holdings: 83.343, price: 19.23},
+    {coin: 'ETH', exchange: 'Bitfinex', holdings: 793.34, price: 23.34},
+    {coin: 'LTC', exchange: 'SIK', holdings: 893.34, price: 93.43},
+    {coin: 'BTC', exchange: 'Kraken', holdings: 83.343, price: 19.23},
+    {coin: 'ETH', exchange: 'Bitfinex', holdings: 793.34, price: 23.34},
+    {coin: 'LTC', exchange: 'SIK', holdings: 893.34, price: 93.43},
+    {coin: 'BTC', exchange: 'Kraken', holdings: 83.343, price: 19.23},
+    {coin: 'ETH', exchange: 'Bitfinex', holdings: 793.34, price: 23.34},
+    {coin: 'LTC', exchange: 'SIK', holdings: 893.34, price: 93.43},
+    {coin: 'BTC', exchange: 'Kraken', holdings: 83.343, price: 19.23},
+    {coin: 'ETH', exchange: 'Bitfinex', holdings: 793.34, price: 23.34},
+    {coin: 'LTC', exchange: 'SIK', holdings: 893.34, price: 93.43},
+    {coin: 'BTC', exchange: 'Kraken', holdings: 83.343, price: 19.23},
+    {coin: 'ETH', exchange: 'Bitfinex', holdings: 793.34, price: 23.34},
+    {coin: 'LTC', exchange: 'SIK', holdings: 893.34, price: 93.43},
+    {coin: 'BTC', exchange: 'Kraken', holdings: 83.343, price: 19.23},
+    {coin: 'ETH', exchange: 'Bitfinex', holdings: 793.34, price: 23.34},
+    {coin: 'LTC', exchange: 'SIK', holdings: 893.34, price: 93.43},
+    {coin: 'BTC', exchange: 'Kraken', holdings: 83.343, price: 19.23},
+    {coin: 'ETH', exchange: 'Bitfinex', holdings: 793.34, price: 23.34},
+    {coin: 'LTC', exchange: 'SIK', holdings: 893.34, price: 93.43},
+    {coin: 'BTC', exchange: 'Kraken', holdings: 83.343, price: 19.23},
+    {coin: 'ETH', exchange: 'Bitfinex', holdings: 793.34, price: 23.34},
+    {coin: 'LTC', exchange: 'SIK', holdings: 893.34, price: 93.43},
+    {coin: 'BTC', exchange: 'Kraken', holdings: 83.343, price: 19.23},
+    {coin: 'ETH', exchange: 'Bitfinex', holdings: 793.34, price: 23.34},
+    {coin: 'LTC', exchange: 'SIK', holdings: 893.34, price: 93.43},
+    {coin: 'BTC', exchange: 'Kraken', holdings: 83.343, price: 19.23},
+    {coin: 'ETH', exchange: 'Bitfinex', holdings: 793.34, price: 23.34},
+    {coin: 'LTC', exchange: 'SIK', holdings: 893.34, price: 93.43},
+    {coin: 'BTC', exchange: 'Kraken', holdings: 83.343, price: 19.23},
+    {coin: 'ETH', exchange: 'Bitfinex', holdings: 793.34, price: 23.34},
+    {coin: 'LTC', exchange: 'SIK', holdings: 893.34, price: 93.43},
+    {coin: 'BTC', exchange: 'Kraken', holdings: 83.343, price: 19.23},
+    {coin: 'ETH', exchange: 'Bitfinex', holdings: 793.34, price: 23.34},
+    {coin: 'LTC', exchange: 'SIK', holdings: 893.34, price: 93.43},
+    {coin: 'BTC', exchange: 'Kraken', holdings: 83.343, price: 19.23},
+    {coin: 'ETH', exchange: 'Bitfinex', holdings: 793.34, price: 23.34},
+    {coin: 'LTC', exchange: 'SIK', holdings: 893.34, price: 93.43},
+    {coin: 'BTC', exchange: 'Kraken', holdings: 83.343, price: 19.23},
+    {coin: 'ETH', exchange: 'Bitfinex', holdings: 793.34, price: 23.34},
+    {coin: 'LTC', exchange: 'SIK', holdings: 893.34, price: 93.43},
+    {coin: 'BTC', exchange: 'Kraken', holdings: 83.343, price: 19.23},
+    {coin: 'ETH', exchange: 'Bitfinex', holdings: 793.34, price: 23.34},
+    {coin: 'LTC', exchange: 'SIK', holdings: 893.34, price: 93.43},
+    {coin: 'BTC', exchange: 'Kraken', holdings: 83.343, price: 19.23},
+    {coin: 'ETH', exchange: 'Bitfinex', holdings: 793.34, price: 23.34},
+    {coin: 'LTC', exchange: 'SIK', holdings: 893.34, price: 93.43},
+    {coin: 'BTC', exchange: 'Kraken', holdings: 83.343, price: 19.23},
+    {coin: 'ETH', exchange: 'Bitfinex', holdings: 793.34, price: 23.34},
+    {coin: 'LTC', exchange: 'SIK', holdings: 893.34, price: 93.43},
+    {coin: 'BTC', exchange: 'Kraken', holdings: 83.343, price: 19.23},
+    {coin: 'ETH', exchange: 'Bitfinex', holdings: 793.34, price: 23.34},
+    {coin: 'LTC', exchange: 'SIK', holdings: 893.34, price: 93.43},
+    {coin: 'BTC', exchange: 'Kraken', holdings: 83.343, price: 19.23},
+    {coin: 'ETH', exchange: 'Bitfinex', holdings: 793.34, price: 23.34},
+    {coin: 'LTC', exchange: 'SIK', holdings: 893.34, price: 93.43},
+  ];
+
+  onFirstDataRendered(params) {
+    params.api.sizeColumnsToFit();
+  }
+
 }

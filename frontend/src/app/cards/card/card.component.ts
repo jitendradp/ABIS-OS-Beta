@@ -8,7 +8,12 @@ import {ActionDispatcherService} from "../../services/action-dispatcher.service"
 })
 export class CardComponent {
 
-  constructor(public actionDispatcher: ActionDispatcherService) {
+  constructor(private actionDispatcher: ActionDispatcherService) {
+  }
+
+  sendCreate($event) {
+    this.actionDispatcher.dispatch({name: 'Abis.Cockpit.Command.Create'});
+    $event.stopPropagation();
   }
 
   @Input()

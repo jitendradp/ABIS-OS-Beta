@@ -24,11 +24,14 @@ export class ButtonComponent {
   showButtonIcon: string;
 
   @Input()
+  isDisabled: boolean;
+
+  @Input()
   lessStyle: boolean = false;
 
 
   @Output()
-  click:EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
+  click: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 
   constructor(protected _accountService: AccountService) {
   }

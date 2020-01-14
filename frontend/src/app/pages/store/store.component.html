@@ -1,71 +1,23 @@
-<mat-tab-group>
-  <mat-tab label="INSTALLED">
-    <div fxLayout
-         fxLayout.xs="column"
-         fxLayoutAlign="left"
-         fxLayoutGap="10px"
-         fxLayoutGap.xs="0">
-      <div fxFlex="33">
-        <app-content>
-          <app-card-store
-            [title]="'Smart Pharmacy App'"
-            [creator]="'Apowi - Campus Essen'"
-            [subtitle]="'The market data for user groups.'"
-            [showIcon]="true"
-            [status]="'NEW'"
-            [showActionList]="false"
-            [showAccordion]="true"
-            [statsIcon]="'shopping_cart'"
-            [statsLeft]="'Freemium'"
-            [statsRight]="'0 € / m'"
-            [showMaxButton]="true"
-            [action]="'Deploy'">
-          </app-card-store>
-        </app-content>
-      </div>
-      <div fxFlex="33">
-        <app-content>
-          <app-card-store
-            [title]="'Smart Controlling App'"
-            [creator]="'MunichMotorsport e.V.'"
-            [subtitle]="'The workforce collaboration solution.'"
-            [showIcon]="true"
-            [showActionList]="false"
-            [showAccordion]="true"
-            [statsIcon]="'shopping_cart'"
-            [statsLeft]="'Free Trial'"
-            [statsRight]="'30 € / m'"
-            [showMaxButton]="true"
-            [action]="'Deploy'">
-          </app-card-store>
-        </app-content>
-      </div>
-    </div>
-  </mat-tab>
-  <mat-tab label="NEW">
-    <div class="container"
-         fxLayout
-         fxLayout.xs="column"
-         fxLayoutAlign="left"
-         fxLayoutGap="10px"
-         fxLayoutGap.xs="0">
-      <div fxFlex="33">
-        <app-content>
-          <app-card-store
-            [title]="'Smart Crypto App'"
-            [creator]="'Dynagroup Technologies GmbH'"
-            [subtitle]="'The crypto currency watcher for brokers.'"
-            [showIcon]="true"
-            [showActionList]="false"
-            [showAccordion]="true"
-            [statsIcon]="'shopping_cart'"
-            [statsLeft]="'Free Trial'"
-            [statsRight]="'20 € / m'"
-            [showMaxButton]="true"
-            [action]="'Configure'">
-          </app-card-store>
-        </app-content>
-      </div>
-    </div>
-  </mat-tab>
-</mat-tab-group>
+<!-- todo hard coded first send from api later -->
+<!-- todo move card to label if installed. How can this be done? -->
+<!-- todo map for pharmacy smart app should be filtered on right data -->
+<div fxLayout
+     fxLayout.xs="column"
+     fxLayoutAlign="left"
+     fxLayoutGap="10px"
+     fxLayoutGap.xs="0">
+  <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" *ngFor="let item of items">
+    <app-content>
+      <app-card-store
+        [logo]="item.logo"
+        [title]="item.name"
+        [subtitle]="item.shortDescription"
+        [publisher]="item.publisher"
+        [team]="item.team"
+        [description]="item.description"
+        [link]="item.link"
+        [isDisabled]="item.isDisabled">
+      </app-card-store>
+    </app-content>
+  </div>
+</div>

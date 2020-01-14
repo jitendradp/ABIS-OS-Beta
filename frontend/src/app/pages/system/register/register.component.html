@@ -26,7 +26,8 @@
                 <input matInput type="text" placeholder="Confirm" required formControlName="passwordConfirmation">
               </mat-form-field>
               <app-content>
-                <mat-hint align="center">By continuing, you are agreeing to our Terms of Service, Privacy Policy and Cookie Policy.
+                <mat-hint align="center">By continuing, you are agreeing to our Terms of Service, Privacy Policy and
+                  Cookie Policy.
                   <app-whitespace></app-whitespace>
                 </mat-hint>
                 <button mat-button matStepperNext class="maxButton">Next</button>
@@ -43,7 +44,9 @@
               <app-content>
                 <button mat-button matStepperNext class="maxButton">Next</button>
                 <app-whitespace></app-whitespace>
-                <mat-hint align="start">Please check your inbox and click the confirmation link or enter the code manually to confirm that it is you.</mat-hint>
+                <mat-hint align="start">Please check your inbox and click the confirmation link or enter the code
+                  manually to confirm that it is you.
+                </mat-hint>
               </app-content>
             </form>
           </mat-step>
@@ -64,9 +67,11 @@
               </mat-form-field>
               <button mat-button>Upload Picture</button>
               <app-content>
-                <button [disabled]="!step3Data || !step3Data.name" mat-button matStepperNext class="maxButton" (click)="submitStep3($event)">Complete</button>
+                <button [disabled]="!step3Data || !step3Data.name" mat-button matStepperNext class="maxButton"
+                        (click)="submitStep3($event)">Complete
+                </button>
                 <app-whitespace></app-whitespace>
-                <mat-hint align="start">Make your profile easy to recogniza for your colleagues and friends.</mat-hint>
+                <mat-hint align="start">Make your profile easy to remember for your colleagues and friends.</mat-hint>
               </app-content>
             </form>
           </mat-step>

@@ -21,7 +21,7 @@ import {
   MatListModule,
   MatMenuModule,
   MatNativeDateModule,
-  MatOptionModule, MatProgressBarModule,
+  MatOptionModule, MatPaginatorModule, MatProgressBarModule,
   MatRadioModule,
   MatSelectModule,
   MatSidenavModule, MatSliderModule,
@@ -30,7 +30,7 @@ import {
   MatStepperModule,
   MatTableModule,
   MatTabsModule,
-  MatToolbarModule,
+  MatToolbarModule, MatTooltipModule,
   MatTreeModule
 } from "@angular/material";
 import {AccessComponent} from './pages/system/access/access.component';
@@ -57,18 +57,16 @@ import {HeaderComponent} from './components/header/header.component';
 import {InputComponent} from './components/input/input.component';
 import {WhitespaceComponent} from './components/whitespace/whitespace.component';
 import {ChatComponent} from './widgets/chat/chat.component';
-import {ChannelEditorComponent} from './editors/channel-editor/channel-editor.component';
+import {EditorChannelComponent} from './editors/editor-channel/editor-channel.component';
 import {GraphQLModule} from './graphql.module';
 import {HttpClientModule} from '@angular/common/http';
 import {CardIntroComponent} from "./cards/card-intro/card-intro.component";
-import {TeamsComponent} from "./widgets/chat/teams/teams.component";
 import {NavigationComponent} from "./pages/system/navigation/navigation.component";
 import {SwitchProfileComponent} from './pages/system/switch-profile/switch-profile.component';
 import {LogoutComponent} from './pages/system/logout/logout.component';
 import {IAction} from "./actions/IAction";
-import {ToggleVisibility} from "./actions/ui/sidebar/ToggleVisibility";
-import {ExplorerComponent} from "./pages/explorer/explorer.component";
-import {TeamEditorComponent} from "./editors/team-editor/team-editor.component";
+import {TeamsComponent} from "./pages/teams/teams.component";
+import {EditorTeamComponent} from "./editors/editor-team/editor-team.component";
 import {AvatarsComponent} from "./components/avatars/avatars.component";
 import {CardMessageComponent} from "./cards/card-message/card-message.component";
 import {CardTeamComponent} from "./cards/card-team/card-team.component";
@@ -81,17 +79,28 @@ import {ChartTableComponent} from "./charts/chart-table/chart-table.component";
 import {ChartLineComponent} from "./charts/chart-line/chart-line.component";
 import {ChartMapComponent} from "./charts/chart-map/chart-map.component";
 import {CommandComponent} from "./widgets/command/command.component";
+import {ChartGraphForceComponent} from "./charts/chart-graph-force/chart-graph-force.component";
+import {ChartSankeyComponent} from "./charts/chart-sankey/chart-sankey.component";
+import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
+import {DeviceDetectorModule} from "ngx-device-detector";
+import {ClusterPopupComponent} from "./pages/map/cluster-popup/cluster-popup.component";
+import {AgGridModule} from "ag-grid-angular";
+import {EditorPortfolioComponent} from "./editors/editor-portfolio/editor-portfolio.component";
+import {SmartCryptoAppComponent} from "./smartapps/smart-crypto-app/smart-crypto-app.component";
+import {CardPortfolioComponent} from "./cards/card-portfolio/card-portfolio.component";
 
-const defaultActions: IAction[] = [<ToggleVisibility>{
-  name: ToggleVisibility.Name,
+const defaultActions: IAction[] = [<SetVisibility>{
+  name: SetVisibility.Name,
   label: "Open/Close Sidebar",
   icon: "menu",
-  side: "left"
-}, <ToggleVisibility>{
-  name: ToggleVisibility.Name,
+  side: "left",
+  state: "toggle"
+}, <SetVisibility>{
+  name: SetVisibility.Name,
   label: "Open/Close Chat",
   icon: "question_answer",
-  side: "right"
+  side: "right",
+  state: "toggle"
 }];
 
 const appRoutes: Routes = [
@@ -162,7 +171,7 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'channel-editor', component: ChannelEditorComponent, data: {
+    path: 'editor-channel', component: EditorChannelComponent, data: {
       "title": "Create new channel",
       "actions": defaultActions
     }
@@ -180,13 +189,13 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'explorer', component: ExplorerComponent, data: {
+    path: 'teams', component: TeamsComponent, data: {
       "title": "Teams",
       "actions": defaultActions
     }
   },
   {
-    path: 'team-editor', component: TeamEditorComponent, data: {
+    path: 'editor-team', component: EditorTeamComponent, data: {
       "title": "Create new team",
       "actions": defaultActions
     }
@@ -194,6 +203,12 @@ const appRoutes: Routes = [
   {
     path: 'command', component: CommandComponent, data: {
       "title": "New command",
+      "actions": defaultActions
+    }
+  },
+  {
+    path: 'smart-crypto-app', component: SmartCryptoAppComponent, data: {
+      "title": "Smart Crypto App",
       "actions": defaultActions
     }
   },
@@ -222,14 +237,13 @@ const appRoutes: Routes = [
     InputComponent,
     WhitespaceComponent,
     ChatComponent,
-    ChannelEditorComponent,
+    EditorChannelComponent,
     CardIntroComponent,
-    TeamsComponent,
     NavigationComponent,
     SwitchProfileComponent,
     LogoutComponent,
-    ExplorerComponent,
-    TeamEditorComponent,
+    TeamsComponent,
+    EditorTeamComponent,
     AvatarsComponent,
     CardMessageComponent,
     CardTeamComponent,
@@ -241,11 +255,18 @@ const appRoutes: Routes = [
     ChartLineComponent,
     ChartMapComponent,
     CommandComponent,
+    ChartGraphForceComponent,
+    ChartSankeyComponent,
+    ClusterPopupComponent,
+    EditorPortfolioComponent,
+    SmartCryptoAppComponent,
+    CardPortfolioComponent,
   ],
   imports: [
     RouterModule.forRoot(
       appRoutes
     ),
+    DeviceDetectorModule.forRoot(),
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -286,6 +307,9 @@ const appRoutes: Routes = [
     FormsModule,
     MatCheckboxModule,
     MatProgressBarModule,
+    AgGridModule.withComponents([]),
+    MatTooltipModule,
+    MatPaginatorModule,
     NgxMapboxGLModule.withConfig({
       accessToken: 'pk.eyJ1IjoiZGF2ZXdhdmVhYmlzY2xvdWQiLCJhIjoiY2s0eXYycjhzMDRhczNkbXF6dzNkMzlzayJ9.nyAc-uTfNfDTF0lxmZ3a3Q', // Optionnal, can also be set per map (accessToken input of mgl-map)
       geocoderAccessToken: 'pk.eyJ1IjoiZGF2ZXdhdmVhYmlzY2xvdWQiLCJhIjoiY2s0eXYycjhzMDRhczNkbXF6dzNkMzlzayJ9.nyAc-uTfNfDTF0lxmZ3a3Q' // Optionnal, specify if different from the map access token, can also be set per mgl-geocoder (accessToken input of mgl-geocoder)

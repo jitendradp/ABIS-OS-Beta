@@ -17,16 +17,18 @@ import {
 import {IEvent} from "./actions/IEvent";
 import {ActionDispatcherService} from "./services/action-dispatcher.service";
 import {MatDialog} from "@angular/material";
-import {ChannelEditorComponent} from "./editors/channel-editor/channel-editor.component";
+import {EditorChannelComponent} from "./editors/editor-channel/editor-channel.component";
 import {Home} from "./actions/routes/Home";
 import {ShowNotification} from "./actions/ui/ShowNotification";
 import {SwitchProfile} from "./actions/routes/SwitchProfile";
-import {ToggleVisibility} from "./actions/ui/sidebar/ToggleVisibility";
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {LogEntry} from "./services/logger.service";
 import {Back} from "./actions/routes/Back";
-import {TeamEditorComponent} from "./editors/team-editor/team-editor.component";
+import {EditorTeamComponent} from "./editors/editor-team/editor-team.component";
 import {CommandComponent} from "./widgets/command/command.component";
+import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
+import {DeviceDetectorService} from "ngx-device-detector";
+import {RouteChanged} from "./actions/routes/RouteChanged";
 
 @Component({
   selector: 'app-root',
@@ -56,6 +58,7 @@ export class AppComponent {
     private _router: Router,
     private _actionDispatcher: ActionDispatcherService,
     public _dialog: MatDialog,
+    private deviceService: DeviceDetectorService,
     private _snackBar: MatSnackBar
   ) {
     // Listen to actions ...
@@ -66,11 +69,36 @@ export class AppComponent {
 
   private handleAction(action) {
     switch (action.name) {
-      case ToggleVisibility.Name:
+      case RouteChanged.Name:
+        // set the title on the header bar
+        this.title = action.data.title;
+        if (action.data.actions) {
+          this.actions = action.data.actions;
+        } else {
+          this.actions = [];
+        }
+
+        if (this.deviceService.isMobile() && this.right.opened) {
+          this._actionDispatcher.dispatch(new SetVisibility("right", "invisible"));
+        }
+        break;
+      case SetVisibility.Name:
+        let visibility: boolean = false;
+        switch (action.state) {
+          case "visible":
+            visibility = true;
+            break;
+          case "invisible":
+            visibility = false;
+            break;
+          default:
+            visibility = undefined;
+            break;
+        }
         if (action.side == "left") {
-          this.left.toggle();
+          this.left.toggle(visibility);
         } else if (action.side == "right") {
-          this.right.toggle();
+          this.right.toggle(visibility);
         }
         break;
       case "Abis.Chat.Channel.Create":
@@ -114,20 +142,12 @@ export class AppComponent {
   private handleRouterEvents(o: RouterEvent | RouteConfigLoadStart | RouteConfigLoadEnd | ChildActivationStart | ChildActivationEnd | ActivationStart | ActivationEnd | Scroll) {
     // if the event is of Type "ActivationEnd" ...
     if (o instanceof ActivationEnd) {
-      // "<Cast>" to the right type to access the "data" property
-      const activationEnd = <ActivationEnd>o;
-      // set the title on the header bar
-      this.title = activationEnd.snapshot.data.title;
-      if (activationEnd.snapshot.data.actions) {
-        this.actions = activationEnd.snapshot.data.actions;
-      } else {
-        this.actions = [];
-      }
+      this._actionDispatcher.dispatch(new RouteChanged(o.snapshot.data));
     }
   }
 
   public openChannelCreateDialog(): void {
-    const dialogRef = this._dialog.open(ChannelEditorComponent, {
+    const dialogRef = this._dialog.open(EditorChannelComponent, {
       width: '250px'
     });
 
@@ -148,7 +168,7 @@ export class AppComponent {
   }
 
   public openTeamCreateDialog(): void {
-    const dialogRef = this._dialog.open(TeamEditorComponent, {
+    const dialogRef = this._dialog.open(EditorTeamComponent, {
       width: '50%',
       minWidth: '300px'
     });

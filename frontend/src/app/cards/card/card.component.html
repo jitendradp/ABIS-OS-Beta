@@ -30,7 +30,7 @@
   <mat-card-actions>
     <app-content>
       <!-- remove router link on app button when click command is already there -->
-      <app-button (click)="actionDispatcher.dispatch({name:'Abis.Cockpit.Command.Create'})" routerLink="-"
+      <app-button (click)="sendCreate($event)"
                   [text]="'New Command'"></app-button>
     </app-content>
   </mat-card-actions>
