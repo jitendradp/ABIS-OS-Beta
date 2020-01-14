@@ -57,7 +57,7 @@ import {HeaderComponent} from './components/header/header.component';
 import {InputComponent} from './components/input/input.component';
 import {WhitespaceComponent} from './components/whitespace/whitespace.component';
 import {ChatComponent} from './widgets/chat/chat.component';
-import {ChannelEditorComponent} from './editors/channel-editor/channel-editor.component';
+import {EditorChannelComponent} from './editors/editor-channel/editor-channel.component';
 import {GraphQLModule} from './graphql.module';
 import {HttpClientModule} from '@angular/common/http';
 import {CardIntroComponent} from "./cards/card-intro/card-intro.component";
@@ -66,7 +66,7 @@ import {SwitchProfileComponent} from './pages/system/switch-profile/switch-profi
 import {LogoutComponent} from './pages/system/logout/logout.component';
 import {IAction} from "./actions/IAction";
 import {TeamsComponent} from "./pages/teams/teams.component";
-import {TeamEditorComponent} from "./editors/team-editor/team-editor.component";
+import {EditorTeamComponent} from "./editors/editor-team/editor-team.component";
 import {AvatarsComponent} from "./components/avatars/avatars.component";
 import {CardMessageComponent} from "./cards/card-message/card-message.component";
 import {CardTeamComponent} from "./cards/card-team/card-team.component";
@@ -85,9 +85,9 @@ import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
 import {DeviceDetectorModule} from "ngx-device-detector";
 import {ClusterPopupComponent} from "./pages/map/cluster-popup/cluster-popup.component";
 import {AgGridModule} from "ag-grid-angular";
-import {SmartCryptoAppSetupComponent} from "./smartapps/smart-crypto-app/smart-crypto-app-setup/smart-crypto-app-setup.component";
-import {SmartCryptoAppDashboardComponent} from "./smartapps/smart-crypto-app/smart-crypto-app-dashboard/smart-crypto-app-dashboard.component";
-import {SmartCryptoAppConfigComponent} from "./smartapps/smart-crypto-app/smart-crypto-app-config/smart-crypto-app-config.component";
+import {EditorPortfolioComponent} from "./editors/editor-portfolio/editor-portfolio.component";
+import {SmartCryptoAppComponent} from "./smartapps/smart-crypto-app/smart-crypto-app.component";
+import {CardPortfolioComponent} from "./cards/card-portfolio/card-portfolio.component";
 
 const defaultActions: IAction[] = [<SetVisibility>{
   name: SetVisibility.Name,
@@ -171,7 +171,7 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'channel-editor', component: ChannelEditorComponent, data: {
+    path: 'editor-channel', component: EditorChannelComponent, data: {
       "title": "Create new channel",
       "actions": defaultActions
     }
@@ -195,7 +195,7 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'team-editor', component: TeamEditorComponent, data: {
+    path: 'editor-team', component: EditorTeamComponent, data: {
       "title": "Create new team",
       "actions": defaultActions
     }
@@ -207,20 +207,8 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'smart-crypto-app-setup', component: SmartCryptoAppSetupComponent, data: {
-      "title": "Setup",
-      "actions": defaultActions
-    }
-  },
-  {
-    path: 'smart-crypto-app-dashboard', component: SmartCryptoAppDashboardComponent, data: {
-      "title": "Dashboard",
-      "actions": defaultActions
-    }
-  },
-  {
-    path: 'smart-crypto-app-config', component: SmartCryptoAppConfigComponent, data: {
-      "title": "Settings",
+    path: 'smart-crypto-app', component: SmartCryptoAppComponent, data: {
+      "title": "Smart Crypto App",
       "actions": defaultActions
     }
   },
@@ -249,13 +237,13 @@ const appRoutes: Routes = [
     InputComponent,
     WhitespaceComponent,
     ChatComponent,
-    ChannelEditorComponent,
+    EditorChannelComponent,
     CardIntroComponent,
     NavigationComponent,
     SwitchProfileComponent,
     LogoutComponent,
     TeamsComponent,
-    TeamEditorComponent,
+    EditorTeamComponent,
     AvatarsComponent,
     CardMessageComponent,
     CardTeamComponent,
@@ -270,9 +258,9 @@ const appRoutes: Routes = [
     ChartGraphForceComponent,
     ChartSankeyComponent,
     ClusterPopupComponent,
-    SmartCryptoAppSetupComponent,
-    SmartCryptoAppDashboardComponent,
-    SmartCryptoAppConfigComponent,
+    EditorPortfolioComponent,
+    SmartCryptoAppComponent,
+    CardPortfolioComponent,
   ],
   imports: [
     RouterModule.forRoot(

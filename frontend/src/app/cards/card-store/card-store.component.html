@@ -1,5 +1,3 @@
-<!-- todo the button can be clicked even if disabled? -->
-
 <mat-card style="border-radius: 0">
   <mat-card-header>
     <app-logo mat-card-avatar [url]=logo></app-logo>
@@ -13,9 +11,7 @@
     <small><a routerLink="{{team}}" style="text-decoration: none">{{publisher}}</a></small>
   </mat-card-content>
   <mat-card-actions>
-    <app-button [isDisabled]="isDisabled" *ngIf="isInstalled" routerLink="{{discoverLink}}"
+    <app-button [isDisabled]="isDisabled" routerLink="{{link}}"
                 [text]="'Discover'"></app-button>
-    <app-button [isDisabled]="isDisabled" *ngIf="!isInstalled" routerLink="{{setupLink}}"
-                [text]="'Setup'"></app-button>
   </mat-card-actions>
 </mat-card>

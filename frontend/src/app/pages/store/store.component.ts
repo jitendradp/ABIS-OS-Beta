@@ -8,8 +8,7 @@ export interface storeItem {
   publisher: string;
   description: string;
   team: string;
-  setupLink: string;
-  discoverLink: string;
+  link: string;
   isInstalled: boolean;
   isDisabled: boolean;
 }
@@ -32,8 +31,7 @@ export class StoreComponent {
       publisher: 'Apowi - Campus Essen',
       description: 'Discover monthly results from surveys of more than 800 local pharmacies all around Germany.',
       team: '/teams',
-      setupLink: '/map',
-      discoverLink: '/map',
+      link: '/map',
       isInstalled: true,
       isDisabled: true,
     },
@@ -45,8 +43,7 @@ export class StoreComponent {
       publisher: 'DynaGroup IT GmbH',
       description: 'Discover worldwide crypto currency markets and analyze your portfolios.',
       team: '/teams',
-      setupLink: '/smart-crypto-app-setup',
-      discoverLink: '/smart-crypto-app-dashboard',
+      link: '/smart-crypto-app',
       isInstalled: false,
       isDisabled: false,
     },
@@ -58,8 +55,7 @@ export class StoreComponent {
       publisher: 'munichMotorsport e.V.',
       description: 'Manage your budgets and monitor all expenses your team made. Stay on your targets.',
       team: '/teams',
-      setupLink: '/map',
-      discoverLink: '/map',
+      link: '/map',
       isInstalled: false,
       isDisabled: true,
     },
@@ -71,8 +67,7 @@ export class StoreComponent {
       publisher: 'Socialmedia Piraten UG',
       description: 'Monitor and control your social media campaigns on facebook pages and facebook ads.',
       team: '/teams',
-      setupLink: '/map',
-      discoverLink: '/map',
+      link: '/map',
       isInstalled: false,
       isDisabled: true,
     },

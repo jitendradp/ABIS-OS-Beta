@@ -2,11 +2,11 @@ import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
-  selector: 'app-team-editor',
-  templateUrl: './team-editor.component.html',
-  styleUrls: ['./team-editor.component.css']
+  selector: 'app-editor-team',
+  templateUrl: './editor-team.component.html',
+  styleUrls: ['./editor-team.component.css']
 })
-export class TeamEditorComponent {
+export class EditorTeamComponent {
 
   isLinear = true;
   firstFormGroup: FormGroup;

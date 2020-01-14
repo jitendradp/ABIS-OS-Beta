@@ -17,14 +17,14 @@ import {
 import {IEvent} from "./actions/IEvent";
 import {ActionDispatcherService} from "./services/action-dispatcher.service";
 import {MatDialog} from "@angular/material";
-import {ChannelEditorComponent} from "./editors/channel-editor/channel-editor.component";
+import {EditorChannelComponent} from "./editors/editor-channel/editor-channel.component";
 import {Home} from "./actions/routes/Home";
 import {ShowNotification} from "./actions/ui/ShowNotification";
 import {SwitchProfile} from "./actions/routes/SwitchProfile";
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {LogEntry} from "./services/logger.service";
 import {Back} from "./actions/routes/Back";
-import {TeamEditorComponent} from "./editors/team-editor/team-editor.component";
+import {EditorTeamComponent} from "./editors/editor-team/editor-team.component";
 import {CommandComponent} from "./widgets/command/command.component";
 import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
 import {DeviceDetectorService} from "ngx-device-detector";
@@ -147,7 +147,7 @@ export class AppComponent {
   }
 
   public openChannelCreateDialog(): void {
-    const dialogRef = this._dialog.open(ChannelEditorComponent, {
+    const dialogRef = this._dialog.open(EditorChannelComponent, {
       width: '250px'
     });
 
@@ -168,7 +168,7 @@ export class AppComponent {
   }
 
   public openTeamCreateDialog(): void {
-    const dialogRef = this._dialog.open(TeamEditorComponent, {
+    const dialogRef = this._dialog.open(EditorTeamComponent, {
       width: '50%',
       minWidth: '300px'
     });

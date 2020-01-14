@@ -11,9 +11,6 @@ export class CardStoreComponent {
   title: string;
 
   @Input()
-  isInstalled: boolean;
-
-  @Input()
   isDisabled: boolean;
 
   @Input()
@@ -32,9 +29,6 @@ export class CardStoreComponent {
   logo: string;
 
   @Input()
-  setupLink: string;
-
-  @Input()
-  discoverLink: string;
+  link: string;
 
 }
