@@ -85,6 +85,9 @@ import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
 import {DeviceDetectorModule} from "ngx-device-detector";
 import {ClusterPopupComponent} from "./pages/map/cluster-popup/cluster-popup.component";
 import {AgGridModule} from "ag-grid-angular";
+import {SmartCryptoAppSetupComponent} from "./smartapps/smart-crypto-app/smart-crypto-app-setup/smart-crypto-app-setup.component";
+import {SmartCryptoAppDashboardComponent} from "./smartapps/smart-crypto-app/smart-crypto-app-dashboard/smart-crypto-app-dashboard.component";
+import {SmartCryptoAppConfigComponent} from "./smartapps/smart-crypto-app/smart-crypto-app-config/smart-crypto-app-config.component";
 
 const defaultActions: IAction[] = [<SetVisibility>{
   name: SetVisibility.Name,
@@ -203,6 +206,24 @@ const appRoutes: Routes = [
       "actions": defaultActions
     }
   },
+  {
+    path: 'smart-crypto-app-setup', component: SmartCryptoAppSetupComponent, data: {
+      "title": "Setup",
+      "actions": defaultActions
+    }
+  },
+  {
+    path: 'smart-crypto-app-dashboard', component: SmartCryptoAppDashboardComponent, data: {
+      "title": "Dashboard",
+      "actions": defaultActions
+    }
+  },
+  {
+    path: 'smart-crypto-app-config', component: SmartCryptoAppConfigComponent, data: {
+      "title": "Settings",
+      "actions": defaultActions
+    }
+  },
 ];
 
 
@@ -248,7 +269,10 @@ const appRoutes: Routes = [
     CommandComponent,
     ChartGraphForceComponent,
     ChartSankeyComponent,
-    ClusterPopupComponent
+    ClusterPopupComponent,
+    SmartCryptoAppSetupComponent,
+    SmartCryptoAppDashboardComponent,
+    SmartCryptoAppConfigComponent,
   ],
   imports: [
     RouterModule.forRoot(
