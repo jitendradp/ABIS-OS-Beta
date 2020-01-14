@@ -1,6 +1,5 @@
 import {Component} from "@angular/core";
 
-
 @Component({
   selector: 'app-chart-table',
   templateUrl: './chart-table.component.html',
@@ -8,14 +7,18 @@ import {Component} from "@angular/core";
 })
 export class ChartTableComponent {
   columnDefs = [
-    {headerName: 'Make', field: 'make'},
-    {headerName: 'Model', field: 'model'},
-    {headerName: 'Price', field: 'price'}
+    {headerName: 'Coin', field: 'coin', sortable: true, filter: true, width: 100},
+    {headerName: 'Holdings', field: 'holdings', sortable: true, filter: true, width: 100},
+    {headerName: 'Price', field: 'price', sortable: true, filter: true, width: 100},
   ];
 
   rowData = [
-    {make: 'Toyota', model: 'Celica', price: 35000},
-    {make: 'Ford', model: 'Mondeo', price: 32000},
-    {make: 'Porsche', model: 'Boxter', price: 72000}
+    {coin: 'BTC', holdings: 83.343, price: 19.23},
+    {coin: 'ETH', holdings: 793.34, price: 23.34},
+    {coin: 'LTC', holdings: 893.34, price: 93.43}
   ];
+
+
 }
+
+
