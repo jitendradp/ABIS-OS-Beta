@@ -19,31 +19,31 @@ import {Back} from "../../../actions/routes/Back";
 })
 export class RegisterComponent implements OnInit, AfterViewInit {
 
-  @ViewChild("stepper", {static:true})
-  public stepper:MatHorizontalStepper;
+  @ViewChild("stepper", {static: true})
+  public stepper: MatHorizontalStepper;
   public isLinear = true;
-  private readonly _log:Logger = this.loggerService.createLogger("RegisterComponent");
+  private readonly _log: Logger = this.loggerService.createLogger("RegisterComponent");
 
   constructor(private _formBuilder: FormBuilder
-              , private loggerService:LoggerService
-              , private actionDispatcher:ActionDispatcherService
-              , private clientState:ClientStateService
-              , private profileService:ProfileService
-              , private accountService:AccountService
-              , private signupApi:SignupGQL
-              , private verifyEmailApi:VerifyEmailGQL) {
+    , private loggerService: LoggerService
+    , private actionDispatcher: ActionDispatcherService
+    , private clientState: ClientStateService
+    , private profileService: ProfileService
+    , private accountService: AccountService
+    , private signupApi: SignupGQL
+    , private verifyEmailApi: VerifyEmailGQL) {
   }
 
   public step1FormGroup: FormGroup;
-  public step1Data: {firstName:string, lastName:string, emailAddress:string, password:string, passwordConfirmation:string};
+  public step1Data: { firstName: string, lastName: string, emailAddress: string, password: string, passwordConfirmation: string };
 
   public step2FormGroup: FormGroup;
-  public step2Data: {code:string};
+  public step2Data: { code: string };
 
   public step3FormGroup: FormGroup;
-  public step3Data: {name:string, phone:string, slogan:string};
+  public step3Data: { name: string, phone: string, slogan: string };
 
-  private _stepperIndex:number;
+  private _stepperIndex: number;
 
   ngOnInit() {
     this.step1FormGroup = this._formBuilder.group({
@@ -77,7 +77,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     });
 
     // Restore the previously opened page in the stepper or open page '0' as default
-    this._stepperIndex =  this.clientState.get<number>("RegisterComponent.stepper.selectedIndex", 0).data;
+    this._stepperIndex = this.clientState.get<number>("RegisterComponent.stepper.selectedIndex", 0).data;
     this.stepper.selectedIndex = this._stepperIndex;
   }
 
@@ -99,7 +99,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     this.disableCompletedSteps();
   }
 
-  private disableCompletedSteps(upTp?:number) {
+  private disableCompletedSteps(upTp?: number) {
     const steps = this.stepper.steps.toArray();
     for (let i = 0; i < (upTp ? upTp : this.stepper.selectedIndex); i++) {
       const step = steps[i];
@@ -145,7 +145,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   }
 
   public submitStep3($event: MouseEvent) {
-    // Thrid step completed, create the profile
+    // Third step completed, create the profile
     // TODO: Pic and Timezone
     this.profileService.createProfile(this.step3Data.name, "pic", "UTC")
       .then(result => {

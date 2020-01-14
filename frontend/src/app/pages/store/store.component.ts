@@ -11,6 +11,7 @@ export interface storeItem {
   setupLink: string;
   discoverLink: string;
   isInstalled: boolean;
+  isDisabled: boolean;
 }
 
 @Component({
@@ -34,18 +35,20 @@ export class StoreComponent {
       setupLink: '/map',
       discoverLink: '/map',
       isInstalled: true,
+      isDisabled: true,
     },
     {
       name: 'Smart Crypto App',
       shortDescription: 'Crypto currency markets watch',
-      logo: '',
+      logo: './assets/logos/dynagroup.png',
       status: 'Setup',
-      publisher: 'DynaGroup Information Technologies GmbH',
-      description: 'Discover worldwide crypto currency markets and run simulations to analyze your portfolio.',
+      publisher: 'DynaGroup IT GmbH',
+      description: 'Discover worldwide crypto currency markets and analyze your portfolios.',
       team: '/teams',
       setupLink: '/smart-crypto-app-setup',
       discoverLink: '/smart-crypto-app-dashboard',
       isInstalled: false,
+      isDisabled: false,
     },
     {
       name: 'Smart Budget App',
@@ -53,15 +56,16 @@ export class StoreComponent {
       logo: './assets/logos/munichMotorsport.png',
       status: 'Setup',
       publisher: 'munichMotorsport e.V.',
-      description: 'Manage your budgets and monitor all expenses your team made. Stay aligned with your targets.',
+      description: 'Manage your budgets and monitor all expenses your team made. Stay on your targets.',
       team: '/teams',
       setupLink: '/map',
       discoverLink: '/map',
       isInstalled: false,
+      isDisabled: true,
     },
     {
-      name: 'Smart Facebook Reporting App',
-      shortDescription: 'Monitor and control your facebook campaigns',
+      name: 'Smart Facebook App',
+      shortDescription: 'Monitor and control facebook campaigns',
       logo: './assets/logos/socialmediapirates.png',
       status: 'Setup',
       publisher: 'Socialmedia Piraten UG',
@@ -70,6 +74,7 @@ export class StoreComponent {
       setupLink: '/map',
       discoverLink: '/map',
       isInstalled: false,
+      isDisabled: true,
     },
   ];
 }

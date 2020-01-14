@@ -1,1 +1,75 @@
-<p>smart-crypto-app-setup works!</p>
+<div fxLayout
+     fxLayout.xs="column"
+     fxLayoutAlign="center"
+     fxLayoutGap="0px"
+     fxLayoutGap.xs="0">
+  <div fxFlex='auto' fxFlex.gt-md='50' fxFlex.gt-sm='80'>
+    <app-content>
+      <app-card-form [title]="'Create your ABIS Account'">
+        <mat-horizontal-stepper [linear]="isLinear" #stepper>
+          <mat-step [stepControl]="firstFormGroup">
+            <form [formGroup]="firstFormGroup">
+              <ng-template matStepLabel>Signup</ng-template>
+              <mat-form-field class="halfWidth">
+                <input matInput type="text" placeholder="First name" required formControlName="firstCtrl">
+              </mat-form-field>
+              <mat-form-field class="halfWidth">
+                <input matInput type="text" placeholder="Last name" required formControlName="firstCtrl">
+              </mat-form-field>
+              <mat-form-field class="fullWidth">
+                <input matInput type="email" placeholder="Your email address" required formControlName="firstCtrl">
+              </mat-form-field>
+              <mat-form-field class="halfWidth">
+                <input matInput type="password" placeholder="Password" required formControlName="firstCtrl">
+              </mat-form-field>
+              <mat-form-field class="halfWidth">
+                <input matInput type="text" placeholder="Confirm" required formControlName="firstCtrl">
+              </mat-form-field>
+              <app-content>
+                <button mat-button matStepperNext class="maxButton">Next</button>
+                <app-whitespace></app-whitespace>
+                <mat-hint align="center">By continuing, you are agreeing to our Customer Terms of Services, Privacy
+                  Policy and Cookie Policy.
+                </mat-hint>
+              </app-content>
+            </form>
+          </mat-step>
+          <mat-step [stepControl]="secondFormGroup">
+            <form [formGroup]="secondFormGroup">
+              <ng-template matStepLabel>Verify</ng-template>
+              <mat-form-field class="fullWidth">
+                <input matInput type="password" placeholder="Your verification code" required
+                       formControlName="secondCtrl">
+              </mat-form-field>
+              <app-content>
+                <button mat-button matStepperNext class="maxButton">Next</button>
+                <app-whitespace></app-whitespace>
+                <mat-hint align="start">Please check your email inbox and click on the registration link or enter the
+                  code to confirm that it is you.
+                </mat-hint>
+              </app-content>
+            </form>
+          </mat-step>
+          <mat-step>
+            <ng-template matStepLabel>Profile</ng-template>
+            <mat-form-field class="halfWidth">
+              <input matInput type="text" placeholder="Display name" required>
+            </mat-form-field>
+            <mat-form-field class="halfWidth">
+              <input matInput type="tel" placeholder="Phone number">
+            </mat-form-field>
+            <mat-form-field class="fullWidth">
+              <input matInput type="email" placeholder="Your slogan">
+            </mat-form-field>
+            <button mat-button>Upload Picture</button>
+            <app-content>
+              <button mat-button matStepperNext class="maxButton">Complete</button>
+              <app-whitespace></app-whitespace>
+              <mat-hint align="start">Make it for your colleagues and friends easy to recognize you.</mat-hint>
+            </app-content>
+          </mat-step>
+        </mat-horizontal-stepper>
+      </app-card-form>
+    </app-content>
+  </div>
+</div>

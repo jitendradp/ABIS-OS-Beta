@@ -14,6 +14,9 @@ export class CardStoreComponent {
   isInstalled: boolean;
 
   @Input()
+  isDisabled: boolean;
+
+  @Input()
   subtitle: string;
 
   @Input()
