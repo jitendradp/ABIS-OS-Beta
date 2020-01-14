@@ -57,7 +57,7 @@ export class AccountService {
     , private clientState: ClientStateService
     , private apollo: Apollo) {
 
-    // TODO: this seems to be a bit hacky,, does the service really need to subscribe to its own events to know that?
+    // TODO: this seems to be a bit hacky, does the service really need to subscribe to its own events to know that?
     this.actionDispatcher.onAction.subscribe(action => {
       if (action instanceof LoginStateChanged) {
         this._isLoggedOn = action.newValue == 1;

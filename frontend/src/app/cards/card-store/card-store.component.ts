@@ -11,7 +11,7 @@ export class CardStoreComponent {
   title: string;
 
   @Input()
-  installStatus: string;
+  isInstalled: boolean;
 
   @Input()
   subtitle: string;
@@ -20,7 +20,7 @@ export class CardStoreComponent {
   publisher: string;
 
   @Input()
-  website: string;
+  team: string;
 
   @Input()
   description: string;
@@ -29,9 +29,9 @@ export class CardStoreComponent {
   logo: string;
 
   @Input()
-  buttonTitle: string;
+  setupLink: string;
 
   @Input()
-  buttonLink: string;
+  discoverLink: string;
 
 }

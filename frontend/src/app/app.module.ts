@@ -61,12 +61,11 @@ import {ChannelEditorComponent} from './editors/channel-editor/channel-editor.co
 import {GraphQLModule} from './graphql.module';
 import {HttpClientModule} from '@angular/common/http';
 import {CardIntroComponent} from "./cards/card-intro/card-intro.component";
-import {TeamsComponent} from "./widgets/chat/teams/teams.component";
 import {NavigationComponent} from "./pages/system/navigation/navigation.component";
 import {SwitchProfileComponent} from './pages/system/switch-profile/switch-profile.component';
 import {LogoutComponent} from './pages/system/logout/logout.component';
 import {IAction} from "./actions/IAction";
-import {ExplorerComponent} from "./pages/explorer/explorer.component";
+import {TeamsComponent} from "./pages/teams/teams.component";
 import {TeamEditorComponent} from "./editors/team-editor/team-editor.component";
 import {AvatarsComponent} from "./components/avatars/avatars.component";
 import {CardMessageComponent} from "./cards/card-message/card-message.component";
@@ -187,7 +186,7 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'explorer', component: ExplorerComponent, data: {
+    path: 'teams', component: TeamsComponent, data: {
       "title": "Teams",
       "actions": defaultActions
     }
@@ -231,11 +230,10 @@ const appRoutes: Routes = [
     ChatComponent,
     ChannelEditorComponent,
     CardIntroComponent,
-    TeamsComponent,
     NavigationComponent,
     SwitchProfileComponent,
     LogoutComponent,
-    ExplorerComponent,
+    TeamsComponent,
     TeamEditorComponent,
     AvatarsComponent,
     CardMessageComponent,

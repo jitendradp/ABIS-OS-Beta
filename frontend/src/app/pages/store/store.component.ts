@@ -7,11 +7,10 @@ export interface storeItem {
   status: string;
   publisher: string;
   description: string;
-  website: string;
-
-  //todo if status is "installed" show different button title and link
-  buttonTitle: string;
-  buttonLink: string;
+  team: string;
+  setupLink: string;
+  discoverLink: string;
+  isInstalled: boolean;
 }
 
 @Component({
@@ -21,7 +20,7 @@ export interface storeItem {
 })
 export class StoreComponent {
 
-  //todo implement from storeItemService
+  //todo implement the following array to the store-item.service.ts
 
   items: storeItem[] = [
     {
@@ -31,31 +30,46 @@ export class StoreComponent {
       status: 'Deployed',
       publisher: 'Apowi - Campus Essen',
       description: 'Discover monthly results from surveys of more than 800 local pharmacies all around Germany.',
-      website: 'https://apowi.net/',
-      buttonTitle: 'Discover',
-      buttonLink: '/map',
+      team: '/team',
+      setupLink: '/map',
+      discoverLink: '/map',
+      isInstalled: true,
     },
     {
       name: 'Smart Crypto App',
-      shortDescription: 'Your portfolio simulation for crypto currency markets',
+      shortDescription: 'Crypto currency markets watch',
       logo: '',
       status: 'Setup',
       publisher: 'DynaGroup Information Technologies GmbH',
-      description: 'Discover worldwide crypto markets and boost your portfolio analysis.',
-      website: 'https://www.dynagroup.de/',
-      buttonTitle: 'Setup',
-      buttonLink: '/map',
+      description: 'Discover worldwide crypto currency markets and run simulations to analyze your portfolio.',
+      team: '/team',
+      setupLink: '/map',
+      discoverLink: '/map',
+      isInstalled: false,
     },
     {
-      name: 'Smart Budget Controlling App',
-      shortDescription: 'Your portfolio simulation for crypto currency markets',
+      name: 'Smart Budget App',
+      shortDescription: 'Allocate and monitor your team budgets',
       logo: './assets/logos/munichMotorsport.png',
       status: 'Setup',
-      publisher: 'municHMotorsport e.V.',
-      description: 'Discover worldwide crypto markets and boost your portfolio analysis.',
-      website: 'https://www.munichmotorsport.de/',
-      buttonTitle: 'Setup',
-      buttonLink: '/map',
+      publisher: 'munichMotorsport e.V.',
+      description: 'Manage your budgets and monitor all expenses your team made. Stay aligned with your targets.',
+      team: '/team',
+      setupLink: '/map',
+      discoverLink: '/map',
+      isInstalled: false,
+    },
+    {
+      name: 'Smart Facebook Reporting App',
+      shortDescription: 'Monitor and control your facebook campaigns',
+      logo: './assets/logos/socialmediapirates.png',
+      status: 'Setup',
+      publisher: 'Socialmedia Piraten UG',
+      description: 'Monitor and control your social media campaigns on facebook pages and facebook ads.',
+      team: '/team',
+      setupLink: '/map',
+      discoverLink: '/map',
+      isInstalled: false,
     },
   ];
 }

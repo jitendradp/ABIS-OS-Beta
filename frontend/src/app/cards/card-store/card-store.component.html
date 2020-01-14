@@ -1,41 +1,17 @@
 <mat-card style="border-radius: 0">
-  <!--<img mat-card-image src="{{image}}"
-       onError="this.src='./assets/error-images/picture.png';">-->
   <mat-card-header>
-    <img mat-card-avatar src="{{logo}}"
-         onError="this.src='./assets/error-images/picture.png';">
+    <app-logo mat-card-avatar [url]=logo></app-logo>
     <mat-card-title>{{title}}</mat-card-title>
     <mat-card-subtitle>{{subtitle}}</mat-card-subtitle>
   </mat-card-header>
   <mat-divider></mat-divider>
   <app-whitespace></app-whitespace>
   <mat-card-content>
-    <!--<div fxLayout
-         fxLayout.xs="column"
-         fxLayoutAlign="left"
-         fxLayoutGap="0px"
-         fxLayoutGap.xs="0">
-      <div fxFlex="25%">
-        <mat-icon class="iconSpaceRight">shopping_cart</mat-icon>
-        {{subscription}}
-      </div>
-      <div fxFlex="25%">
-        <mat-icon class="iconSpaceRight">cloud_download</mat-icon>
-        {{installsCount}} Installs
-      </div>
-      <div fxFlex="25%">
-        <mat-icon class="iconSpaceRight">money</mat-icon>
-        {{pricePerMonth}} € per user
-      </div>
-      <div fxFlex="25%">
-        <mat-icon class="iconSpaceRight">autorenew</mat-icon>
-        {{autoRenew}} renew
-      </div>
-    </div>-->
-    <p>{{description}}</p>{{installStatus}}
-    <small><a href="{{website}}" target="_blank" style="text-decoration: none">{{publisher}}</a></small>
+    <p>{{description}}</p>
+    <small><a routerLink="{{team}}" style="text-decoration: none">{{publisher}}</a></small>
   </mat-card-content>
   <mat-card-actions>
-    <app-button routerLink="{{buttonLink}}" [text]="buttonTitle"></app-button>
+    <app-button *ngIf="isInstalled" routerLink="{{discoverLink}}" [text]="'Discover'"></app-button>
+    <app-button *ngIf="!isInstalled" routerLink="{{setupLink}}" [text]="'Setup'"></app-button>
   </mat-card-actions>
 </mat-card>
