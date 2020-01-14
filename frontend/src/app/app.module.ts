@@ -85,6 +85,7 @@ import {ChartSankeyComponent} from "./charts/chart-sankey/chart-sankey.component
 import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
 import {DeviceDetectorModule} from "ngx-device-detector";
 import {ClusterPopupComponent} from "./pages/map/cluster-popup/cluster-popup.component";
+import {AgGridModule} from "ag-grid-angular";
 
 const defaultActions: IAction[] = [<SetVisibility>{
   name: SetVisibility.Name,
@@ -296,6 +297,7 @@ const appRoutes: Routes = [
     FormsModule,
     MatCheckboxModule,
     MatProgressBarModule,
+    AgGridModule.withComponents([]),
     MatTooltipModule,
     MatPaginatorModule,
     NgxMapboxGLModule.withConfig({

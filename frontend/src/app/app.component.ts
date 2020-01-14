@@ -83,11 +83,17 @@ export class AppComponent {
         }
         break;
       case SetVisibility.Name:
-        let visibility:boolean = false;
+        let visibility: boolean = false;
         switch (action.state) {
-          case "visible": visibility = true; break;
-          case "invisible": visibility = false; break;
-          default: visibility = undefined; break;
+          case "visible":
+            visibility = true;
+            break;
+          case "invisible":
+            visibility = false;
+            break;
+          default:
+            visibility = undefined;
+            break;
         }
         if (action.side == "left") {
           this.left.toggle(visibility);
