@@ -88,6 +88,7 @@ import {AgGridModule} from "ag-grid-angular";
 import {EditorPortfolioComponent} from "./editors/editor-portfolio/editor-portfolio.component";
 import {SmartCryptoAppComponent} from "./smartapps/smart-crypto-app/smart-crypto-app.component";
 import {CardPortfolioComponent} from "./cards/card-portfolio/card-portfolio.component";
+import {CardProfileComponent} from "./cards/card-profile/card-profile.component";
 
 const defaultActions: IAction[] = [<SetVisibility>{
   name: SetVisibility.Name,
@@ -261,6 +262,7 @@ const appRoutes: Routes = [
     EditorPortfolioComponent,
     SmartCryptoAppComponent,
     CardPortfolioComponent,
+    CardProfileComponent,
   ],
   imports: [
     RouterModule.forRoot(

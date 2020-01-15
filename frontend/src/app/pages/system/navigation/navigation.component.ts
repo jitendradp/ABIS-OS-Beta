@@ -1,6 +1,4 @@
 import {Component} from '@angular/core';
-import {Profile_oldService} from "../../../services/profile_old.service";
-import {DataspaceService} from "../../../services/dataspace.service";
 import {ActionDispatcherService} from "../../../services/action-dispatcher.service";
 import {SetVisibility} from "../../../actions/ui/sidebar/SetVisibility";
 
@@ -11,11 +9,7 @@ import {SetVisibility} from "../../../actions/ui/sidebar/SetVisibility";
 })
 export class NavigationComponent {
 
-  public dataspace = this.dataspaceService.getDataspaceInformation();
-
   constructor(
-    public profileService: Profile_oldService,
-    private dataspaceService: DataspaceService,
     private actionDispatcher: ActionDispatcherService,
   ) {
   }

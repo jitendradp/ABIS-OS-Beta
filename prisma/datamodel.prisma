@@ -37,7 +37,10 @@ type Profile {
 	name: String!											# The profile's display name
 	timezone: String										# The profile's local timezone ("UTC +0" - if not set, the user's timezone should be used)
 	status: StatusType!                                     # Every profile has a current status
-	slogan: String											# A displayed slogan as text ("Discover the world ::coffee::")
+	type: ProfileType!                                      # The user can set a type for this profile
+	isHidden: Boolean!                                      # If true, then the profile can't be found within the global search
+	isBot: Boolean!                                         # Indicates if the profile is a human or machine
+	slogan: String											# A displayed slogan as text ("Exploring the world ::coffee::")
 	picture: String!										# The url of a path to an image file ("./path/file.png")
 	memberships: [Membership!]!								# Memberships in groups (chaos; general)
 	location: Location										# A location in the real world has to be set to store the data there (Munich)
@@ -48,6 +51,11 @@ enum StatusType {
 	Offline					    							# The profile is offline so not reachable
 	Online											        # The profile is online and reachable
 	Away												    # The profile is off the keyboard but notification is on
+}
+
+enum ProfileType {
+	Work											        # The profile is available but notification is off
+	Private					    							# The profile is offline so not reachable
 }
 
 # Groups where users or bots are member of

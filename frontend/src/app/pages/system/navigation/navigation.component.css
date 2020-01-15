@@ -1,28 +1,3 @@
-.embeddableProfile {
-  border-radius: 0;
-  box-shadow: none;
-}
-
-
-/* todo dynamic status indicator for the profile picture */
-.profilePicture {
-  width: 48px;
-  height: 48px;
-  border: solid #2ecc71 3px;
-}
-
-.embeddableDataspace {
-  border-radius: 0;
-  box-shadow: none;
-  height: 42px;
-}
-
-.fill-remaining-space {
-  /* This fills the remaining space, by using flexbox.
-     Every toolbar row uses a flexbox row layout. */
-  flex: 1 1 auto;
-}
-
 .mat-list-base {
   padding-top: unset;
 }

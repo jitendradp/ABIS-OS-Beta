@@ -1,6 +1,5 @@
 import {Component, Input, ViewChild} from '@angular/core';
 import {Profile_oldService} from "./services/profile_old.service";
-import {DataspaceService} from "./services/dataspace.service";
 import {AccountService} from "./services/account.service";
 import {MatDrawer} from "@angular/material/sidenav";
 import {
@@ -29,6 +28,7 @@ import {CommandComponent} from "./widgets/command/command.component";
 import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {RouteChanged} from "./actions/routes/RouteChanged";
+import {ProfileService} from "./services/profile.service";
 
 @Component({
   selector: 'app-root',
@@ -47,13 +47,11 @@ export class AppComponent {
 
   title = 'ABIS';
 
-  public dataspace = this._dataspaceService.getDataspaceInformation();
-
   actions: IEvent[] = [];
 
   constructor(
     protected profileService: Profile_oldService,
-    private _dataspaceService: DataspaceService,
+    private _profileService: ProfileService,
     private _accountService: AccountService,
     private _router: Router,
     private _actionDispatcher: ActionDispatcherService,
