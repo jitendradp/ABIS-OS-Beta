@@ -20,8 +20,8 @@ export type Scalars = {
 };
 
 
-export type AccountInformation = {
-  __typename?: 'AccountInformation',
+export type UserInformation = {
+  __typename?: 'UserInformation',
   id: Scalars['String'],
   createdAt: Scalars['String'],
   name: Scalars['String'],
@@ -265,7 +265,7 @@ export type Query = {
   myWorkspaces: Array<Group>,
   myMemberships: Array<Membership>,
   getSessionProfile?: Maybe<Profile>,
-  getAccountInformation?: Maybe<AccountInformation>,
+  getUserInformation?: Maybe<UserInformation>,
   listProfiles: Array<Profile>,
   listWorkspaces: Array<Group>,
   listMemberships: Array<Membership>,
@@ -291,7 +291,7 @@ export type QueryGetSessionProfileArgs = {
 };
 
 
-export type QueryGetAccountInformationArgs = {
+export type QueryGetUserInformationArgs = {
   csrfToken: Scalars['String']
 };
 
@@ -518,17 +518,17 @@ export type UpdateProfileMutation = (
   & Pick<Mutation, 'updateProfile'>
   );
 
-export type GetAccountInformationQueryVariables = {
+export type GetUserInformationQueryVariables = {
   csrfToken: Scalars['String']
 };
 
 
-export type GetAccountInformationQuery = (
+export type GetUserInformationQuery = (
   { __typename?: 'Query' }
   & {
-  getAccountInformation: Maybe<(
-    { __typename?: 'AccountInformation' }
-    & Pick<AccountInformation, 'id' | 'createdAt' | 'name'>
+  getUserInformation: Maybe<(
+    { __typename?: 'UserInformation' }
+    & Pick<UserInformation, 'id' | 'createdAt' | 'name'>
     )>
 }
   );
@@ -918,9 +918,9 @@ export class UpdateProfileGQL extends Apollo.Mutation<UpdateProfileMutation, Upd
 
 }
 
-export const GetAccountInformationDocument = gql`
-    query getAccountInformation($csrfToken: String!) {
-  getAccountInformation(csrfToken: $csrfToken) {
+export const GetUserInformationDocument = gql`
+    query getUserInformation($csrfToken: String!) {
+  getUserInformation(csrfToken: $csrfToken) {
     id
     createdAt
     name
@@ -931,8 +931,8 @@ export const GetAccountInformationDocument = gql`
 @Injectable({
   providedIn: 'root'
 })
-export class GetAccountInformationGQL extends Apollo.Query<GetAccountInformationQuery, GetAccountInformationQueryVariables> {
-  document = GetAccountInformationDocument;
+export class GetUserInformationGQL extends Apollo.Query<GetUserInformationQuery, GetUserInformationQueryVariables> {
+  document = GetUserInformationDocument;
 
 }
 

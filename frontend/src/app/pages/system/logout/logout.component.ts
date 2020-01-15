@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {AccountService} from "../../../services/account.service";
+import {UserService} from "../../../services/user.service";
 import {ActionDispatcherService} from "../../../services/action-dispatcher.service";
 import {Home} from "../../../actions/routes/Home";
 
@@ -10,7 +10,7 @@ import {Home} from "../../../actions/routes/Home";
 })
 export class LogoutComponent implements OnInit {
 
-  constructor(private accountService:AccountService,
+  constructor(private userService:UserService,
               private actionDispatcher:ActionDispatcherService)
 
   { }
@@ -18,7 +18,7 @@ export class LogoutComponent implements OnInit {
   message:string = "Please wait while we log you out of ABIS ..";
 
   private logout() {
-    this.accountService.logout().then(o => this.actionDispatcher.dispatch(new Home()));
+    this.userService.logout().then(o => this.actionDispatcher.dispatch(new Home()));
   }
 
   ngOnInit() {

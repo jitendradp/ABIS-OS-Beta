@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {CreateProfileGQL, GetProfileGQL, ListProfilesGQL, Profile, UpdateProfileGQL} from "../../generated/abis-api";
 import {Logger, LoggerService, LogSeverity} from "./logger.service";
-import {AccountService} from "./account.service";
+import {UserService} from "./user.service";
 import {ActionDispatcherService} from "./action-dispatcher.service";
-import {SessionProfileChanged} from "../actions/account/SessionProfileChanged";
+import {SessionProfileChanged} from "../actions/user/SessionProfileChanged";
 
 export type ProfileInformation = {
   name: string,
@@ -38,7 +38,7 @@ export class Profile_oldService {
     , private updateProfileApi: UpdateProfileGQL
     , private listProfilesApi: ListProfilesGQL
     , private getProfileApi: GetProfileGQL
-    , private accountService: AccountService
+    , private userService: UserService
     , private actionDispatcher: ActionDispatcherService
     , private loggerService: LoggerService) {
     this.actionDispatcher.onAction.subscribe(event => {
@@ -63,7 +63,7 @@ export class Profile_oldService {
    */
   public createProfile(name: string, picture?: string, timezone?: string): Promise<string> {
     return this.createProfileApi.mutate({
-      csrfToken: this.accountService.csrfToken,
+      csrfToken: this.userService.csrfToken,
       name,
       picture,
       timezone
@@ -80,7 +80,7 @@ export class Profile_oldService {
 
   updateProfile(profileId: string, name: string, picture?: string, timezone?: string): Promise<boolean> {
     return this.updateProfileApi.mutate({
-      csrfToken: this.accountService.csrfToken,
+      csrfToken: this.userService.csrfToken,
       profileId,
       name,
       picture,
@@ -99,7 +99,7 @@ export class Profile_oldService {
   }
 
   listProfiles(): Promise<Profile[]> {
-    return this.listProfilesApi.fetch({csrfToken: this.accountService.csrfToken})
+    return this.listProfilesApi.fetch({csrfToken: this.userService.csrfToken})
       .toPromise()
       .then(result => {
         return result.data.listProfiles;
@@ -113,7 +113,7 @@ export class Profile_oldService {
 
   getProfile(profileId: string): Promise<Profile> {
     return this.getProfileApi.fetch({
-      csrfToken: this.accountService.csrfToken,
+      csrfToken: this.userService.csrfToken,
       profileId
     })
       .toPromise()

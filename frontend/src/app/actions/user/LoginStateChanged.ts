@@ -6,7 +6,7 @@ export enum LoginState {
 }
 
 export class LoginStateChanged extends ChangeAction<LoginState> {
-  public static readonly Name: string = "Abis.Account.LoginsStateChanged";
+  public static readonly Name: string = "Abis.User.LoginsStateChanged";
 
   constructor(oldValue:LoginState, newValue:LoginState) {
     super(LoginStateChanged.Name, oldValue, newValue);

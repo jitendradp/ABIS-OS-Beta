@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Profile_oldService} from "../../../services/profile_old.service";
-import {AccountService} from "../../../services/account.service";
+import {UserService} from "../../../services/user.service";
 
 @Component({
   selector: 'app-profile',
@@ -10,16 +10,16 @@ import {AccountService} from "../../../services/account.service";
 export class ProfileComponent implements OnInit {
 
   public profile:{name?:string,job?:string,slogan?:string,phone?:string} = {};
-  public account:{name?:string} = {};
+  public user:{name?:string} = {};
 
   constructor(
     private _profileService: Profile_oldService,
-    private _accountService: AccountService
+    private _userService: UserService
   ) {
   }
 
   ngOnInit() {
-    this.account = this._accountService.accountInformation
+    this.user = this._userService.userInformation
   }
 
 }

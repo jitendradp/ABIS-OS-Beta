@@ -1,6 +1,6 @@
 import {Component, Input, ViewChild} from '@angular/core';
 import {Profile_oldService} from "./services/profile_old.service";
-import {AccountService} from "./services/account.service";
+import {UserService} from "./services/user.service";
 import {MatDrawer} from "@angular/material/sidenav";
 import {
   ActivationEnd,
@@ -52,7 +52,7 @@ export class AppComponent {
   constructor(
     protected profileService: Profile_oldService,
     private _profileService: ProfileService,
-    private _accountService: AccountService,
+    private _userService: UserService,
     private _router: Router,
     private _actionDispatcher: ActionDispatcherService,
     public _dialog: MatDialog,

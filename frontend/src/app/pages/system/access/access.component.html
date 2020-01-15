@@ -7,7 +7,7 @@
   <div fxFlex='auto' fxFlex.gt-md='50' fxFlex.gt-sm='80'>
     <app-content>
       <app-card-intro
-        *ngIf="!_accountService.isLoggedOn"
+        *ngIf="!_userService.isLoggedOn"
         [image]="'./assets/banners/access-cockpit.jpg'"
         [logo]="'./assets/logos/abis-logo.png'"
         [description]="'The collaborative dataspace to discover, share and discuss facts within your teams. ABIS links smart data and businesses with AI. Welcome to the decentralized and social network for the good in the world.'"
@@ -22,10 +22,10 @@
         <p>By using this website you are ok with, beeing tracked by google analytics and hotjar. Please try the feedback box to give us your information.</p>
       </div>
       <app-card-intro
-        *ngIf="_accountService.isLoggedOn"
+        *ngIf="_userService.isLoggedOn"
         [image]="'./assets/banners/access-cockpit.jpg'"
         [logo]="'./assets/logos/abis-logo.png'"
-        [description]="'Welcome back ' + _accountService.accountInformation.name + '!'"
+        [description]="'Welcome back ' + _userService.userInformation.name + '!'"
         [title]="'ABIS Analytics Cloud'">
         Pick up where you left off:<br/>
         <ul>
