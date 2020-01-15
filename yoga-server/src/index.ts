@@ -1,13 +1,13 @@
 import { GraphQLServer } from 'graphql-yoga'
 import { prisma } from './generated'
-import {AccountMutations} from "./mutations/account/accountMutations";
+import {UserMutations} from "./mutations/user/userMutations";
 import {ProfileMutations} from "./mutations/profiles/profileMutations";
 import {GroupMutations} from "./mutations/groups/groupMutations";
 import {ContextParameters} from "graphql-yoga/dist/types";
 import {GroupQueries} from "./queries/groups/groupQueries";
 import {ProfileQueries} from "./queries/profiles/profileQueries";
 import {config} from "./config";
-import {AccountQueries} from "./queries/account/accountQueries";
+import {UserQueries} from "./queries/user/userQueries";
 var cookie = require('cookie');
 
 const resolvers = {
@@ -42,28 +42,28 @@ const resolvers = {
     async getWorkspace(root, {csrfToken, workspaceId}, ctx) {
       return GroupQueries.getWorkspace(csrfToken, ctx.authToken, workspaceId);
     },
-    async getAccountInformation(root, {csrfToken}, ctx) {
-      return AccountQueries.getAccountInformation(csrfToken, ctx.authToken);
+    async getUserInformation(root, {csrfToken}, ctx) {
+      return UserQueries.getUserInformation(csrfToken, ctx.authToken);
     }
   },
   Mutation: {
     async signup(root, {name, email, password}, ctx) {
-      return AccountMutations.createUser(name, email, password);
+      return UserMutations.createUser(name, email, password);
     },
     async verifyEmail(root, {code}, ctx) {
-      return AccountMutations.verifyEmail(code, ctx.request);
+      return UserMutations.verifyEmail(code, ctx.request);
     },
     async verifySession(root, {csrfToken}, ctx) {
-      return AccountMutations.verifySession(csrfToken, ctx.authToken, ctx.request);
+      return UserMutations.verifySession(csrfToken, ctx.authToken, ctx.request);
     },
     async login(root, {email, password}, ctx) {
-      return AccountMutations.login(email, password, ctx.request);
+      return UserMutations.login(email, password, ctx.request);
     },
     async logout(root, {csrfToken}, ctx) {
-      return AccountMutations.logout(csrfToken, ctx.authToken, ctx.request);
+      return UserMutations.logout(csrfToken, ctx.authToken, ctx.request);
     },
     async setSessionProfile(root, {csrfToken, profileId}, ctx) {
-      return AccountMutations.setSessionProfile(csrfToken, ctx.authToken, profileId);
+      return UserMutations.setSessionProfile(csrfToken, ctx.authToken, profileId);
     },
     async createProfile(root, {csrfToken, name, picture, timezone}, ctx) {
       return ProfileMutations.createProfile(csrfToken, ctx.authToken, name, picture, timezone);

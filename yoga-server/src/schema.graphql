@@ -1,6 +1,6 @@
 scalar Json
 
-type AccountInformation {
+type UserInformation {
     id: String!
     createdAt: String!
     name: String!
@@ -134,7 +134,7 @@ type Query {
     myWorkspaces(csrfToken:String!):[Group!]!
     myMemberships(csrfToken:String!):[Membership!]!
     getSessionProfile(csrfToken:String!):Profile
-    getAccountInformation(csrfToken:String!):AccountInformation
+    getUserInformation(csrfToken:String!):UserInformation
     listProfiles(csrfToken:String!): [Profile!]!
     listWorkspaces(csrfToken:String! profileId:String!): [Group!]!
     listMemberships(csrfToken:String! profileId:String!): [Membership!]!

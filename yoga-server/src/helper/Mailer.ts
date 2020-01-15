@@ -30,12 +30,12 @@ export class Mailer {
         return Mailer.sendMail(user.email, "Your ABIS verification code", user.challenge, user.challenge);
     }
 
-    public static async sendAccountReminder(user:User) : Promise<void> {
+    public static async sendUserReminder(user:User) : Promise<void> {
         // TODO: Use proper mail template
-        const txt = "You already have an account at ABIS. " +
+        const txt = "You already have an user at ABIS. " +
             "Simply use your email address and password to login." +
             "If you forgot your password, please use the 'Password reset' link on our login page:" +
             "https://!§$%&/()=?.com";
-        return Mailer.sendMail(user.email, "Abis account reminder", txt, txt);
+        return Mailer.sendMail(user.email, "Abis user reminder", txt, txt);
     }
 }
