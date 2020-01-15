@@ -1,5 +1,5 @@
 import {Component, Input, ViewChild} from '@angular/core';
-import {ProfileService} from "./services/profile.service";
+import {Profile_oldService} from "./services/profile_old.service";
 import {DataspaceService} from "./services/dataspace.service";
 import {AccountService} from "./services/account.service";
 import {MatDrawer} from "@angular/material/sidenav";
@@ -52,7 +52,7 @@ export class AppComponent {
   actions: IEvent[] = [];
 
   constructor(
-    protected profileService: ProfileService,
+    protected profileService: Profile_oldService,
     private _dataspaceService: DataspaceService,
     private _accountService: AccountService,
     private _router: Router,

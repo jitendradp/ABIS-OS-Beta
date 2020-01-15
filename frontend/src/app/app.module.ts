@@ -45,7 +45,7 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {NgxEchartsModule} from "ngx-echarts";
 import {StudioComponent} from './pages/studio/studio.component';
-import {ProfileService} from "./services/profile.service";
+import {Profile_oldService} from "./services/profile_old.service";
 import {CockpitComponent} from './pages/cockpit/cockpit.component';
 import {MapComponent} from './pages/map/map.component';
 import {InviteComponent} from './pages/system/invite/invite.component';
@@ -315,7 +315,7 @@ const appRoutes: Routes = [
       geocoderAccessToken: 'pk.eyJ1IjoiZGF2ZXdhdmVhYmlzY2xvdWQiLCJhIjoiY2s0eXYycjhzMDRhczNkbXF6dzNkMzlzayJ9.nyAc-uTfNfDTF0lxmZ3a3Q' // Optionnal, specify if different from the map access token, can also be set per mgl-geocoder (accessToken input of mgl-geocoder)
     })
   ],
-  providers: [ProfileService],
+  providers: [Profile_oldService],
   entryComponents: [SearchComponent],
   bootstrap: [AppComponent]
 })
