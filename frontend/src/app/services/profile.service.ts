@@ -20,7 +20,7 @@ export type ProfileInformation = {
 
 export class ProfileService {
   public profileInformation: ProfileInformation = {
-    "displayName": "Tom",
+    "displayName": "tomsawyer88",
     "timezone": "UTC +1",
     "slogan": "Exploring the world",
     "picture": "https://media.wired.com/photos/598e35fb99d76447c4eb1f28/1:1/w_722,h_722,c_limit/phonepicutres-TA.jpg",

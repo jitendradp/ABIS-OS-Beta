@@ -38,8 +38,8 @@ type Profile {
 	timezone: String										# The profile's local timezone ("UTC +0" - if not set, the user's timezone should be used)
 	status: StatusType!                                     # Every profile has a current status
 	type: ProfileType!                                      # The user can set a type for this profile
-	isHidden: Boolean!                                      # If true, then the profile can't be found within the global search
-	isBot: Boolean!                                         # Indicates if the profile is a human or machine
+	is_hidden: Boolean!	                                    # If true, then the profile can't be found within the global search
+	is_bot: Boolean!                                        # Indicates if the profile is a human or machine
 	slogan: String											# A displayed slogan as text ("Exploring the world ::coffee::")
 	picture: String!										# The url of a path to an image file ("./path/file.png")
 	memberships: [Membership!]!								# Memberships in groups (chaos; general)
@@ -47,15 +47,15 @@ type Profile {
 }
 
 enum StatusType {
-	Busy											        # The profile is available but notification is off
+	Busy											        # The profile is available but notification is turned off
 	Offline					    							# The profile is offline so not reachable
 	Online											        # The profile is online and reachable
-	Away												    # The profile is off the keyboard but notification is on
+	Away												    # The profile is off the keyboard but notification is turned on
 }
 
 enum ProfileType {
-	Work											        # The profile is available but notification is off
-	Private					    							# The profile is offline so not reachable
+	Work											        # A work profile costs money
+	Private					    							# A private profile is free of charge
 }
 
 # Groups where users or bots are member of
@@ -63,9 +63,9 @@ type Membership {
 	id: ID! @id @unique
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime @updatedAt
-	member: Profile!										# The profile either bot or human (johanhenning)
-	group: Group!											# The group of membership  (general)
-	show_history: Boolean!									# To show the new member the history too ("true")
+	member: Profile!										# The profile either bot or human
+	group: Group!											# The group where the profile is a member of
+	show_history: Boolean!									# To show a new member the history of messages
 }
 
 # A unique space that groups resources, events and messages around user and bot profiles
@@ -73,13 +73,13 @@ type Group {
 	id: ID! @id @unique
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime @updatedAt
-	host: Profile!											# The host profile of the group (davepatrickchang)
-	name: String!											# The name of the group ("general")
-	title: String!											# ("Traffic Dashboard")
-	description: String!									# ("Analysiere deine Web Kennzahlen")
+	host: Profile!											# The host profile of the group
+	name: String!											# The name of the group
+	title: String!											# A optional title what the group is about
+	description: String!									# A short description what the group is about
 	logo: String!											# The url of a path to an image file ("./path/file-logo.png")
-    type: GroupType!									    # Different types or groups (DATASET)
-	parent: Group											# A group that has no parent is root (CHANNEL)
+    type: GroupType!									    # Different types or groups (e.g. Channel)
+	parent: Group											# A group that has no parent is root
 	is_hidden: Boolean!										# Is invisible for all other profiles outside this group ("false")
 	is_public: Boolean!										# Anyone can view and join your group ("false")
 	members: [Membership!]!									# Participants of this group (johanhenning; danieljanz)
@@ -89,10 +89,11 @@ type Group {
 }
 
 enum GroupType {
-	WORKSPACE											    # Groups users and bots for an working environment
-	TEAM					    							# Groups profiles to provide and access resources from a workspace
-	CONVERSATION											# Groups messages and events around at least two profiles
+	DATASPACE											    # Groups smart app instances, users and bots around a unique data storage
+	TEAM					    							# Groups profiles to provide and access resources from a dataspace
+	CHANNEL                                                 # Groups threads, messages and events around multiple profiles
 	THREAD												    # Groups comments on a message in a channel
+	CONVERSATION											# Groups messages and events around at least two profiles
 	FRIENDS												    # Groups friends of a profile
 }
 
