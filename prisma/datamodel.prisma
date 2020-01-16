@@ -58,7 +58,7 @@ enum ProfileType {
 	Private					    							# A private profile is free of charge
 }
 
-# Groups where users or bots are member of
+# The profile is participating in a group
 type Membership {
 	id: ID! @id @unique
 	createdAt: DateTime! @createdAt
@@ -71,24 +71,24 @@ type Membership {
 	show_history: Boolean!									# To show a new member the history of messages
 }
 
-# A unique space that groups resources, events and messages around user and bot profiles
+# Groups resources, events and messages around profiles
 type Group {
 	id: ID! @id @unique
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime @updatedAt
 	host: Profile!											# The host profile of the group
 	name: String!											# The name of the group
-	title: String!											# A optional title what the group is about
+	title: String!											# A prominent title what the group is about
 	description: String!									# A short description what the group is about
-	logo: String!											# The url of a path to an image file ("./path/file-logo.png")
-    type: GroupType!									    # Different types or groups (e.g. Channel)
+	logo: String!											# The url to an image file that makes it easier to recognize the group
+    type: GroupType!									    # Different types of groups
 	parent: Group											# A group that has no parent is root
-	is_hidden: Boolean!										# Is invisible for all other profiles outside this group ("false")
-	is_public: Boolean!										# Anyone can view and join your group ("false")
-	members: [Membership!]!									# Participants of this group (johanhenning; danieljanz)
-	messages: [Message!]!									# Old and new communication (NOTIFICATION, COMMENT)
-	tags: String											# Meta information for search ("Entwicklung", "Plannung", "Team")
-	location: Location										# A location in the real world has to be set to store the data there (Munich)
+	is_hidden: Boolean!										# When true, the group is invisible for all other profiles outside that group
+	is_public: Boolean!										# When true, any profile outside that group is allowed to join it
+	members: [Membership!]!									# Profiles that are participating in that group
+	messages: [Message!]!									# Events with a specific content
+	tags: String											# Meta information as hashes to classify the group
+	location: Location										# A location in the real world
 }
 
 enum GroupType {
@@ -107,32 +107,31 @@ type Location {
 	name: String											# A name that was given for a certain location
 	latitude: Float!										# Locates a point on a map from north to south
 	longitude: Float!										# Locates a point on a map from east to west
-	radius: Float											# The radius from the center of the location in meter
+	radius: Float											# The radius from the center of the location in meters
 }
 
-# Content that is sent from a sender to a recipient
+# Any content that was sent from a sender to a recipient
 type Message {
 	id: ID! @id @unique
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime @updatedAt
-	sender: Profile!										# The profile who created the message (Bot 123)
-	type: MessageType!										# Indicates the purpose of the message (NOTIFICATION)
-	parent: Message 										# A previous event if not then root (POST)
-	subject: String											# A human readable subject for a message ("I found a new dimension!")
-	content: Json											# The content of a message can be anything or empty ("Hello Dave here is...")
-	attachments: [Attachment!]!								# A can contain items (LINK; DOCUMENT)
-	reactions: [Reaction!]!									# A event can trigger multiple reactions (+1; Like)
-	tags: String											# Meta information for search ("Entwicklung", "Plannung", "Team")
-	location: Location										# A location in the real world has to be set to store the data there (Munich)
+	sender: Profile!										# The profile who created the message
+	type: MessageType!										# Indicates the purpose of the message
+	parent: Message 										# A previous event, if not then root
+	subject: String											# A human readable subject for a message
+	content: Json											# The content of a message can be anything or empty
+	attachments: [Attachment!]!								# A url to a file that is attached to the message
+	reactions: [Reaction!]!									# A event can trigger multiple reactions such as likes
+	tags: String											# Meta information as hashes to classify the message
 }
 
 # All data exchanged is expressed as an "event"
 enum MessageType {
 	NOTIFICATION											# A prominent information that is pushed to the user
 	DIRECT_MESSAGE											# The user profiles receives a direct chat message
-	COMMENT												    # A message that is commenting an other message within a thread
-	POST												    # Drop something on a group
-	CHART_FLAG											    # Send a new chart flag into a dashboard channel
+	COMMENT												    # A message as comment on another message within a thread
+	POST												    # Drops a message on a channel
+	CHART_FLAG											    # A message with a link to a filtered chart can be dropped in a channel or thread
 	TRAIL
 }
 
