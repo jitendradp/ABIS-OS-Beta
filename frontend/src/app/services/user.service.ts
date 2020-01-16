@@ -15,16 +15,26 @@ import {SessionProfileChanged} from "../actions/user/SessionProfileChanged";
 import {Apollo} from "apollo-angular";
 import {UserInformationChanged} from "../actions/user/UserInformationChanged";
 
+export type UserInformation = {
+  id: number,
+  createdAt: string,
+  email: string,
+  firstname: string,
+  lastname: string,
+};
+
+
 @Injectable({
   providedIn: 'root'
 })
+
 export class UserService {
   public userInformation: UserInformation = <any>{
-    id: "hello world",
+    id: 8989893943,
     createdAt: new Date().toISOString(),
-    email: "jess88@gmail.com",
-    firstname: "Jesscia",
-    lastname: "Cohen"
+    email: "tomcook@gmail.com",
+    firstname: "Thomas",
+    lastname: "Cook"
   };
 
   private readonly _log: Logger = this.loggerService.createLogger("UserService");
