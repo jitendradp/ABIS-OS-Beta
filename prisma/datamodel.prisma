@@ -29,7 +29,7 @@ type Session {
 	account: Account!                                       # The logged-on account
 	profile: Profile                                        # Each session can have an associated profile
 	location: Location										# A location in the real world to identify where the account has logged in from
-	lastIpAdress: String                                    # The ip adress that last used this session
+	lastIpAddress: String                                   # The ip address that last used this session
 }
 
 # Represents an account or bot in groups
@@ -115,12 +115,14 @@ type Tag {
 
 }
 
-## todo why updated at for the location?
+## todo [DC 20200117 11:20] why updated at for the location?
+## todo [DJ 20200117 22:08] maybe we should add a distinction between "geographic"- and "poi"-locations?!
 type Location {
 	id: ID! @id @unique
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime! @updatedAt							# Every location was uniquely tagged by someone
 	creator: Profile!										# The profile who created the location
+	type: LocationType!										# If the place is a concept of a place (e.g. someones address) or the real thing (a place on earth; maybe in space soon ;)
 	name: String											# A name that was given for a certain location
 	address: String                                         # The official address of that location
 	zip_code: String                                        # The official zip code of that location
@@ -132,6 +134,11 @@ type Location {
 	radius_meter: Float										# The radius from the center of the location in meters
 	tags: [Tag!]!											# Meta information as hashes to classify the object
 	visitors_count: Int                                     # The total number of accounts that visited location
+}
+
+enum LocationType {
+    GEOGRAPHIC,
+    POI
 }
 
 # Any content that was sent from a creator to a recipient
