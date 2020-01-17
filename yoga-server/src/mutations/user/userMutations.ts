@@ -1,5 +1,5 @@
 import {
-    prisma, SessionCreateInput, User
+    prisma, SessionCreateInput, Account
 } from "../../generated";
 import {Helpers} from "../../helper/Helpers";
 import {ResponseDelay} from "../../helper/ResponseDelay";
@@ -18,10 +18,10 @@ export class UserMutations {
     }
 
     /**
-     * Creates a new session and session csrfToken for the given user.
-     * @param user
+     * Creates a new session and session csrfToken for the given account.
+     * @param account
      */
-    private static async createSessionForUser(user): Promise<{ authToken: string, csrfToken: string }> {
+    private static async createSessionForAccount(account:Account): Promise<{ authToken: string, csrfToken: string }> {
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
 
@@ -33,9 +33,9 @@ export class UserMutations {
             csrfToken: csrfToken,
             authToken: authToken,
             validTo: tomorrow,
-            user: {
+            account: {
                 connect: {
-                    id: user.id
+                    id: account.id
                 }
             },
             profile: null
@@ -49,40 +49,41 @@ export class UserMutations {
     }
 
     /**
-     * Creates a new user user. When the email address is already used, the owner will be notified via email.
+     * Creates a new account account. When the email address is already used, the owner will be notified via email.
      * @param name
      * @param email
      * @param password
      */
-    public static async createUser(name: string, email: string, password: string): Promise<string> {
+    public static async createAccount(firstName: string, lastName: string, email: string, password: string): Promise<string> {
         const delay = new ResponseDelay(config.auth.normalizedResponseTime);
 
-        let user = await prisma.user({email: email});
-        if (user) {
+        let account = await prisma.account({email: email});
+        if (account) {
             // noinspection ES6MissingAwait - Fire and forget to not block the request
-            Mailer.sendUserReminder(user);
+            Mailer.sendUserReminder(account);
             await delay.GetPromise();
-            this.abortInvalidRequest("There is already a registered user with the email address: " + email);
+            this.abortInvalidRequest("There is already a registered account with the email address: " + email);
         }
 
         const salt = await UserMutations.bcrypt.genSalt(config.auth.bcryptRounds);
         const hash = await UserMutations.bcrypt.hash(password, salt);
 
-        user = <User>{
+        account = <Account>{
             email: email.trim(),
-            name: name.trim(),
+            firstName: firstName.trim(),
+            lastName: lastName.trim(),
             is_verified: false,
             challenge: Helpers.getRandomBase64String(8),
             password_hash: hash,
             password_salt: salt,
-            timezone: "GMT" // TODO: Get proper user-timezone
+            timezone: "GMT" // TODO: Get proper account-timezone
         };
 
-        user.id = await prisma.createUser(user).id();
-        Helpers.log("Created a new user (id: " + user.id + ") for email address: " + email);
+        account.id = await prisma.createAccount(account).id();
+        Helpers.log("Created a new account (id: " + account.id + ") for email address: " + email);
 
         // noinspection ES6MissingAwait Should run in async fire and forget style so that it doesn't slow up the main logic
-        Mailer.sendEmailVerificationCode(user);
+        Mailer.sendEmailVerificationCode(account);
 
         // Wait some time before returning the response (500ms - runtime)
         await delay.GetPromise();
@@ -98,7 +99,7 @@ export class UserMutations {
      */
     public static async login(email: string, password: string, request: Request): Promise<string> {
         const delay = new ResponseDelay(config.auth.normalizedResponseTime);
-        const user = await prisma.user({email: email});
+        const user = await prisma.account({email: email});
 
         if (!user) {
             // Wait some time before returning the response (500ms - runtime)
@@ -107,7 +108,7 @@ export class UserMutations {
         }
 
         if (user.challenge) {
-            // Send another email verification message to remind the user
+            // Send another email verification message to remind the account
             // noinspection ES6MissingAwait Should run in async fire and forget style so that it doesn't slow up the main logic
             Mailer.sendEmailVerificationCode(user);
 
@@ -123,13 +124,13 @@ export class UserMutations {
             this.abortInvalidRequest("User " + user.id + " tried to log-in with an invalid password.");
         }
 
-        // If the user already got a valid session then use that
-        // TODO: Assign new sessions if the user logs-in with a new device
+        // If the account already got a valid session then use that
+        // TODO: Assign new sessions if the account logs-in with a new device
         const sessions = await CommonQueries.findUserSessions(user.id);
 
         // TODO: Is it useful to wait even if the credentials are correct?
         // await delay.GetPromise();
-        const session = sessions.length == 0 ? await UserMutations.createSessionForUser(user) : sessions[0];
+        const session = sessions.length == 0 ? await UserMutations.createSessionForAccount(user) : sessions[0];
 
         UserMutations.setAuthTokenCookie(session.authToken, request);
 
@@ -157,12 +158,12 @@ export class UserMutations {
     }
 
     public static async logout(csrfToken: string, authToken: string, request: Request): Promise<boolean> {
-        const sessionAndUser = await CommonQueries.findUserBySession(csrfToken, authToken);
+        const sessionAndUser = await CommonQueries.findAccountBySession(csrfToken, authToken);
         if (!sessionAndUser) {
             return false;
         }
 
-        const validSessions = await CommonQueries.findUserSessions(sessionAndUser.user.id);
+        const validSessions = await CommonQueries.findUserSessions(sessionAndUser.account.id);
 
         await Promise.all(
             validSessions.map(async o =>
@@ -188,16 +189,16 @@ export class UserMutations {
     public static async verifyEmail(code: string, request: Request): Promise<string> {
         const delay = new ResponseDelay(config.auth.normalizedResponseTime);
 
-        const users = await prisma.users({where: {challenge: code.trim()}});
+        const users = await prisma.accounts( {where:{challenge: code.trim()}});
         if (users.length !== 1) {
             await delay.GetPromise();
-            this.abortInvalidRequest("Found no matching user for the specified email verification code " + code + ".");
+            this.abortInvalidRequest("Found no matching account for the specified email verification code " + code + ".");
         }
 
         const user = users[0];
 
         // clear the challenge when the verification code was right
-        await prisma.updateUser({
+        await prisma.updateAccount({
             data: {
                 challenge: null
             },
@@ -206,7 +207,7 @@ export class UserMutations {
             }
         });
 
-        const session = await UserMutations.createSessionForUser(user);
+        const session = await UserMutations.createSessionForAccount(user);
         UserMutations.setAuthTokenCookie(session.authToken, request);
 
         // Wait some time before returning the response (500ms - runtime)
@@ -228,9 +229,9 @@ export class UserMutations {
     }
 
     public static async setSessionProfile(csrfToken: string, authToken: string, profileId: string) {
-        const sessionAndUser = await CommonQueries.findUserBySession(csrfToken, authToken);
+        const sessionAndAccount = await CommonQueries.findAccountBySession(csrfToken, authToken);
 
-        if (sessionAndUser == null) {
+        if (sessionAndAccount == null) {
             this.abortInvalidRequest("Couldn't find a valid session for csrfToken: " + authToken);
         }
 
@@ -245,7 +246,7 @@ export class UserMutations {
             }
         });
 
-        await prisma.updateUser({data: {lastUsedProfileId: profileId}, where: {id: sessionAndUser.user.id}});
+        await prisma.updateAccount({data: {lastUsedProfileId: profileId}, where: {id: sessionAndAccount.account.id}});
 
         return profileId;
     }

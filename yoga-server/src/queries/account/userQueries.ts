@@ -1,14 +1,15 @@
 import {CommonQueries} from "../commonQueries";
 
-export class UserQueries {
-    public static async getUserInformation(csrfToken: string, authToken: string) : Promise<any> {
-        const sessionAndUser = await CommonQueries.findUserBySession(csrfToken, authToken);
-        const userInformation = {
-            id: sessionAndUser.user.id,
-            createdAt: sessionAndUser.user.createdAt,
-            email: sessionAndUser.user.email,
-            name: sessionAndUser.user.name
+export class AccountQueries {
+    public static async getAccountInformation(csrfToken: string, authToken: string) : Promise<any> {
+        const sessionAndUser = await CommonQueries.findAccountBySession(csrfToken, authToken);
+        const accountInformation = {
+            id: sessionAndUser.account.id,
+            createdAt: sessionAndUser.account.createdAt,
+            email: sessionAndUser.account.email,
+            firstName: sessionAndUser.account.firstName,
+            lastName: sessionAndUser.account.lastName
         };
-        return userInformation;
+        return accountInformation;
     }
 }
