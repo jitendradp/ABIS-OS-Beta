@@ -15,7 +15,7 @@
   <div class="subline"></div>
   <mat-grid-list class="quickButtons" cols="2" rowHeight="53px">
     <mat-grid-tile (click)="close()">
-      <button routerLink="signin" mat-button class="tileButton">
+      <button routerLink="settings" mat-button class="tileButton">
         <mat-icon>settings_applications</mat-icon>
         <span class="iconLabelSpacing">Settings</span>
       </button>
@@ -28,6 +28,34 @@
     </mat-grid-tile>
   </mat-grid-list>
 </div>
+
+<div *ngIf="onChatHeader">
+  <div>
+    <mat-icon>lock</mat-icon>
+    chaos
+  </div>
+  <div class="subtitle">
+    <mat-icon class="chatHeaderIcon">star_border</mat-icon>
+    <span class="extendedIconLabelSpacing">|</span>
+    <mat-icon class="chatHeaderIcon">person_outline</mat-icon>
+    <span class="iconLabelSpacing">{{channelService.channelInformation.members_count}}</span>
+    <span class="extendedIconLabelSpacing">|</span>
+    <span class="iconLabelSpacing">{{channelService.channelInformation.description}}</span>
+  </div>
+</div>
+
+<!--
+<div style="vertical-align: center">
+          <mat-icon class="iconSub">star_border</mat-icon>
+          <span>|</span>
+          <mat-icon class="iconSub">person_outline</mat-icon>
+          <span>{{roomService.roomInformation.members_count}}</span>
+          <span>|</span>
+          <mat-icon class="iconSub">message</mat-icon>
+          <span>{{roomService.roomInformation.messages_count}}</span>
+        </div>
+
+-->
 
 
 <div *ngIf="onFooter">

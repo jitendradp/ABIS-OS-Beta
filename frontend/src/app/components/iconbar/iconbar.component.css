@@ -4,8 +4,23 @@
   bottom: 0;
 }
 
-mat-icon {
-  padding-bottom: 7px;
+.subtitle {
+  font-size: 14px;
+  line-height: 23px;
+  padding-top: 4px;
+  padding-left: 4px;
+}
+
+.chatHeaderIcon {
+  font-size: 16px;
+  line-height: 23px;
+  vertical-align: middle;
+}
+
+.extendedIconLabelSpacing {
+  padding-left: 4px;
+  padding-right: 4px;
+  vertical-align: middle;
 }
 
 .embeddableQuickButtons {
@@ -28,7 +43,7 @@ mat-grid-tile {
 
 /* todo text below the icon if possible */
 
-.material-icons {
+mat-icon {
   vertical-align: bottom;
 }
 

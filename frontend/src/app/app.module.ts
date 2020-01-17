@@ -91,46 +91,62 @@ import {ChartLineComponent} from "./components/charts/chart-line/chart-line.comp
 import {ChartMapComponent} from "./components/charts/chart-map/chart-map.component";
 import {ChartSankeyComponent} from "./components/charts/chart-sankey/chart-sankey.component";
 import {ChartTableComponent} from "./components/charts/chart-table/chart-table.component";
+import {SettingsComponent} from "./pages/settings/settings.component";
 
-const defaultActions: IAction[] = [<SetVisibility>{
-  name: SetVisibility.Name,
-  label: "Open/Close Menu",
-  icon: "menu",
-  side: "left",
-  state: "toggle"
-},
+const defaultActions: IAction[] =
+  [
+    <SetVisibility>{
+      name: SetVisibility.Name,
+      label: "Open/Close Menu",
+      icon: "menu",
+      side: "left",
+      state: "toggle"
+    },
 
-  // todo show/hide when user is logged in or not
-  <SetVisibility>{
-    name: SetVisibility.Name,
-    label: "Open/Close Notifications",
-    icon: "notifications",
-    side: "right",
-    state: "toggle"
-  }];
+    // todo show/hide when user is logged in or not
+    <SetVisibility>{
+      name: SetVisibility.Name,
+      label: "Open/Close Notifications",
+      icon: "notifications",
+      side: "right",
+      state: "toggle"
+    }
+  ];
+
+const minActions: IAction[] =
+  [
+    <SetVisibility>{
+      name: SetVisibility.Name,
+      label: "Open/Close Menu",
+      icon: "menu",
+      side: "left",
+      state: "toggle"
+    },
+  ];
+
 
 const appRoutes: Routes = [
   {
     path: '', component: AccessComponent, data: {
       "title": "Welcome",
-      "actions": defaultActions
+      "actions": minActions
     }
   },
   {
     path: 'signin', component: SigninComponent, data: {
       "title": "Login",
-      "actions": defaultActions
+      "actions": minActions
     }
   },
   {
     path: 'register', component: RegisterComponent, data: {
       "title": "Sign up",
-      "actions": defaultActions
+      "actions": minActions
     }
   },
   {
     path: 'profile', component: ProfileComponent, data: {
-      "title": "Settings",
+      "title": "Profile",
       "actions": defaultActions
     }
   },
@@ -167,13 +183,13 @@ const appRoutes: Routes = [
   {
     path: 'reset-password', component: ResetComponent, data: {
       "title": "Reset password",
-      "actions": defaultActions
+      "actions": minActions
     }
   },
   {
     path: 'forgot-password', component: ForgotComponent, data: {
       "title": "Forgot password",
-      "actions": defaultActions
+      "actions": minActions
     }
   },
   {
@@ -191,7 +207,7 @@ const appRoutes: Routes = [
   {
     path: 'logout', component: LogoutComponent, data: {
       "title": "Logout",
-      "actions": defaultActions
+      "actions": minActions
     }
   },
   {
@@ -233,6 +249,12 @@ const appRoutes: Routes = [
   {
     path: 'contacts', component: ContactsComponent, data: {
       "title": "Contacts",
+      "actions": defaultActions
+    }
+  },
+  {
+    path: 'settings', component: SettingsComponent, data: {
+      "title": "Settings",
       "actions": defaultActions
     }
   },
@@ -288,6 +310,7 @@ const appRoutes: Routes = [
     ChartMapComponent,
     ChartSankeyComponent,
     ChartTableComponent,
+    SettingsComponent,
   ],
   imports: [
     RouterModule.forRoot(

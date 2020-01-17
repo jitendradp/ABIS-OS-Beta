@@ -1,3 +1,7 @@
 .mat-list-base {
   padding-top: unset;
 }
+
+.listItem {
+  height: 56px;
+}

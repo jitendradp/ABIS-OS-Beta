@@ -21,14 +21,11 @@
             </div>
           </mat-card-header>
           <mat-tree style="background: unset" [dataSource]="dataSource" [treeControl]="treeControl">
-
             <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
-
               <button mat-icon-button disabled></button>
               <mat-icon>{{node.icon}}</mat-icon>
               {{node.name}}
             </mat-tree-node>
-
             <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
               <button mat-icon-button matTreeNodeToggle
                       [attr.aria-label]="'toggle ' + node.name">
@@ -64,6 +61,9 @@
     </div>
   </div>
   <div class="content" fxFlex="75%">
+    <mat-card class="chatContentHeader">
+      <app-iconbar [onChatHeader]="true"></app-iconbar>
+    </mat-card>
     <div class="messages">
       <ul>
         <li class="sent">

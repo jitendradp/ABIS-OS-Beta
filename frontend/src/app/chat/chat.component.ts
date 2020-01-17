@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {ActionDispatcherService} from "../services/action-dispatcher.service";
 import {MatTreeFlatDataSource, MatTreeFlattener} from "@angular/material";
 import {FlatTreeControl} from "@angular/cdk/tree";
+import {SetVisibility} from "../actions/ui/sidebar/SetVisibility";
 
 interface DataspaceNode {
   name: string;
@@ -72,6 +73,10 @@ export interface DirectMessage {
 })
 export class ChatComponent {
 
+  close() {
+    this.actionDispatcher.dispatch(new SetVisibility("left", "invisible"));
+  }
+
   private _transformer = (node: DataspaceNode, level: number) => {
     return {
       expandable: !!node.channels && node.channels.length > 0,
@@ -90,7 +95,8 @@ export class ChatComponent {
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-  constructor(public actionDispatcher: ActionDispatcherService) {
+  constructor(
+    public actionDispatcher: ActionDispatcherService) {
     this.dataSource.data = TREE_DATA;
   }
 
