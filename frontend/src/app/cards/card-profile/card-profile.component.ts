@@ -17,4 +17,7 @@ export class CardProfileComponent {
   @Input()
   collapsed: boolean;
 
+  @Input()
+  showContent: boolean;
+
 }

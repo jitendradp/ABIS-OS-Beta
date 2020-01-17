@@ -89,6 +89,7 @@ import {EditorPortfolioComponent} from "./editors/editor-portfolio/editor-portfo
 import {SmartCryptoAppComponent} from "./smartapps/smart-crypto-app/smart-crypto-app.component";
 import {CardPortfolioComponent} from "./cards/card-portfolio/card-portfolio.component";
 import {CardProfileComponent} from "./cards/card-profile/card-profile.component";
+import {FeedComponent} from "./pages/feed/feed.component";
 
 const defaultActions: IAction[] = [<SetVisibility>{
   name: SetVisibility.Name,
@@ -219,6 +220,12 @@ const appRoutes: Routes = [
       "actions": defaultActions
     }
   },
+  {
+    path: 'feed', component: FeedComponent, data: {
+      "title": "Newsfeed",
+      "actions": defaultActions
+    }
+  },
 ];
 
 
@@ -269,6 +276,7 @@ const appRoutes: Routes = [
     SmartCryptoAppComponent,
     CardPortfolioComponent,
     CardProfileComponent,
+    FeedComponent
   ],
   imports: [
     RouterModule.forRoot(
