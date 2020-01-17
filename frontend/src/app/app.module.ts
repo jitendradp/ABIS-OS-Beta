@@ -75,12 +75,7 @@ import {CardStoreComponent} from "./cards/card-store/card-store.component";
 import {SearchComponent} from "./search/search.component";
 import {NgxMapboxGLModule} from "ngx-mapbox-gl";
 import {CardComponent} from "./cards/card/card.component";
-import {ChartTableComponent} from "./charts/chart-table/chart-table.component";
-import {ChartLineComponent} from "./charts/chart-line/chart-line.component";
-import {ChartMapComponent} from "./charts/chart-map/chart-map.component";
 import {EditorCommandComponent} from "./editors/editor-command/editor-command.component";
-import {ChartGraphForceComponent} from "./charts/chart-graph-force/chart-graph-force.component";
-import {ChartSankeyComponent} from "./charts/chart-sankey/chart-sankey.component";
 import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
 import {DeviceDetectorModule} from "ngx-device-detector";
 import {ClusterPopupComponent} from "./pages/map/cluster-popup/cluster-popup.component";
@@ -90,6 +85,12 @@ import {SmartCryptoAppComponent} from "./smartapps/smart-crypto-app/smart-crypto
 import {CardPortfolioComponent} from "./cards/card-portfolio/card-portfolio.component";
 import {CardProfileComponent} from "./cards/card-profile/card-profile.component";
 import {FeedComponent} from "./pages/feed/feed.component";
+import {ContactsComponent} from "./pages/contacts/contacts.component";
+import {ChartGraphForceComponent} from "./components/charts/chart-graph-force/chart-graph-force.component";
+import {ChartLineComponent} from "./components/charts/chart-line/chart-line.component";
+import {ChartMapComponent} from "./components/charts/chart-map/chart-map.component";
+import {ChartSankeyComponent} from "./components/charts/chart-sankey/chart-sankey.component";
+import {ChartTableComponent} from "./components/charts/chart-table/chart-table.component";
 
 const defaultActions: IAction[] = [<SetVisibility>{
   name: SetVisibility.Name,
@@ -265,18 +266,19 @@ const appRoutes: Routes = [
     CardStoreComponent,
     SearchComponent,
     CardComponent,
-    ChartTableComponent,
-    ChartLineComponent,
-    ChartMapComponent,
     EditorCommandComponent,
-    ChartGraphForceComponent,
-    ChartSankeyComponent,
     ClusterPopupComponent,
     EditorPortfolioComponent,
     SmartCryptoAppComponent,
     CardPortfolioComponent,
     CardProfileComponent,
-    FeedComponent
+    FeedComponent,
+    ContactsComponent,
+    ChartGraphForceComponent,
+    ChartLineComponent,
+    ChartMapComponent,
+    ChartSankeyComponent,
+    ChartTableComponent,
   ],
   imports: [
     RouterModule.forRoot(

@@ -30,7 +30,7 @@
   <mat-nav-list>
     <a mat-list-item routerLink="/chat-rooms" (click)="close()">
       <button mat-icon-button>
-        <mat-icon>people</mat-icon>
+        <mat-icon>bubble_chart</mat-icon>
       </button>
       <span>Rooms</span>
     </a>
@@ -45,6 +45,12 @@
         <mat-icon>rss_feed</mat-icon>
       </button>
       <span>Newsfeed</span>
+    </a>
+    <a mat-list-item routerLink="-" (click)="close()">
+      <button mat-icon-button>
+        <mat-icon>people</mat-icon>
+      </button>
+      <span>Contacts</span>
     </a>
   </mat-nav-list>
 </app-card-profile>
