@@ -2,11 +2,11 @@ import {Component} from '@angular/core';
 import {coerceNumberProperty} from "@angular/cdk/coercion";
 
 @Component({
-  selector: 'app-command',
-  templateUrl: './command.component.html',
-  styleUrls: ['./command.component.css']
+  selector: 'app-editor-command',
+  templateUrl: './editor-command.component.html',
+  styleUrls: ['./editor-command.component.css']
 })
-export class CommandComponent {
+export class EditorCommandComponent {
 
   autoTicks = false;
   disabled = false;

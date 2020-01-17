@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ActionDispatcherService} from "../../services/action-dispatcher.service";
+import {ActionDispatcherService} from "../services/action-dispatcher.service";
 import {MatTreeFlatDataSource, MatTreeFlattener} from "@angular/material";
 import {FlatTreeControl} from "@angular/cdk/tree";
 

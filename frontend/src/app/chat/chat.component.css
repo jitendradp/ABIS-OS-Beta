@@ -1,6 +1,6 @@
 #frame {
   width: 100%;
-  height: calc(100vh - 112px);
+  height: 100%;
 }
 
 #frame #sidepanel {

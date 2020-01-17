@@ -1,6 +1,4 @@
 import {Component, Input, ViewChild} from '@angular/core';
-import {Profile_oldService} from "./services/profile_old.service";
-import {UserService} from "./services/user.service";
 import {MatDrawer} from "@angular/material/sidenav";
 import {
   ActivationEnd,
@@ -24,11 +22,10 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {LogEntry} from "./services/logger.service";
 import {Back} from "./actions/routes/Back";
 import {EditorTeamComponent} from "./editors/editor-team/editor-team.component";
-import {CommandComponent} from "./widgets/command/command.component";
+import {EditorCommandComponent} from "./editors/editor-command/editor-command.component";
 import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {RouteChanged} from "./actions/routes/RouteChanged";
-import {ProfileService} from "./services/profile.service";
 
 @Component({
   selector: 'app-root',
@@ -50,9 +47,6 @@ export class AppComponent {
   actions: IEvent[] = [];
 
   constructor(
-    protected profileService: Profile_oldService,
-    private _profileService: ProfileService,
-    private _userService: UserService,
     private _router: Router,
     private _actionDispatcher: ActionDispatcherService,
     public _dialog: MatDialog,
@@ -155,7 +149,7 @@ export class AppComponent {
   }
 
   public openCockpitCommandDialog(): void {
-    const dialogRef = this._dialog.open(CommandComponent, {
+    const dialogRef = this._dialog.open(EditorCommandComponent, {
       width: '50%',
       minWidth: '300px'
     });

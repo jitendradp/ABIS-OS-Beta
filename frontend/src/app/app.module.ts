@@ -45,7 +45,7 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {NgxEchartsModule} from "ngx-echarts";
 import {StudioComponent} from './pages/studio/studio.component';
-import {Profile_oldService} from "./services/profile_old.service";
+import {ProfileService} from "./services/profile.service";
 import {CockpitComponent} from './pages/cockpit/cockpit.component';
 import {MapComponent} from './pages/map/map.component';
 import {InviteComponent} from './pages/system/invite/invite.component';
@@ -56,7 +56,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HeaderComponent} from './components/header/header.component';
 import {InputComponent} from './components/input/input.component';
 import {WhitespaceComponent} from './components/whitespace/whitespace.component';
-import {ChatComponent} from './widgets/chat/chat.component';
+import {ChatComponent} from './chat/chat.component';
 import {EditorChannelComponent} from './editors/editor-channel/editor-channel.component';
 import {GraphQLModule} from './graphql.module';
 import {HttpClientModule} from '@angular/common/http';
@@ -72,13 +72,13 @@ import {CardMessageComponent} from "./cards/card-message/card-message.component"
 import {CardTeamComponent} from "./cards/card-team/card-team.component";
 import {CardFormComponent} from "./cards/card-form/card-form.component";
 import {CardStoreComponent} from "./cards/card-store/card-store.component";
-import {SearchComponent} from "./widgets/search/search.component";
+import {SearchComponent} from "./search/search.component";
 import {NgxMapboxGLModule} from "ngx-mapbox-gl";
 import {CardComponent} from "./cards/card/card.component";
 import {ChartTableComponent} from "./charts/chart-table/chart-table.component";
 import {ChartLineComponent} from "./charts/chart-line/chart-line.component";
 import {ChartMapComponent} from "./charts/chart-map/chart-map.component";
-import {CommandComponent} from "./widgets/command/command.component";
+import {EditorCommandComponent} from "./editors/editor-command/editor-command.component";
 import {ChartGraphForceComponent} from "./charts/chart-graph-force/chart-graph-force.component";
 import {ChartSankeyComponent} from "./charts/chart-sankey/chart-sankey.component";
 import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
@@ -106,7 +106,7 @@ const defaultActions: IAction[] = [<SetVisibility>{
 
 const appRoutes: Routes = [
   {
-    path: '', component: AccessComponent, data: {
+    path: 'access', component: AccessComponent, data: {
       "title": "Welcome",
       "actions": defaultActions
     }
@@ -202,7 +202,7 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'command', component: CommandComponent, data: {
+    path: 'command', component: EditorCommandComponent, data: {
       "title": "New command",
       "actions": defaultActions
     }
@@ -210,6 +210,12 @@ const appRoutes: Routes = [
   {
     path: 'smart-crypto-app', component: SmartCryptoAppComponent, data: {
       "title": "Smart Crypto App",
+      "actions": defaultActions
+    }
+  },
+  {
+    path: '', component: ChatComponent, data: {
+      "title": "Chat",
       "actions": defaultActions
     }
   },
@@ -255,7 +261,7 @@ const appRoutes: Routes = [
     ChartTableComponent,
     ChartLineComponent,
     ChartMapComponent,
-    CommandComponent,
+    EditorCommandComponent,
     ChartGraphForceComponent,
     ChartSankeyComponent,
     ClusterPopupComponent,
@@ -317,7 +323,7 @@ const appRoutes: Routes = [
       geocoderAccessToken: 'pk.eyJ1IjoiZGF2ZXdhdmVhYmlzY2xvdWQiLCJhIjoiY2s0eXYycjhzMDRhczNkbXF6dzNkMzlzayJ9.nyAc-uTfNfDTF0lxmZ3a3Q' // Optionnal, specify if different from the map access token, can also be set per mgl-geocoder (accessToken input of mgl-geocoder)
     })
   ],
-  providers: [Profile_oldService],
+  providers: [ProfileService],
   entryComponents: [SearchComponent],
   bootstrap: [AppComponent]
 })

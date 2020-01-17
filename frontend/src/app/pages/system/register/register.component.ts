@@ -5,7 +5,7 @@ import {ClientStateService} from "../../../services/client-state.service";
 import {StepperSelectionEvent} from "@angular/cdk/stepper";
 import {SignupGQL, VerifyEmailGQL} from "../../../../generated/abis-api";
 import {UserService} from "../../../services/user.service";
-import {Profile_oldService} from "../../../services/profile_old.service";
+import {ProfileService} from "../../../services/profile.service";
 import {Logger, LoggerService, LogSeverity} from "../../../services/logger.service";
 import {ActionDispatcherService} from "../../../services/action-dispatcher.service";
 import {Home} from "../../../actions/routes/Home";
@@ -28,7 +28,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     , private loggerService: LoggerService
     , private actionDispatcher: ActionDispatcherService
     , private clientState: ClientStateService
-    , private profileService: Profile_oldService
+    , private profileService: ProfileService
     , private userService: UserService
     , private signupApi: SignupGQL
     , private verifyEmailApi: VerifyEmailGQL) {

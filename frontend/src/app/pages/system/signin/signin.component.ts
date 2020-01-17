@@ -3,7 +3,7 @@ import {UserService} from "../../../services/user.service";
 import {Logger, LoggerService, LogSeverity} from "../../../services/logger.service";
 import {ActionDispatcherService} from "../../../services/action-dispatcher.service";
 import {SwitchProfile} from "../../../actions/routes/SwitchProfile";
-import {Profile_oldService} from "../../../services/profile_old.service";
+import {ProfileService} from "../../../services/profile.service";
 import {Home} from "../../../actions/routes/Home";
 
 @Component({
@@ -23,7 +23,7 @@ export class SigninComponent implements OnInit {
 
   constructor(private userService:UserService
     , private loggerService:LoggerService
-    , private profileService:Profile_oldService
+    , private profileService:ProfileService
     , private actionDispatcherr:ActionDispatcherService) {
   }
 

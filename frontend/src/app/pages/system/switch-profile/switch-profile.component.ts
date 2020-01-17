@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {Profile} from "../../../../generated/abis-api";
 import {UserService} from "../../../services/user.service";
-import {Profile_oldService} from "../../../services/profile_old.service";
+import {ProfileService} from "../../../services/profile.service";
 import {Logger, LoggerService, LogSeverity} from "../../../services/logger.service";
 
 @Component({
@@ -14,7 +14,7 @@ export class SwitchProfileComponent implements OnInit, AfterViewInit {
 
   private readonly _log:Logger = this.loggerService.createLogger("SwitchProfileComponent");
 
-  constructor(private profileService:Profile_oldService
+  constructor(private profileService:ProfileService
               , private userService:UserService
               , private loggerService:LoggerService) { }
 
