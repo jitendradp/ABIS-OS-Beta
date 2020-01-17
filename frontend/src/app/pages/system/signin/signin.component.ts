@@ -41,7 +41,7 @@ export class SigninComponent implements OnInit {
 
       if (userProfiles.length == 0) {
         this._log(LogSeverity.UserNotification, "You're successfully logged-in, but you don't yet have any profiles. Create a profile to proceed.");
-        // TODO: redirect the user to a page where he can add a profile
+        // TODO: redirect the account to a page where he can add a profile
         return;
       }
 

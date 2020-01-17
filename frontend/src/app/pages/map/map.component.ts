@@ -54,7 +54,7 @@ export class MapComponent implements OnInit {
 
   selectCluster(event: MouseEvent, feature: any) {
     event.stopPropagation(); // This is needed, otherwise the popup will close immediately
-    // Change the ref, to trigger mgl-popup onChanges (when the user click on the same cluster)
+    // Change the ref, to trigger mgl-popup onChanges (when the account click on the same cluster)
     this.selectedCluster = {geometry: feature.geometry, properties: feature.properties};
   }
 }

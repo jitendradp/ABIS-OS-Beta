@@ -42,7 +42,7 @@ export class LoggerService {
 
     this._logger[source].enq(logEntry);
 
-    // If it is an error or a user notification, display it to the user
+    // If it is an error or a account notification, display it to the account
     if (severity == LogSeverity.UserNotification) {
       this.actionDispatcher.dispatch(new ShowNotification(logEntry));
     }

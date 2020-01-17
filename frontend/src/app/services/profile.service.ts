@@ -1,5 +1,12 @@
 import {Injectable} from '@angular/core';
-import {CreateProfileGQL, GetProfileGQL, ListProfilesGQL, Profile, UpdateProfileGQL} from "../../generated/abis-api";
+import {
+  CreateProfileGQL,
+  GetProfileGQL,
+  ListProfilesGQL,
+  Profile,
+  ProfileType,
+  UpdateProfileGQL
+} from "../../generated/abis-api";
 import {Logger, LoggerService, LogSeverity} from "./logger.service";
 import {UserService} from "./user.service";
 import {ActionDispatcherService} from "./action-dispatcher.service";
@@ -65,9 +72,10 @@ export class ProfileService {
    * @param picture
    * @param timezone
    */
-  public createProfile(name: string, picture?: string, timezone?: string): Promise<string> {
+  public createProfile(type:ProfileType, name: string, picture?: string, timezone?: string): Promise<string> {
     return this.createProfileApi.mutate({
       csrfToken: this.userService.csrfToken,
+      type,
       name,
       picture,
       timezone
@@ -82,10 +90,11 @@ export class ProfileService {
       });
   }
 
-  updateProfile(profileId: string, name: string, picture?: string, timezone?: string): Promise<boolean> {
+  updateProfile(profileId: string, type:ProfileType, name: string, picture?: string, timezone?: string): Promise<boolean> {
     return this.updateProfileApi.mutate({
       csrfToken: this.userService.csrfToken,
       profileId,
+      type,
       name,
       picture,
       status,
