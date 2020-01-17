@@ -92,6 +92,8 @@ type Group {
 }
 
 enum GroupType {
+	DATASPACE											    # The actual storage that hosts data
+	DATASET                                                 # A specific view on a dataspace that can be shared in channels
 	ROOM					    							# A chat room that hosts a group of people and conversations
     CHANNEL                                                 # Groups messages and events around at least two profiles
 	THREAD												    # Groups messages around a specific conversation in a channel
@@ -162,4 +164,40 @@ enum AttachmentType {
 	LINK												    # Could a link that was posted in the message's content
 	VIDEO												    # Could be a video that was added to the content
 	AUDIO												    # Could be a voice memo that was added to the content
+}
+
+# All above this line should be excluded in a product specific environment
+# Portfolios
+#
+type Asset {
+    id: ID! @id
+    name: String!
+}
+
+type Exchange {
+    id: ID! @id
+    name: String!
+    assets:[Asset!]!
+}
+
+enum TransactionDirection {
+    BUY,
+    SELL
+}
+
+type Transaction {
+    id: ID! @id
+    timestamp:DateTime!                                     # When was the transaction performed?
+    profile: Profile!                                       # Who performed the transaction?
+    asset:Asset!                                            # What asset was included in the transaction?
+    direction:TransactionDirection!                         # Buy or Sell?
+    exchange:Exchange!                                      # Where took the transaction place?
+    amount:Float!                                           # How much units of [asset] have been traded?
+}
+
+type Portfolio {
+    id: ID! @id
+    owner: Profile!
+    name: String!
+    transactions:[Transaction!]!
 }
