@@ -21,6 +21,7 @@ export type UserInformation = {
   email: string,
   firstname: string,
   lastname: string,
+  mobile_phone: string,
 };
 
 
@@ -34,7 +35,8 @@ export class UserService {
     createdAt: new Date().toISOString(),
     email: "tomcook@gmail.com",
     firstname: "Thomas",
-    lastname: "Cook"
+    lastname: "Cook",
+    mobile_phone: "01777 78787823",
   };
 
   private readonly _log: Logger = this.loggerService.createLogger("UserService");

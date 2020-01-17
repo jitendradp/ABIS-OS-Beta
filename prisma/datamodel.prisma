@@ -7,6 +7,7 @@ type User {
 	lastName: String!										# The family name of the person
 	timezone: String!										# The user's local timezone
 	email: String! @unique									# Common digital identity
+	mobile_phone: String                                    # Adding a second information for the identity
 	password_salt: String!									# Adding a random string to the password hash
 	password_hash: String!									# A Fully hashed password including salt e.g. bcrypt
 	is_verified: Boolean!									# The user's email address was verified or not

@@ -7,10 +7,10 @@
   <div fxFlex='auto' fxFlex.gt-md='50' fxFlex.gt-sm='80'>
     <app-content>
       <app-card-form [title]="'Create your ABIS User'">
-        <mat-horizontal-stepper [linear]="isLinear" #stepper (selectionChange)="stepChanged($event)">
+        <mat-horizontal-stepper [linear]="!isLinear" #stepper (selectionChange)="stepChanged($event)">
           <mat-step [stepControl]="step1FormGroup">
             <form [formGroup]="step1FormGroup">
-              <ng-template matStepLabel>Signup</ng-template>
+              <ng-template matStepLabel>Register</ng-template>
               <mat-form-field class="halfWidth">
                 <input matInput type="text" placeholder="First name" required formControlName="firstName">
               </mat-form-field>
