@@ -65,7 +65,7 @@ import {NavigationComponent} from "./navigation/navigation.component";
 import {SwitchProfileComponent} from './pages/system/switch-profile/switch-profile.component';
 import {LogoutComponent} from './pages/system/logout/logout.component';
 import {IAction} from "./actions/IAction";
-import {ChatRoomsComponent} from "./chat/chat-rooms/chat-rooms.component";
+import {RoomsComponent} from "./pages/rooms/rooms.component";
 import {EditorRoomComponent} from "./editors/editor-room/editor-room.component";
 import {AvatarsComponent} from "./components/avatars/avatars.component";
 import {CardMessageComponent} from "./cards/card-message/card-message.component";
@@ -190,7 +190,7 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'chat-rooms', component: ChatRoomsComponent, data: {
+    path: 'chat-rooms', component: RoomsComponent, data: {
       "title": "Rooms",
       "actions": defaultActions
     }
@@ -249,7 +249,7 @@ const appRoutes: Routes = [
     NavigationComponent,
     SwitchProfileComponent,
     LogoutComponent,
-    ChatRoomsComponent,
+    RoomsComponent,
     EditorRoomComponent,
     AvatarsComponent,
     CardMessageComponent,
