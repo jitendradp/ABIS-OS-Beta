@@ -1,14 +1,13 @@
 <!-- todo fix the timestamp of sent message item in chat -->
 <!-- todo create mobile view for chat: Swipe Sidepanel up and down on mobile view that the chat area is more visible -->
 <!-- todo !! optimize the textarea in chat input to expand to the top is more than two lines of content is entered -->
-
 <div id="frame"
      fxLayout
      fxLayout.xs="column"
      fxLayoutAlign="left"
      fxLayoutGap="0px"
      fxLayoutGap.xs="0">
-  <div id="sidepanel" fxFlex="50%">
+  <div id="sidepanel" fxFlex="25%">
     <div id="contacts">
       <app-content>
         <mat-list>
@@ -64,7 +63,7 @@
       </app-content>
     </div>
   </div>
-  <div class="content" fxFlex="50%">
+  <div class="content" fxFlex="75%">
     <div class="messages">
       <ul>
         <li class="sent">

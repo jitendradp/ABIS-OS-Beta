@@ -94,17 +94,20 @@ import {ChartTableComponent} from "./components/charts/chart-table/chart-table.c
 
 const defaultActions: IAction[] = [<SetVisibility>{
   name: SetVisibility.Name,
-  label: "Open/Close Sidebar",
+  label: "Open/Close Menu",
   icon: "menu",
   side: "left",
   state: "toggle"
-}, <SetVisibility>{
-  name: SetVisibility.Name,
-  label: "Open/Close Chat",
-  icon: "question_answer",
-  side: "right",
-  state: "toggle"
-}];
+},
+
+  // todo show/hide when user is logged in or not
+  <SetVisibility>{
+    name: SetVisibility.Name,
+    label: "Open/Close Notifications",
+    icon: "notifications",
+    side: "right",
+    state: "toggle"
+  }];
 
 const appRoutes: Routes = [
   {
@@ -224,6 +227,12 @@ const appRoutes: Routes = [
   {
     path: 'feed', component: FeedComponent, data: {
       "title": "Newsfeed",
+      "actions": defaultActions
+    }
+  },
+  {
+    path: 'contacts', component: ContactsComponent, data: {
+      "title": "Contacts",
       "actions": defaultActions
     }
   },

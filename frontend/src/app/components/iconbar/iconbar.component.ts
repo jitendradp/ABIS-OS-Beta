@@ -1,6 +1,8 @@
 import {Component, Input} from '@angular/core';
 import {MatBottomSheet} from "@angular/material";
 import {SearchComponent} from "../../search/search.component";
+import {SetVisibility} from "../../actions/ui/sidebar/SetVisibility";
+import {ActionDispatcherService} from "../../services/action-dispatcher.service";
 
 export interface IconList {
   name: string;
@@ -19,6 +21,9 @@ export class IconbarComponent {
 
   @Input()
   onCockpit: boolean;
+
+  @Input()
+  onMenu: boolean;
 
   @Input()
   onFooter: boolean;
@@ -47,11 +52,17 @@ export class IconbarComponent {
     }
   ];
 
-  constructor(private bottomSheet: MatBottomSheet) {
+  constructor(
+    private bottomSheet: MatBottomSheet,
+    private actionDispatcher: ActionDispatcherService,) {
   }
 
   openBottomSheet() {
     this.bottomSheet.open(SearchComponent)
+  }
+
+  close() {
+    this.actionDispatcher.dispatch(new SetVisibility("left", "invisible"));
   }
 
 }

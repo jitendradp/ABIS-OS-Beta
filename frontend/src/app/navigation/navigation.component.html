@@ -28,25 +28,25 @@
 </mat-nav-list>-->
   <mat-divider></mat-divider>
   <mat-nav-list>
-    <a mat-list-item routerLink="/chat-rooms" (click)="close()">
+    <a mat-list-item routerLink="chat-rooms" (click)="close()">
       <button mat-icon-button>
         <mat-icon>bubble_chart</mat-icon>
       </button>
       <span>Rooms</span>
     </a>
-    <a mat-list-item routerLink="/chat" (click)="close()">
+    <a mat-list-item routerLink="chat" (click)="close()">
       <button mat-icon-button>
         <mat-icon>chat</mat-icon>
       </button>
       <span>Chat</span>
     </a>
-    <a mat-list-item routerLink="/feed" (click)="close()">
+    <a mat-list-item routerLink="feed" (click)="close()">
       <button mat-icon-button>
         <mat-icon>rss_feed</mat-icon>
       </button>
       <span>Newsfeed</span>
     </a>
-    <a mat-list-item routerLink="-" (click)="close()">
+    <a mat-list-item routerLink="contacts" (click)="close()">
       <button mat-icon-button>
         <mat-icon>people</mat-icon>
       </button>
@@ -54,3 +54,6 @@
     </a>
   </mat-nav-list>
 </app-card-profile>
+<div style="background: red; position: absolute; bottom: 0; height: 56px; width: 100%">
+  <app-iconbar [onMenu]="true"></app-iconbar>
+</div>

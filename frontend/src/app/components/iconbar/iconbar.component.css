@@ -4,6 +4,10 @@
   bottom: 0;
 }
 
+mat-icon {
+  padding-bottom: 7px;
+}
+
 .embeddableQuickButtons {
   bottom: 0;
   color: white;

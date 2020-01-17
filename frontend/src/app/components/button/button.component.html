@@ -1,10 +1,9 @@
-<!-- todo replace the current buttons e.g. in the register component with this button. Will need to integrate the handler for "nextstep" here to do so
-<!-- todo some experiment to change the state of a button when logged in
-     todo BUG: the button text can still be clicked even when the button is disabled
-  <button (click)="click.emit($event)" routerLink="{{link}}" [ngClass]="{'max-button':_userService.isLoggedOn, 'maxButtonClean':!_userService.isLoggedOn}" mat-raised-button>
-  <mat-icon *ngIf="showButtonIcon">{{icon}}</mat-icon>{{text}}
-</button>
+<!--
+todo replace the current buttons e.g. in the register component with this button. Will need to integrate the handler for "nextstep" here to do so
+todo some experiment to change the state of a button when logged in
+todo BUG: the button text can still be clicked even when the button is disabled
 -->
+
 <button *ngIf="link && click.observers.length == 0" routerLink="{{link}}" [disabled]="isDisabled"
         [ngClass]="{'maxButton':lessStyle == false, 'maxButtonClean':lessStyle == true}" mat-raised-button>
   <mat-icon *ngIf="showButtonIcon">{{icon}}</mat-icon>
@@ -15,6 +14,7 @@
   <mat-icon *ngIf="showButtonIcon">{{icon}}</mat-icon>
   {{text}}
 </button>
+
 <div *ngIf="link && click.observers.length > 0" style="color:red;">
   This button has at least one attached 'click' handler and a 'link'. <br/>
   You can use either the 'link' property or the 'click' event but not both.

@@ -1,5 +1,5 @@
 <div *ngIf="onCockpit">
-  <mat-grid-list class="embeddableQuickButtons" cols="3" rowHeight="42px">
+  <mat-grid-list class="embeddableQuickButtons" cols="3" rowHeight="56px">
     <mat-grid-tile *ngFor="let icon of icons" [style.background]="icon.color">
       <div matTooltip="{{icon.metric}} {{icon.label}}">
         <button mat-button class="tileButton">
@@ -11,17 +11,36 @@
   </mat-grid-list>
 </div>
 
+<div *ngIf="onMenu">
+  <div class="subline"></div>
+  <mat-grid-list class="quickButtons" cols="2" rowHeight="53px">
+    <mat-grid-tile (click)="close()">
+      <button routerLink="signin" mat-button class="tileButton">
+        <mat-icon>settings_applications</mat-icon>
+        <span class="iconLabelSpacing">Settings</span>
+      </button>
+    </mat-grid-tile>
+    <mat-grid-tile (click)="close()">
+      <button routerLink="signin" mat-button class="tileButton">
+        <mat-icon>power_settings_new</mat-icon>
+        <span class="iconLabelSpacing">Logout</span>
+      </button>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
+
+
 <div *ngIf="onFooter">
   <div class="subline"></div>
-  <mat-grid-list class="quickButtons" cols="5" rowHeight="56px">
+  <mat-grid-list class="quickButtons" cols="5" rowHeight="53px">
     <mat-grid-tile>
-      <button routerLink="/cockpit" mat-button class="tileButton">
+      <button routerLink="cockpit" mat-button class="tileButton">
         <mat-icon>bar_chart</mat-icon>
         <span fxHide fxShow.gt-sm class="iconLabelSpacing">Cockpit</span>
       </button>
     </mat-grid-tile>
     <mat-grid-tile>
-      <button routerLink="/store" mat-button class="tileButton">
+      <button routerLink="store" mat-button class="tileButton">
         <mat-icon>apps</mat-icon>
         <span fxHide fxShow.gt-sm class="iconLabelSpacing">Apps</span>
       </button>
@@ -33,13 +52,13 @@
       </button>
     </mat-grid-tile>
     <mat-grid-tile>
-      <button routerLink="/map" mat-button class="tileButton">
+      <button routerLink="map" mat-button class="tileButton">
         <mat-icon>map</mat-icon>
         <span fxHide fxShow.gt-sm class="iconLabelSpacing">Map</span>
       </button>
     </mat-grid-tile>
     <mat-grid-tile>
-      <button routerLink="/studio" mat-button class="tileButton">
+      <button routerLink="studio" mat-button class="tileButton">
         <mat-icon>donut_small</mat-icon>
         <span fxHide fxShow.gt-sm class="iconLabelSpacing">Studio</span>
       </button>
