@@ -27,6 +27,7 @@ type Session {
 	loggedOut: DateTime
 	user: User!
 	profile: Profile
+	location: Location										# A location in the real world to identify where the user has logged in from
 }
 
 # Represents a user or bot in groups
@@ -43,7 +44,6 @@ type Profile {
 	slogan: String											# A slogan of the profile that is displayed in groups
 	picture: String!										# The url of a path to an image file
 	memberships: [Membership!]!								# The memberships of that profile in groups
-	location: Location										# A location in the real world
 }
 
 enum StatusType {
@@ -87,7 +87,7 @@ type Group {
 	is_public: Boolean!										# When true, any profile outside that group is allowed to join it
 	members: [Membership!]!									# Profiles that are participating in that group
 	messages: [Message!]!									# Events with a specific content
-	tags: String											# Meta information as hashes to classify the group
+	tags: String											# Meta information as hashes to classify the object
 	location: Location										# A location in the real world
 }
 
@@ -120,7 +120,7 @@ type Message {
 	content: Json											# The content of a message can be anything or empty
 	attachments: [Attachment!]!								# A url to a file that is attached to the message
 	reactions: [Reaction!]!									# A event can trigger multiple reactions such as likes
-	tags: String											# Meta information as hashes to classify the message
+	tags: String											# Meta information as hashes to classify the object
 }
 
 # All data exchanged is expressed as an "event"
@@ -129,8 +129,6 @@ enum MessageType {
 	DIRECT_MESSAGE											# The user profiles receives a direct chat message
 	COMMENT												    # A message as comment on another message within a thread
 	POST												    # Drops a message on a channel
-	CHART_FLAG											    # A message with a link to a filtered chart can be dropped in a channel or thread
-	TRAIL
 }
 
 # Profiles can react on messages
@@ -138,8 +136,8 @@ type Reaction {
 	id: ID! @id @unique
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime @updatedAt
-	creator: Profile!										# The profile who reacted on some event (davepatrickchang)
-	emoji: String!											# A symbol to express an emotion ("thumbs::+1")
+	creator: Profile!										# The profile who reacted on some event
+	emoji: String!											# A symbol to express an emotion
 }
 
 # Something that can be attached to a message
@@ -147,12 +145,11 @@ type Attachment {
 	id: ID! @id @unique
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime @updatedAt
-	createdBy: Profile!										# The profile who created the attachment (Bot 123)
-	name: String!											# The name of the attached object (ExcelSheet12354)
-	type: AttachmentType!									# Categorizes the attachment (DOCUMENT)
-	link: String											# The unique url to access the attached object  (./path/excelsheet12354.xls)
-	tags: String											# Meta information for search ("Entwicklung", "Plannung", "Team")
-	location: Location										# A location in the real world has to be set to store the data there (Munich)
+	createdBy: Profile!										# The profile who created the attachment
+	name: String!											# The name of the attached object
+	type: AttachmentType!									# Categorizes the attachment
+	link: String											# The unique url to access the attached object
+	tags: String											# Meta information as hashes to classify the object
 }
 
 # Classifies the attached file
