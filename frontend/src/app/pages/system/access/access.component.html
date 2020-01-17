@@ -1,5 +1,4 @@
-<div *ngIf="!isButton"
-     fxLayout
+<div fxLayout
      fxLayout.xs="column"
      fxLayoutAlign="center"
      fxLayoutGap="0px"
@@ -17,9 +16,12 @@
         <app-button [link]='"/signin"' [text]="'Sign in'"></app-button>
       </app-card-intro>
       <div>
-        <p><b>Important note:</b> This is just a user interface test version to collect your valuable feedback, so our team can develop the app more closely to your needs. Some functions are limited. A registration is not necessary! Please do not publish this page.</p>
+        <p><b>Important note:</b> This is just a user interface test version to collect your valuable feedback, so our
+          team can develop the app more closely to your needs. Some functions are limited. A registration is not
+          necessary! Please do not publish this page.</p>
         <p>Please find our data protection policy here:</p><a href="https://abis-cloud.de/datenschutz-dsgvo/">https://abis-cloud.de/datenschutz-dsgvo/</a>
-        <p>By using this website you are ok with, beeing tracked by google analytics and hotjar. Please try the feedback box to give us your information.</p>
+        <p>By using this website you are ok with, beeing tracked by google analytics and hotjar. Please try the feedback
+          box to give us your information.</p>
       </div>
       <app-card-intro
         *ngIf="_userService.isLoggedOn"
@@ -47,6 +49,4 @@
   </div>
 </div>
 
-<app-button *ngIf="isButton" [lessStyle]="true" [link]='"/"'
-            [text]="'Sign In / Register'">
-</app-button>
+

@@ -12,14 +12,22 @@
       {{userService.userInformation.firstname}}&nbsp;{{userService.userInformation.lastname}}
     </mat-card-title>
     <mat-card-subtitle>
-      @{{profileService.profileInformation.displayName}}
+      @{{profileService.profileInformation.name}}
     </mat-card-subtitle>
     <span class="fill-remaining-space"></span>
-    <button mat-icon-button>
-      <mat-icon>arrow_drop_down</mat-icon>
+    <button mat-icon-button (click)="collapsed = !collapsed">
+      <mat-icon *ngIf="!collapsed">arrow_drop_up</mat-icon>
+      <mat-icon *ngIf="collapsed">arrow_drop_down</mat-icon>
     </button>
   </mat-card-header>
+  <mat-divider></mat-divider>
+  <div *ngIf="showContent">
+    <mat-card-content *ngIf="!collapsed">
+      Hello Iam collapsed
+    </mat-card-content>
+  </div>
 </mat-card>
+<!--
 <mat-divider></mat-divider>
 <mat-card class="embeddableDataspace">
   <mat-card-header>
@@ -35,3 +43,4 @@
     </button>
   </mat-card-header>
 </mat-card>
+-->

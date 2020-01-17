@@ -61,15 +61,15 @@ import {EditorChannelComponent} from './editors/editor-channel/editor-channel.co
 import {GraphQLModule} from './graphql.module';
 import {HttpClientModule} from '@angular/common/http';
 import {CardIntroComponent} from "./cards/card-intro/card-intro.component";
-import {NavigationComponent} from "./pages/system/navigation/navigation.component";
+import {NavigationComponent} from "./navigation/navigation.component";
 import {SwitchProfileComponent} from './pages/system/switch-profile/switch-profile.component';
 import {LogoutComponent} from './pages/system/logout/logout.component';
 import {IAction} from "./actions/IAction";
-import {TeamsComponent} from "./pages/teams/teams.component";
-import {EditorTeamComponent} from "./editors/editor-team/editor-team.component";
+import {ChatRoomsComponent} from "./chat/chat-rooms/chat-rooms.component";
+import {EditorRoomComponent} from "./editors/editor-room/editor-room.component";
 import {AvatarsComponent} from "./components/avatars/avatars.component";
 import {CardMessageComponent} from "./cards/card-message/card-message.component";
-import {CardTeamComponent} from "./cards/card-team/card-team.component";
+import {CardRoomComponent} from "./cards/card-room/card-room.component";
 import {CardFormComponent} from "./cards/card-form/card-form.component";
 import {CardStoreComponent} from "./cards/card-store/card-store.component";
 import {SearchComponent} from "./search/search.component";
@@ -106,7 +106,7 @@ const defaultActions: IAction[] = [<SetVisibility>{
 
 const appRoutes: Routes = [
   {
-    path: 'access', component: AccessComponent, data: {
+    path: '', component: AccessComponent, data: {
       "title": "Welcome",
       "actions": defaultActions
     }
@@ -190,13 +190,13 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'teams', component: TeamsComponent, data: {
-      "title": "Teams",
+    path: 'chat-rooms', component: ChatRoomsComponent, data: {
+      "title": "Rooms",
       "actions": defaultActions
     }
   },
   {
-    path: 'editor-team', component: EditorTeamComponent, data: {
+    path: 'editor-team', component: EditorRoomComponent, data: {
       "title": "Create new team",
       "actions": defaultActions
     }
@@ -214,7 +214,7 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: '', component: ChatComponent, data: {
+    path: 'chat', component: ChatComponent, data: {
       "title": "Chat",
       "actions": defaultActions
     }
@@ -249,11 +249,11 @@ const appRoutes: Routes = [
     NavigationComponent,
     SwitchProfileComponent,
     LogoutComponent,
-    TeamsComponent,
-    EditorTeamComponent,
+    ChatRoomsComponent,
+    EditorRoomComponent,
     AvatarsComponent,
     CardMessageComponent,
-    CardTeamComponent,
+    CardRoomComponent,
     CardFormComponent,
     CardStoreComponent,
     SearchComponent,

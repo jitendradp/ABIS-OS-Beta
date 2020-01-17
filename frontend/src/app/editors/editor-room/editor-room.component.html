@@ -1,23 +1,23 @@
-<!-- Create your new public or private team. Invite friends and colleagues to chat. -->
+<!-- Create your new public or private room. Invite friends and colleagues to chat. -->
 <!-- todo optimize on mobile view. maybe make the stepper vertical instead -->
 <mat-horizontal-stepper [linear]="isLinear" #stepper>
   <mat-step [stepControl]="firstFormGroup">
     <form [formGroup]="firstFormGroup">
-      <ng-template matStepLabel>Create team</ng-template>
+      <ng-template matStepLabel>Create room</ng-template>
       <mat-form-field class="halfWidth">
-        <input matInput type="text" placeholder="Team name" required formControlName="firstCtrl">
+        <input matInput type="text" placeholder="Room name" required formControlName="firstCtrl">
       </mat-form-field>
       <mat-form-field class="halfWidth">
         <input matInput type="text" placeholder="Nickname @" required formControlName="firstCtrl">
       </mat-form-field>
       <div class="fullWidth">
         <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="1" [checked]="true">Private team</mat-radio-button>
-          <mat-radio-button value="2" style="padding-left: 16px">Public team</mat-radio-button>
+          <mat-radio-button value="1" [checked]="true">Private room</mat-radio-button>
+          <mat-radio-button value="2" style="padding-left: 16px">Public room</mat-radio-button>
         </mat-radio-group>
       </div>
       <app-content>
-        <mat-hint align="start">Anybody can view and join public teams. Private teams are only available to invited
+        <mat-hint align="start">Anybody can view and join public rooms. Private rooms are only available to invited
           members. You
           can always change these settings later.
         </mat-hint>

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ProfileService} from "../../services/profile.service";
 import {UserService} from "../../services/user.service";
 
@@ -13,5 +13,8 @@ export class CardProfileComponent {
     protected userService: UserService,
     protected profileService: ProfileService,) {
   }
+
+  @Input()
+  collapsed: boolean;
 
 }

@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 import {UserService} from "../../../services/user.service";
 
 @Component({
@@ -9,8 +9,4 @@ import {UserService} from "../../../services/user.service";
 export class AccessComponent {
   constructor(public _userService: UserService) {
   }
-
-  @Input()
-  isButton: string;
-
 }

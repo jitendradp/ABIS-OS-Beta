@@ -87,8 +87,11 @@ type Group {
 	is_public: Boolean!										# When true, any profile outside that group is allowed to join it
 	members: [Membership!]!									# Profiles that are participating in that group
 	messages: [Message!]!									# Events with a specific content
-	tags: String											# Meta information as hashes to classify the object
+	tags: [Tag!]!											# Meta information as hashes to classify the object
 	location: Location										# A location in the real world
+	members_count: Int                                      # The number of total members in that group
+	members_online: Int                                     # The number of actual members that are online right now
+	messages_count: Int                                     # The number of the total messages that have been sent in that group
 }
 
 enum GroupType {
@@ -98,14 +101,31 @@ enum GroupType {
 	FRIENDS												    # Groups friends of a profile
 }
 
+
+type Tag {
+   	id: ID! @id @unique
+   	createdAt: DateTime! @createdAt
+   	name: String!
+   	parent: Tag
+
+}
+
+## todo why updated at for the location?
 type Location {
 	id: ID! @id @unique
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime! @updatedAt							# Every location was uniquely tagged by someone
 	name: String											# A name that was given for a certain location
+	address: String                                         # The official address of that location
+	zip_code: String                                        # The official zip code of that location
+	city: String                                            # The official name of the city that owns this district
+	country: String                                         # The country that owns that location
+	continent: String                                       # The continent where the country is located
 	latitude: Float!										# Locates a point on a map from north to south
 	longitude: Float!										# Locates a point on a map from east to west
-	radius: Float											# The radius from the center of the location in meters
+	radius_meter: Float										# The radius from the center of the location in meters
+	tags: [Tag!]!											# Meta information as hashes to classify the object
+	visitors_count: Int                                     # The total number of users that visited location
 }
 
 # Any content that was sent from a sender to a recipient
@@ -120,7 +140,7 @@ type Message {
 	content: Json											# The content of a message can be anything or empty
 	attachments: [Attachment!]!								# A url to a file that is attached to the message
 	reactions: [Reaction!]!									# A event can trigger multiple reactions such as likes
-	tags: String											# Meta information as hashes to classify the object
+	tags: [Tag!]!											# Meta information as hashes to classify the object
 }
 
 # All data exchanged is expressed as an "event"
@@ -149,7 +169,7 @@ type Attachment {
 	name: String!											# The name of the attached object
 	type: AttachmentType!									# Categorizes the attachment
 	link: String											# The unique url to access the attached object
-	tags: String											# Meta information as hashes to classify the object
+	tags: [Tag!]!											# Meta information as hashes to classify the object
 }
 
 # Classifies the attached file
