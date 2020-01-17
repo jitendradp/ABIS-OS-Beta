@@ -113,7 +113,6 @@ type Tag {
 	creator: Profile!										# The profile who created the tag
    	name: String!
    	parent: Tag
-
 }
 
 ## todo [DC 20200117 11:20] why updated at for the location?

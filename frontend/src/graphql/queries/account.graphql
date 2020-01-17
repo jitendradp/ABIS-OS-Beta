@@ -2,7 +2,8 @@ query getAccountInformation($csrfToken:String! ) {
   getAccountInformation(csrfToken:$csrfToken) {
     id
     createdAt
-    name
+    firstName
+    lastName
   }
 }
 query getSessionProfile($csrfToken:String! ) {

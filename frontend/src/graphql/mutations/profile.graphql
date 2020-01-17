@@ -1,6 +1,6 @@
-mutation createProfile($csrfToken:String!  $name:String! $picture:String! $timezone:String!) {
-  createProfile(csrfToken:$csrfToken name:$name picture:$picture timezone:$timezone)
+mutation createProfile($csrfToken:String! $type:ProfileType!  $name:String! $picture:String! $timezone:String!) {
+  createProfile(csrfToken:$csrfToken type:$type name:$name picture:$picture timezone:$timezone)
 }
-mutation updateProfile($csrfToken:String!  $profileId:String! $name:String! $picture:String! $timezone:String! $status:String!) {
-  updateProfile(csrfToken:$csrfToken profileId:$profileId name:$name picture:$picture timezone:$timezone status:$status)
+mutation updateProfile($csrfToken:String! $profileId:String! $type:ProfileType! $name:String! $picture:String! $timezone:String! $status:String!) {
+  updateProfile(csrfToken:$csrfToken profileId:$profileId type:$type name:$name picture:$picture timezone:$timezone status:$status)
 }

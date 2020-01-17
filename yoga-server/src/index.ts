@@ -39,8 +39,8 @@ const resolvers = {
     async getProfile(root, {csrfToken, profileId}, ctx) {
       return ProfileQueries.getProfile(csrfToken, ctx.authToken, profileId);
     },
-    async getGroup(root, {csrfToken, workspaceId}, ctx) {
-      return GroupQueries.getGroup(csrfToken, ctx.authToken, workspaceId);
+    async getGroup(root, {csrfToken, groupId}, ctx) {
+      return GroupQueries.getGroup(csrfToken, ctx.authToken, groupId);
     },
     async getAccountInformation(root, {csrfToken}, ctx) {
       return AccountQueries.getAccountInformation(csrfToken, ctx.authToken);

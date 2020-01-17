@@ -1,5 +1,5 @@
-mutation signup($name:String! $email:String! $password:String!) {
-  signup(name:$name email:$email password:$password)
+mutation signup($firstName:String! $lastName:String! $email:String! $password:String!) {
+  signup(firstName:$firstName lastName:$lastName email:$email password:$password)
 }
 mutation verifyEmail($code:String!) {
   verifyEmail(code:$code)

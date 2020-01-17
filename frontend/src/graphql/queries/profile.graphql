@@ -17,9 +17,12 @@ query getProfile($csrfToken:String!  $profileId:String!) {
         description
         logo
         type
-        tags
+        tags {
+          id
+          name
+        }
         createdAt
-        host {
+        creator {
           id
           name
           status

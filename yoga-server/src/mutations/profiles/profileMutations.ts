@@ -2,7 +2,7 @@ import {prisma, ProfileType, StatusType} from "../../generated";
 import {CommonQueries} from "../../queries/commonQueries";
 
 export class ProfileMutations {
-    public static async createProfile(csrfToken: string, authToken:string, name: string, picture: string, timezone: string, type:ProfileType) {
+    public static async createProfile(csrfToken: string, authToken:string, name:string, picture: string, timezone: string, type:ProfileType) {
         const userAndSession = await CommonQueries.findAccountBySession(csrfToken, authToken);
         if (!userAndSession) {
             throw new Error("Invalid csrf- or auth token");

@@ -1,13 +1,16 @@
-query listWorkspaces($csrfToken:String!  $profileId:String!) {
-  listWorkspaces(csrfToken:$csrfToken profileId:$profileId) {
+query listGroups($csrfToken:String!  $profileId:String!) {
+  listGroups(csrfToken:$csrfToken profileId:$profileId) {
     id
     name
+    creator {
+      id
+    }
     title
     description
     logo
     type
     createdAt
-    host {
+    creator {
       id
       name
       picture
@@ -49,29 +52,35 @@ query listMessages($csrfToken:String!  $groupId:String! $profileId:String! $begi
     id
     createdAt
     updatedAt
-    sender {
+    creator {
       id
       name
       picture
     }
     subject
     content
-    tags
+    tags {
+      id
+      name
+    }
     type
   }
 }
-query getWorkspace($csrfToken:String!  $workspaceId:String!) {
-  getWorkspace(csrfToken:$csrfToken workspaceId:$workspaceId) {
+query getGroup($csrfToken:String! $groupId:String!) {
+  getGroup(csrfToken:$csrfToken groupId:$groupId) {
     id
     name
     title
     description
     logo
     type
-    tags
+    tags {
+      id
+      name
+    }
     createdAt
     updatedAt
-    host {
+    creator {
       id
       name
       status
