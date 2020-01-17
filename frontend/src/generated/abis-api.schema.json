@@ -119,7 +119,7 @@
             "deprecationReason": null
           },
           {
-            "name": "getUserInformation",
+            "name": "getAccountInformation",
             "description": "",
             "args": [
               {
@@ -139,7 +139,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "UserInformation",
+              "name": "AccountInformation",
               "ofType": null
             },
             "isDeprecated": false,
@@ -874,19 +874,15 @@
             "description": "",
             "args": [],
             "type": {
-              "kind": "NON_NULL",
+              "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "LIST",
+                "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "Membership",
-                    "ofType": null
-                  }
+                  "kind": "OBJECT",
+                  "name": "Membership",
+                  "ofType": null
                 }
               }
             },
@@ -1123,7 +1119,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "UserInformation",
+        "name": "AccountInformation",
         "description": "",
         "fields": [
           {

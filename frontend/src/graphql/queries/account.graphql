@@ -1,5 +1,5 @@
-query getUserInformation($csrfToken:String! ) {
-  getUserInformation(csrfToken:$csrfToken) {
+query getAccountInformation($csrfToken:String! ) {
+  getAccountInformation(csrfToken:$csrfToken) {
     id
     createdAt
     name

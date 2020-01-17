@@ -2,15 +2,414 @@
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-export const typeDefs = /* GraphQL */ `type AggregateAsset {
+export const typeDefs = /* GraphQL */ `type Account {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime
+  firstName: String!
+  lastName: String!
+  timezone: String!
+  email: String!
+  mobile_phone: String
+  password_salt: String!
+  password_hash: String!
+  is_verified: Boolean!
+  challenge: String
+  profiles(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile!]
+  sessions(where: SessionWhereInput, orderBy: SessionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Session!]
+  lastUsedProfileId: String
+}
+
+type AccountConnection {
+  pageInfo: PageInfo!
+  edges: [AccountEdge]!
+  aggregate: AggregateAccount!
+}
+
+input AccountCreateInput {
+  id: ID
+  firstName: String!
+  lastName: String!
+  timezone: String!
+  email: String!
+  mobile_phone: String
+  password_salt: String!
+  password_hash: String!
+  is_verified: Boolean!
+  challenge: String
+  profiles: ProfileCreateManyWithoutCreatorInput
+  sessions: SessionCreateManyWithoutAccountInput
+  lastUsedProfileId: String
+}
+
+input AccountCreateOneWithoutProfilesInput {
+  create: AccountCreateWithoutProfilesInput
+  connect: AccountWhereUniqueInput
+}
+
+input AccountCreateOneWithoutSessionsInput {
+  create: AccountCreateWithoutSessionsInput
+  connect: AccountWhereUniqueInput
+}
+
+input AccountCreateWithoutProfilesInput {
+  id: ID
+  firstName: String!
+  lastName: String!
+  timezone: String!
+  email: String!
+  mobile_phone: String
+  password_salt: String!
+  password_hash: String!
+  is_verified: Boolean!
+  challenge: String
+  sessions: SessionCreateManyWithoutAccountInput
+  lastUsedProfileId: String
+}
+
+input AccountCreateWithoutSessionsInput {
+  id: ID
+  firstName: String!
+  lastName: String!
+  timezone: String!
+  email: String!
+  mobile_phone: String
+  password_salt: String!
+  password_hash: String!
+  is_verified: Boolean!
+  challenge: String
+  profiles: ProfileCreateManyWithoutCreatorInput
+  lastUsedProfileId: String
+}
+
+type AccountEdge {
+  node: Account!
+  cursor: String!
+}
+
+enum AccountOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  firstName_ASC
+  firstName_DESC
+  lastName_ASC
+  lastName_DESC
+  timezone_ASC
+  timezone_DESC
+  email_ASC
+  email_DESC
+  mobile_phone_ASC
+  mobile_phone_DESC
+  password_salt_ASC
+  password_salt_DESC
+  password_hash_ASC
+  password_hash_DESC
+  is_verified_ASC
+  is_verified_DESC
+  challenge_ASC
+  challenge_DESC
+  lastUsedProfileId_ASC
+  lastUsedProfileId_DESC
+}
+
+type AccountPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime
+  firstName: String!
+  lastName: String!
+  timezone: String!
+  email: String!
+  mobile_phone: String
+  password_salt: String!
+  password_hash: String!
+  is_verified: Boolean!
+  challenge: String
+  lastUsedProfileId: String
+}
+
+type AccountSubscriptionPayload {
+  mutation: MutationType!
+  node: Account
+  updatedFields: [String!]
+  previousValues: AccountPreviousValues
+}
+
+input AccountSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: AccountWhereInput
+  AND: [AccountSubscriptionWhereInput!]
+  OR: [AccountSubscriptionWhereInput!]
+  NOT: [AccountSubscriptionWhereInput!]
+}
+
+input AccountUpdateInput {
+  firstName: String
+  lastName: String
+  timezone: String
+  email: String
+  mobile_phone: String
+  password_salt: String
+  password_hash: String
+  is_verified: Boolean
+  challenge: String
+  profiles: ProfileUpdateManyWithoutCreatorInput
+  sessions: SessionUpdateManyWithoutAccountInput
+  lastUsedProfileId: String
+}
+
+input AccountUpdateManyMutationInput {
+  firstName: String
+  lastName: String
+  timezone: String
+  email: String
+  mobile_phone: String
+  password_salt: String
+  password_hash: String
+  is_verified: Boolean
+  challenge: String
+  lastUsedProfileId: String
+}
+
+input AccountUpdateOneRequiredWithoutProfilesInput {
+  create: AccountCreateWithoutProfilesInput
+  update: AccountUpdateWithoutProfilesDataInput
+  upsert: AccountUpsertWithoutProfilesInput
+  connect: AccountWhereUniqueInput
+}
+
+input AccountUpdateOneRequiredWithoutSessionsInput {
+  create: AccountCreateWithoutSessionsInput
+  update: AccountUpdateWithoutSessionsDataInput
+  upsert: AccountUpsertWithoutSessionsInput
+  connect: AccountWhereUniqueInput
+}
+
+input AccountUpdateWithoutProfilesDataInput {
+  firstName: String
+  lastName: String
+  timezone: String
+  email: String
+  mobile_phone: String
+  password_salt: String
+  password_hash: String
+  is_verified: Boolean
+  challenge: String
+  sessions: SessionUpdateManyWithoutAccountInput
+  lastUsedProfileId: String
+}
+
+input AccountUpdateWithoutSessionsDataInput {
+  firstName: String
+  lastName: String
+  timezone: String
+  email: String
+  mobile_phone: String
+  password_salt: String
+  password_hash: String
+  is_verified: Boolean
+  challenge: String
+  profiles: ProfileUpdateManyWithoutCreatorInput
+  lastUsedProfileId: String
+}
+
+input AccountUpsertWithoutProfilesInput {
+  update: AccountUpdateWithoutProfilesDataInput!
+  create: AccountCreateWithoutProfilesInput!
+}
+
+input AccountUpsertWithoutSessionsInput {
+  update: AccountUpdateWithoutSessionsDataInput!
+  create: AccountCreateWithoutSessionsInput!
+}
+
+input AccountWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  firstName: String
+  firstName_not: String
+  firstName_in: [String!]
+  firstName_not_in: [String!]
+  firstName_lt: String
+  firstName_lte: String
+  firstName_gt: String
+  firstName_gte: String
+  firstName_contains: String
+  firstName_not_contains: String
+  firstName_starts_with: String
+  firstName_not_starts_with: String
+  firstName_ends_with: String
+  firstName_not_ends_with: String
+  lastName: String
+  lastName_not: String
+  lastName_in: [String!]
+  lastName_not_in: [String!]
+  lastName_lt: String
+  lastName_lte: String
+  lastName_gt: String
+  lastName_gte: String
+  lastName_contains: String
+  lastName_not_contains: String
+  lastName_starts_with: String
+  lastName_not_starts_with: String
+  lastName_ends_with: String
+  lastName_not_ends_with: String
+  timezone: String
+  timezone_not: String
+  timezone_in: [String!]
+  timezone_not_in: [String!]
+  timezone_lt: String
+  timezone_lte: String
+  timezone_gt: String
+  timezone_gte: String
+  timezone_contains: String
+  timezone_not_contains: String
+  timezone_starts_with: String
+  timezone_not_starts_with: String
+  timezone_ends_with: String
+  timezone_not_ends_with: String
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
+  mobile_phone: String
+  mobile_phone_not: String
+  mobile_phone_in: [String!]
+  mobile_phone_not_in: [String!]
+  mobile_phone_lt: String
+  mobile_phone_lte: String
+  mobile_phone_gt: String
+  mobile_phone_gte: String
+  mobile_phone_contains: String
+  mobile_phone_not_contains: String
+  mobile_phone_starts_with: String
+  mobile_phone_not_starts_with: String
+  mobile_phone_ends_with: String
+  mobile_phone_not_ends_with: String
+  password_salt: String
+  password_salt_not: String
+  password_salt_in: [String!]
+  password_salt_not_in: [String!]
+  password_salt_lt: String
+  password_salt_lte: String
+  password_salt_gt: String
+  password_salt_gte: String
+  password_salt_contains: String
+  password_salt_not_contains: String
+  password_salt_starts_with: String
+  password_salt_not_starts_with: String
+  password_salt_ends_with: String
+  password_salt_not_ends_with: String
+  password_hash: String
+  password_hash_not: String
+  password_hash_in: [String!]
+  password_hash_not_in: [String!]
+  password_hash_lt: String
+  password_hash_lte: String
+  password_hash_gt: String
+  password_hash_gte: String
+  password_hash_contains: String
+  password_hash_not_contains: String
+  password_hash_starts_with: String
+  password_hash_not_starts_with: String
+  password_hash_ends_with: String
+  password_hash_not_ends_with: String
+  is_verified: Boolean
+  is_verified_not: Boolean
+  challenge: String
+  challenge_not: String
+  challenge_in: [String!]
+  challenge_not_in: [String!]
+  challenge_lt: String
+  challenge_lte: String
+  challenge_gt: String
+  challenge_gte: String
+  challenge_contains: String
+  challenge_not_contains: String
+  challenge_starts_with: String
+  challenge_not_starts_with: String
+  challenge_ends_with: String
+  challenge_not_ends_with: String
+  profiles_every: ProfileWhereInput
+  profiles_some: ProfileWhereInput
+  profiles_none: ProfileWhereInput
+  sessions_every: SessionWhereInput
+  sessions_some: SessionWhereInput
+  sessions_none: SessionWhereInput
+  lastUsedProfileId: String
+  lastUsedProfileId_not: String
+  lastUsedProfileId_in: [String!]
+  lastUsedProfileId_not_in: [String!]
+  lastUsedProfileId_lt: String
+  lastUsedProfileId_lte: String
+  lastUsedProfileId_gt: String
+  lastUsedProfileId_gte: String
+  lastUsedProfileId_contains: String
+  lastUsedProfileId_not_contains: String
+  lastUsedProfileId_starts_with: String
+  lastUsedProfileId_not_starts_with: String
+  lastUsedProfileId_ends_with: String
+  lastUsedProfileId_not_ends_with: String
+  AND: [AccountWhereInput!]
+  OR: [AccountWhereInput!]
+  NOT: [AccountWhereInput!]
+}
+
+input AccountWhereUniqueInput {
+  id: ID
+  email: String
+}
+
+type AggregateAccount {
   count: Int!
 }
 
 type AggregateAttachment {
-  count: Int!
-}
-
-type AggregateExchange {
   count: Int!
 }
 
@@ -30,10 +429,6 @@ type AggregateMessage {
   count: Int!
 }
 
-type AggregatePortfolio {
-  count: Int!
-}
-
 type AggregateProfile {
   count: Int!
 }
@@ -46,213 +441,19 @@ type AggregateSession {
   count: Int!
 }
 
-type AggregateTransaction {
+type AggregateTag {
   count: Int!
-}
-
-type AggregateUser {
-  count: Int!
-}
-
-type Asset {
-  id: ID!
-  name: String!
-}
-
-type AssetConnection {
-  pageInfo: PageInfo!
-  edges: [AssetEdge]!
-  aggregate: AggregateAsset!
-}
-
-input AssetCreateInput {
-  id: ID
-  name: String!
-}
-
-input AssetCreateManyInput {
-  create: [AssetCreateInput!]
-  connect: [AssetWhereUniqueInput!]
-}
-
-input AssetCreateOneInput {
-  create: AssetCreateInput
-  connect: AssetWhereUniqueInput
-}
-
-type AssetEdge {
-  node: Asset!
-  cursor: String!
-}
-
-enum AssetOrderByInput {
-  id_ASC
-  id_DESC
-  name_ASC
-  name_DESC
-}
-
-type AssetPreviousValues {
-  id: ID!
-  name: String!
-}
-
-input AssetScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
-  AND: [AssetScalarWhereInput!]
-  OR: [AssetScalarWhereInput!]
-  NOT: [AssetScalarWhereInput!]
-}
-
-type AssetSubscriptionPayload {
-  mutation: MutationType!
-  node: Asset
-  updatedFields: [String!]
-  previousValues: AssetPreviousValues
-}
-
-input AssetSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: AssetWhereInput
-  AND: [AssetSubscriptionWhereInput!]
-  OR: [AssetSubscriptionWhereInput!]
-  NOT: [AssetSubscriptionWhereInput!]
-}
-
-input AssetUpdateDataInput {
-  name: String
-}
-
-input AssetUpdateInput {
-  name: String
-}
-
-input AssetUpdateManyDataInput {
-  name: String
-}
-
-input AssetUpdateManyInput {
-  create: [AssetCreateInput!]
-  update: [AssetUpdateWithWhereUniqueNestedInput!]
-  upsert: [AssetUpsertWithWhereUniqueNestedInput!]
-  delete: [AssetWhereUniqueInput!]
-  connect: [AssetWhereUniqueInput!]
-  set: [AssetWhereUniqueInput!]
-  disconnect: [AssetWhereUniqueInput!]
-  deleteMany: [AssetScalarWhereInput!]
-  updateMany: [AssetUpdateManyWithWhereNestedInput!]
-}
-
-input AssetUpdateManyMutationInput {
-  name: String
-}
-
-input AssetUpdateManyWithWhereNestedInput {
-  where: AssetScalarWhereInput!
-  data: AssetUpdateManyDataInput!
-}
-
-input AssetUpdateOneRequiredInput {
-  create: AssetCreateInput
-  update: AssetUpdateDataInput
-  upsert: AssetUpsertNestedInput
-  connect: AssetWhereUniqueInput
-}
-
-input AssetUpdateWithWhereUniqueNestedInput {
-  where: AssetWhereUniqueInput!
-  data: AssetUpdateDataInput!
-}
-
-input AssetUpsertNestedInput {
-  update: AssetUpdateDataInput!
-  create: AssetCreateInput!
-}
-
-input AssetUpsertWithWhereUniqueNestedInput {
-  where: AssetWhereUniqueInput!
-  update: AssetUpdateDataInput!
-  create: AssetCreateInput!
-}
-
-input AssetWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
-  AND: [AssetWhereInput!]
-  OR: [AssetWhereInput!]
-  NOT: [AssetWhereInput!]
-}
-
-input AssetWhereUniqueInput {
-  id: ID
 }
 
 type Attachment {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime
-  createdBy: Profile!
+  creator: Profile!
   name: String!
   type: AttachmentType!
   link: String
-  tags: String
-  location: Location
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
 }
 
 type AttachmentConnection {
@@ -263,12 +464,11 @@ type AttachmentConnection {
 
 input AttachmentCreateInput {
   id: ID
-  createdBy: ProfileCreateOneInput!
+  creator: ProfileCreateOneInput!
   name: String!
   type: AttachmentType!
   link: String
-  tags: String
-  location: LocationCreateOneInput
+  tags: TagCreateManyInput
 }
 
 input AttachmentCreateManyInput {
@@ -294,8 +494,6 @@ enum AttachmentOrderByInput {
   type_DESC
   link_ASC
   link_DESC
-  tags_ASC
-  tags_DESC
 }
 
 type AttachmentPreviousValues {
@@ -305,7 +503,6 @@ type AttachmentPreviousValues {
   name: String!
   type: AttachmentType!
   link: String
-  tags: String
 }
 
 input AttachmentScalarWhereInput {
@@ -371,20 +568,6 @@ input AttachmentScalarWhereInput {
   link_not_starts_with: String
   link_ends_with: String
   link_not_ends_with: String
-  tags: String
-  tags_not: String
-  tags_in: [String!]
-  tags_not_in: [String!]
-  tags_lt: String
-  tags_lte: String
-  tags_gt: String
-  tags_gte: String
-  tags_contains: String
-  tags_not_contains: String
-  tags_starts_with: String
-  tags_not_starts_with: String
-  tags_ends_with: String
-  tags_not_ends_with: String
   AND: [AttachmentScalarWhereInput!]
   OR: [AttachmentScalarWhereInput!]
   NOT: [AttachmentScalarWhereInput!]
@@ -417,28 +600,25 @@ enum AttachmentType {
 }
 
 input AttachmentUpdateDataInput {
-  createdBy: ProfileUpdateOneRequiredInput
+  creator: ProfileUpdateOneRequiredInput
   name: String
   type: AttachmentType
   link: String
-  tags: String
-  location: LocationUpdateOneInput
+  tags: TagUpdateManyInput
 }
 
 input AttachmentUpdateInput {
-  createdBy: ProfileUpdateOneRequiredInput
+  creator: ProfileUpdateOneRequiredInput
   name: String
   type: AttachmentType
   link: String
-  tags: String
-  location: LocationUpdateOneInput
+  tags: TagUpdateManyInput
 }
 
 input AttachmentUpdateManyDataInput {
   name: String
   type: AttachmentType
   link: String
-  tags: String
 }
 
 input AttachmentUpdateManyInput {
@@ -457,7 +637,6 @@ input AttachmentUpdateManyMutationInput {
   name: String
   type: AttachmentType
   link: String
-  tags: String
 }
 
 input AttachmentUpdateManyWithWhereNestedInput {
@@ -507,7 +686,7 @@ input AttachmentWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
-  createdBy: ProfileWhereInput
+  creator: ProfileWhereInput
   name: String
   name_not: String
   name_in: [String!]
@@ -540,21 +719,9 @@ input AttachmentWhereInput {
   link_not_starts_with: String
   link_ends_with: String
   link_not_ends_with: String
-  tags: String
-  tags_not: String
-  tags_in: [String!]
-  tags_not_in: [String!]
-  tags_lt: String
-  tags_lte: String
-  tags_gt: String
-  tags_gte: String
-  tags_contains: String
-  tags_not_contains: String
-  tags_starts_with: String
-  tags_not_starts_with: String
-  tags_ends_with: String
-  tags_not_ends_with: String
-  location: LocationWhereInput
+  tags_every: TagWhereInput
+  tags_some: TagWhereInput
+  tags_none: TagWhereInput
   AND: [AttachmentWhereInput!]
   OR: [AttachmentWhereInput!]
   NOT: [AttachmentWhereInput!]
@@ -570,136 +737,11 @@ type BatchPayload {
 
 scalar DateTime
 
-type Exchange {
-  id: ID!
-  name: String!
-  assets(where: AssetWhereInput, orderBy: AssetOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Asset!]
-}
-
-type ExchangeConnection {
-  pageInfo: PageInfo!
-  edges: [ExchangeEdge]!
-  aggregate: AggregateExchange!
-}
-
-input ExchangeCreateInput {
-  id: ID
-  name: String!
-  assets: AssetCreateManyInput
-}
-
-input ExchangeCreateOneInput {
-  create: ExchangeCreateInput
-  connect: ExchangeWhereUniqueInput
-}
-
-type ExchangeEdge {
-  node: Exchange!
-  cursor: String!
-}
-
-enum ExchangeOrderByInput {
-  id_ASC
-  id_DESC
-  name_ASC
-  name_DESC
-}
-
-type ExchangePreviousValues {
-  id: ID!
-  name: String!
-}
-
-type ExchangeSubscriptionPayload {
-  mutation: MutationType!
-  node: Exchange
-  updatedFields: [String!]
-  previousValues: ExchangePreviousValues
-}
-
-input ExchangeSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: ExchangeWhereInput
-  AND: [ExchangeSubscriptionWhereInput!]
-  OR: [ExchangeSubscriptionWhereInput!]
-  NOT: [ExchangeSubscriptionWhereInput!]
-}
-
-input ExchangeUpdateDataInput {
-  name: String
-  assets: AssetUpdateManyInput
-}
-
-input ExchangeUpdateInput {
-  name: String
-  assets: AssetUpdateManyInput
-}
-
-input ExchangeUpdateManyMutationInput {
-  name: String
-}
-
-input ExchangeUpdateOneRequiredInput {
-  create: ExchangeCreateInput
-  update: ExchangeUpdateDataInput
-  upsert: ExchangeUpsertNestedInput
-  connect: ExchangeWhereUniqueInput
-}
-
-input ExchangeUpsertNestedInput {
-  update: ExchangeUpdateDataInput!
-  create: ExchangeCreateInput!
-}
-
-input ExchangeWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
-  assets_every: AssetWhereInput
-  assets_some: AssetWhereInput
-  assets_none: AssetWhereInput
-  AND: [ExchangeWhereInput!]
-  OR: [ExchangeWhereInput!]
-  NOT: [ExchangeWhereInput!]
-}
-
-input ExchangeWhereUniqueInput {
-  id: ID
-}
-
 type Group {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime
-  host: Profile!
+  creator: Profile!
   name: String!
   title: String!
   description: String!
@@ -710,8 +752,11 @@ type Group {
   is_public: Boolean!
   members(where: MembershipWhereInput, orderBy: MembershipOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Membership!]
   messages(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Message!]
-  tags: String
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
   location: Location
+  members_count: Int
+  members_online: Int
+  messages_count: Int
 }
 
 type GroupConnection {
@@ -722,7 +767,7 @@ type GroupConnection {
 
 input GroupCreateInput {
   id: ID
-  host: ProfileCreateOneInput!
+  creator: ProfileCreateOneInput!
   name: String!
   title: String!
   description: String!
@@ -733,8 +778,11 @@ input GroupCreateInput {
   is_public: Boolean!
   members: MembershipCreateManyWithoutGroupInput
   messages: MessageCreateManyInput
-  tags: String
+  tags: TagCreateManyInput
   location: LocationCreateOneInput
+  members_count: Int
+  members_online: Int
+  messages_count: Int
 }
 
 input GroupCreateOneInput {
@@ -749,7 +797,7 @@ input GroupCreateOneWithoutMembersInput {
 
 input GroupCreateWithoutMembersInput {
   id: ID
-  host: ProfileCreateOneInput!
+  creator: ProfileCreateOneInput!
   name: String!
   title: String!
   description: String!
@@ -759,8 +807,11 @@ input GroupCreateWithoutMembersInput {
   is_hidden: Boolean!
   is_public: Boolean!
   messages: MessageCreateManyInput
-  tags: String
+  tags: TagCreateManyInput
   location: LocationCreateOneInput
+  members_count: Int
+  members_online: Int
+  messages_count: Int
 }
 
 type GroupEdge {
@@ -789,8 +840,12 @@ enum GroupOrderByInput {
   is_hidden_DESC
   is_public_ASC
   is_public_DESC
-  tags_ASC
-  tags_DESC
+  members_count_ASC
+  members_count_DESC
+  members_online_ASC
+  members_online_DESC
+  messages_count_ASC
+  messages_count_DESC
 }
 
 type GroupPreviousValues {
@@ -804,7 +859,9 @@ type GroupPreviousValues {
   type: GroupType!
   is_hidden: Boolean!
   is_public: Boolean!
-  tags: String
+  members_count: Int
+  members_online: Int
+  messages_count: Int
 }
 
 type GroupSubscriptionPayload {
@@ -826,15 +883,14 @@ input GroupSubscriptionWhereInput {
 }
 
 enum GroupType {
-  WORKSPACE
-  TEAM
-  CONVERSATION
+  ROOM
+  CHANNEL
   THREAD
   FRIENDS
 }
 
 input GroupUpdateDataInput {
-  host: ProfileUpdateOneRequiredInput
+  creator: ProfileUpdateOneRequiredInput
   name: String
   title: String
   description: String
@@ -845,12 +901,15 @@ input GroupUpdateDataInput {
   is_public: Boolean
   members: MembershipUpdateManyWithoutGroupInput
   messages: MessageUpdateManyInput
-  tags: String
+  tags: TagUpdateManyInput
   location: LocationUpdateOneInput
+  members_count: Int
+  members_online: Int
+  messages_count: Int
 }
 
 input GroupUpdateInput {
-  host: ProfileUpdateOneRequiredInput
+  creator: ProfileUpdateOneRequiredInput
   name: String
   title: String
   description: String
@@ -861,8 +920,11 @@ input GroupUpdateInput {
   is_public: Boolean
   members: MembershipUpdateManyWithoutGroupInput
   messages: MessageUpdateManyInput
-  tags: String
+  tags: TagUpdateManyInput
   location: LocationUpdateOneInput
+  members_count: Int
+  members_online: Int
+  messages_count: Int
 }
 
 input GroupUpdateManyMutationInput {
@@ -873,7 +935,9 @@ input GroupUpdateManyMutationInput {
   type: GroupType
   is_hidden: Boolean
   is_public: Boolean
-  tags: String
+  members_count: Int
+  members_online: Int
+  messages_count: Int
 }
 
 input GroupUpdateOneInput {
@@ -893,7 +957,7 @@ input GroupUpdateOneRequiredWithoutMembersInput {
 }
 
 input GroupUpdateWithoutMembersDataInput {
-  host: ProfileUpdateOneRequiredInput
+  creator: ProfileUpdateOneRequiredInput
   name: String
   title: String
   description: String
@@ -903,8 +967,11 @@ input GroupUpdateWithoutMembersDataInput {
   is_hidden: Boolean
   is_public: Boolean
   messages: MessageUpdateManyInput
-  tags: String
+  tags: TagUpdateManyInput
   location: LocationUpdateOneInput
+  members_count: Int
+  members_online: Int
+  messages_count: Int
 }
 
 input GroupUpsertNestedInput {
@@ -948,7 +1015,7 @@ input GroupWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
-  host: ProfileWhereInput
+  creator: ProfileWhereInput
   name: String
   name_not: String
   name_in: [String!]
@@ -1020,21 +1087,34 @@ input GroupWhereInput {
   messages_every: MessageWhereInput
   messages_some: MessageWhereInput
   messages_none: MessageWhereInput
-  tags: String
-  tags_not: String
-  tags_in: [String!]
-  tags_not_in: [String!]
-  tags_lt: String
-  tags_lte: String
-  tags_gt: String
-  tags_gte: String
-  tags_contains: String
-  tags_not_contains: String
-  tags_starts_with: String
-  tags_not_starts_with: String
-  tags_ends_with: String
-  tags_not_ends_with: String
+  tags_every: TagWhereInput
+  tags_some: TagWhereInput
+  tags_none: TagWhereInput
   location: LocationWhereInput
+  members_count: Int
+  members_count_not: Int
+  members_count_in: [Int!]
+  members_count_not_in: [Int!]
+  members_count_lt: Int
+  members_count_lte: Int
+  members_count_gt: Int
+  members_count_gte: Int
+  members_online: Int
+  members_online_not: Int
+  members_online_in: [Int!]
+  members_online_not_in: [Int!]
+  members_online_lt: Int
+  members_online_lte: Int
+  members_online_gt: Int
+  members_online_gte: Int
+  messages_count: Int
+  messages_count_not: Int
+  messages_count_in: [Int!]
+  messages_count_not_in: [Int!]
+  messages_count_lt: Int
+  messages_count_lte: Int
+  messages_count_gt: Int
+  messages_count_gte: Int
   AND: [GroupWhereInput!]
   OR: [GroupWhereInput!]
   NOT: [GroupWhereInput!]
@@ -1050,10 +1130,19 @@ type Location {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
+  creator: Profile!
+  type: LocationType!
   name: String
+  address: String
+  zip_code: String
+  city: String
+  country: String
+  continent: String
   latitude: Float!
   longitude: Float!
-  radius: Float
+  radius_meter: Float
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
+  visitors_count: Int
 }
 
 type LocationConnection {
@@ -1064,10 +1153,19 @@ type LocationConnection {
 
 input LocationCreateInput {
   id: ID
+  creator: ProfileCreateOneInput!
+  type: LocationType!
   name: String
+  address: String
+  zip_code: String
+  city: String
+  country: String
+  continent: String
   latitude: Float!
   longitude: Float!
-  radius: Float
+  radius_meter: Float
+  tags: TagCreateManyInput
+  visitors_count: Int
 }
 
 input LocationCreateOneInput {
@@ -1087,24 +1185,45 @@ enum LocationOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
+  type_ASC
+  type_DESC
   name_ASC
   name_DESC
+  address_ASC
+  address_DESC
+  zip_code_ASC
+  zip_code_DESC
+  city_ASC
+  city_DESC
+  country_ASC
+  country_DESC
+  continent_ASC
+  continent_DESC
   latitude_ASC
   latitude_DESC
   longitude_ASC
   longitude_DESC
-  radius_ASC
-  radius_DESC
+  radius_meter_ASC
+  radius_meter_DESC
+  visitors_count_ASC
+  visitors_count_DESC
 }
 
 type LocationPreviousValues {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
+  type: LocationType!
   name: String
+  address: String
+  zip_code: String
+  city: String
+  country: String
+  continent: String
   latitude: Float!
   longitude: Float!
-  radius: Float
+  radius_meter: Float
+  visitors_count: Int
 }
 
 type LocationSubscriptionPayload {
@@ -1125,25 +1244,55 @@ input LocationSubscriptionWhereInput {
   NOT: [LocationSubscriptionWhereInput!]
 }
 
+enum LocationType {
+  GEOGRAPHIC
+  POI
+}
+
 input LocationUpdateDataInput {
+  creator: ProfileUpdateOneRequiredInput
+  type: LocationType
   name: String
+  address: String
+  zip_code: String
+  city: String
+  country: String
+  continent: String
   latitude: Float
   longitude: Float
-  radius: Float
+  radius_meter: Float
+  tags: TagUpdateManyInput
+  visitors_count: Int
 }
 
 input LocationUpdateInput {
+  creator: ProfileUpdateOneRequiredInput
+  type: LocationType
   name: String
+  address: String
+  zip_code: String
+  city: String
+  country: String
+  continent: String
   latitude: Float
   longitude: Float
-  radius: Float
+  radius_meter: Float
+  tags: TagUpdateManyInput
+  visitors_count: Int
 }
 
 input LocationUpdateManyMutationInput {
+  type: LocationType
   name: String
+  address: String
+  zip_code: String
+  city: String
+  country: String
+  continent: String
   latitude: Float
   longitude: Float
-  radius: Float
+  radius_meter: Float
+  visitors_count: Int
 }
 
 input LocationUpdateOneInput {
@@ -1191,6 +1340,11 @@ input LocationWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
+  creator: ProfileWhereInput
+  type: LocationType
+  type_not: LocationType
+  type_in: [LocationType!]
+  type_not_in: [LocationType!]
   name: String
   name_not: String
   name_in: [String!]
@@ -1205,6 +1359,76 @@ input LocationWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
+  address: String
+  address_not: String
+  address_in: [String!]
+  address_not_in: [String!]
+  address_lt: String
+  address_lte: String
+  address_gt: String
+  address_gte: String
+  address_contains: String
+  address_not_contains: String
+  address_starts_with: String
+  address_not_starts_with: String
+  address_ends_with: String
+  address_not_ends_with: String
+  zip_code: String
+  zip_code_not: String
+  zip_code_in: [String!]
+  zip_code_not_in: [String!]
+  zip_code_lt: String
+  zip_code_lte: String
+  zip_code_gt: String
+  zip_code_gte: String
+  zip_code_contains: String
+  zip_code_not_contains: String
+  zip_code_starts_with: String
+  zip_code_not_starts_with: String
+  zip_code_ends_with: String
+  zip_code_not_ends_with: String
+  city: String
+  city_not: String
+  city_in: [String!]
+  city_not_in: [String!]
+  city_lt: String
+  city_lte: String
+  city_gt: String
+  city_gte: String
+  city_contains: String
+  city_not_contains: String
+  city_starts_with: String
+  city_not_starts_with: String
+  city_ends_with: String
+  city_not_ends_with: String
+  country: String
+  country_not: String
+  country_in: [String!]
+  country_not_in: [String!]
+  country_lt: String
+  country_lte: String
+  country_gt: String
+  country_gte: String
+  country_contains: String
+  country_not_contains: String
+  country_starts_with: String
+  country_not_starts_with: String
+  country_ends_with: String
+  country_not_ends_with: String
+  continent: String
+  continent_not: String
+  continent_in: [String!]
+  continent_not_in: [String!]
+  continent_lt: String
+  continent_lte: String
+  continent_gt: String
+  continent_gte: String
+  continent_contains: String
+  continent_not_contains: String
+  continent_starts_with: String
+  continent_not_starts_with: String
+  continent_ends_with: String
+  continent_not_ends_with: String
   latitude: Float
   latitude_not: Float
   latitude_in: [Float!]
@@ -1221,14 +1445,25 @@ input LocationWhereInput {
   longitude_lte: Float
   longitude_gt: Float
   longitude_gte: Float
-  radius: Float
-  radius_not: Float
-  radius_in: [Float!]
-  radius_not_in: [Float!]
-  radius_lt: Float
-  radius_lte: Float
-  radius_gt: Float
-  radius_gte: Float
+  radius_meter: Float
+  radius_meter_not: Float
+  radius_meter_in: [Float!]
+  radius_meter_not_in: [Float!]
+  radius_meter_lt: Float
+  radius_meter_lte: Float
+  radius_meter_gt: Float
+  radius_meter_gte: Float
+  tags_every: TagWhereInput
+  tags_some: TagWhereInput
+  tags_none: TagWhereInput
+  visitors_count: Int
+  visitors_count_not: Int
+  visitors_count_in: [Int!]
+  visitors_count_not_in: [Int!]
+  visitors_count_lt: Int
+  visitors_count_lte: Int
+  visitors_count_gt: Int
+  visitors_count_gte: Int
   AND: [LocationWhereInput!]
   OR: [LocationWhereInput!]
   NOT: [LocationWhereInput!]
@@ -1244,6 +1479,10 @@ type Membership {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime
+  creator: Profile!
+  can_read: Boolean!
+  can_write: Boolean!
+  can_delete: Boolean!
   member: Profile!
   group: Group!
   show_history: Boolean!
@@ -1257,9 +1496,18 @@ type MembershipConnection {
 
 input MembershipCreateInput {
   id: ID
+  creator: ProfileCreateOneWithoutInviteesInput!
+  can_read: Boolean!
+  can_write: Boolean!
+  can_delete: Boolean!
   member: ProfileCreateOneWithoutMembershipsInput!
   group: GroupCreateOneWithoutMembersInput!
   show_history: Boolean!
+}
+
+input MembershipCreateManyWithoutCreatorInput {
+  create: [MembershipCreateWithoutCreatorInput!]
+  connect: [MembershipWhereUniqueInput!]
 }
 
 input MembershipCreateManyWithoutGroupInput {
@@ -1272,14 +1520,32 @@ input MembershipCreateManyWithoutMemberInput {
   connect: [MembershipWhereUniqueInput!]
 }
 
+input MembershipCreateWithoutCreatorInput {
+  id: ID
+  can_read: Boolean!
+  can_write: Boolean!
+  can_delete: Boolean!
+  member: ProfileCreateOneWithoutMembershipsInput!
+  group: GroupCreateOneWithoutMembersInput!
+  show_history: Boolean!
+}
+
 input MembershipCreateWithoutGroupInput {
   id: ID
+  creator: ProfileCreateOneWithoutInviteesInput!
+  can_read: Boolean!
+  can_write: Boolean!
+  can_delete: Boolean!
   member: ProfileCreateOneWithoutMembershipsInput!
   show_history: Boolean!
 }
 
 input MembershipCreateWithoutMemberInput {
   id: ID
+  creator: ProfileCreateOneWithoutInviteesInput!
+  can_read: Boolean!
+  can_write: Boolean!
+  can_delete: Boolean!
   group: GroupCreateOneWithoutMembersInput!
   show_history: Boolean!
 }
@@ -1296,6 +1562,12 @@ enum MembershipOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
+  can_read_ASC
+  can_read_DESC
+  can_write_ASC
+  can_write_DESC
+  can_delete_ASC
+  can_delete_DESC
   show_history_ASC
   show_history_DESC
 }
@@ -1304,6 +1576,9 @@ type MembershipPreviousValues {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime
+  can_read: Boolean!
+  can_write: Boolean!
+  can_delete: Boolean!
   show_history: Boolean!
 }
 
@@ -1338,6 +1613,12 @@ input MembershipScalarWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
+  can_read: Boolean
+  can_read_not: Boolean
+  can_write: Boolean
+  can_write_not: Boolean
+  can_delete: Boolean
+  can_delete_not: Boolean
   show_history: Boolean
   show_history_not: Boolean
   AND: [MembershipScalarWhereInput!]
@@ -1364,17 +1645,39 @@ input MembershipSubscriptionWhereInput {
 }
 
 input MembershipUpdateInput {
+  creator: ProfileUpdateOneRequiredWithoutInviteesInput
+  can_read: Boolean
+  can_write: Boolean
+  can_delete: Boolean
   member: ProfileUpdateOneRequiredWithoutMembershipsInput
   group: GroupUpdateOneRequiredWithoutMembersInput
   show_history: Boolean
 }
 
 input MembershipUpdateManyDataInput {
+  can_read: Boolean
+  can_write: Boolean
+  can_delete: Boolean
   show_history: Boolean
 }
 
 input MembershipUpdateManyMutationInput {
+  can_read: Boolean
+  can_write: Boolean
+  can_delete: Boolean
   show_history: Boolean
+}
+
+input MembershipUpdateManyWithoutCreatorInput {
+  create: [MembershipCreateWithoutCreatorInput!]
+  delete: [MembershipWhereUniqueInput!]
+  connect: [MembershipWhereUniqueInput!]
+  set: [MembershipWhereUniqueInput!]
+  disconnect: [MembershipWhereUniqueInput!]
+  update: [MembershipUpdateWithWhereUniqueWithoutCreatorInput!]
+  upsert: [MembershipUpsertWithWhereUniqueWithoutCreatorInput!]
+  deleteMany: [MembershipScalarWhereInput!]
+  updateMany: [MembershipUpdateManyWithWhereNestedInput!]
 }
 
 input MembershipUpdateManyWithoutGroupInput {
@@ -1406,14 +1709,36 @@ input MembershipUpdateManyWithWhereNestedInput {
   data: MembershipUpdateManyDataInput!
 }
 
+input MembershipUpdateWithoutCreatorDataInput {
+  can_read: Boolean
+  can_write: Boolean
+  can_delete: Boolean
+  member: ProfileUpdateOneRequiredWithoutMembershipsInput
+  group: GroupUpdateOneRequiredWithoutMembersInput
+  show_history: Boolean
+}
+
 input MembershipUpdateWithoutGroupDataInput {
+  creator: ProfileUpdateOneRequiredWithoutInviteesInput
+  can_read: Boolean
+  can_write: Boolean
+  can_delete: Boolean
   member: ProfileUpdateOneRequiredWithoutMembershipsInput
   show_history: Boolean
 }
 
 input MembershipUpdateWithoutMemberDataInput {
+  creator: ProfileUpdateOneRequiredWithoutInviteesInput
+  can_read: Boolean
+  can_write: Boolean
+  can_delete: Boolean
   group: GroupUpdateOneRequiredWithoutMembersInput
   show_history: Boolean
+}
+
+input MembershipUpdateWithWhereUniqueWithoutCreatorInput {
+  where: MembershipWhereUniqueInput!
+  data: MembershipUpdateWithoutCreatorDataInput!
 }
 
 input MembershipUpdateWithWhereUniqueWithoutGroupInput {
@@ -1424,6 +1749,12 @@ input MembershipUpdateWithWhereUniqueWithoutGroupInput {
 input MembershipUpdateWithWhereUniqueWithoutMemberInput {
   where: MembershipWhereUniqueInput!
   data: MembershipUpdateWithoutMemberDataInput!
+}
+
+input MembershipUpsertWithWhereUniqueWithoutCreatorInput {
+  where: MembershipWhereUniqueInput!
+  update: MembershipUpdateWithoutCreatorDataInput!
+  create: MembershipCreateWithoutCreatorInput!
 }
 
 input MembershipUpsertWithWhereUniqueWithoutGroupInput {
@@ -1469,6 +1800,13 @@ input MembershipWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
+  creator: ProfileWhereInput
+  can_read: Boolean
+  can_read_not: Boolean
+  can_write: Boolean
+  can_write_not: Boolean
+  can_delete: Boolean
+  can_delete_not: Boolean
   member: ProfileWhereInput
   group: GroupWhereInput
   show_history: Boolean
@@ -1486,15 +1824,14 @@ type Message {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime
-  sender: Profile!
+  creator: Profile!
   type: MessageType!
   parent: Message
   subject: String
   content: Json
   attachments(where: AttachmentWhereInput, orderBy: AttachmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Attachment!]
   reactions(where: ReactionWhereInput, orderBy: ReactionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Reaction!]
-  tags: String
-  location: Location
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
 }
 
 type MessageConnection {
@@ -1505,15 +1842,14 @@ type MessageConnection {
 
 input MessageCreateInput {
   id: ID
-  sender: ProfileCreateOneInput!
+  creator: ProfileCreateOneInput!
   type: MessageType!
   parent: MessageCreateOneInput
   subject: String
   content: Json
   attachments: AttachmentCreateManyInput
   reactions: ReactionCreateManyInput
-  tags: String
-  location: LocationCreateOneInput
+  tags: TagCreateManyInput
 }
 
 input MessageCreateManyInput {
@@ -1544,8 +1880,6 @@ enum MessageOrderByInput {
   subject_DESC
   content_ASC
   content_DESC
-  tags_ASC
-  tags_DESC
 }
 
 type MessagePreviousValues {
@@ -1555,7 +1889,6 @@ type MessagePreviousValues {
   type: MessageType!
   subject: String
   content: Json
-  tags: String
 }
 
 input MessageScalarWhereInput {
@@ -1607,20 +1940,6 @@ input MessageScalarWhereInput {
   subject_not_starts_with: String
   subject_ends_with: String
   subject_not_ends_with: String
-  tags: String
-  tags_not: String
-  tags_in: [String!]
-  tags_not_in: [String!]
-  tags_lt: String
-  tags_lte: String
-  tags_gt: String
-  tags_gte: String
-  tags_contains: String
-  tags_not_contains: String
-  tags_starts_with: String
-  tags_not_starts_with: String
-  tags_ends_with: String
-  tags_not_ends_with: String
   AND: [MessageScalarWhereInput!]
   OR: [MessageScalarWhereInput!]
   NOT: [MessageScalarWhereInput!]
@@ -1649,39 +1968,34 @@ enum MessageType {
   DIRECT_MESSAGE
   COMMENT
   POST
-  CHART_FLAG
-  TRAIL
 }
 
 input MessageUpdateDataInput {
-  sender: ProfileUpdateOneRequiredInput
+  creator: ProfileUpdateOneRequiredInput
   type: MessageType
   parent: MessageUpdateOneInput
   subject: String
   content: Json
   attachments: AttachmentUpdateManyInput
   reactions: ReactionUpdateManyInput
-  tags: String
-  location: LocationUpdateOneInput
+  tags: TagUpdateManyInput
 }
 
 input MessageUpdateInput {
-  sender: ProfileUpdateOneRequiredInput
+  creator: ProfileUpdateOneRequiredInput
   type: MessageType
   parent: MessageUpdateOneInput
   subject: String
   content: Json
   attachments: AttachmentUpdateManyInput
   reactions: ReactionUpdateManyInput
-  tags: String
-  location: LocationUpdateOneInput
+  tags: TagUpdateManyInput
 }
 
 input MessageUpdateManyDataInput {
   type: MessageType
   subject: String
   content: Json
-  tags: String
 }
 
 input MessageUpdateManyInput {
@@ -1700,7 +2014,6 @@ input MessageUpdateManyMutationInput {
   type: MessageType
   subject: String
   content: Json
-  tags: String
 }
 
 input MessageUpdateManyWithWhereNestedInput {
@@ -1764,7 +2077,7 @@ input MessageWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
-  sender: ProfileWhereInput
+  creator: ProfileWhereInput
   type: MessageType
   type_not: MessageType
   type_in: [MessageType!]
@@ -1790,21 +2103,9 @@ input MessageWhereInput {
   reactions_every: ReactionWhereInput
   reactions_some: ReactionWhereInput
   reactions_none: ReactionWhereInput
-  tags: String
-  tags_not: String
-  tags_in: [String!]
-  tags_not_in: [String!]
-  tags_lt: String
-  tags_lte: String
-  tags_gt: String
-  tags_gte: String
-  tags_contains: String
-  tags_not_contains: String
-  tags_starts_with: String
-  tags_not_starts_with: String
-  tags_ends_with: String
-  tags_not_ends_with: String
-  location: LocationWhereInput
+  tags_every: TagWhereInput
+  tags_some: TagWhereInput
+  tags_none: TagWhereInput
   AND: [MessageWhereInput!]
   OR: [MessageWhereInput!]
   NOT: [MessageWhereInput!]
@@ -1815,24 +2116,18 @@ input MessageWhereUniqueInput {
 }
 
 type Mutation {
-  createAsset(data: AssetCreateInput!): Asset!
-  updateAsset(data: AssetUpdateInput!, where: AssetWhereUniqueInput!): Asset
-  updateManyAssets(data: AssetUpdateManyMutationInput!, where: AssetWhereInput): BatchPayload!
-  upsertAsset(where: AssetWhereUniqueInput!, create: AssetCreateInput!, update: AssetUpdateInput!): Asset!
-  deleteAsset(where: AssetWhereUniqueInput!): Asset
-  deleteManyAssets(where: AssetWhereInput): BatchPayload!
+  createAccount(data: AccountCreateInput!): Account!
+  updateAccount(data: AccountUpdateInput!, where: AccountWhereUniqueInput!): Account
+  updateManyAccounts(data: AccountUpdateManyMutationInput!, where: AccountWhereInput): BatchPayload!
+  upsertAccount(where: AccountWhereUniqueInput!, create: AccountCreateInput!, update: AccountUpdateInput!): Account!
+  deleteAccount(where: AccountWhereUniqueInput!): Account
+  deleteManyAccounts(where: AccountWhereInput): BatchPayload!
   createAttachment(data: AttachmentCreateInput!): Attachment!
   updateAttachment(data: AttachmentUpdateInput!, where: AttachmentWhereUniqueInput!): Attachment
   updateManyAttachments(data: AttachmentUpdateManyMutationInput!, where: AttachmentWhereInput): BatchPayload!
   upsertAttachment(where: AttachmentWhereUniqueInput!, create: AttachmentCreateInput!, update: AttachmentUpdateInput!): Attachment!
   deleteAttachment(where: AttachmentWhereUniqueInput!): Attachment
   deleteManyAttachments(where: AttachmentWhereInput): BatchPayload!
-  createExchange(data: ExchangeCreateInput!): Exchange!
-  updateExchange(data: ExchangeUpdateInput!, where: ExchangeWhereUniqueInput!): Exchange
-  updateManyExchanges(data: ExchangeUpdateManyMutationInput!, where: ExchangeWhereInput): BatchPayload!
-  upsertExchange(where: ExchangeWhereUniqueInput!, create: ExchangeCreateInput!, update: ExchangeUpdateInput!): Exchange!
-  deleteExchange(where: ExchangeWhereUniqueInput!): Exchange
-  deleteManyExchanges(where: ExchangeWhereInput): BatchPayload!
   createGroup(data: GroupCreateInput!): Group!
   updateGroup(data: GroupUpdateInput!, where: GroupWhereUniqueInput!): Group
   updateManyGroups(data: GroupUpdateManyMutationInput!, where: GroupWhereInput): BatchPayload!
@@ -1857,12 +2152,6 @@ type Mutation {
   upsertMessage(where: MessageWhereUniqueInput!, create: MessageCreateInput!, update: MessageUpdateInput!): Message!
   deleteMessage(where: MessageWhereUniqueInput!): Message
   deleteManyMessages(where: MessageWhereInput): BatchPayload!
-  createPortfolio(data: PortfolioCreateInput!): Portfolio!
-  updatePortfolio(data: PortfolioUpdateInput!, where: PortfolioWhereUniqueInput!): Portfolio
-  updateManyPortfolios(data: PortfolioUpdateManyMutationInput!, where: PortfolioWhereInput): BatchPayload!
-  upsertPortfolio(where: PortfolioWhereUniqueInput!, create: PortfolioCreateInput!, update: PortfolioUpdateInput!): Portfolio!
-  deletePortfolio(where: PortfolioWhereUniqueInput!): Portfolio
-  deleteManyPortfolios(where: PortfolioWhereInput): BatchPayload!
   createProfile(data: ProfileCreateInput!): Profile!
   updateProfile(data: ProfileUpdateInput!, where: ProfileWhereUniqueInput!): Profile
   updateManyProfiles(data: ProfileUpdateManyMutationInput!, where: ProfileWhereInput): BatchPayload!
@@ -1881,18 +2170,12 @@ type Mutation {
   upsertSession(where: SessionWhereUniqueInput!, create: SessionCreateInput!, update: SessionUpdateInput!): Session!
   deleteSession(where: SessionWhereUniqueInput!): Session
   deleteManySessions(where: SessionWhereInput): BatchPayload!
-  createTransaction(data: TransactionCreateInput!): Transaction!
-  updateTransaction(data: TransactionUpdateInput!, where: TransactionWhereUniqueInput!): Transaction
-  updateManyTransactions(data: TransactionUpdateManyMutationInput!, where: TransactionWhereInput): BatchPayload!
-  upsertTransaction(where: TransactionWhereUniqueInput!, create: TransactionCreateInput!, update: TransactionUpdateInput!): Transaction!
-  deleteTransaction(where: TransactionWhereUniqueInput!): Transaction
-  deleteManyTransactions(where: TransactionWhereInput): BatchPayload!
-  createUser(data: UserCreateInput!): User!
-  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
-  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
-  deleteUser(where: UserWhereUniqueInput!): User
-  deleteManyUsers(where: UserWhereInput): BatchPayload!
+  createTag(data: TagCreateInput!): Tag!
+  updateTag(data: TagUpdateInput!, where: TagWhereUniqueInput!): Tag
+  updateManyTags(data: TagUpdateManyMutationInput!, where: TagWhereInput): BatchPayload!
+  upsertTag(where: TagWhereUniqueInput!, create: TagCreateInput!, update: TagUpdateInput!): Tag!
+  deleteTag(where: TagWhereUniqueInput!): Tag
+  deleteManyTags(where: TagWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -1912,123 +2195,21 @@ type PageInfo {
   endCursor: String
 }
 
-type Portfolio {
-  id: ID!
-  owner: Profile!
-  name: String!
-  transactions(where: TransactionWhereInput, orderBy: TransactionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Transaction!]
-}
-
-type PortfolioConnection {
-  pageInfo: PageInfo!
-  edges: [PortfolioEdge]!
-  aggregate: AggregatePortfolio!
-}
-
-input PortfolioCreateInput {
-  id: ID
-  owner: ProfileCreateOneInput!
-  name: String!
-  transactions: TransactionCreateManyInput
-}
-
-type PortfolioEdge {
-  node: Portfolio!
-  cursor: String!
-}
-
-enum PortfolioOrderByInput {
-  id_ASC
-  id_DESC
-  name_ASC
-  name_DESC
-}
-
-type PortfolioPreviousValues {
-  id: ID!
-  name: String!
-}
-
-type PortfolioSubscriptionPayload {
-  mutation: MutationType!
-  node: Portfolio
-  updatedFields: [String!]
-  previousValues: PortfolioPreviousValues
-}
-
-input PortfolioSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: PortfolioWhereInput
-  AND: [PortfolioSubscriptionWhereInput!]
-  OR: [PortfolioSubscriptionWhereInput!]
-  NOT: [PortfolioSubscriptionWhereInput!]
-}
-
-input PortfolioUpdateInput {
-  owner: ProfileUpdateOneRequiredInput
-  name: String
-  transactions: TransactionUpdateManyInput
-}
-
-input PortfolioUpdateManyMutationInput {
-  name: String
-}
-
-input PortfolioWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  owner: ProfileWhereInput
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
-  transactions_every: TransactionWhereInput
-  transactions_some: TransactionWhereInput
-  transactions_none: TransactionWhereInput
-  AND: [PortfolioWhereInput!]
-  OR: [PortfolioWhereInput!]
-  NOT: [PortfolioWhereInput!]
-}
-
-input PortfolioWhereUniqueInput {
-  id: ID
-}
-
 type Profile {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime
+  creator: Account!
   name: String!
   timezone: String
-  status: String
+  status: StatusType!
+  type: ProfileType!
+  is_hidden: Boolean!
+  is_bot: Boolean!
+  slogan: String
   picture: String!
+  invitees(where: MembershipWhereInput, orderBy: MembershipOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Membership!]
   memberships(where: MembershipWhereInput, orderBy: MembershipOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Membership!]
-  location: Location
 }
 
 type ProfileConnection {
@@ -2039,16 +2220,21 @@ type ProfileConnection {
 
 input ProfileCreateInput {
   id: ID
+  creator: AccountCreateOneWithoutProfilesInput!
   name: String!
   timezone: String
-  status: String
+  status: StatusType!
+  type: ProfileType!
+  is_hidden: Boolean!
+  is_bot: Boolean!
+  slogan: String
   picture: String!
+  invitees: MembershipCreateManyWithoutCreatorInput
   memberships: MembershipCreateManyWithoutMemberInput
-  location: LocationCreateOneInput
 }
 
-input ProfileCreateManyInput {
-  create: [ProfileCreateInput!]
+input ProfileCreateManyWithoutCreatorInput {
+  create: [ProfileCreateWithoutCreatorInput!]
   connect: [ProfileWhereUniqueInput!]
 }
 
@@ -2057,18 +2243,56 @@ input ProfileCreateOneInput {
   connect: ProfileWhereUniqueInput
 }
 
+input ProfileCreateOneWithoutInviteesInput {
+  create: ProfileCreateWithoutInviteesInput
+  connect: ProfileWhereUniqueInput
+}
+
 input ProfileCreateOneWithoutMembershipsInput {
   create: ProfileCreateWithoutMembershipsInput
   connect: ProfileWhereUniqueInput
 }
 
-input ProfileCreateWithoutMembershipsInput {
+input ProfileCreateWithoutCreatorInput {
   id: ID
   name: String!
   timezone: String
-  status: String
+  status: StatusType!
+  type: ProfileType!
+  is_hidden: Boolean!
+  is_bot: Boolean!
+  slogan: String
   picture: String!
-  location: LocationCreateOneInput
+  invitees: MembershipCreateManyWithoutCreatorInput
+  memberships: MembershipCreateManyWithoutMemberInput
+}
+
+input ProfileCreateWithoutInviteesInput {
+  id: ID
+  creator: AccountCreateOneWithoutProfilesInput!
+  name: String!
+  timezone: String
+  status: StatusType!
+  type: ProfileType!
+  is_hidden: Boolean!
+  is_bot: Boolean!
+  slogan: String
+  picture: String!
+  memberships: MembershipCreateManyWithoutMemberInput
+}
+
+input ProfileCreateWithoutMembershipsInput {
+  id: ID
+  creator: AccountCreateOneWithoutProfilesInput!
+  name: String!
+  timezone: String
+  status: StatusType!
+  type: ProfileType!
+  is_hidden: Boolean!
+  is_bot: Boolean!
+  slogan: String
+  picture: String!
+  invitees: MembershipCreateManyWithoutCreatorInput
 }
 
 type ProfileEdge {
@@ -2089,6 +2313,14 @@ enum ProfileOrderByInput {
   timezone_DESC
   status_ASC
   status_DESC
+  type_ASC
+  type_DESC
+  is_hidden_ASC
+  is_hidden_DESC
+  is_bot_ASC
+  is_bot_DESC
+  slogan_ASC
+  slogan_DESC
   picture_ASC
   picture_DESC
 }
@@ -2099,7 +2331,11 @@ type ProfilePreviousValues {
   updatedAt: DateTime
   name: String!
   timezone: String
-  status: String
+  status: StatusType!
+  type: ProfileType!
+  is_hidden: Boolean!
+  is_bot: Boolean!
+  slogan: String
   picture: String!
 }
 
@@ -2162,20 +2398,32 @@ input ProfileScalarWhereInput {
   timezone_not_starts_with: String
   timezone_ends_with: String
   timezone_not_ends_with: String
-  status: String
-  status_not: String
-  status_in: [String!]
-  status_not_in: [String!]
-  status_lt: String
-  status_lte: String
-  status_gt: String
-  status_gte: String
-  status_contains: String
-  status_not_contains: String
-  status_starts_with: String
-  status_not_starts_with: String
-  status_ends_with: String
-  status_not_ends_with: String
+  status: StatusType
+  status_not: StatusType
+  status_in: [StatusType!]
+  status_not_in: [StatusType!]
+  type: ProfileType
+  type_not: ProfileType
+  type_in: [ProfileType!]
+  type_not_in: [ProfileType!]
+  is_hidden: Boolean
+  is_hidden_not: Boolean
+  is_bot: Boolean
+  is_bot_not: Boolean
+  slogan: String
+  slogan_not: String
+  slogan_in: [String!]
+  slogan_not_in: [String!]
+  slogan_lt: String
+  slogan_lte: String
+  slogan_gt: String
+  slogan_gte: String
+  slogan_contains: String
+  slogan_not_contains: String
+  slogan_starts_with: String
+  slogan_not_starts_with: String
+  slogan_ends_with: String
+  slogan_not_ends_with: String
   picture: String
   picture_not: String
   picture_in: [String!]
@@ -2213,48 +2461,71 @@ input ProfileSubscriptionWhereInput {
   NOT: [ProfileSubscriptionWhereInput!]
 }
 
+enum ProfileType {
+  Work
+  Private
+}
+
 input ProfileUpdateDataInput {
+  creator: AccountUpdateOneRequiredWithoutProfilesInput
   name: String
   timezone: String
-  status: String
+  status: StatusType
+  type: ProfileType
+  is_hidden: Boolean
+  is_bot: Boolean
+  slogan: String
   picture: String
+  invitees: MembershipUpdateManyWithoutCreatorInput
   memberships: MembershipUpdateManyWithoutMemberInput
-  location: LocationUpdateOneInput
 }
 
 input ProfileUpdateInput {
+  creator: AccountUpdateOneRequiredWithoutProfilesInput
   name: String
   timezone: String
-  status: String
+  status: StatusType
+  type: ProfileType
+  is_hidden: Boolean
+  is_bot: Boolean
+  slogan: String
   picture: String
+  invitees: MembershipUpdateManyWithoutCreatorInput
   memberships: MembershipUpdateManyWithoutMemberInput
-  location: LocationUpdateOneInput
 }
 
 input ProfileUpdateManyDataInput {
   name: String
   timezone: String
-  status: String
+  status: StatusType
+  type: ProfileType
+  is_hidden: Boolean
+  is_bot: Boolean
+  slogan: String
   picture: String
-}
-
-input ProfileUpdateManyInput {
-  create: [ProfileCreateInput!]
-  update: [ProfileUpdateWithWhereUniqueNestedInput!]
-  upsert: [ProfileUpsertWithWhereUniqueNestedInput!]
-  delete: [ProfileWhereUniqueInput!]
-  connect: [ProfileWhereUniqueInput!]
-  set: [ProfileWhereUniqueInput!]
-  disconnect: [ProfileWhereUniqueInput!]
-  deleteMany: [ProfileScalarWhereInput!]
-  updateMany: [ProfileUpdateManyWithWhereNestedInput!]
 }
 
 input ProfileUpdateManyMutationInput {
   name: String
   timezone: String
-  status: String
+  status: StatusType
+  type: ProfileType
+  is_hidden: Boolean
+  is_bot: Boolean
+  slogan: String
   picture: String
+}
+
+input ProfileUpdateManyWithoutCreatorInput {
+  create: [ProfileCreateWithoutCreatorInput!]
+  delete: [ProfileWhereUniqueInput!]
+  connect: [ProfileWhereUniqueInput!]
+  set: [ProfileWhereUniqueInput!]
+  disconnect: [ProfileWhereUniqueInput!]
+  update: [ProfileUpdateWithWhereUniqueWithoutCreatorInput!]
+  upsert: [ProfileUpsertWithWhereUniqueWithoutCreatorInput!]
+  deleteMany: [ProfileScalarWhereInput!]
+  updateMany: [ProfileUpdateManyWithWhereNestedInput!]
 }
 
 input ProfileUpdateManyWithWhereNestedInput {
@@ -2278,6 +2549,13 @@ input ProfileUpdateOneRequiredInput {
   connect: ProfileWhereUniqueInput
 }
 
+input ProfileUpdateOneRequiredWithoutInviteesInput {
+  create: ProfileCreateWithoutInviteesInput
+  update: ProfileUpdateWithoutInviteesDataInput
+  upsert: ProfileUpsertWithoutInviteesInput
+  connect: ProfileWhereUniqueInput
+}
+
 input ProfileUpdateOneRequiredWithoutMembershipsInput {
   create: ProfileCreateWithoutMembershipsInput
   update: ProfileUpdateWithoutMembershipsDataInput
@@ -2285,17 +2563,48 @@ input ProfileUpdateOneRequiredWithoutMembershipsInput {
   connect: ProfileWhereUniqueInput
 }
 
-input ProfileUpdateWithoutMembershipsDataInput {
+input ProfileUpdateWithoutCreatorDataInput {
   name: String
   timezone: String
-  status: String
+  status: StatusType
+  type: ProfileType
+  is_hidden: Boolean
+  is_bot: Boolean
+  slogan: String
   picture: String
-  location: LocationUpdateOneInput
+  invitees: MembershipUpdateManyWithoutCreatorInput
+  memberships: MembershipUpdateManyWithoutMemberInput
 }
 
-input ProfileUpdateWithWhereUniqueNestedInput {
+input ProfileUpdateWithoutInviteesDataInput {
+  creator: AccountUpdateOneRequiredWithoutProfilesInput
+  name: String
+  timezone: String
+  status: StatusType
+  type: ProfileType
+  is_hidden: Boolean
+  is_bot: Boolean
+  slogan: String
+  picture: String
+  memberships: MembershipUpdateManyWithoutMemberInput
+}
+
+input ProfileUpdateWithoutMembershipsDataInput {
+  creator: AccountUpdateOneRequiredWithoutProfilesInput
+  name: String
+  timezone: String
+  status: StatusType
+  type: ProfileType
+  is_hidden: Boolean
+  is_bot: Boolean
+  slogan: String
+  picture: String
+  invitees: MembershipUpdateManyWithoutCreatorInput
+}
+
+input ProfileUpdateWithWhereUniqueWithoutCreatorInput {
   where: ProfileWhereUniqueInput!
-  data: ProfileUpdateDataInput!
+  data: ProfileUpdateWithoutCreatorDataInput!
 }
 
 input ProfileUpsertNestedInput {
@@ -2303,15 +2612,20 @@ input ProfileUpsertNestedInput {
   create: ProfileCreateInput!
 }
 
+input ProfileUpsertWithoutInviteesInput {
+  update: ProfileUpdateWithoutInviteesDataInput!
+  create: ProfileCreateWithoutInviteesInput!
+}
+
 input ProfileUpsertWithoutMembershipsInput {
   update: ProfileUpdateWithoutMembershipsDataInput!
   create: ProfileCreateWithoutMembershipsInput!
 }
 
-input ProfileUpsertWithWhereUniqueNestedInput {
+input ProfileUpsertWithWhereUniqueWithoutCreatorInput {
   where: ProfileWhereUniqueInput!
-  update: ProfileUpdateDataInput!
-  create: ProfileCreateInput!
+  update: ProfileUpdateWithoutCreatorDataInput!
+  create: ProfileCreateWithoutCreatorInput!
 }
 
 input ProfileWhereInput {
@@ -2345,6 +2659,7 @@ input ProfileWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
+  creator: AccountWhereInput
   name: String
   name_not: String
   name_in: [String!]
@@ -2373,20 +2688,32 @@ input ProfileWhereInput {
   timezone_not_starts_with: String
   timezone_ends_with: String
   timezone_not_ends_with: String
-  status: String
-  status_not: String
-  status_in: [String!]
-  status_not_in: [String!]
-  status_lt: String
-  status_lte: String
-  status_gt: String
-  status_gte: String
-  status_contains: String
-  status_not_contains: String
-  status_starts_with: String
-  status_not_starts_with: String
-  status_ends_with: String
-  status_not_ends_with: String
+  status: StatusType
+  status_not: StatusType
+  status_in: [StatusType!]
+  status_not_in: [StatusType!]
+  type: ProfileType
+  type_not: ProfileType
+  type_in: [ProfileType!]
+  type_not_in: [ProfileType!]
+  is_hidden: Boolean
+  is_hidden_not: Boolean
+  is_bot: Boolean
+  is_bot_not: Boolean
+  slogan: String
+  slogan_not: String
+  slogan_in: [String!]
+  slogan_not_in: [String!]
+  slogan_lt: String
+  slogan_lte: String
+  slogan_gt: String
+  slogan_gte: String
+  slogan_contains: String
+  slogan_not_contains: String
+  slogan_starts_with: String
+  slogan_not_starts_with: String
+  slogan_ends_with: String
+  slogan_not_ends_with: String
   picture: String
   picture_not: String
   picture_in: [String!]
@@ -2401,10 +2728,12 @@ input ProfileWhereInput {
   picture_not_starts_with: String
   picture_ends_with: String
   picture_not_ends_with: String
+  invitees_every: MembershipWhereInput
+  invitees_some: MembershipWhereInput
+  invitees_none: MembershipWhereInput
   memberships_every: MembershipWhereInput
   memberships_some: MembershipWhereInput
   memberships_none: MembershipWhereInput
-  location: LocationWhereInput
   AND: [ProfileWhereInput!]
   OR: [ProfileWhereInput!]
   NOT: [ProfileWhereInput!]
@@ -2415,15 +2744,12 @@ input ProfileWhereUniqueInput {
 }
 
 type Query {
-  asset(where: AssetWhereUniqueInput!): Asset
-  assets(where: AssetWhereInput, orderBy: AssetOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Asset]!
-  assetsConnection(where: AssetWhereInput, orderBy: AssetOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AssetConnection!
+  account(where: AccountWhereUniqueInput!): Account
+  accounts(where: AccountWhereInput, orderBy: AccountOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Account]!
+  accountsConnection(where: AccountWhereInput, orderBy: AccountOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AccountConnection!
   attachment(where: AttachmentWhereUniqueInput!): Attachment
   attachments(where: AttachmentWhereInput, orderBy: AttachmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Attachment]!
   attachmentsConnection(where: AttachmentWhereInput, orderBy: AttachmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AttachmentConnection!
-  exchange(where: ExchangeWhereUniqueInput!): Exchange
-  exchanges(where: ExchangeWhereInput, orderBy: ExchangeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Exchange]!
-  exchangesConnection(where: ExchangeWhereInput, orderBy: ExchangeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExchangeConnection!
   group(where: GroupWhereUniqueInput!): Group
   groups(where: GroupWhereInput, orderBy: GroupOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Group]!
   groupsConnection(where: GroupWhereInput, orderBy: GroupOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GroupConnection!
@@ -2436,9 +2762,6 @@ type Query {
   message(where: MessageWhereUniqueInput!): Message
   messages(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Message]!
   messagesConnection(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MessageConnection!
-  portfolio(where: PortfolioWhereUniqueInput!): Portfolio
-  portfolios(where: PortfolioWhereInput, orderBy: PortfolioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Portfolio]!
-  portfoliosConnection(where: PortfolioWhereInput, orderBy: PortfolioOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PortfolioConnection!
   profile(where: ProfileWhereUniqueInput!): Profile
   profiles(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile]!
   profilesConnection(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProfileConnection!
@@ -2448,12 +2771,9 @@ type Query {
   session(where: SessionWhereUniqueInput!): Session
   sessions(where: SessionWhereInput, orderBy: SessionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Session]!
   sessionsConnection(where: SessionWhereInput, orderBy: SessionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SessionConnection!
-  transaction(where: TransactionWhereUniqueInput!): Transaction
-  transactions(where: TransactionWhereInput, orderBy: TransactionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Transaction]!
-  transactionsConnection(where: TransactionWhereInput, orderBy: TransactionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TransactionConnection!
-  user(where: UserWhereUniqueInput!): User
-  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
-  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  tag(where: TagWhereUniqueInput!): Tag
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag]!
+  tagsConnection(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TagConnection!
   node(id: ID!): Node
 }
 
@@ -2683,8 +3003,10 @@ type Session {
   validTo: DateTime!
   timedOut: DateTime
   loggedOut: DateTime
-  user: User!
+  account: Account!
   profile: Profile
+  location: Location
+  lastIpAddress: String
 }
 
 type SessionConnection {
@@ -2700,16 +3022,18 @@ input SessionCreateInput {
   validTo: DateTime!
   timedOut: DateTime
   loggedOut: DateTime
-  user: UserCreateOneWithoutSessionsInput!
+  account: AccountCreateOneWithoutSessionsInput!
   profile: ProfileCreateOneInput
+  location: LocationCreateOneInput
+  lastIpAddress: String
 }
 
-input SessionCreateManyWithoutUserInput {
-  create: [SessionCreateWithoutUserInput!]
+input SessionCreateManyWithoutAccountInput {
+  create: [SessionCreateWithoutAccountInput!]
   connect: [SessionWhereUniqueInput!]
 }
 
-input SessionCreateWithoutUserInput {
+input SessionCreateWithoutAccountInput {
   id: ID
   csrfToken: String!
   authToken: String!
@@ -2717,6 +3041,8 @@ input SessionCreateWithoutUserInput {
   timedOut: DateTime
   loggedOut: DateTime
   profile: ProfileCreateOneInput
+  location: LocationCreateOneInput
+  lastIpAddress: String
 }
 
 type SessionEdge {
@@ -2741,6 +3067,8 @@ enum SessionOrderByInput {
   timedOut_DESC
   loggedOut_ASC
   loggedOut_DESC
+  lastIpAddress_ASC
+  lastIpAddress_DESC
 }
 
 type SessionPreviousValues {
@@ -2752,6 +3080,7 @@ type SessionPreviousValues {
   validTo: DateTime!
   timedOut: DateTime
   loggedOut: DateTime
+  lastIpAddress: String
 }
 
 input SessionScalarWhereInput {
@@ -2837,6 +3166,20 @@ input SessionScalarWhereInput {
   loggedOut_lte: DateTime
   loggedOut_gt: DateTime
   loggedOut_gte: DateTime
+  lastIpAddress: String
+  lastIpAddress_not: String
+  lastIpAddress_in: [String!]
+  lastIpAddress_not_in: [String!]
+  lastIpAddress_lt: String
+  lastIpAddress_lte: String
+  lastIpAddress_gt: String
+  lastIpAddress_gte: String
+  lastIpAddress_contains: String
+  lastIpAddress_not_contains: String
+  lastIpAddress_starts_with: String
+  lastIpAddress_not_starts_with: String
+  lastIpAddress_ends_with: String
+  lastIpAddress_not_ends_with: String
   AND: [SessionScalarWhereInput!]
   OR: [SessionScalarWhereInput!]
   NOT: [SessionScalarWhereInput!]
@@ -2866,8 +3209,10 @@ input SessionUpdateInput {
   validTo: DateTime
   timedOut: DateTime
   loggedOut: DateTime
-  user: UserUpdateOneRequiredWithoutSessionsInput
+  account: AccountUpdateOneRequiredWithoutSessionsInput
   profile: ProfileUpdateOneInput
+  location: LocationUpdateOneInput
+  lastIpAddress: String
 }
 
 input SessionUpdateManyDataInput {
@@ -2876,6 +3221,7 @@ input SessionUpdateManyDataInput {
   validTo: DateTime
   timedOut: DateTime
   loggedOut: DateTime
+  lastIpAddress: String
 }
 
 input SessionUpdateManyMutationInput {
@@ -2884,16 +3230,17 @@ input SessionUpdateManyMutationInput {
   validTo: DateTime
   timedOut: DateTime
   loggedOut: DateTime
+  lastIpAddress: String
 }
 
-input SessionUpdateManyWithoutUserInput {
-  create: [SessionCreateWithoutUserInput!]
+input SessionUpdateManyWithoutAccountInput {
+  create: [SessionCreateWithoutAccountInput!]
   delete: [SessionWhereUniqueInput!]
   connect: [SessionWhereUniqueInput!]
   set: [SessionWhereUniqueInput!]
   disconnect: [SessionWhereUniqueInput!]
-  update: [SessionUpdateWithWhereUniqueWithoutUserInput!]
-  upsert: [SessionUpsertWithWhereUniqueWithoutUserInput!]
+  update: [SessionUpdateWithWhereUniqueWithoutAccountInput!]
+  upsert: [SessionUpsertWithWhereUniqueWithoutAccountInput!]
   deleteMany: [SessionScalarWhereInput!]
   updateMany: [SessionUpdateManyWithWhereNestedInput!]
 }
@@ -2903,24 +3250,26 @@ input SessionUpdateManyWithWhereNestedInput {
   data: SessionUpdateManyDataInput!
 }
 
-input SessionUpdateWithoutUserDataInput {
+input SessionUpdateWithoutAccountDataInput {
   csrfToken: String
   authToken: String
   validTo: DateTime
   timedOut: DateTime
   loggedOut: DateTime
   profile: ProfileUpdateOneInput
+  location: LocationUpdateOneInput
+  lastIpAddress: String
 }
 
-input SessionUpdateWithWhereUniqueWithoutUserInput {
+input SessionUpdateWithWhereUniqueWithoutAccountInput {
   where: SessionWhereUniqueInput!
-  data: SessionUpdateWithoutUserDataInput!
+  data: SessionUpdateWithoutAccountDataInput!
 }
 
-input SessionUpsertWithWhereUniqueWithoutUserInput {
+input SessionUpsertWithWhereUniqueWithoutAccountInput {
   where: SessionWhereUniqueInput!
-  update: SessionUpdateWithoutUserDataInput!
-  create: SessionCreateWithoutUserInput!
+  update: SessionUpdateWithoutAccountDataInput!
+  create: SessionCreateWithoutAccountInput!
 }
 
 input SessionWhereInput {
@@ -3006,8 +3355,23 @@ input SessionWhereInput {
   loggedOut_lte: DateTime
   loggedOut_gt: DateTime
   loggedOut_gte: DateTime
-  user: UserWhereInput
+  account: AccountWhereInput
   profile: ProfileWhereInput
+  location: LocationWhereInput
+  lastIpAddress: String
+  lastIpAddress_not: String
+  lastIpAddress_in: [String!]
+  lastIpAddress_not_in: [String!]
+  lastIpAddress_lt: String
+  lastIpAddress_lte: String
+  lastIpAddress_gt: String
+  lastIpAddress_gte: String
+  lastIpAddress_contains: String
+  lastIpAddress_not_contains: String
+  lastIpAddress_starts_with: String
+  lastIpAddress_not_starts_with: String
+  lastIpAddress_ends_with: String
+  lastIpAddress_not_ends_with: String
   AND: [SessionWhereInput!]
   OR: [SessionWhereInput!]
   NOT: [SessionWhereInput!]
@@ -3019,409 +3383,78 @@ input SessionWhereUniqueInput {
   authToken: String
 }
 
+enum StatusType {
+  Busy
+  Offline
+  Online
+  Away
+}
+
 type Subscription {
-  asset(where: AssetSubscriptionWhereInput): AssetSubscriptionPayload
+  account(where: AccountSubscriptionWhereInput): AccountSubscriptionPayload
   attachment(where: AttachmentSubscriptionWhereInput): AttachmentSubscriptionPayload
-  exchange(where: ExchangeSubscriptionWhereInput): ExchangeSubscriptionPayload
   group(where: GroupSubscriptionWhereInput): GroupSubscriptionPayload
   location(where: LocationSubscriptionWhereInput): LocationSubscriptionPayload
   membership(where: MembershipSubscriptionWhereInput): MembershipSubscriptionPayload
   message(where: MessageSubscriptionWhereInput): MessageSubscriptionPayload
-  portfolio(where: PortfolioSubscriptionWhereInput): PortfolioSubscriptionPayload
   profile(where: ProfileSubscriptionWhereInput): ProfileSubscriptionPayload
   reaction(where: ReactionSubscriptionWhereInput): ReactionSubscriptionPayload
   session(where: SessionSubscriptionWhereInput): SessionSubscriptionPayload
-  transaction(where: TransactionSubscriptionWhereInput): TransactionSubscriptionPayload
-  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  tag(where: TagSubscriptionWhereInput): TagSubscriptionPayload
 }
 
-type Transaction {
-  id: ID!
-  timestamp: DateTime!
-  profile: Profile!
-  asset: Asset!
-  direction: TransactionDirection!
-  exchange: Exchange!
-  amount: Float!
-}
-
-type TransactionConnection {
-  pageInfo: PageInfo!
-  edges: [TransactionEdge]!
-  aggregate: AggregateTransaction!
-}
-
-input TransactionCreateInput {
-  id: ID
-  timestamp: DateTime!
-  profile: ProfileCreateOneInput!
-  asset: AssetCreateOneInput!
-  direction: TransactionDirection!
-  exchange: ExchangeCreateOneInput!
-  amount: Float!
-}
-
-input TransactionCreateManyInput {
-  create: [TransactionCreateInput!]
-  connect: [TransactionWhereUniqueInput!]
-}
-
-enum TransactionDirection {
-  BUY
-  SELL
-}
-
-type TransactionEdge {
-  node: Transaction!
-  cursor: String!
-}
-
-enum TransactionOrderByInput {
-  id_ASC
-  id_DESC
-  timestamp_ASC
-  timestamp_DESC
-  direction_ASC
-  direction_DESC
-  amount_ASC
-  amount_DESC
-}
-
-type TransactionPreviousValues {
-  id: ID!
-  timestamp: DateTime!
-  direction: TransactionDirection!
-  amount: Float!
-}
-
-input TransactionScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  timestamp: DateTime
-  timestamp_not: DateTime
-  timestamp_in: [DateTime!]
-  timestamp_not_in: [DateTime!]
-  timestamp_lt: DateTime
-  timestamp_lte: DateTime
-  timestamp_gt: DateTime
-  timestamp_gte: DateTime
-  direction: TransactionDirection
-  direction_not: TransactionDirection
-  direction_in: [TransactionDirection!]
-  direction_not_in: [TransactionDirection!]
-  amount: Float
-  amount_not: Float
-  amount_in: [Float!]
-  amount_not_in: [Float!]
-  amount_lt: Float
-  amount_lte: Float
-  amount_gt: Float
-  amount_gte: Float
-  AND: [TransactionScalarWhereInput!]
-  OR: [TransactionScalarWhereInput!]
-  NOT: [TransactionScalarWhereInput!]
-}
-
-type TransactionSubscriptionPayload {
-  mutation: MutationType!
-  node: Transaction
-  updatedFields: [String!]
-  previousValues: TransactionPreviousValues
-}
-
-input TransactionSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: TransactionWhereInput
-  AND: [TransactionSubscriptionWhereInput!]
-  OR: [TransactionSubscriptionWhereInput!]
-  NOT: [TransactionSubscriptionWhereInput!]
-}
-
-input TransactionUpdateDataInput {
-  timestamp: DateTime
-  profile: ProfileUpdateOneRequiredInput
-  asset: AssetUpdateOneRequiredInput
-  direction: TransactionDirection
-  exchange: ExchangeUpdateOneRequiredInput
-  amount: Float
-}
-
-input TransactionUpdateInput {
-  timestamp: DateTime
-  profile: ProfileUpdateOneRequiredInput
-  asset: AssetUpdateOneRequiredInput
-  direction: TransactionDirection
-  exchange: ExchangeUpdateOneRequiredInput
-  amount: Float
-}
-
-input TransactionUpdateManyDataInput {
-  timestamp: DateTime
-  direction: TransactionDirection
-  amount: Float
-}
-
-input TransactionUpdateManyInput {
-  create: [TransactionCreateInput!]
-  update: [TransactionUpdateWithWhereUniqueNestedInput!]
-  upsert: [TransactionUpsertWithWhereUniqueNestedInput!]
-  delete: [TransactionWhereUniqueInput!]
-  connect: [TransactionWhereUniqueInput!]
-  set: [TransactionWhereUniqueInput!]
-  disconnect: [TransactionWhereUniqueInput!]
-  deleteMany: [TransactionScalarWhereInput!]
-  updateMany: [TransactionUpdateManyWithWhereNestedInput!]
-}
-
-input TransactionUpdateManyMutationInput {
-  timestamp: DateTime
-  direction: TransactionDirection
-  amount: Float
-}
-
-input TransactionUpdateManyWithWhereNestedInput {
-  where: TransactionScalarWhereInput!
-  data: TransactionUpdateManyDataInput!
-}
-
-input TransactionUpdateWithWhereUniqueNestedInput {
-  where: TransactionWhereUniqueInput!
-  data: TransactionUpdateDataInput!
-}
-
-input TransactionUpsertWithWhereUniqueNestedInput {
-  where: TransactionWhereUniqueInput!
-  update: TransactionUpdateDataInput!
-  create: TransactionCreateInput!
-}
-
-input TransactionWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  timestamp: DateTime
-  timestamp_not: DateTime
-  timestamp_in: [DateTime!]
-  timestamp_not_in: [DateTime!]
-  timestamp_lt: DateTime
-  timestamp_lte: DateTime
-  timestamp_gt: DateTime
-  timestamp_gte: DateTime
-  profile: ProfileWhereInput
-  asset: AssetWhereInput
-  direction: TransactionDirection
-  direction_not: TransactionDirection
-  direction_in: [TransactionDirection!]
-  direction_not_in: [TransactionDirection!]
-  exchange: ExchangeWhereInput
-  amount: Float
-  amount_not: Float
-  amount_in: [Float!]
-  amount_not_in: [Float!]
-  amount_lt: Float
-  amount_lte: Float
-  amount_gt: Float
-  amount_gte: Float
-  AND: [TransactionWhereInput!]
-  OR: [TransactionWhereInput!]
-  NOT: [TransactionWhereInput!]
-}
-
-input TransactionWhereUniqueInput {
-  id: ID
-}
-
-type User {
+type Tag {
   id: ID!
   createdAt: DateTime!
-  updatedAt: DateTime
+  creator: Profile!
   name: String!
-  timezone: String!
-  email: String!
-  password_salt: String!
-  password_hash: String!
-  is_verified: Boolean!
-  challenge: String
-  profiles(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile!]
-  sessions(where: SessionWhereInput, orderBy: SessionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Session!]
-  lastUsedProfileId: String
+  parent: Tag
 }
 
-type UserConnection {
+type TagConnection {
   pageInfo: PageInfo!
-  edges: [UserEdge]!
-  aggregate: AggregateUser!
+  edges: [TagEdge]!
+  aggregate: AggregateTag!
 }
 
-input UserCreateInput {
+input TagCreateInput {
   id: ID
+  creator: ProfileCreateOneInput!
   name: String!
-  timezone: String!
-  email: String!
-  password_salt: String!
-  password_hash: String!
-  is_verified: Boolean!
-  challenge: String
-  profiles: ProfileCreateManyInput
-  sessions: SessionCreateManyWithoutUserInput
-  lastUsedProfileId: String
+  parent: TagCreateOneInput
 }
 
-input UserCreateOneWithoutSessionsInput {
-  create: UserCreateWithoutSessionsInput
-  connect: UserWhereUniqueInput
+input TagCreateManyInput {
+  create: [TagCreateInput!]
+  connect: [TagWhereUniqueInput!]
 }
 
-input UserCreateWithoutSessionsInput {
-  id: ID
-  name: String!
-  timezone: String!
-  email: String!
-  password_salt: String!
-  password_hash: String!
-  is_verified: Boolean!
-  challenge: String
-  profiles: ProfileCreateManyInput
-  lastUsedProfileId: String
+input TagCreateOneInput {
+  create: TagCreateInput
+  connect: TagWhereUniqueInput
 }
 
-type UserEdge {
-  node: User!
+type TagEdge {
+  node: Tag!
   cursor: String!
 }
 
-enum UserOrderByInput {
+enum TagOrderByInput {
   id_ASC
   id_DESC
   createdAt_ASC
   createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
   name_ASC
   name_DESC
-  timezone_ASC
-  timezone_DESC
-  email_ASC
-  email_DESC
-  password_salt_ASC
-  password_salt_DESC
-  password_hash_ASC
-  password_hash_DESC
-  is_verified_ASC
-  is_verified_DESC
-  challenge_ASC
-  challenge_DESC
-  lastUsedProfileId_ASC
-  lastUsedProfileId_DESC
 }
 
-type UserPreviousValues {
+type TagPreviousValues {
   id: ID!
   createdAt: DateTime!
-  updatedAt: DateTime
   name: String!
-  timezone: String!
-  email: String!
-  password_salt: String!
-  password_hash: String!
-  is_verified: Boolean!
-  challenge: String
-  lastUsedProfileId: String
 }
 
-type UserSubscriptionPayload {
-  mutation: MutationType!
-  node: User
-  updatedFields: [String!]
-  previousValues: UserPreviousValues
-}
-
-input UserSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: UserWhereInput
-  AND: [UserSubscriptionWhereInput!]
-  OR: [UserSubscriptionWhereInput!]
-  NOT: [UserSubscriptionWhereInput!]
-}
-
-input UserUpdateInput {
-  name: String
-  timezone: String
-  email: String
-  password_salt: String
-  password_hash: String
-  is_verified: Boolean
-  challenge: String
-  profiles: ProfileUpdateManyInput
-  sessions: SessionUpdateManyWithoutUserInput
-  lastUsedProfileId: String
-}
-
-input UserUpdateManyMutationInput {
-  name: String
-  timezone: String
-  email: String
-  password_salt: String
-  password_hash: String
-  is_verified: Boolean
-  challenge: String
-  lastUsedProfileId: String
-}
-
-input UserUpdateOneRequiredWithoutSessionsInput {
-  create: UserCreateWithoutSessionsInput
-  update: UserUpdateWithoutSessionsDataInput
-  upsert: UserUpsertWithoutSessionsInput
-  connect: UserWhereUniqueInput
-}
-
-input UserUpdateWithoutSessionsDataInput {
-  name: String
-  timezone: String
-  email: String
-  password_salt: String
-  password_hash: String
-  is_verified: Boolean
-  challenge: String
-  profiles: ProfileUpdateManyInput
-  lastUsedProfileId: String
-}
-
-input UserUpsertWithoutSessionsInput {
-  update: UserUpdateWithoutSessionsDataInput!
-  create: UserCreateWithoutSessionsInput!
-}
-
-input UserWhereInput {
+input TagScalarWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -3444,14 +3477,6 @@ input UserWhereInput {
   createdAt_lte: DateTime
   createdAt_gt: DateTime
   createdAt_gte: DateTime
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
   name: String
   name_not: String
   name_in: [String!]
@@ -3466,105 +3491,136 @@ input UserWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
-  timezone: String
-  timezone_not: String
-  timezone_in: [String!]
-  timezone_not_in: [String!]
-  timezone_lt: String
-  timezone_lte: String
-  timezone_gt: String
-  timezone_gte: String
-  timezone_contains: String
-  timezone_not_contains: String
-  timezone_starts_with: String
-  timezone_not_starts_with: String
-  timezone_ends_with: String
-  timezone_not_ends_with: String
-  email: String
-  email_not: String
-  email_in: [String!]
-  email_not_in: [String!]
-  email_lt: String
-  email_lte: String
-  email_gt: String
-  email_gte: String
-  email_contains: String
-  email_not_contains: String
-  email_starts_with: String
-  email_not_starts_with: String
-  email_ends_with: String
-  email_not_ends_with: String
-  password_salt: String
-  password_salt_not: String
-  password_salt_in: [String!]
-  password_salt_not_in: [String!]
-  password_salt_lt: String
-  password_salt_lte: String
-  password_salt_gt: String
-  password_salt_gte: String
-  password_salt_contains: String
-  password_salt_not_contains: String
-  password_salt_starts_with: String
-  password_salt_not_starts_with: String
-  password_salt_ends_with: String
-  password_salt_not_ends_with: String
-  password_hash: String
-  password_hash_not: String
-  password_hash_in: [String!]
-  password_hash_not_in: [String!]
-  password_hash_lt: String
-  password_hash_lte: String
-  password_hash_gt: String
-  password_hash_gte: String
-  password_hash_contains: String
-  password_hash_not_contains: String
-  password_hash_starts_with: String
-  password_hash_not_starts_with: String
-  password_hash_ends_with: String
-  password_hash_not_ends_with: String
-  is_verified: Boolean
-  is_verified_not: Boolean
-  challenge: String
-  challenge_not: String
-  challenge_in: [String!]
-  challenge_not_in: [String!]
-  challenge_lt: String
-  challenge_lte: String
-  challenge_gt: String
-  challenge_gte: String
-  challenge_contains: String
-  challenge_not_contains: String
-  challenge_starts_with: String
-  challenge_not_starts_with: String
-  challenge_ends_with: String
-  challenge_not_ends_with: String
-  profiles_every: ProfileWhereInput
-  profiles_some: ProfileWhereInput
-  profiles_none: ProfileWhereInput
-  sessions_every: SessionWhereInput
-  sessions_some: SessionWhereInput
-  sessions_none: SessionWhereInput
-  lastUsedProfileId: String
-  lastUsedProfileId_not: String
-  lastUsedProfileId_in: [String!]
-  lastUsedProfileId_not_in: [String!]
-  lastUsedProfileId_lt: String
-  lastUsedProfileId_lte: String
-  lastUsedProfileId_gt: String
-  lastUsedProfileId_gte: String
-  lastUsedProfileId_contains: String
-  lastUsedProfileId_not_contains: String
-  lastUsedProfileId_starts_with: String
-  lastUsedProfileId_not_starts_with: String
-  lastUsedProfileId_ends_with: String
-  lastUsedProfileId_not_ends_with: String
-  AND: [UserWhereInput!]
-  OR: [UserWhereInput!]
-  NOT: [UserWhereInput!]
+  AND: [TagScalarWhereInput!]
+  OR: [TagScalarWhereInput!]
+  NOT: [TagScalarWhereInput!]
 }
 
-input UserWhereUniqueInput {
+type TagSubscriptionPayload {
+  mutation: MutationType!
+  node: Tag
+  updatedFields: [String!]
+  previousValues: TagPreviousValues
+}
+
+input TagSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: TagWhereInput
+  AND: [TagSubscriptionWhereInput!]
+  OR: [TagSubscriptionWhereInput!]
+  NOT: [TagSubscriptionWhereInput!]
+}
+
+input TagUpdateDataInput {
+  creator: ProfileUpdateOneRequiredInput
+  name: String
+  parent: TagUpdateOneInput
+}
+
+input TagUpdateInput {
+  creator: ProfileUpdateOneRequiredInput
+  name: String
+  parent: TagUpdateOneInput
+}
+
+input TagUpdateManyDataInput {
+  name: String
+}
+
+input TagUpdateManyInput {
+  create: [TagCreateInput!]
+  update: [TagUpdateWithWhereUniqueNestedInput!]
+  upsert: [TagUpsertWithWhereUniqueNestedInput!]
+  delete: [TagWhereUniqueInput!]
+  connect: [TagWhereUniqueInput!]
+  set: [TagWhereUniqueInput!]
+  disconnect: [TagWhereUniqueInput!]
+  deleteMany: [TagScalarWhereInput!]
+  updateMany: [TagUpdateManyWithWhereNestedInput!]
+}
+
+input TagUpdateManyMutationInput {
+  name: String
+}
+
+input TagUpdateManyWithWhereNestedInput {
+  where: TagScalarWhereInput!
+  data: TagUpdateManyDataInput!
+}
+
+input TagUpdateOneInput {
+  create: TagCreateInput
+  update: TagUpdateDataInput
+  upsert: TagUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: TagWhereUniqueInput
+}
+
+input TagUpdateWithWhereUniqueNestedInput {
+  where: TagWhereUniqueInput!
+  data: TagUpdateDataInput!
+}
+
+input TagUpsertNestedInput {
+  update: TagUpdateDataInput!
+  create: TagCreateInput!
+}
+
+input TagUpsertWithWhereUniqueNestedInput {
+  where: TagWhereUniqueInput!
+  update: TagUpdateDataInput!
+  create: TagCreateInput!
+}
+
+input TagWhereInput {
   id: ID
-  email: String
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  creator: ProfileWhereInput
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  parent: TagWhereInput
+  AND: [TagWhereInput!]
+  OR: [TagWhereInput!]
+  NOT: [TagWhereInput!]
+}
+
+input TagWhereUniqueInput {
+  id: ID
 }
 `
