@@ -149,9 +149,10 @@ type Event {
  	parent: Event                                           # A previous event, if not then root
  	creator: Profile!                                       # The profile that triggered this event
  	type: EventType!                                        # Indicates the purpose of this event
- 	message: Message!                                       # The message that describes the event
+ 	isPinned: Boolean!                                      # For example an message can be pinned by a user profile
+ 	isRead: Boolean!                                        # For example when an event type message was read by the profile
+	content: Json											# The content of an event can be anything or empty
  	location: Location!                                     # The location where the event has occurred
-	reactions: [Reaction!]!									# A event can trigger multiple reactions such as likes
 	tags: [Tag!]!											# Meta information as hashes to classify the object
 }
 
@@ -161,48 +162,5 @@ enum EventType {
 	DIRECT_MESSAGE											# The user profiles receives a direct chat message
 	COMMENT												    # A message as comment on another message within a thread
 	POST												    # Drops a message on a channel e.g. newsfeed
-}
-
-# Any content that was sent from a creator to a recipient
-type Message {
-	id: ID! @id @unique
-	createdAt: DateTime! @createdAt
-	updatedAt: DateTime @updatedAt
-	sender: Profile!										# The profile who wrote this message
-	subject: String											# A human readable subject for a message
-	content: Json											# The content of a message can be anything or empty
-	attachments: [Attachment!]!								# A url to a file that is attached to the message
-	tags: [Tag!]!											# Meta information as hashes to classify the object
-}
-
-# Profiles can react on events
-type Reaction {
-	id: ID! @id @unique
-	createdAt: DateTime! @createdAt
-	updatedAt: DateTime @updatedAt
-	creator: Profile!										# The profile who reacted on some event
-	eventRead: Boolean!                                     # If the message has been read by the profile
-	eventPinned: Boolean!                                   # If a message has been pinned by the profile
-	emoji: String											# A symbol to express an emotion
-}
-
-# Something that can be attached to a message
-type Attachment {
-	id: ID! @id @unique
-	createdAt: DateTime! @createdAt
-	updatedAt: DateTime @updatedAt
-	creator: Profile!										# The profile who created the attachment
-	name: String!											# The name of the attached object
-	type: AttachmentType!									# Categorizes the attachment
-	link: String											# The url to access the attached object
-	tags: [Tag!]!											# Meta information as hashes to classify the object
-}
-
-# Classifies the attached file
-enum AttachmentType {
-	DOCUMENT											    # Could be a flat file or pdf that was uploaded
-	PICTURE												    # Could be a chart visualization rendered a picture
-	LINK												    # Could a link that was posted in the message's content
-	VIDEO												    # Could be a video that was added to the content
-	AUDIO												    # Could be a voice memo that was added to the content
+	REACTION                                                # A profile can react on an event
 }
