@@ -1,7 +1,13 @@
 import gql from 'graphql-tag';
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import * as Apollo from 'apollo-angular';
-import { MutationOptionsAlone, QueryOptionsAlone, SubscriptionOptionsAlone, WatchQueryOptionsAlone } from 'apollo-angular/types';
+import {
+  MutationOptionsAlone,
+  QueryOptionsAlone,
+  SubscriptionOptionsAlone,
+  WatchQueryOptionsAlone
+} from 'apollo-angular/types';
+
 export type Maybe<T> = T | null;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -14,9 +20,8 @@ export type Scalars = {
 };
 
 
-
 export type AccountInformation = {
-   __typename?: 'AccountInformation',
+  __typename?: 'AccountInformation',
   id: Scalars['String'],
   createdAt: Scalars['String'],
   firstName: Scalars['String'],
@@ -24,7 +29,7 @@ export type AccountInformation = {
 };
 
 export type Group = {
-   __typename?: 'Group',
+  __typename?: 'Group',
   id: Scalars['String'],
   createdAt: Scalars['String'],
   updatedAt?: Maybe<Scalars['String']>,
@@ -49,7 +54,7 @@ export enum GroupType {
 
 
 export type Location = {
-   __typename?: 'Location',
+  __typename?: 'Location',
   id: Scalars['String'],
   createdAt: Scalars['String'],
   updatedAt?: Maybe<Scalars['String']>,
@@ -61,7 +66,7 @@ export type Location = {
 };
 
 export type Membership = {
-   __typename?: 'Membership',
+  __typename?: 'Membership',
   id: Scalars['String'],
   createdAt: Scalars['String'],
   updatedAt?: Maybe<Scalars['String']>,
@@ -71,7 +76,7 @@ export type Membership = {
 };
 
 export type Message = {
-   __typename?: 'Message',
+  __typename?: 'Message',
   id: Scalars['String'],
   type: MessageType,
   createdAt: Scalars['String'],
@@ -91,7 +96,7 @@ export enum MessageType {
 }
 
 export type Mutation = {
-   __typename?: 'Mutation',
+  __typename?: 'Mutation',
   signup?: Maybe<Scalars['String']>,
   verifyEmail?: Maybe<Scalars['String']>,
   verifySession?: Maybe<Scalars['Boolean']>,
@@ -211,7 +216,7 @@ export type MutationSetSessionProfileArgs = {
 };
 
 export type Profile = {
-   __typename?: 'Profile',
+  __typename?: 'Profile',
   id: Scalars['String'],
   createdAt: Scalars['String'],
   updatedAt?: Maybe<Scalars['String']>,
@@ -230,7 +235,7 @@ export enum ProfileType {
 }
 
 export type Query = {
-   __typename?: 'Query',
+  __typename?: 'Query',
   myGroups: Array<Group>,
   myMemberships: Array<Membership>,
   getSessionProfile?: Maybe<Profile>,
@@ -309,7 +314,7 @@ export type QueryGetGroupArgs = {
 };
 
 export type Tag = {
-   __typename?: 'Tag',
+  __typename?: 'Tag',
   id: Scalars['ID'],
   createdAt: Scalars['String'],
   creator: Profile,
@@ -328,7 +333,7 @@ export type SignupMutationVariables = {
 export type SignupMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'signup'>
-);
+  );
 
 export type VerifyEmailMutationVariables = {
   code: Scalars['String']
@@ -338,7 +343,7 @@ export type VerifyEmailMutationVariables = {
 export type VerifyEmailMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'verifyEmail'>
-);
+  );
 
 export type LoginMutationVariables = {
   email: Scalars['String'],
@@ -349,7 +354,7 @@ export type LoginMutationVariables = {
 export type LoginMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'login'>
-);
+  );
 
 export type LogoutMutationVariables = {
   csrfToken: Scalars['String']
@@ -359,7 +364,7 @@ export type LogoutMutationVariables = {
 export type LogoutMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'logout'>
-);
+  );
 
 export type SetSessionProfileMutationVariables = {
   csrfToken: Scalars['String'],
@@ -370,7 +375,7 @@ export type SetSessionProfileMutationVariables = {
 export type SetSessionProfileMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'setSessionProfile'>
-);
+  );
 
 export type VerifySessionMutationVariables = {
   csrfToken: Scalars['String']
@@ -380,7 +385,7 @@ export type VerifySessionMutationVariables = {
 export type VerifySessionMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'verifySession'>
-);
+  );
 
 export type CreateGroupMutationVariables = {
   csrfToken: Scalars['String'],
@@ -397,7 +402,7 @@ export type CreateGroupMutationVariables = {
 export type CreateGroupMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'createGroup'>
-);
+  );
 
 export type UpdateGroupMutationVariables = {
   csrfToken: Scalars['String'],
@@ -416,7 +421,7 @@ export type UpdateGroupMutationVariables = {
 export type UpdateGroupMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'updateGroup'>
-);
+  );
 
 export type AddMemberMutationVariables = {
   csrfToken: Scalars['String'],
@@ -428,7 +433,7 @@ export type AddMemberMutationVariables = {
 export type AddMemberMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'addMember'>
-);
+  );
 
 export type RemoveMemberMutationVariables = {
   csrfToken: Scalars['String'],
@@ -440,7 +445,7 @@ export type RemoveMemberMutationVariables = {
 export type RemoveMemberMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'removeMember'>
-);
+  );
 
 export type PostMessageMutationVariables = {
   csrfToken: Scalars['String'],
@@ -453,7 +458,7 @@ export type PostMessageMutationVariables = {
 export type PostMessageMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'postMessage'>
-);
+  );
 
 export type CreateProfileMutationVariables = {
   csrfToken: Scalars['String'],
@@ -467,7 +472,7 @@ export type CreateProfileMutationVariables = {
 export type CreateProfileMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'createProfile'>
-);
+  );
 
 export type UpdateProfileMutationVariables = {
   csrfToken: Scalars['String'],
@@ -483,7 +488,7 @@ export type UpdateProfileMutationVariables = {
 export type UpdateProfileMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'updateProfile'>
-);
+  );
 
 export type GetAccountInformationQueryVariables = {
   csrfToken: Scalars['String']
@@ -492,11 +497,13 @@ export type GetAccountInformationQueryVariables = {
 
 export type GetAccountInformationQuery = (
   { __typename?: 'Query' }
-  & { getAccountInformation: Maybe<(
+  & {
+  getAccountInformation: Maybe<(
     { __typename?: 'AccountInformation' }
     & Pick<AccountInformation, 'id' | 'createdAt' | 'firstName' | 'lastName'>
-  )> }
-);
+    )>
+}
+  );
 
 export type GetSessionProfileQueryVariables = {
   csrfToken: Scalars['String']
@@ -505,11 +512,13 @@ export type GetSessionProfileQueryVariables = {
 
 export type GetSessionProfileQuery = (
   { __typename?: 'Query' }
-  & { getSessionProfile: Maybe<(
+  & {
+  getSessionProfile: Maybe<(
     { __typename?: 'Profile' }
     & Pick<Profile, 'id'>
-  )> }
-);
+    )>
+}
+  );
 
 export type ListProfilesQueryVariables = {
   csrfToken: Scalars['String']
@@ -518,15 +527,19 @@ export type ListProfilesQueryVariables = {
 
 export type ListProfilesQuery = (
   { __typename?: 'Query' }
-  & { listProfiles: Array<(
+  & {
+  listProfiles: Array<(
     { __typename?: 'Profile' }
     & Pick<Profile, 'id' | 'createdAt' | 'name' | 'timezone' | 'status' | 'picture'>
-    & { location: Maybe<(
+    & {
+    location: Maybe<(
       { __typename?: 'Location' }
       & Pick<Location, 'id' | 'name' | 'latitude' | 'longitude' | 'radius'>
-    )> }
-  )> }
-);
+      )>
+  }
+    )>
+}
+  );
 
 export type ListGroupsQueryVariables = {
   csrfToken: Scalars['String'],
@@ -536,19 +549,25 @@ export type ListGroupsQueryVariables = {
 
 export type ListGroupsQuery = (
   { __typename?: 'Query' }
-  & { listGroups: Array<(
+  & {
+  listGroups: Array<(
     { __typename?: 'Group' }
     & Pick<Group, 'id' | 'name' | 'title' | 'description' | 'logo' | 'type' | 'createdAt' | 'is_hidden' | 'is_public'>
-    & { creator: (
+    & {
+    creator: (
       { __typename?: 'Profile' }
       & Pick<Profile, 'id' | 'name' | 'picture' | 'status'>
-      & { location: Maybe<(
+      & {
+      location: Maybe<(
         { __typename?: 'Location' }
         & Pick<Location, 'id' | 'name' | 'latitude' | 'longitude' | 'radius'>
-      )> }
-    ) }
-  )> }
-);
+        )>
+    }
+      )
+  }
+    )>
+}
+  );
 
 export type ListMembersQueryVariables = {
   csrfToken: Scalars['String'],
@@ -558,19 +577,25 @@ export type ListMembersQueryVariables = {
 
 export type ListMembersQuery = (
   { __typename?: 'Query' }
-  & { listMembers: Array<(
+  & {
+  listMembers: Array<(
     { __typename?: 'Membership' }
     & Pick<Membership, 'id' | 'createdAt'>
-    & { member: (
+    & {
+    member: (
       { __typename?: 'Profile' }
       & Pick<Profile, 'id' | 'name' | 'timezone' | 'status' | 'picture'>
-      & { location: Maybe<(
+      & {
+      location: Maybe<(
         { __typename?: 'Location' }
         & Pick<Location, 'id' | 'name' | 'latitude' | 'longitude' | 'radius'>
-      )> }
-    ) }
-  )> }
-);
+        )>
+    }
+      )
+  }
+    )>
+}
+  );
 
 export type ListMessagesQueryVariables = {
   csrfToken: Scalars['String'],
@@ -583,18 +608,22 @@ export type ListMessagesQueryVariables = {
 
 export type ListMessagesQuery = (
   { __typename?: 'Query' }
-  & { listMessages: Array<(
+  & {
+  listMessages: Array<(
     { __typename?: 'Message' }
     & Pick<Message, 'id' | 'createdAt' | 'updatedAt' | 'subject' | 'content' | 'type'>
-    & { creator: (
+    & {
+    creator: (
       { __typename?: 'Profile' }
       & Pick<Profile, 'id' | 'name' | 'picture'>
-    ), tags: Maybe<Array<(
+      ), tags: Maybe<Array<(
       { __typename?: 'Tag' }
       & Pick<Tag, 'id' | 'name'>
-    )>> }
-  )> }
-);
+      )>>
+  }
+    )>
+}
+  );
 
 export type GetGroupQueryVariables = {
   csrfToken: Scalars['String'],
@@ -604,33 +633,43 @@ export type GetGroupQueryVariables = {
 
 export type GetGroupQuery = (
   { __typename?: 'Query' }
-  & { getGroup: Maybe<(
+  & {
+  getGroup: Maybe<(
     { __typename?: 'Group' }
     & Pick<Group, 'id' | 'name' | 'title' | 'description' | 'logo' | 'type' | 'createdAt' | 'updatedAt' | 'is_public'>
-    & { tags: Maybe<Array<(
+    & {
+    tags: Maybe<Array<(
       { __typename?: 'Tag' }
       & Pick<Tag, 'id' | 'name'>
-    )>>, creator: (
+      )>>, creator: (
       { __typename?: 'Profile' }
       & Pick<Profile, 'id' | 'name' | 'status' | 'picture'>
-      & { location: Maybe<(
+      & {
+      location: Maybe<(
         { __typename?: 'Location' }
         & Pick<Location, 'id' | 'name' | 'latitude' | 'longitude' | 'radius'>
-      )> }
-    ), members: Maybe<Array<(
+        )>
+    }
+      ), members: Maybe<Array<(
       { __typename?: 'Membership' }
       & Pick<Membership, 'id' | 'createdAt'>
-      & { member: (
+      & {
+      member: (
         { __typename?: 'Profile' }
         & Pick<Profile, 'id' | 'name' | 'status' | 'picture'>
-        & { location: Maybe<(
+        & {
+        location: Maybe<(
           { __typename?: 'Location' }
           & Pick<Location, 'id' | 'name' | 'latitude' | 'longitude' | 'radius'>
-        )> }
-      ) }
-    )>> }
-  )> }
-);
+          )>
+      }
+        )
+    }
+      )>>
+  }
+    )>
+}
+  );
 
 export type GetProfileQueryVariables = {
   csrfToken: Scalars['String'],
@@ -640,33 +679,43 @@ export type GetProfileQueryVariables = {
 
 export type GetProfileQuery = (
   { __typename?: 'Query' }
-  & { getProfile: Maybe<(
+  & {
+  getProfile: Maybe<(
     { __typename?: 'Profile' }
     & Pick<Profile, 'id' | 'createdAt' | 'updatedAt' | 'name' | 'timezone' | 'status' | 'picture'>
-    & { memberships: Maybe<Array<(
+    & {
+    memberships: Maybe<Array<(
       { __typename?: 'Membership' }
       & Pick<Membership, 'id' | 'createdAt'>
-      & { group: (
+      & {
+      group: (
         { __typename?: 'Group' }
         & Pick<Group, 'id' | 'name' | 'title' | 'description' | 'logo' | 'type' | 'createdAt'>
-        & { tags: Maybe<Array<(
+        & {
+        tags: Maybe<Array<(
           { __typename?: 'Tag' }
           & Pick<Tag, 'id' | 'name'>
-        )>>, creator: (
+          )>>, creator: (
           { __typename?: 'Profile' }
           & Pick<Profile, 'id' | 'name' | 'status' | 'picture'>
-          & { location: Maybe<(
+          & {
+          location: Maybe<(
             { __typename?: 'Location' }
             & Pick<Location, 'id' | 'name' | 'latitude' | 'longitude' | 'radius'>
-          )> }
-        ) }
-      ) }
-    )>>, location: Maybe<(
+            )>
+        }
+          )
+      }
+        )
+    }
+      )>>, location: Maybe<(
       { __typename?: 'Location' }
       & Pick<Location, 'id' | 'name' | 'latitude' | 'longitude' | 'radius'>
-    )> }
-  )> }
-);
+      )>
+  }
+    )>
+}
+  );
 
 export const SignupDocument = gql`
     mutation signup($firstName: String!, $lastName: String!, $email: String!, $password: String!) {
@@ -674,169 +723,182 @@ export const SignupDocument = gql`
 }
     `;
 
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class SignupGQL extends Apollo.Mutation<SignupMutation, SignupMutationVariables> {
-    document = SignupDocument;
-    
-  }
+@Injectable({
+  providedIn: 'root'
+})
+export class SignupGQL extends Apollo.Mutation<SignupMutation, SignupMutationVariables> {
+  document = SignupDocument;
+
+}
+
 export const VerifyEmailDocument = gql`
     mutation verifyEmail($code: String!) {
   verifyEmail(code: $code)
 }
     `;
 
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class VerifyEmailGQL extends Apollo.Mutation<VerifyEmailMutation, VerifyEmailMutationVariables> {
-    document = VerifyEmailDocument;
-    
-  }
+@Injectable({
+  providedIn: 'root'
+})
+export class VerifyEmailGQL extends Apollo.Mutation<VerifyEmailMutation, VerifyEmailMutationVariables> {
+  document = VerifyEmailDocument;
+
+}
+
 export const LoginDocument = gql`
     mutation login($email: String!, $password: String!) {
   login(email: $email, password: $password)
 }
     `;
 
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class LoginGQL extends Apollo.Mutation<LoginMutation, LoginMutationVariables> {
-    document = LoginDocument;
-    
-  }
+@Injectable({
+  providedIn: 'root'
+})
+export class LoginGQL extends Apollo.Mutation<LoginMutation, LoginMutationVariables> {
+  document = LoginDocument;
+
+}
+
 export const LogoutDocument = gql`
     mutation logout($csrfToken: String!) {
   logout(csrfToken: $csrfToken)
 }
     `;
 
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class LogoutGQL extends Apollo.Mutation<LogoutMutation, LogoutMutationVariables> {
-    document = LogoutDocument;
-    
-  }
+@Injectable({
+  providedIn: 'root'
+})
+export class LogoutGQL extends Apollo.Mutation<LogoutMutation, LogoutMutationVariables> {
+  document = LogoutDocument;
+
+}
+
 export const SetSessionProfileDocument = gql`
     mutation setSessionProfile($csrfToken: String!, $profileId: String!) {
   setSessionProfile(csrfToken: $csrfToken, profileId: $profileId)
 }
     `;
 
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class SetSessionProfileGQL extends Apollo.Mutation<SetSessionProfileMutation, SetSessionProfileMutationVariables> {
-    document = SetSessionProfileDocument;
-    
-  }
+@Injectable({
+  providedIn: 'root'
+})
+export class SetSessionProfileGQL extends Apollo.Mutation<SetSessionProfileMutation, SetSessionProfileMutationVariables> {
+  document = SetSessionProfileDocument;
+
+}
+
 export const VerifySessionDocument = gql`
     mutation verifySession($csrfToken: String!) {
   verifySession(csrfToken: $csrfToken)
 }
     `;
 
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class VerifySessionGQL extends Apollo.Mutation<VerifySessionMutation, VerifySessionMutationVariables> {
-    document = VerifySessionDocument;
-    
-  }
+@Injectable({
+  providedIn: 'root'
+})
+export class VerifySessionGQL extends Apollo.Mutation<VerifySessionMutation, VerifySessionMutationVariables> {
+  document = VerifySessionDocument;
+
+}
+
 export const CreateGroupDocument = gql`
     mutation createGroup($csrfToken: String!, $hostProfileId: String!, $type: GroupType!, $name: String!, $title: String!, $description: String!, $logo: String!, $tags: String!) {
   createGroup(csrfToken: $csrfToken, hostProfileId: $hostProfileId, type: $type, name: $name, title: $title, description: $description, logo: $logo, tags: $tags)
 }
     `;
 
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class CreateGroupGQL extends Apollo.Mutation<CreateGroupMutation, CreateGroupMutationVariables> {
-    document = CreateGroupDocument;
-    
-  }
+@Injectable({
+  providedIn: 'root'
+})
+export class CreateGroupGQL extends Apollo.Mutation<CreateGroupMutation, CreateGroupMutationVariables> {
+  document = CreateGroupDocument;
+
+}
+
 export const UpdateGroupDocument = gql`
     mutation updateGroup($csrfToken: String!, $workspaceId: String!, $type: GroupType!, $name: String!, $title: String!, $description: String!, $logo: String!, $tags: String!, $isHidden: Boolean!, $isPublic: Boolean!) {
   updateGroup(csrfToken: $csrfToken, workspaceId: $workspaceId, type: $type, name: $name, title: $title, description: $description, logo: $logo, tags: $tags, isHidden: $isHidden, isPublic: $isPublic)
 }
     `;
 
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class UpdateGroupGQL extends Apollo.Mutation<UpdateGroupMutation, UpdateGroupMutationVariables> {
-    document = UpdateGroupDocument;
-    
-  }
+@Injectable({
+  providedIn: 'root'
+})
+export class UpdateGroupGQL extends Apollo.Mutation<UpdateGroupMutation, UpdateGroupMutationVariables> {
+  document = UpdateGroupDocument;
+
+}
+
 export const AddMemberDocument = gql`
     mutation addMember($csrfToken: String!, $groupId: String!, $memberProfileId: String!) {
   addMember(csrfToken: $csrfToken, groupId: $groupId, memberProfileId: $memberProfileId)
 }
     `;
 
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class AddMemberGQL extends Apollo.Mutation<AddMemberMutation, AddMemberMutationVariables> {
-    document = AddMemberDocument;
-    
-  }
+@Injectable({
+  providedIn: 'root'
+})
+export class AddMemberGQL extends Apollo.Mutation<AddMemberMutation, AddMemberMutationVariables> {
+  document = AddMemberDocument;
+
+}
+
 export const RemoveMemberDocument = gql`
     mutation removeMember($csrfToken: String!, $groupId: String!, $memberProfileId: String!) {
   removeMember(csrfToken: $csrfToken, groupId: $groupId, memberProfileId: $memberProfileId)
 }
     `;
 
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class RemoveMemberGQL extends Apollo.Mutation<RemoveMemberMutation, RemoveMemberMutationVariables> {
-    document = RemoveMemberDocument;
-    
-  }
+@Injectable({
+  providedIn: 'root'
+})
+export class RemoveMemberGQL extends Apollo.Mutation<RemoveMemberMutation, RemoveMemberMutationVariables> {
+  document = RemoveMemberDocument;
+
+}
+
 export const PostMessageDocument = gql`
     mutation postMessage($csrfToken: String!, $groupId: String!, $subject: String!, $content: String!) {
   postMessage(csrfToken: $csrfToken, groupId: $groupId, subject: $subject, content: $content)
 }
     `;
 
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class PostMessageGQL extends Apollo.Mutation<PostMessageMutation, PostMessageMutationVariables> {
-    document = PostMessageDocument;
-    
-  }
+@Injectable({
+  providedIn: 'root'
+})
+export class PostMessageGQL extends Apollo.Mutation<PostMessageMutation, PostMessageMutationVariables> {
+  document = PostMessageDocument;
+
+}
+
 export const CreateProfileDocument = gql`
     mutation createProfile($csrfToken: String!, $type: ProfileType!, $name: String!, $picture: String!, $timezone: String!) {
   createProfile(csrfToken: $csrfToken, type: $type, name: $name, picture: $picture, timezone: $timezone)
 }
     `;
 
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class CreateProfileGQL extends Apollo.Mutation<CreateProfileMutation, CreateProfileMutationVariables> {
-    document = CreateProfileDocument;
-    
-  }
+@Injectable({
+  providedIn: 'root'
+})
+export class CreateProfileGQL extends Apollo.Mutation<CreateProfileMutation, CreateProfileMutationVariables> {
+  document = CreateProfileDocument;
+
+}
+
 export const UpdateProfileDocument = gql`
     mutation updateProfile($csrfToken: String!, $profileId: String!, $type: ProfileType!, $name: String!, $picture: String!, $timezone: String!, $status: String!) {
   updateProfile(csrfToken: $csrfToken, profileId: $profileId, type: $type, name: $name, picture: $picture, timezone: $timezone, status: $status)
 }
     `;
 
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class UpdateProfileGQL extends Apollo.Mutation<UpdateProfileMutation, UpdateProfileMutationVariables> {
-    document = UpdateProfileDocument;
-    
-  }
+@Injectable({
+  providedIn: 'root'
+})
+export class UpdateProfileGQL extends Apollo.Mutation<UpdateProfileMutation, UpdateProfileMutationVariables> {
+  document = UpdateProfileDocument;
+
+}
+
 export const GetAccountInformationDocument = gql`
     query getAccountInformation($csrfToken: String!) {
   getAccountInformation(csrfToken: $csrfToken) {
@@ -848,13 +910,14 @@ export const GetAccountInformationDocument = gql`
 }
     `;
 
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class GetAccountInformationGQL extends Apollo.Query<GetAccountInformationQuery, GetAccountInformationQueryVariables> {
-    document = GetAccountInformationDocument;
-    
-  }
+@Injectable({
+  providedIn: 'root'
+})
+export class GetAccountInformationGQL extends Apollo.Query<GetAccountInformationQuery, GetAccountInformationQueryVariables> {
+  document = GetAccountInformationDocument;
+
+}
+
 export const GetSessionProfileDocument = gql`
     query getSessionProfile($csrfToken: String!) {
   getSessionProfile(csrfToken: $csrfToken) {
@@ -863,13 +926,14 @@ export const GetSessionProfileDocument = gql`
 }
     `;
 
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class GetSessionProfileGQL extends Apollo.Query<GetSessionProfileQuery, GetSessionProfileQueryVariables> {
-    document = GetSessionProfileDocument;
-    
-  }
+@Injectable({
+  providedIn: 'root'
+})
+export class GetSessionProfileGQL extends Apollo.Query<GetSessionProfileQuery, GetSessionProfileQueryVariables> {
+  document = GetSessionProfileDocument;
+
+}
+
 export const ListProfilesDocument = gql`
     query listProfiles($csrfToken: String!) {
   listProfiles(csrfToken: $csrfToken) {
@@ -890,13 +954,14 @@ export const ListProfilesDocument = gql`
 }
     `;
 
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class ListProfilesGQL extends Apollo.Query<ListProfilesQuery, ListProfilesQueryVariables> {
-    document = ListProfilesDocument;
-    
-  }
+@Injectable({
+  providedIn: 'root'
+})
+export class ListProfilesGQL extends Apollo.Query<ListProfilesQuery, ListProfilesQueryVariables> {
+  document = ListProfilesDocument;
+
+}
+
 export const ListGroupsDocument = gql`
     query listGroups($csrfToken: String!, $profileId: String!) {
   listGroups(csrfToken: $csrfToken, profileId: $profileId) {
@@ -939,13 +1004,14 @@ export const ListGroupsDocument = gql`
 }
     `;
 
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class ListGroupsGQL extends Apollo.Query<ListGroupsQuery, ListGroupsQueryVariables> {
-    document = ListGroupsDocument;
-    
-  }
+@Injectable({
+  providedIn: 'root'
+})
+export class ListGroupsGQL extends Apollo.Query<ListGroupsQuery, ListGroupsQueryVariables> {
+  document = ListGroupsDocument;
+
+}
+
 export const ListMembersDocument = gql`
     query listMembers($csrfToken: String!, $groupId: String!) {
   listMembers(csrfToken: $csrfToken, groupId: $groupId) {
@@ -969,13 +1035,14 @@ export const ListMembersDocument = gql`
 }
     `;
 
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class ListMembersGQL extends Apollo.Query<ListMembersQuery, ListMembersQueryVariables> {
-    document = ListMembersDocument;
-    
-  }
+@Injectable({
+  providedIn: 'root'
+})
+export class ListMembersGQL extends Apollo.Query<ListMembersQuery, ListMembersQueryVariables> {
+  document = ListMembersDocument;
+
+}
+
 export const ListMessagesDocument = gql`
     query listMessages($csrfToken: String!, $groupId: String!, $profileId: String!, $begin: String, $end: String) {
   listMessages(csrfToken: $csrfToken, groupId: $groupId, profileId: $profileId, begin: $begin, end: $end) {
@@ -998,13 +1065,14 @@ export const ListMessagesDocument = gql`
 }
     `;
 
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class ListMessagesGQL extends Apollo.Query<ListMessagesQuery, ListMessagesQueryVariables> {
-    document = ListMessagesDocument;
-    
-  }
+@Injectable({
+  providedIn: 'root'
+})
+export class ListMessagesGQL extends Apollo.Query<ListMessagesQuery, ListMessagesQueryVariables> {
+  document = ListMessagesDocument;
+
+}
+
 export const GetGroupDocument = gql`
     query getGroup($csrfToken: String!, $groupId: String!) {
   getGroup(csrfToken: $csrfToken, groupId: $groupId) {
@@ -1055,13 +1123,14 @@ export const GetGroupDocument = gql`
 }
     `;
 
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class GetGroupGQL extends Apollo.Query<GetGroupQuery, GetGroupQueryVariables> {
-    document = GetGroupDocument;
-    
-  }
+@Injectable({
+  providedIn: 'root'
+})
+export class GetGroupGQL extends Apollo.Query<GetGroupQuery, GetGroupQueryVariables> {
+  document = GetGroupDocument;
+
+}
+
 export const GetProfileDocument = gql`
     query getProfile($csrfToken: String!, $profileId: String!) {
   getProfile(csrfToken: $csrfToken, profileId: $profileId) {
@@ -1113,10 +1182,10 @@ export const GetProfileDocument = gql`
 }
     `;
 
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class GetProfileGQL extends Apollo.Query<GetProfileQuery, GetProfileQueryVariables> {
-    document = GetProfileDocument;
-    
-  }
+@Injectable({
+  providedIn: 'root'
+})
+export class GetProfileGQL extends Apollo.Query<GetProfileQuery, GetProfileQueryVariables> {
+  document = GetProfileDocument;
+
+}
