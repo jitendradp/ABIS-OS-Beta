@@ -7,8 +7,8 @@ export class UserQueries {
             id: sessionAndUser.user.id,
             createdAt: sessionAndUser.user.createdAt,
             email: sessionAndUser.user.email,
-            firstName: sessionAndUser.user.first_name,
-            lastName: sessionAndUser.user.last_name
+            firstName: sessionAndUser.user.firstName,
+            lastName: sessionAndUser.user.lastName
         };
         return userInformation;
     }

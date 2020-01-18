@@ -119,7 +119,7 @@
             "deprecationReason": null
           },
           {
-            "name": "getAccountInformation",
+            "name": "getUserInformation",
             "description": "",
             "args": [
               {
@@ -139,7 +139,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "AccountInformation",
+              "name": "UserInformation",
               "ofType": null
             },
             "isDeprecated": false,
@@ -1297,7 +1297,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "AccountInformation",
+        "name": "UserInformation",
         "description": "",
         "fields": [
           {

@@ -54,7 +54,7 @@ export class UserMutations {
      * @param email
      * @param password
      */
-    public static async createUser(first_name: string, last_name: string, email: string, password: string): Promise<string> {
+    public static async createUser(firstName: string, lastName: string, email: string, password: string): Promise<string> {
         const delay = new ResponseDelay(config.auth.normalizedResponseTime);
 
         let user = await prisma.user({email: email});
@@ -70,12 +70,12 @@ export class UserMutations {
 
         user = <User>{
             email: email.trim(),
-            first_name: first_name.trim(),
-            last_name: last_name.trim(),
-            is_verified: false,
+            firstName: firstName.trim(),
+            lastName: lastName.trim(),
+            isVerified: false,
             challenge: Helpers.getRandomBase64String(8),
-            password_hash: hash,
-            password_salt: salt,
+            passwordHash: hash,
+            passwordSalt: salt,
             timezone: "GMT" // TODO: Get proper user-timezone
         };
 
@@ -117,7 +117,7 @@ export class UserMutations {
             this.abortInvalidRequest("User " + user.id + " tried to log-in before verifying the email address.");
         }
 
-        const pwdCheckResult = await UserMutations.bcrypt.compare(password, user.password_hash);
+        const pwdCheckResult = await UserMutations.bcrypt.compare(password, user.passwordHash);
         if (!pwdCheckResult) {
             // Wait some time before returning the response (500ms - runtime)
             await delay.GetPromise();
@@ -246,7 +246,7 @@ export class UserMutations {
             }
         });
 
-        await prisma.updateUser({data: {lastUsedProfileId: profileId}, where: {id: sessionAndUser.user.id}});
+        await prisma.updateUser({data: {lastUsedProfile: profileId}, where: {id: sessionAndUser.user.id}});
 
         return profileId;
     }

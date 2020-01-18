@@ -2,26 +2,26 @@ import {Injectable} from '@angular/core';
 import {ActionDispatcherService} from "./action-dispatcher.service";
 import {LoginState, LoginStateChanged} from "../actions/user/LoginStateChanged";
 import {
-  GetAccountInformationGQL,
+  GetUserInformationGQL,
   LoginGQL,
   LogoutGQL,
   SetSessionProfileGQL,
   VerifySessionGQL,
-  AccountInformation
+  UserInformation
 } from "../../generated/abis-api";
 import {ClientStateService} from "./client-state.service";
 import {Logger, LoggerService, LogSeverity} from "./logger.service";
 import {SessionProfileChanged} from "../actions/user/SessionProfileChanged";
 import {Apollo} from "apollo-angular";
-import {AccountInformationChanged} from "../actions/user/AccountInformationChanged";
+import {UserInformationChanged} from "../actions/user/UserInformationChanged";
 
 export type UserInformation = {
   id: number,
   createdAt: string,
   email: string,
-  firstname: string,
-  lastname: string,
-  mobile_phone: string,
+  firstName: string,
+  lastName: string,
+  mobilePhone: string,
 };
 
 
@@ -30,16 +30,16 @@ export type UserInformation = {
 })
 
 export class UserService {
-  // TODO: Remove the cast to <any> and adopt the UI to the proper AccountInformation type.
+  // TODO: Remove the cast to <any> and adopt the UI to the proper UserInformation type.
   // TODO: Remove the "name" field from the graphql schema and replace it with "firstname" and "lastname"
-  public accountInformation: AccountInformation = <any>{
+  public userInformation: UserInformation = <any>{
     id: 8989893943,
     createdAt: new Date().toISOString(),
     email: "tomcook@gmail.com",
-    firstname: "Thomas",
-    lastname: "Cook",
+    firstName: "Thomas",
+    lastName: "Cook",
     name: "Thomas Cook",
-    mobile_phone: "01777 78787823"
+    mobilePhone: "01777 78787823"
   };
 
   private readonly _log: Logger = this.loggerService.createLogger("UserService");
@@ -68,7 +68,7 @@ export class UserService {
     , private logoutApi: LogoutGQL
     , private setSessionProfileApi: SetSessionProfileGQL
     , private verifySessionApi: VerifySessionGQL
-    , private getAccountInformationApi: GetAccountInformationGQL
+    , private getUserInformationApi: GetUserInformationGQL
     , private clientState: ClientStateService
     , private apollo: Apollo) {
 
@@ -105,7 +105,7 @@ export class UserService {
       this.actionDispatcher.dispatch(new SessionProfileChanged(oldProfileId, null));
     }
 
-    // If a account was logged on and the client state of the UserService is cleared, then notify everybody that the account was logged-off.
+    // If a user was logged on and the client state of the UserService is cleared, then notify everybody that the user was logged-off.
     // The server session might be still alive though.
     if (this.isLoggedOn) {
       this.actionDispatcher.dispatch(new LoginStateChanged(LoginState.LoggedOn, LoginState.LoggedOff));
@@ -144,7 +144,7 @@ export class UserService {
         this.loadUserInformation()
           .then(accInfo => true)
           .catch(error => {
-            this._log(LogSeverity.UserNotification, "An error occurred while loading the account information. See the log for detailed error messages.");
+            this._log(LogSeverity.UserNotification, "An error occurred while loading the user information. See the log for detailed error messages.");
             this._log(LogSeverity.Error, error);
           });
 
@@ -158,14 +158,14 @@ export class UserService {
       });
   }
 
-  public async loadUserInformation(): Promise<AccountInformation> {
-    const userInfo = await this.getAccountInformationApi.fetch({
+  public async loadUserInformation(): Promise<UserInformation> {
+    const userInfo = await this.getUserInformationApi.fetch({
       csrfToken: this.csrfToken
     }).toPromise();
-    const oldUserInfo = this.accountInformation;
-    this.accountInformation = {...userInfo.data.getAccountInformation};
-    this.actionDispatcher.dispatch(new AccountInformationChanged(oldUserInfo, this.accountInformation));
-    return this.accountInformation;
+    const oldUserInfo = this.userInformation;
+    this.userInformation = {...userInfo.data.getUserInformation};
+    this.actionDispatcher.dispatch(new UserInformationChanged(oldUserInfo, this.userInformation));
+    return this.userInformation;
   }
 
   public setSessionProfile(profileId: string): Promise<boolean> {
