@@ -139,7 +139,7 @@ type Location {
 }
 
 enum LocationType {
-    GEOGRAPHIC,
+    GEOGRAPHIC
     POI
 }
 
