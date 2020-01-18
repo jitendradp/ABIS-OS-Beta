@@ -143,7 +143,6 @@ enum LocationType {
     POI
 }
 
-## todo how could a message be pinned to a conversation by a specific profile? -> Ok maybe be the reactions?
 # Any content that was sent from a creator to a recipient
 type Message {
 	id: ID! @id @unique
@@ -172,9 +171,10 @@ type Reaction {
 	id: ID! @id @unique
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime @updatedAt
-	message_pinned: Boolean!                                # If a message has been pinned by the profile
 	creator: Profile!										# The profile who reacted on some event
-	emoji: String!											# A symbol to express an emotion
+	message_read: Boolean!                                  # If the message has been read by the profile
+	message_pinned: Boolean!                                # If a message has been pinned by the profile
+	emoji: String											# A symbol to express an emotion
 }
 
 # Something that can be attached to a message
