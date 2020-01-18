@@ -4,7 +4,7 @@
   padding-top: 8px;
 }
 
-.chatContentHeader {
+.chatSectionHeader {
   width: 100%;
   height: 40px;
   border-radius: 0;
@@ -29,7 +29,7 @@
 
 #frame #sidepanel #contacts::-webkit-scrollbar {
   width: 8px;
-  background: #9e9e9e;
+  background: #c2c2c2;
 }
 
 #frame #sidepanel #contacts::-webkit-scrollbar-thumb {
@@ -54,7 +54,7 @@
 
 #frame .content .messages::-webkit-scrollbar {
   width: 8px;
-  background: transparent;
+  background: #c2c2c2;
 }
 
 #frame .content .messages::-webkit-scrollbar-thumb {
