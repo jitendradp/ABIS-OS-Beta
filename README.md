@@ -82,6 +82,8 @@ _run "ng serve --host local.abis-cloud.com" (be sure to include this hostname in
 
 If you're on Windows, all the steps above should apply except that you cannot execute the *.sh script to generate and move the prisma client code to the yoga server. In this case you have to perform the windows equivalents of the commands in that shell script manually or write a *.bat file.
 
+Docker for windows: https://docs.docker.com/toolbox/toolbox_install_windows/
+
 Untested for now. Good luck!
 
 
