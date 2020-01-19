@@ -103,7 +103,7 @@ const defaultActions: IAction[] =
       state: "toggle"
     },
 
-    // todo show/hide when account is logged in or not
+    // todo show/hide when user is logged in or not
     <SetVisibility>{
       name: SetVisibility.Name,
       label: "Open/Close Notifications",

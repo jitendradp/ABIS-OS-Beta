@@ -84,7 +84,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     const f = () => {
       if (this.userService.isLoggedOn) {
-        this.actionDispatcher.dispatch(new ShowNotification("You cannot sign up a new account while being logged-on. Log out first and then create a new account. Also try if another profile fits your need."));
+        this.actionDispatcher.dispatch(new ShowNotification("You cannot sign up a new user while being logged-on. Log out first and then create a new user. Also try if another profile fits your need."));
         this.actionDispatcher.dispatch(new Back());
         return;
       }
@@ -95,7 +95,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       f();
     }
 
-    // Disable the previous steps (loaded from clientState) so that the account can't navigate to them again
+    // Disable the previous steps (loaded from clientState) so that the user can't navigate to them again
     this.disableCompletedSteps();
   }
 
@@ -109,7 +109,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   }
 
   private async submitStep1($event: StepperSelectionEvent) {
-    // First step completed, create the account
+    // First step completed, create the user
     await this.signupApi.mutate({
       email: this.step1Data.emailAddress,
       firstName: this.step1Data.firstName,
@@ -133,7 +133,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       code: this.step2Data.code
     }).toPromise()
       .then(result => {
-        // Disable the previous steps so that the account can't navigate to them again
+        // Disable the previous steps so that the user can't navigate to them again
         this.clientState.set("RegisterComponent.stepper.selectedIndex", $event.selectedIndex);
         this.disableCompletedSteps($event.selectedIndex);
         this.userService.setToken(result.data.verifyEmail);
@@ -159,7 +159,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
             if (!r) {
               throw new Error("An unexpected error occurred while binding the new profile " + result + " to the session.");
             }
-            // Disable the previous steps so that the account can't navigate to them again
+            // Disable the previous steps so that the user can't navigate to them again
             this.clientState.delete("RegisterComponent.stepper.selectedIndex");
             this.disableCompletedSteps(2);
 
