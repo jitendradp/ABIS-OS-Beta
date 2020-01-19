@@ -1,0 +1,53 @@
+<mat-card class="embeddableProfile">
+  <app-content>
+    <mat-card-header>
+      <img mat-card-avatar class="profilePicture mat-elevation-z10"
+           src="{{profileService.profileInformation.picture}}"
+           [matMenuTriggerFor]="statusMenu">
+      <mat-menu #statusMenu="matMenu">
+        <button mat-menu-item>Set my self away</button>
+        <button mat-menu-item>Set my self busy</button>
+        <button mat-menu-item>Set me online</button>
+      </mat-menu>
+      <mat-card-title>
+        {{userService.userInformation.firstName}}&nbsp;{{userService.userInformation.lastName}}
+      </mat-card-title>
+      <mat-card-subtitle>
+        @{{profileService.profileInformation.name}}
+      </mat-card-subtitle>
+      <span class="fill-remaining-space"></span>
+      <button mat-icon-button (click)="collapsed = !collapsed">
+        <mat-icon *ngIf="!collapsed">arrow_drop_down</mat-icon>
+        <mat-icon *ngIf="collapsed">arrow_drop_up</mat-icon>
+      </button>
+    </mat-card-header>
+  </app-content>
+  <!-- show/hide button when user is not logged in -->
+  <div (click)="close()">
+    <app-button [lessStyle]="true" [link]='"/"' [text]="'Sign In / Register'"></app-button>
+  </div>
+  <mat-card-content *ngIf="!collapsed">
+    <ng-content></ng-content>
+  </mat-card-content>
+  <mat-card-content *ngIf="collapsed">
+    <mat-divider></mat-divider>
+    HI I AM CONTENT WHEN COLLAPSED -- A LIST OF THE USER PROFILES GOES HERE
+  </mat-card-content>
+</mat-card>
+<!--
+<mat-divider></mat-divider>
+<mat-card class="embeddableDataspace">
+  <mat-card-header>
+    <mat-card-subtitle>
+      <b></b>
+    </mat-card-subtitle>
+    <mat-card-subtitle>
+
+    </mat-card-subtitle>
+    <span class="fill-remaining-space"></span>
+    <button mat-icon-button>
+      <mat-icon>keyboard_arrow_right</mat-icon>
+    </button>
+  </mat-card-header>
+</mat-card>
+-->

@@ -3,13 +3,15 @@ scalar Json
 type AccountInformation {
     id: String!
     createdAt: String!
-    name: String!
+    firstName: String!
+    lastName: String!
 }
 
 type Profile {
     id: String!
     createdAt: String!
     updatedAt: String
+    type:ProfileType!
     name: String!
     timezone: String
     status: String
@@ -18,10 +20,16 @@ type Profile {
     location: Location
 }
 
+enum ProfileType {
+	Work											        # A work profile costs a monthly licensing fee
+	Private					    							# A private profile is free of charge
+}
+
 type Location {
     id: String!
     createdAt: String!
     updatedAt: String
+    creator: Profile!
     name: String
     latitude: Float!
     longitude: Float!
@@ -30,15 +38,15 @@ type Location {
 
 type Group {
     id:String!
+    createdAt: String!
+    updatedAt: String
     name:String
     title:String!
     description:String
     logo:String
     type: GroupType!
-    tags: String
-    createdAt: String!
-    updatedAt: String
-    host:Profile!
+    tags: [Tag!]
+    creator:Profile!
     members: [Membership!]
     is_hidden:Boolean
     is_public:Boolean
@@ -46,83 +54,59 @@ type Group {
 
 type Message {
     id: String!
+    type: MessageType!
     createdAt: String!
     updatedAt: String
-    sender: Profile
+    creator: Profile!
     subject: String
     content: Json
-    tags: String
-    type: String
-    group: Group
+    tags: [Tag!]
+    group: Group!
+}
+
+type Tag {
+   	id: ID!
+   	createdAt: String!
+	creator: Profile!
+   	name: String!
+   	parent: Tag
+}
+
+# All data exchanged is expressed as an "event"
+enum MessageType {
+	NOTIFICATION											# A prominent information that is pushed to the account
+	DIRECT_MESSAGE											# The account profiles receives a direct chat message
+	COMMENT												    # A message as comment on another message within a thread
+	POST												    # Drops a message on a channel
 }
 
 enum GroupType {
-    WORKSPACE
-    TEAM
-    CONVERSATION
-    THREAD
-    FRIENDS
+	ROOM					    							# A chat room that hosts a group of people and conversations
+    CHANNEL                                                 # Groups messages and events around at least two profiles
+	THREAD												    # Groups messages around a specific conversation in a channel
+	FRIENDS												    # Groups friends of a profile
 }
 
 type Membership {
     id: String!
     createdAt: String!
     updatedAt: String
-    member: Profile
-    group: Group
-}
-
-type Asset {
-    id: String!
-    name: String!
-}
-
-type Exchange {
-    id: String!
-    name: String!
-
-    assets:[Asset!]!
-}
-
-enum TransactionDirection {
-    BUY,
-    SELL
-}
-
-type Transaction {
-    id: String!
-    timestamp:String!                                   # When was the transaction performed?
-    profile: Profile!                                   # Who performed the transaction?
-    asset:Asset!                                        # What asset was included in the transaction?
-    direction:TransactionDirection!                     # Buy or Sell?
-    exchange:Exchange!                                  # Where took the transaction place?
-    amount:Float!                                       # How much units of [asset] have been traded?
-}
-
-type Portfolio {
-    id: String!
-    owner: Profile!
-    name: String!
-
-    transactions:[Transaction!]!
+    creator: Profile!
+    member: Profile!
+    group: Group!
 }
 
 type Mutation {
-    signup(name:String! email:String! password:String!) : String
+    signup(firstName:String! lastName:String! email:String! password:String!) : String
     verifyEmail(code:String!) : String
     verifySession(csrfToken:String!) : Boolean
-    createProfile(csrfToken:String! name:String! picture:String timezone:String) : String
-    updateProfile(csrfToken:String! profileId:String! name:String! picture:String timezone:String status:String) : String
-    createWorkspace(csrfToken:String! hostProfileId: String!, name:String! title:String! description:String logo:String tags:String) : String
-    updateWorkspace(csrfToken:String! workspaceId: String!, name:String! title:String! description:String logo:String tags:String isHidden:Boolean isPublic:Boolean) : String
+    createProfile(csrfToken:String! type:ProfileType! name:String! picture:String timezone:String) : String
+    updateProfile(csrfToken:String! profileId:String! type:ProfileType! name:String! picture:String timezone:String status:String) : String
+    createGroup(csrfToken:String! hostProfileId: String! type:GroupType! name:String! title:String! description:String logo:String tags:String) : String
+    updateGroup(csrfToken:String! workspaceId: String! type:GroupType! name:String! title:String! description:String logo:String tags:String isHidden:Boolean isPublic:Boolean) : String
     addMember(csrfToken:String! groupId:String! memberProfileId:String!) : String
     removeMember(csrfToken:String! groupId:String! memberProfileId:String!) : String
     postMessage(csrfToken:String! groupId:String! subject:String! content:String!) : String
-
-    createPortfolio(csrfToken:String! name:String) : String
-
-    buy(csrfToken:String! exchangeId:String! assetId:String! amount:Float!) : Transaction
-    sell(csrfToken:String! exchangeId:String! assetId:String! amount:Float!) : Transaction
 
     login(email:String! password:String!) : String
     logout(csrfToken:String!) : Boolean
@@ -131,15 +115,15 @@ type Mutation {
 }
 
 type Query {
-    myWorkspaces(csrfToken:String!):[Group!]!
+    myGroups(csrfToken:String!):[Group!]!
     myMemberships(csrfToken:String!):[Membership!]!
     getSessionProfile(csrfToken:String!):Profile
     getAccountInformation(csrfToken:String!):AccountInformation
     listProfiles(csrfToken:String!): [Profile!]!
-    listWorkspaces(csrfToken:String! profileId:String!): [Group!]!
+    listGroups(csrfToken:String! profileId:String!): [Group!]!
     listMemberships(csrfToken:String! profileId:String!): [Membership!]!
     listMembers(csrfToken:String! groupId:String!):[Membership!]!
     listMessages(csrfToken:String! groupId:String! profileId:String! begin:String end:String):[Message!]!
     getProfile(csrfToken:String! profileId:String!):Profile
-    getWorkspace(csrfToken:String! workspaceId:String!):Group
+    getGroup(csrfToken:String! groupId:String!):Group
 }

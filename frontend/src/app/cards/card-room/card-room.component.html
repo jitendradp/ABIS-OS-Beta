@@ -1,0 +1,25 @@
+<mat-card style="border-radius: 0">
+  <mat-card-header>
+    <img mat-card-avatar style="border-radius: 0"
+         src="{{roomService.roomInformation.logo}}">
+    <mat-card-title>{{roomService.roomInformation.title}}</mat-card-title>
+    <mat-card-subtitle>@{{roomService.roomInformation.name}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p>{{roomService.roomInformation.description}}</p>
+    <p>{{roomService.roomInformation.tags}}</p>
+    <small>Is in <b>{{locationService.locationInformation.address}} - {{locationService.locationInformation.city}} -
+      {{locationService.locationInformation.country}}</b> and
+      <b>{{roomService.roomInformation.members_online}}</b> users are live. Visited by
+      {{locationService.locationInformation.visitors_count}}
+    </small>
+    <p>Location tags: {{locationService.locationInformation.tags}}</p>
+    <div style="padding-top: 16px">
+      <app-avatars></app-avatars>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <app-button [link]="'/chat'" [text]="'Enter Room'" [showButtonIcon]="true"
+                [icon]="'lock_open'"></app-button>
+  </mat-card-actions>
+</mat-card>

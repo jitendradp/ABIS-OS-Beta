@@ -1,8 +1,8 @@
-mutation createWorkspace($csrfToken:String!  $hostProfileId:String! $name:String! $title:String! $description:String! $logo:String! $tags:String!) {
-  createWorkspace(csrfToken:$csrfToken hostProfileId:$hostProfileId name:$name title:$title description:$description logo:$logo tags:$tags)
+mutation createGroup($csrfToken:String!  $hostProfileId:String! $type:GroupType! $name:String! $title:String! $description:String! $logo:String! $tags:String!) {
+  createGroup(csrfToken:$csrfToken hostProfileId:$hostProfileId type:$type name:$name title:$title description:$description logo:$logo tags:$tags)
 }
-mutation updateWorkspace($csrfToken:String!  $workspaceId:String! $name:String! $title:String! $description:String! $logo:String! $tags:String! $isHidden:Boolean! $isPublic:Boolean!) {
-  updateWorkspace(csrfToken:$csrfToken workspaceId:$workspaceId name:$name title:$title description:$description logo:$logo tags:$tags isHidden:$isHidden isPublic:$isPublic)
+mutation updateGroup($csrfToken:String!  $workspaceId:String! $type:GroupType! $name:String! $title:String! $description:String! $logo:String! $tags:String! $isHidden:Boolean! $isPublic:Boolean!) {
+  updateGroup(csrfToken:$csrfToken workspaceId:$workspaceId type:$type name:$name title:$title description:$description logo:$logo tags:$tags isHidden:$isHidden isPublic:$isPublic)
 }
 mutation addMember($csrfToken:String!  $groupId:String! $memberProfileId:String!) {
   addMember(csrfToken:$csrfToken groupId:$groupId memberProfileId:$memberProfileId)

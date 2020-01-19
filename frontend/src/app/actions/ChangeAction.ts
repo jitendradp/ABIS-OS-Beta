@@ -6,7 +6,7 @@ export class ChangeAction<T> implements IChangeAction<T> {
   public oldValue: T;
   public newValue: T;
 
-  constructor(name:string, oldValue:T, newValue:T) {
+  constructor(name: string, oldValue: T, newValue: T) {
     this.name = name;
     this.oldValue = oldValue;
     this.newValue = newValue;

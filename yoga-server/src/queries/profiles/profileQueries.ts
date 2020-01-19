@@ -4,8 +4,8 @@ import {CommonQueries} from "../commonQueries";
 export class ProfileQueries {
     public static async getSessionProfile(csrfToken:string, authToken:string) {
         const sessionQuery = prisma.session({authToken:authToken});
-        const user = await sessionQuery.user();
-        if (!user) {
+        const account = await sessionQuery.account();
+        if (!account) {
             throw new Error("Invalid authToken");
         }
 
@@ -15,7 +15,7 @@ export class ProfileQueries {
         }
         let currentProfile = await prisma.session({authToken}).profile();
         if (!currentProfile) {
-            const lastUsedProfileId = await prisma.session({authToken}).user().lastUsedProfileId();
+            const lastUsedProfileId = await prisma.session({authToken}).account().lastUsedProfileId();
             if (lastUsedProfileId) {
                 currentProfile = await  prisma.profile({id: lastUsedProfileId});
             }
@@ -28,7 +28,7 @@ export class ProfileQueries {
     }
 
     public static async listProfiles(csrfToken:string, authToken:string) {
-        const profiles = await prisma.session({authToken:authToken}).user().profiles();
+        const profiles = await prisma.session({authToken:authToken}).account().profiles();
         if (!profiles) {
             throw new Error("Invalid authToken");
         }

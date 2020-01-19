@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Layer} from "mapbox-gl";
 import {MatSlideToggleChange} from "@angular/material";
-import {PropertyRead} from "@angular/compiler";
 
 
 @Component({

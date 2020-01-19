@@ -1,9 +1,9 @@
-import {prisma} from "../../generated";
+import {prisma, ProfileType, StatusType} from "../../generated";
 import {CommonQueries} from "../../queries/commonQueries";
 
 export class ProfileMutations {
-    public static async createProfile(csrfToken: string, authToken:string, name: string, picture: string, timezone: string) {
-        const userAndSession = await CommonQueries.findUserBySession(csrfToken, authToken);
+    public static async createProfile(csrfToken: string, authToken:string, name:string, picture: string, timezone: string, type:ProfileType) {
+        const userAndSession = await CommonQueries.findAccountBySession(csrfToken, authToken);
         if (!userAndSession) {
             throw new Error("Invalid csrf- or auth token");
         }
@@ -11,9 +11,18 @@ export class ProfileMutations {
         const profile = await prisma.createProfile({
             name: name,
             picture: picture,
-            timezone: timezone
+            timezone: timezone,
+            creator: {
+                connect: {
+                    id: userAndSession.account.id
+                }
+            },
+            type: type,
+            is_bot: false, // TODO: The following three properties are just hardcoded for the moment
+            status: "Offline",
+            is_hidden: false
         });
-        await prisma.updateUser({
+        await prisma.updateAccount({
             data: {
                 profiles: {
                     connect: {
@@ -21,13 +30,13 @@ export class ProfileMutations {
                     }
                 }
             },
-            where: {id: userAndSession.user.id}
+            where: {id: userAndSession.account.id}
         });
         return profile.id;
     }
 
-    public static async updateProfile(csrfToken: string, authToken:string, profileId: string, name: string, picture: string, timezone: string, status: string) {
-        const userAndSession = await CommonQueries.findUserBySession(csrfToken, authToken);
+    public static async updateProfile(csrfToken: string, authToken:string, profileId: string, type:ProfileType, name: string, picture: string, timezone: string, status: StatusType) {
+        const userAndSession = await CommonQueries.findAccountBySession(csrfToken, authToken);
         if (!userAndSession) {
             throw new Error("Invalid csrf- or auth token");
         }
@@ -37,7 +46,8 @@ export class ProfileMutations {
                 name: name,
                 picture: picture,
                 timezone: timezone,
-                status: status
+                status: status,
+                type: type
             },
             where: {
                 id:profileId

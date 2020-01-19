@@ -1,17 +1,18 @@
 .sidebarLeft {
-  min-width: 300px;
+  width: 300px;
   background-color: #fff;
 }
 
 .sidebarRight {
-  min-width: 300px;
+  width: 300px;
   padding-top: 56px;
   background-color: #fff;
 }
 
 @media screen and (max-width: 735px) {
   .sidebarLeft {
-    width: 80%;
+    width: 75%;
+    max-width: 300px;
   }
 
   /* todo change the mode from drawer push to over when in mobile view and I have no clue why 101 works */
@@ -22,9 +23,10 @@
 
 .body {
   margin-top: 56px;
-  margin-bottom: 56px;
+  /* margin-bottom: 56px; */
   background-color: #eee;
-  height: calc(100vh - 112px);
+  height: calc(100vh - 56px);
+  /*  height: calc(100vh - 112px);*/
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -55,9 +57,3 @@
      Every toolbar row uses a flexbox row layout. */
   flex: 1 1 auto;
 }
-
-/* todo
-.mat-sidenav:not(.mat-sidenav-side) {
-  position: fixed;
-}
-*/

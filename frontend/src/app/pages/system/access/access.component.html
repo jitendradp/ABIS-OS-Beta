@@ -1,5 +1,4 @@
-<div *ngIf="!isButton"
-     fxLayout
+<div fxLayout
      fxLayout.xs="column"
      fxLayoutAlign="center"
      fxLayoutGap="0px"
@@ -7,7 +6,7 @@
   <div fxFlex='auto' fxFlex.gt-md='50' fxFlex.gt-sm='80'>
     <app-content>
       <app-card-intro
-        *ngIf="!_accountService.isLoggedOn"
+        *ngIf="!userService.isLoggedOn"
         [image]="'./assets/banners/access-cockpit.jpg'"
         [logo]="'./assets/logos/abis-logo.png'"
         [description]="'The collaborative dataspace to discover, share and discuss facts within your teams. ABIS links smart data and businesses with AI. Welcome to the decentralized and social network for the good in the world.'"
@@ -16,16 +15,11 @@
         <app-whitespace></app-whitespace>
         <app-button [link]='"/signin"' [text]="'Sign in'"></app-button>
       </app-card-intro>
-      <div>
-        <p><b>Important note:</b> This is just a user interface test version to collect your valuable feedback, so our team can develop the app more closely to your needs. Some functions are limited. A registration is not necessary! Please do not publish this page.</p>
-        <p>Please find our data protection policy here:</p><a href="https://abis-cloud.de/datenschutz-dsgvo/">https://abis-cloud.de/datenschutz-dsgvo/</a>
-        <p>By using this website you are ok with, beeing tracked by google analytics and hotjar. Please try the feedback box to give us your information.</p>
-      </div>
       <app-card-intro
-        *ngIf="_accountService.isLoggedOn"
+        *ngIf="userService.isLoggedOn"
         [image]="'./assets/banners/access-cockpit.jpg'"
         [logo]="'./assets/logos/abis-logo.png'"
-        [description]="'Welcome back ' + _accountService.accountInformation.name + '!'"
+        [description]="'Welcome back ' + userService.userInformation.firstName + '!'"
         [title]="'ABIS Analytics Cloud'">
         Pick up where you left off:<br/>
         <ul>
@@ -35,7 +29,7 @@
           <li>Recent item ...</li>
         </ul>
         <br/>
-        or disover something new:<br/>
+        or discover something new:<br/>
         <ul>
           <li>News feed item 1</li>
           <li>News feed item 2</li>
@@ -47,6 +41,4 @@
   </div>
 </div>
 
-<app-button *ngIf="isButton" [lessStyle]="true" [link]='"/"'
-            [text]="'Sign In / Register'">
-</app-button>
+

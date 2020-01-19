@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {AccountService} from "../../../services/account.service";
+import {UserService} from "../../../services/user.service";
 import {Logger, LoggerService, LogSeverity} from "../../../services/logger.service";
 import {ActionDispatcherService} from "../../../services/action-dispatcher.service";
 import {SwitchProfile} from "../../../actions/routes/SwitchProfile";
@@ -21,7 +21,7 @@ export class SigninComponent implements OnInit {
 
   private readonly _log:Logger = this.loggerService.createLogger("SigninComponent");
 
-  constructor(private accountService:AccountService
+  constructor(private userService:UserService
     , private loggerService:LoggerService
     , private profileService:ProfileService
     , private actionDispatcherr:ActionDispatcherService) {
@@ -32,7 +32,7 @@ export class SigninComponent implements OnInit {
 
   async login() : Promise<void> {
     try {
-      const loginResult = await this.accountService.login(this.email.nativeElement.value, this.password.nativeElement.value);
+      const loginResult = await this.userService.login(this.email.nativeElement.value, this.password.nativeElement.value);
       if (!loginResult) {
         return;
       }
@@ -46,7 +46,7 @@ export class SigninComponent implements OnInit {
       }
 
       if (userProfiles.length == 1) {
-        const  result = await this.accountService.setSessionProfile(userProfiles[0].id);
+        const  result = await this.userService.setSessionProfile(userProfiles[0].id);
         if (!result) {
           // noinspection ExceptionCaughtLocallyJS
           throw new Error("Unexpected error while setting the session profile.")

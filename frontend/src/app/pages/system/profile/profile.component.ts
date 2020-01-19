@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ProfileService} from "../../../services/profile.service";
-import {AccountService} from "../../../services/account.service";
+import {UserService} from "../../../services/user.service";
+import {UserInformation} from "../../../../generated/abis-api";
 
 @Component({
   selector: 'app-profile',
@@ -9,17 +10,17 @@ import {AccountService} from "../../../services/account.service";
 })
 export class ProfileComponent implements OnInit {
 
-  public profile:{name?:string,job?:string,slogan?:string,phone?:string} = {};
-  public account:{name?:string} = {};
+  public profile: { name?: string, job?: string, slogan?: string, phone?: string } = {};
+  public user: UserInformation = {id: null, createdAt: null, firstName: "", lastName: ""};
 
   constructor(
-    private _profileService: ProfileService,
-    private _accountService: AccountService
+    private profileService: ProfileService,
+    private userService: UserService
   ) {
   }
 
   ngOnInit() {
-    this.account = this._accountService.accountInformation
+    this.user = this.userService.userInformation
   }
 
 }

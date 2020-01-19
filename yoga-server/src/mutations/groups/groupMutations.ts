@@ -1,31 +1,38 @@
-import {prisma} from "../../generated";
+import {GroupType, prisma, Tag, TagCreateInput} from "../../generated";
 import {CommonQueries} from "../../queries/commonQueries";
 
 export class GroupMutations {
-    public static async createWorkspace(csrfToken: string, authToken:string, hostProfileId: string, name: string, title: string, description: string, logo: string, tags: string) {
-        const user = CommonQueries.findUserBySession(csrfToken, authToken);
+    public static async createGroup(csrfToken: string, authToken:string, hostProfileId: string, type:GroupType, name: string, title: string, description: string, logo: string, tags: TagCreateInput[]) {
+        const user = CommonQueries.findAccountBySession(csrfToken, authToken);
         if (!user) {
             throw new Error("Invalid csrf- or auth token");
         }
         const group = await prisma.createGroup({
-            host: {
+            creator: {
                 connect: {
                     id: hostProfileId
                 }
             },
-            type: "WORKSPACE",
+            type: type,
             name: name,
             description: description,
             logo: logo,
-            tags: tags,
             title: title,
             is_hidden: true,
             is_public: false
         });
+
+        // TODO: Add tags
+
         const membership = await prisma.createMembership({
             member:{
                 connect:{
                     id:hostProfileId
+                }
+            },
+            creator: { // TODO: The owner of a group invites himself. Is this really necessary?
+                connect: {
+                    id: hostProfileId
                 }
             },
             show_history:true,
@@ -33,23 +40,28 @@ export class GroupMutations {
                 connect:{
                     id:group.id
                 }
-            }
+            },
+            can_read: true, // Because the creator is also the owner of this group, he has all rights possible
+            can_delete: true,
+            can_write: true
         });
         await prisma.updateGroup({where:{id:group.id}, data:{members:{connect:{id:membership.id}}}});
         return group.id;
     }
 
-    public static async updateWorkspace(csrfToken: string, authToken:string, workspaceId: string, name: string, title: string, description: string, logo: string, tags: string, isHidden: boolean, isPublic: boolean) {
-        const user = await CommonQueries.findUserBySession(csrfToken, authToken);
-        if (!user) {
+    public static async updateGroup(csrfToken: string, authToken:string, workspaceId: string, type:GroupType, name: string, title: string, description: string, logo: string, tags: TagCreateInput[], isHidden: boolean, isPublic: boolean) {
+        const account = await CommonQueries.findAccountBySession(csrfToken, authToken);
+        if (!account) {
             throw new Error("Invalid csrf- or auth token");
         }
+
+        // TODO: Add tags
         await prisma.updateGroup({
             data: {
+                type:type,
                 name: name,
                 description: description,
                 logo: logo,
-                tags: tags,
                 title: title,
                 is_hidden: isHidden,
                 is_public: isPublic
@@ -72,12 +84,20 @@ export class GroupMutations {
                     id: groupId
                 }
             },
+            creator: {
+                connect: {
+                    id: profile.id
+                }
+            },
             member: {
                 connect: {
                     id: memberProfileId
                 }
             },
-            show_history: false
+            show_history: false,
+            can_read: true,
+            can_write: true,
+            can_delete: false
         });
         const group = await prisma.updateGroup({
             data: {
@@ -91,12 +111,14 @@ export class GroupMutations {
                 id: groupId
             }
         });
+        // TODO: Build a proper mechanism to create an activity stream/log trail
+        /*
         await prisma.updateGroup({
             data: {
                 messages: {
                     create: {
                         type: "TRAIL",
-                        sender:{connect:{id:memberProfileId}},
+                        creator:{connect:{id:memberProfileId}},
                         subject: profile.name + " joined " + group.name,
                         content: {
                             type: "trail",
@@ -114,6 +136,7 @@ export class GroupMutations {
                 id: groupId
             }
         });
+         */
         return membership.id;
     }
 
@@ -126,6 +149,8 @@ export class GroupMutations {
         for (const o of memberships) {
             const group = await prisma.membership({id: o.id}).group();
             await prisma.deleteMembership({id: o.id});
+            // TODO: Build a proper mechanism to create an activity stream/log trail
+            /*
             await prisma.updateGroup({
                 data: {
                     messages: {
@@ -149,6 +174,7 @@ export class GroupMutations {
                     id: groupId
                 }
             });
+             */
         }
 
         return memberships.map(o => o.id)[0];

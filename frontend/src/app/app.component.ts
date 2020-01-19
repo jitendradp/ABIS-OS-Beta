@@ -1,7 +1,4 @@
 import {Component, Input, ViewChild} from '@angular/core';
-import {ProfileService} from "./services/profile.service";
-import {DataspaceService} from "./services/dataspace.service";
-import {AccountService} from "./services/account.service";
 import {MatDrawer} from "@angular/material/sidenav";
 import {
   ActivationEnd,
@@ -24,8 +21,8 @@ import {SwitchProfile} from "./actions/routes/SwitchProfile";
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {LogEntry} from "./services/logger.service";
 import {Back} from "./actions/routes/Back";
-import {EditorTeamComponent} from "./editors/editor-team/editor-team.component";
-import {CommandComponent} from "./widgets/command/command.component";
+import {EditorRoomComponent} from "./editors/editor-room/editor-room.component";
+import {EditorCommandComponent} from "./editors/editor-command/editor-command.component";
 import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {RouteChanged} from "./actions/routes/RouteChanged";
@@ -47,14 +44,9 @@ export class AppComponent {
 
   title = 'ABIS';
 
-  public dataspace = this._dataspaceService.getDataspaceInformation();
-
   actions: IEvent[] = [];
 
   constructor(
-    protected profileService: ProfileService,
-    private _dataspaceService: DataspaceService,
-    private _accountService: AccountService,
     private _router: Router,
     private _actionDispatcher: ActionDispatcherService,
     public _dialog: MatDialog,
@@ -104,8 +96,8 @@ export class AppComponent {
       case "Abis.Chat.Channel.Create":
         this.openChannelCreateDialog();
         break;
-      case "Abis.Chat.Team.Create":
-        this.openTeamCreateDialog();
+      case "Abis.Chat.Room.Create":
+        this.openRoomCreateDialog();
         break;
       case "Abis.Cockpit.Command.Create":
         this.openCockpitCommandDialog();
@@ -157,7 +149,7 @@ export class AppComponent {
   }
 
   public openCockpitCommandDialog(): void {
-    const dialogRef = this._dialog.open(CommandComponent, {
+    const dialogRef = this._dialog.open(EditorCommandComponent, {
       width: '50%',
       minWidth: '300px'
     });
@@ -167,8 +159,8 @@ export class AppComponent {
     });
   }
 
-  public openTeamCreateDialog(): void {
-    const dialogRef = this._dialog.open(EditorTeamComponent, {
+  public openRoomCreateDialog(): void {
+    const dialogRef = this._dialog.open(EditorRoomComponent, {
       width: '50%',
       minWidth: '300px'
     });

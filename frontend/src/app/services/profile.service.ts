@@ -1,19 +1,28 @@
 import {Injectable} from '@angular/core';
-import {CreateProfileGQL, GetProfileGQL, ListProfilesGQL, Profile, UpdateProfileGQL} from "../../generated/abis-api";
+import {
+  CreateProfileGQL,
+  GetProfileGQL,
+  ListProfilesGQL,
+  Profile,
+  ProfileType,
+  UpdateProfileGQL
+} from "../../generated/abis-api";
 import {Logger, LoggerService, LogSeverity} from "./logger.service";
-import {AccountService} from "./account.service";
+import {UserService} from "./user.service";
 import {ActionDispatcherService} from "./action-dispatcher.service";
-import {SessionProfileChanged} from "../actions/account/SessionProfileChanged";
+import {SessionProfileChanged} from "../actions/user/SessionProfileChanged";
 
 export type ProfileInformation = {
   name: string,
-  type: string,
+  timezone: string,
   slogan: string,
   picture: string,
-  banner: string,
+  location: string,
+  type: string,
+  isBot: boolean;
+  isHidden: boolean,
+  createdAt: string,
   status: string,
-  job: string,
-  phone: string
 };
 
 @Injectable({
@@ -22,14 +31,16 @@ export type ProfileInformation = {
 export class ProfileService {
 
   public profileInformation: ProfileInformation = {
-    "name": "Jessica",
+    "name": "tomsawyer88",
+    "timezone": "UTC +1",
+    "slogan": "Exploring the world",
+    "picture": "https://media.wired.com/photos/598e35fb99d76447c4eb1f28/1:1/w_722,h_722,c_limit/phonepicutres-TA.jpg",
+    "location": "Munich",
     "type": "Work",
-    "slogan": "Having fun with friends",
-    "picture": "./assets/profile_default.jpg",
-    "banner": "https://i.redd.it/s867gu6siij21.jpg",
-    "status": "Online",
-    "job": "Founder",
-    "phone": "+49 0159 5467 464587"
+    "isBot": false,
+    "isHidden": false,
+    "createdAt": "2020-01-02",
+    "status": "Busy",
   };
 
   private readonly _log: Logger = this.loggerService.createLogger("ProfileService");
@@ -38,7 +49,7 @@ export class ProfileService {
     , private updateProfileApi: UpdateProfileGQL
     , private listProfilesApi: ListProfilesGQL
     , private getProfileApi: GetProfileGQL
-    , private accountService: AccountService
+    , private userService: UserService
     , private actionDispatcher: ActionDispatcherService
     , private loggerService: LoggerService) {
     this.actionDispatcher.onAction.subscribe(event => {
@@ -61,9 +72,10 @@ export class ProfileService {
    * @param picture
    * @param timezone
    */
-  public createProfile(name: string, picture?: string, timezone?: string): Promise<string> {
+  public createProfile(type:ProfileType, name: string, picture?: string, timezone?: string): Promise<string> {
     return this.createProfileApi.mutate({
-      csrfToken: this.accountService.csrfToken,
+      csrfToken: this.userService.csrfToken,
+      type,
       name,
       picture,
       timezone
@@ -78,10 +90,11 @@ export class ProfileService {
       });
   }
 
-  updateProfile(profileId: string, name: string, picture?: string, timezone?: string): Promise<boolean> {
+  updateProfile(profileId: string, type:ProfileType, name: string, picture?: string, timezone?: string): Promise<boolean> {
     return this.updateProfileApi.mutate({
-      csrfToken: this.accountService.csrfToken,
+      csrfToken: this.userService.csrfToken,
       profileId,
+      type,
       name,
       picture,
       status,
@@ -99,7 +112,7 @@ export class ProfileService {
   }
 
   listProfiles(): Promise<Profile[]> {
-    return this.listProfilesApi.fetch({csrfToken: this.accountService.csrfToken})
+    return this.listProfilesApi.fetch({csrfToken: this.userService.csrfToken})
       .toPromise()
       .then(result => {
         return result.data.listProfiles;
@@ -113,7 +126,7 @@ export class ProfileService {
 
   getProfile(profileId: string): Promise<Profile> {
     return this.getProfileApi.fetch({
-      csrfToken: this.accountService.csrfToken,
+      csrfToken: this.userService.csrfToken,
       profileId
     })
       .toPromise()

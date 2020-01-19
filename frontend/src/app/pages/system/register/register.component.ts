@@ -3,8 +3,8 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MatHorizontalStepper} from "@angular/material/stepper";
 import {ClientStateService} from "../../../services/client-state.service";
 import {StepperSelectionEvent} from "@angular/cdk/stepper";
-import {SignupGQL, VerifyEmailGQL} from "../../../../generated/abis-api";
-import {AccountService} from "../../../services/account.service";
+import {ProfileType, SignupGQL, VerifyEmailGQL} from "../../../../generated/abis-api";
+import {UserService} from "../../../services/user.service";
 import {ProfileService} from "../../../services/profile.service";
 import {Logger, LoggerService, LogSeverity} from "../../../services/logger.service";
 import {ActionDispatcherService} from "../../../services/action-dispatcher.service";
@@ -29,7 +29,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     , private actionDispatcher: ActionDispatcherService
     , private clientState: ClientStateService
     , private profileService: ProfileService
-    , private accountService: AccountService
+    , private userService: UserService
     , private signupApi: SignupGQL
     , private verifyEmailApi: VerifyEmailGQL) {
   }
@@ -83,7 +83,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     const f = () => {
-      if (this.accountService.isLoggedOn) {
+      if (this.userService.isLoggedOn) {
         this.actionDispatcher.dispatch(new ShowNotification("You cannot sign up a new user while being logged-on. Log out first and then create a new user. Also try if another profile fits your need."));
         this.actionDispatcher.dispatch(new Back());
         return;
@@ -112,7 +112,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     // First step completed, create the user
     await this.signupApi.mutate({
       email: this.step1Data.emailAddress,
-      name: this.step1Data.firstName + " " + this.step1Data.lastName,
+      firstName: this.step1Data.firstName,
+      lastName: this.step1Data.lastName,
       password: this.step1Data.password
     }).toPromise()
       .then(result => {
@@ -135,7 +136,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
         // Disable the previous steps so that the user can't navigate to them again
         this.clientState.set("RegisterComponent.stepper.selectedIndex", $event.selectedIndex);
         this.disableCompletedSteps($event.selectedIndex);
-        this.accountService.setToken(result.data.verifyEmail);
+        this.userService.setToken(result.data.verifyEmail);
       })
       .catch(e => {
         this.stepper.selectedIndex = this.clientState.get<number>("RegisterComponent.stepper.selectedIndex", 0).data;
@@ -147,12 +148,13 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   public submitStep3($event: MouseEvent) {
     // Third step completed, create the profile
     // TODO: Pic and Timezone
-    this.profileService.createProfile(this.step3Data.name, "pic", "UTC")
+    // TODO: Only private profiles for now
+    this.profileService.createProfile(ProfileType.Private, this.step3Data.name, "pic", "UTC")
       .then(result => {
         if (!result) {
           throw new Error("The profile creation failed unexpectedly.");
         }
-        this.accountService.setSessionProfile(result)
+        this.userService.setSessionProfile(result)
           .then(r => {
             if (!r) {
               throw new Error("An unexpected error occurred while binding the new profile " + result + " to the session.");

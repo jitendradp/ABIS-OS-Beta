@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {Profile} from "../../../../generated/abis-api";
-import {AccountService} from "../../../services/account.service";
+import {UserService} from "../../../services/user.service";
 import {ProfileService} from "../../../services/profile.service";
 import {Logger, LoggerService, LogSeverity} from "../../../services/logger.service";
 
@@ -15,7 +15,7 @@ export class SwitchProfileComponent implements OnInit, AfterViewInit {
   private readonly _log:Logger = this.loggerService.createLogger("SwitchProfileComponent");
 
   constructor(private profileService:ProfileService
-              , private accountService:AccountService
+              , private userService:UserService
               , private loggerService:LoggerService) { }
 
   ngOnInit() {
@@ -31,7 +31,7 @@ export class SwitchProfileComponent implements OnInit, AfterViewInit {
   }
 
   switchToProfile(profile: Profile) {
-    this.accountService.setSessionProfile(profile.id)
+    this.userService.setSessionProfile(profile.id)
       .catch(error => {
         this._log(LogSeverity.UserNotification, "Couldn't switch profile. See the log for detailed error messages.");
         this._log(LogSeverity.Error, error);

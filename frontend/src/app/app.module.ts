@@ -56,31 +56,26 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HeaderComponent} from './components/header/header.component';
 import {InputComponent} from './components/input/input.component';
 import {WhitespaceComponent} from './components/whitespace/whitespace.component';
-import {ChatComponent} from './widgets/chat/chat.component';
+import {ChatComponent} from './chat/chat.component';
 import {EditorChannelComponent} from './editors/editor-channel/editor-channel.component';
 import {GraphQLModule} from './graphql.module';
 import {HttpClientModule} from '@angular/common/http';
 import {CardIntroComponent} from "./cards/card-intro/card-intro.component";
-import {NavigationComponent} from "./pages/system/navigation/navigation.component";
+import {NavigationComponent} from "./navigation/navigation.component";
 import {SwitchProfileComponent} from './pages/system/switch-profile/switch-profile.component';
 import {LogoutComponent} from './pages/system/logout/logout.component';
 import {IAction} from "./actions/IAction";
-import {TeamsComponent} from "./pages/teams/teams.component";
-import {EditorTeamComponent} from "./editors/editor-team/editor-team.component";
+import {RoomsComponent} from "./pages/rooms/rooms.component";
+import {EditorRoomComponent} from "./editors/editor-room/editor-room.component";
 import {AvatarsComponent} from "./components/avatars/avatars.component";
 import {CardMessageComponent} from "./cards/card-message/card-message.component";
-import {CardTeamComponent} from "./cards/card-team/card-team.component";
+import {CardRoomComponent} from "./cards/card-room/card-room.component";
 import {CardFormComponent} from "./cards/card-form/card-form.component";
 import {CardStoreComponent} from "./cards/card-store/card-store.component";
-import {SearchComponent} from "./widgets/search/search.component";
+import {SearchComponent} from "./search/search.component";
 import {NgxMapboxGLModule} from "ngx-mapbox-gl";
 import {CardComponent} from "./cards/card/card.component";
-import {ChartTableComponent} from "./charts/chart-table/chart-table.component";
-import {ChartLineComponent} from "./charts/chart-line/chart-line.component";
-import {ChartMapComponent} from "./charts/chart-map/chart-map.component";
-import {CommandComponent} from "./widgets/command/command.component";
-import {ChartGraphForceComponent} from "./charts/chart-graph-force/chart-graph-force.component";
-import {ChartSankeyComponent} from "./charts/chart-sankey/chart-sankey.component";
+import {EditorCommandComponent} from "./editors/editor-command/editor-command.component";
 import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
 import {DeviceDetectorModule} from "ngx-device-detector";
 import {ClusterPopupComponent} from "./pages/map/cluster-popup/cluster-popup.component";
@@ -88,43 +83,70 @@ import {AgGridModule} from "ag-grid-angular";
 import {EditorPortfolioComponent} from "./editors/editor-portfolio/editor-portfolio.component";
 import {SmartCryptoAppComponent} from "./smartapps/smart-crypto-app/smart-crypto-app.component";
 import {CardPortfolioComponent} from "./cards/card-portfolio/card-portfolio.component";
+import {CardProfileComponent} from "./cards/card-profile/card-profile.component";
+import {FeedComponent} from "./pages/feed/feed.component";
+import {ContactsComponent} from "./pages/contacts/contacts.component";
+import {ChartGraphForceComponent} from "./components/charts/chart-graph-force/chart-graph-force.component";
+import {ChartLineComponent} from "./components/charts/chart-line/chart-line.component";
+import {ChartMapComponent} from "./components/charts/chart-map/chart-map.component";
+import {ChartSankeyComponent} from "./components/charts/chart-sankey/chart-sankey.component";
+import {ChartTableComponent} from "./components/charts/chart-table/chart-table.component";
+import {SettingsComponent} from "./pages/settings/settings.component";
 
-const defaultActions: IAction[] = [<SetVisibility>{
-  name: SetVisibility.Name,
-  label: "Open/Close Sidebar",
-  icon: "menu",
-  side: "left",
-  state: "toggle"
-}, <SetVisibility>{
-  name: SetVisibility.Name,
-  label: "Open/Close Chat",
-  icon: "question_answer",
-  side: "right",
-  state: "toggle"
-}];
+const defaultActions: IAction[] =
+  [
+    <SetVisibility>{
+      name: SetVisibility.Name,
+      label: "Open/Close Menu",
+      icon: "menu",
+      side: "left",
+      state: "toggle"
+    },
+
+    // todo show/hide when user is logged in or not
+    <SetVisibility>{
+      name: SetVisibility.Name,
+      label: "Open/Close Notifications",
+      icon: "notifications",
+      side: "right",
+      state: "toggle"
+    }
+  ];
+
+const minActions: IAction[] =
+  [
+    <SetVisibility>{
+      name: SetVisibility.Name,
+      label: "Open/Close Menu",
+      icon: "menu",
+      side: "left",
+      state: "toggle"
+    },
+  ];
+
 
 const appRoutes: Routes = [
   {
     path: '', component: AccessComponent, data: {
       "title": "Welcome",
-      "actions": defaultActions
+      "actions": minActions
     }
   },
   {
     path: 'signin', component: SigninComponent, data: {
       "title": "Login",
-      "actions": defaultActions
+      "actions": minActions
     }
   },
   {
     path: 'register', component: RegisterComponent, data: {
       "title": "Sign up",
-      "actions": defaultActions
+      "actions": minActions
     }
   },
   {
     path: 'profile', component: ProfileComponent, data: {
-      "title": "Settings",
+      "title": "Profile",
       "actions": defaultActions
     }
   },
@@ -161,13 +183,13 @@ const appRoutes: Routes = [
   {
     path: 'reset-password', component: ResetComponent, data: {
       "title": "Reset password",
-      "actions": defaultActions
+      "actions": minActions
     }
   },
   {
     path: 'forgot-password', component: ForgotComponent, data: {
       "title": "Forgot password",
-      "actions": defaultActions
+      "actions": minActions
     }
   },
   {
@@ -185,23 +207,23 @@ const appRoutes: Routes = [
   {
     path: 'logout', component: LogoutComponent, data: {
       "title": "Logout",
+      "actions": minActions
+    }
+  },
+  {
+    path: 'chat-rooms', component: RoomsComponent, data: {
+      "title": "Rooms",
       "actions": defaultActions
     }
   },
   {
-    path: 'teams', component: TeamsComponent, data: {
-      "title": "Teams",
-      "actions": defaultActions
-    }
-  },
-  {
-    path: 'editor-team', component: EditorTeamComponent, data: {
+    path: 'editor-team', component: EditorRoomComponent, data: {
       "title": "Create new team",
       "actions": defaultActions
     }
   },
   {
-    path: 'command', component: CommandComponent, data: {
+    path: 'command', component: EditorCommandComponent, data: {
       "title": "New command",
       "actions": defaultActions
     }
@@ -209,6 +231,30 @@ const appRoutes: Routes = [
   {
     path: 'smart-crypto-app', component: SmartCryptoAppComponent, data: {
       "title": "Smart Crypto App",
+      "actions": defaultActions
+    }
+  },
+  {
+    path: 'chat', component: ChatComponent, data: {
+      "title": "Chat",
+      "actions": defaultActions
+    }
+  },
+  {
+    path: 'feed', component: FeedComponent, data: {
+      "title": "Newsfeed",
+      "actions": defaultActions
+    }
+  },
+  {
+    path: 'contacts', component: ContactsComponent, data: {
+      "title": "Contacts",
+      "actions": defaultActions
+    }
+  },
+  {
+    path: 'settings', component: SettingsComponent, data: {
+      "title": "Settings",
       "actions": defaultActions
     }
   },
@@ -242,25 +288,29 @@ const appRoutes: Routes = [
     NavigationComponent,
     SwitchProfileComponent,
     LogoutComponent,
-    TeamsComponent,
-    EditorTeamComponent,
+    RoomsComponent,
+    EditorRoomComponent,
     AvatarsComponent,
     CardMessageComponent,
-    CardTeamComponent,
+    CardRoomComponent,
     CardFormComponent,
     CardStoreComponent,
     SearchComponent,
     CardComponent,
-    ChartTableComponent,
-    ChartLineComponent,
-    ChartMapComponent,
-    CommandComponent,
-    ChartGraphForceComponent,
-    ChartSankeyComponent,
+    EditorCommandComponent,
     ClusterPopupComponent,
     EditorPortfolioComponent,
     SmartCryptoAppComponent,
     CardPortfolioComponent,
+    CardProfileComponent,
+    FeedComponent,
+    ContactsComponent,
+    ChartGraphForceComponent,
+    ChartLineComponent,
+    ChartMapComponent,
+    ChartSankeyComponent,
+    ChartTableComponent,
+    SettingsComponent,
   ],
   imports: [
     RouterModule.forRoot(
