@@ -7,6 +7,6 @@ import {UserService} from "../../../services/user.service";
   styleUrls: ['./access.component.css']
 })
 export class AccessComponent {
-  constructor(public _userService: UserService) {
+  constructor(public userService: UserService) {
   }
 }

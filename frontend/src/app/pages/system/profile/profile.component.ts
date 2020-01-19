@@ -10,17 +10,17 @@ import {UserInformation} from "../../../../generated/abis-api";
 })
 export class ProfileComponent implements OnInit {
 
-  public profile:{name?:string,job?:string,slogan?:string,phone?:string} = {};
-  public user:UserInformation = {id:null, createdAt:null, firstName:"", lastName:""};
+  public profile: { name?: string, job?: string, slogan?: string, phone?: string } = {};
+  public user: UserInformation = {id: null, createdAt: null, firstName: "", lastName: ""};
 
   constructor(
-    private _profileService: ProfileService,
-    private _userService: UserService
+    private profileService: ProfileService,
+    private userService: UserService
   ) {
   }
 
   ngOnInit() {
-    this.user = this._userService.userInformation
+    this.user = this.userService.userInformation
   }
 
 }

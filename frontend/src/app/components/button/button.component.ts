@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-button',
@@ -32,8 +31,5 @@ export class ButtonComponent {
 
   @Output()
   click: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
-
-  constructor(protected _userService: UserService) {
-  }
 
 }
