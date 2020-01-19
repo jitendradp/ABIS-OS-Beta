@@ -1,26 +1,22 @@
-<!-- Create your new public or private room. Invite friends and colleagues to chat. -->
 <!-- todo optimize on mobile view. maybe make the stepper vertical instead -->
-<mat-horizontal-stepper [linear]="isLinear" #stepper>
+<mat-card-title>Create chat room</mat-card-title>
+<mat-horizontal-stepper [linear]="!isLinear" #stepper>
   <mat-step [stepControl]="firstFormGroup">
     <form [formGroup]="firstFormGroup">
-      <ng-template matStepLabel>Create room</ng-template>
-      <mat-form-field class="halfWidth">
+      <ng-template matStepLabel>New room</ng-template>
+      <mat-form-field class="fullWidth">
         <input matInput type="text" placeholder="Room name" required formControlName="firstCtrl">
       </mat-form-field>
-      <mat-form-field class="halfWidth">
-        <input matInput type="text" placeholder="Nickname @" required formControlName="firstCtrl">
-      </mat-form-field>
       <div class="fullWidth">
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="1" [checked]="true">Private room</mat-radio-button>
-          <mat-radio-button value="2" style="padding-left: 16px">Public room</mat-radio-button>
+        <mat-radio-group aria-label="Select an option" [required]="true">
+          <mat-radio-button class="radioSpacing" [checked]="true" [value]="isPublic">Private room</mat-radio-button>
+          <mat-radio-button class="radioSpacing" [value]="!isPublic">Public room</mat-radio-button>
         </mat-radio-group>
       </div>
+      <!--todo show different hint depending on the current selected radio button -->
       <app-content>
-        <mat-hint align="start">Anybody can view and join public rooms. Private rooms are only available to invited
-          members. You
-          can always change these settings later.
-        </mat-hint>
+        <mat-hint *ngIf="isPublic" align="start">Anybody can view and join public rooms.</mat-hint>
+        <mat-hint *ngIf="!isPublic" align="start">Private rooms are only for invited members.</mat-hint>
       </app-content>
       <app-content>
         <button mat-button matStepperNext class="maxButton">Next</button>
@@ -29,39 +25,24 @@
   </mat-step>
   <mat-step [stepControl]="secondFormGroup">
     <form [formGroup]="secondFormGroup">
-      <ng-template matStepLabel>Set location</ng-template>
+      <ng-template matStepLabel>Add details</ng-template>
+      <!-- todo add chips with autocomplete -->
       <mat-form-field class="fullWidth">
-        <input matInput type="password" placeholder="Type in your address" required
+        <input matInput type="text" placeholder="Hashtags..." required>
+      </mat-form-field>
+      <mat-form-field class="fullWidth">
+        <input matInput type="text" placeholder="Room address" required
                formControlName="secondCtrl">
       </mat-form-field>
       <mat-form-field class="fullWidth">
-        <mat-label>Country</mat-label>
-        <mat-select>
-          <mat-option *ngFor="let country of countries" [value]="country.value">
-            {{country.viewValue}}
-          </mat-option>
-        </mat-select>
+        <input matInput type="email" placeholder="Description">
       </mat-form-field>
       <app-content>
-        <button mat-button matStepperNext class="maxButton">Next</button>
+        <button mat-button>Upload Logo</button>
+      </app-content>
+      <app-content>
+        <button mat-button routerLink="/chat" class="maxButton">Complete</button>
       </app-content>
     </form>
-  </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Add details</ng-template>
-    <!-- todo add chips with autocomplete -->
-    <mat-form-field class="halfWidth">
-      <input matInput type="text" placeholder="Hashtags..." required>
-    </mat-form-field>
-    <mat-form-field class="halfWidth">
-      <input matInput type="url" placeholder="Your website">
-    </mat-form-field>
-    <mat-form-field class="fullWidth">
-      <input matInput type="email" placeholder="Your description">
-    </mat-form-field>
-    <button mat-button>Upload Picture</button>
-    <app-content>
-      <button mat-button routerLink="/chat" class="maxButton">Complete</button>
-    </app-content>
   </mat-step>
 </mat-horizontal-stepper>
