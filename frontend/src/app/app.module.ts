@@ -265,8 +265,8 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'feed', component: FeedComponent, data: {
-      "title": "Feed",
+    path: 'chat', component: ChatComponent, data: {
+      "title": "Chat",
       "actions": defaultActions
     }
   },
