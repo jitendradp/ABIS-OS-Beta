@@ -5,6 +5,9 @@
   <div style="margin-left: 16px">
     {{title}}
   </div>
+  <button *ngFor="let action of midActions" mat-icon-button (click)="actionDispatcher.dispatch(action);">
+    <mat-icon>{{action.icon}}</mat-icon>
+  </button>
   <span class="fill-remaining-space"></span>
   <button *ngFor="let action of rightActions" mat-icon-button (click)="actionDispatcher.dispatch(action);">
     <mat-icon matBadge="15" matBadgePosition="after" matBadgeColor="warn">{{action.icon}}</mat-icon>

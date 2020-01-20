@@ -10,8 +10,40 @@
   height: 42px;
 }
 
+.profileCard {
+  border-radius: 0;
+  padding: unset;
+  background-color: #7d56ff;
+}
+
+.headerProfileStage {
+  height: calc(100% - 56px - 16px);
+  padding-top: 16px;
+  padding-left: 16px;
+}
+
+/* todo build a right sided box with a picture to fill in it
+.headerProfileRightSideBar {
+  background-color: white;
+}
+
+.cover {
+  object-fit: cover;
+  width: 300px;
+  height: 150px;
+} */
+
+.headerProfileContent {
+  height: 100%;
+  min-width: 300px;
+  background-color: #bbbcbd;
+  padding-left: 16px;
+  padding-top: 16px;
+}
+
 /* todo dynamic status indicator for the profile picture */
 .profilePicture {
+  margin-top: -5px;
   width: 48px;
   height: 48px;
   border: solid #2ecc71 3px;

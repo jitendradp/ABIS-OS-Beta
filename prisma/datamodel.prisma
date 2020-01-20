@@ -90,8 +90,8 @@ type Group {
 	pictureBanner: String                                   # An optional larger image for the group
     type: GroupType!									    # Different types of groups
 	parent: Group											# A group that has no parent is root
-	isHidden: Boolean!										# When true, the group is invisible for all other profiles outside that group
-	isPublic: Boolean!										# When true, any profile outside that group is allowed to join it
+	isPrivate: Boolean!										# When true, it is only visible for all the creator's contacts
+	isOpen: Boolean!                                        # When true, any profile that is able to view it can join it
 	members: [Membership!]!									# Profiles that are participating in that group
 	events: [Event!]!									    # Events with a specific content
 	tags: [Tag!]!											# Meta information as hashes to classify this object
@@ -151,6 +151,7 @@ type Event {
  	type: EventType!                                        # Indicates the purpose of this event
  	isPinned: Boolean!                                      # For example an message can be pinned by a user profile
  	isRead: Boolean!                                        # For example when an event type message was read by the profile
+	isPrivate: Boolean!										# When true, it is only visible for all the creator's contacts
 	content: Json											# The content of an event can be anything or empty
  	location: Location!                                     # The location where the event has occurred
 	tags: [Tag!]!											# Meta information as hashes to classify the object

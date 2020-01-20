@@ -1,12 +1,9 @@
 <mat-card class="embeddableMessage">
-  <small><b>{{creator}}</b></small>
-  <div style="padding-bottom: 12px">
-    <span style="font-size: 12px">{{creationDate}}</span>
-  </div>
   <mat-card-header>
     <img mat-card-avatar src="{{picture}}"
          onError="this.src='./assets/error-images/picture.png';">
-    <mat-card-title>{{title}}</mat-card-title>
+    <mat-card-title>{{creator}}
+      <span style="font-size: 12px">{{creationDate}}</span></mat-card-title>
     <mat-card-subtitle>{{message}}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-actions>

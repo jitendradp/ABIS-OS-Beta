@@ -23,6 +23,10 @@ export class HeaderComponent {
     return this.actions.filter((o: IAction) => o.name == SetVisibility.Name).filter((o: SetVisibility) => o.side == "left");
   }
 
+  get midActions(): IAction[] {
+    return this.actions.filter((o: IAction) => o.name == SetVisibility.Name).filter((o: SetVisibility) => o.side == "middle");
+  }
+
   get rightActions(): IAction[] {
     return this.actions.filter((o: IAction) => o.name == SetVisibility.Name).filter((o: SetVisibility) => o.side == "right");
   }

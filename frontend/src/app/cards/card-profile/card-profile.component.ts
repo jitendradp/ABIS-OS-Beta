@@ -27,4 +27,10 @@ export class CardProfileComponent {
   @Input()
   showContent: boolean;
 
+  @Input()
+  onMenu: boolean;
+
+  @Input()
+  onPage: boolean;
+
 }

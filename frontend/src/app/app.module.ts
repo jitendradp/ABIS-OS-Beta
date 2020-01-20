@@ -38,7 +38,7 @@ import {ContentComponent} from './components/content/content.component';
 import {ButtonComponent} from './components/button/button.component';
 import {RegisterComponent} from './pages/system/register/register.component';
 import {SigninComponent} from './pages/system/signin/signin.component';
-import {ProfileComponent} from './pages/system/profile/profile.component';
+import {ProfileComponent} from './pages/profile/profile.component';
 import {IconbarComponent} from './components/iconbar/iconbar.component';
 import {StoreComponent} from './pages/store/store.component';
 import {FlexLayoutModule} from "@angular/flex-layout";
@@ -122,6 +122,34 @@ const minActions: IAction[] =
       side: "left",
       state: "toggle"
     },
+  ];
+
+const pageActions: IAction[] =
+  [
+
+    <SetVisibility>{
+      name: SetVisibility.Name,
+      label: "Open/Close Menu",
+      icon: "menu",
+      side: "left",
+      state: "toggle"
+    },
+
+    <SetVisibility>{
+      name: SetVisibility.Name,
+      label: "Add new item",
+      icon: "add_circle_outline",
+      side: "middle",
+      state: "toggle"
+    },
+
+    <SetVisibility>{
+      name: SetVisibility.Name,
+      label: "Open/Close Alerts",
+      icon: "notifications",
+      side: "right",
+      state: "toggle"
+    }
   ];
 
 
@@ -213,7 +241,7 @@ const appRoutes: Routes = [
   {
     path: 'chat-rooms', component: RoomsComponent, data: {
       "title": "Rooms",
-      "actions": defaultActions
+      "actions": pageActions
     }
   },
   {
