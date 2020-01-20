@@ -5,13 +5,13 @@ export type LocationInformation = {
   name: string,
   address: string,
   city: string,
-  zip_code: string,
+  zipCode: string,
   country: string,
   latitude: number,
   longitude: number,
-  radius_meter: number,
+  radiusMeter: number,
   tags: string,
-  visitors_count: number,
+  visitorsCount: number,
 };
 
 
@@ -26,11 +26,11 @@ export class LocationService {
     "address": "Dieselstr. 22b",
     "city": "Munich",
     "country": "Germany",
-    "zip_code": "80339",
+    "zipCode": "80339",
     "latitude": 49.2323232,
     "longitude": 8.3434343,
-    "radius_meter": 89,
+    "radiusMeter": 89,
     "tags": "university, city, people, life, education",
-    "visitors_count": 632,
+    "visitorsCount": 632,
   }
 }

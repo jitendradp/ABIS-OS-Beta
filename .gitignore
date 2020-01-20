@@ -5,3 +5,8 @@ AbisStarterkit.iml
 yoga-server/src/config.ts
 /yoga-server/src/config.ts
 .env
+/matrix/matrix-config/hostname
+/matrix/matrix-config/hosts
+/matrix/matrix-config/resolv.conf
+/matrix/files/
+/matrix/schemas/

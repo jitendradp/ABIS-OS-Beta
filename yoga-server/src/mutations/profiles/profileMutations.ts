@@ -2,8 +2,8 @@ import {prisma, ProfileType, StatusType} from "../../generated";
 import {CommonQueries} from "../../queries/commonQueries";
 
 export class ProfileMutations {
-    public static async createProfile(csrfToken: string, authToken:string, name:string, picture: string, timezone: string, type:ProfileType) {
-        const userAndSession = await CommonQueries.findAccountBySession(csrfToken, authToken);
+    public static async createProfile(csrfToken: string, authToken: string, name: string, picture: string, timezone: string, type: ProfileType) {
+        const userAndSession = await CommonQueries.findUserBySession(csrfToken, authToken);
         if (!userAndSession) {
             throw new Error("Invalid csrf- or auth token");
         }
@@ -14,15 +14,15 @@ export class ProfileMutations {
             timezone: timezone,
             creator: {
                 connect: {
-                    id: userAndSession.account.id
+                    id: userAndSession.user.id
                 }
             },
             type: type,
-            is_bot: false, // TODO: The following three properties are just hardcoded for the moment
-            status: "Offline",
-            is_hidden: false
+            isBot: false, // TODO: The following three properties are just hardcoded for the moment
+            status: "",
+            isHidden: false
         });
-        await prisma.updateAccount({
+        await prisma.updateUser({
             data: {
                 profiles: {
                     connect: {
@@ -30,13 +30,13 @@ export class ProfileMutations {
                     }
                 }
             },
-            where: {id: userAndSession.account.id}
+            where: {id: userAndSession.user.id}
         });
         return profile.id;
     }
 
-    public static async updateProfile(csrfToken: string, authToken:string, profileId: string, type:ProfileType, name: string, picture: string, timezone: string, status: StatusType) {
-        const userAndSession = await CommonQueries.findAccountBySession(csrfToken, authToken);
+    public static async updateProfile(csrfToken: string, authToken: string, profileId: string, type: ProfileType, name: string, picture: string, timezone: string, status: StatusType) {
+        const userAndSession = await CommonQueries.findUserBySession(csrfToken, authToken);
         if (!userAndSession) {
             throw new Error("Invalid csrf- or auth token");
         }
@@ -44,13 +44,13 @@ export class ProfileMutations {
         return await prisma.updateProfile({
             data: {
                 name: name,
-                picture: picture,
+                pictureAvatar: picture,
                 timezone: timezone,
                 status: status,
                 type: type
             },
             where: {
-                id:profileId
+                id: profileId
             }
         }).id();
     }

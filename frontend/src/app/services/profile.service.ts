@@ -16,7 +16,7 @@ export type ProfileInformation = {
   name: string,
   timezone: string,
   slogan: string,
-  picture: string,
+  pictureAvatar: string,
   location: string,
   type: string,
   isBot: boolean;
@@ -34,7 +34,7 @@ export class ProfileService {
     "name": "tomsawyer88",
     "timezone": "UTC +1",
     "slogan": "Exploring the world",
-    "picture": "https://media.wired.com/photos/598e35fb99d76447c4eb1f28/1:1/w_722,h_722,c_limit/phonepicutres-TA.jpg",
+    "pictureAvatar": "https://media.wired.com/photos/598e35fb99d76447c4eb1f28/1:1/w_722,h_722,c_limit/phonepicutres-TA.jpg",
     "location": "Munich",
     "type": "Work",
     "isBot": false,

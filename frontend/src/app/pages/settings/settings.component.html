@@ -1,1 +1,49 @@
-<p>settings works!</p>
+<div fxLayout
+     fxLayout.xs="column"
+     fxLayoutAlign="center"
+     fxLayoutGap="0px"
+     fxLayoutGap.xs="0">
+  <div fxFlex='auto' fxFlex.gt-md='50' fxFlex.gt-sm='80'>
+    <app-content>
+      <app-card-form [title]="'Edit user'">
+        <app-input
+          [type]="'text'"
+          [placeholder]="'Full name'"
+          [inputValue]="">
+        </app-input>
+      </app-card-form>
+    </app-content>
+    <app-content>
+      <app-card-form [title]="'Edit profile'">
+        <app-input
+          [type]="'text'"
+          [placeholder]="'Display name'"
+          [inputValue]=""
+          [showHint]="true"
+          [hint]="'This is how your name will show up in ABIS.'">
+        </app-input>
+        <app-input
+          [type]="'text'"
+          [placeholder]="'What I do'"
+          [inputValue]=""
+          [showHint]="true"
+          [hint]="'Let people know what you do.'">
+        </app-input>
+        <app-input
+          [type]="'text'"
+          [placeholder]="'Your slogan'"
+          [inputValue]="">
+        </app-input>
+        <app-input
+          [type]="'tel'"
+          [placeholder]="'Phone'"
+          [inputValue]="">
+        </app-input>
+
+      </app-card-form>
+    </app-content>
+  </div>
+  <div fxFlex="50%">
+    <app-reset [isProfile]="true"></app-reset>
+  </div>
+</div>

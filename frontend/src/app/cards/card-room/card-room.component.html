@@ -1,25 +1,28 @@
 <mat-card style="border-radius: 0">
   <mat-card-header>
     <img mat-card-avatar style="border-radius: 0"
-         src="{{roomService.roomInformation.logo}}">
+         src="{{roomService.roomInformation.pictureLogo}}">
     <mat-card-title>{{roomService.roomInformation.title}}</mat-card-title>
-    <mat-card-subtitle>@{{roomService.roomInformation.name}}</mat-card-subtitle>
+    <mat-card-subtitle>@{{roomService.roomInformation.name}}&nbsp;created by&nbsp;<a style="text-decoration: none"
+                                                                                     routerLink="/profile">@{{roomService.roomInformation.creator}}</a>
+    </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <p>{{roomService.roomInformation.description}}</p>
-    <p>{{roomService.roomInformation.tags}}</p>
-    <small>Is in <b>{{locationService.locationInformation.address}} - {{locationService.locationInformation.city}} -
-      {{locationService.locationInformation.country}}</b> and
-      <b>{{roomService.roomInformation.members_online}}</b> users are live. Visited by
-      {{locationService.locationInformation.visitors_count}}
+    <p class="limitRows">{{roomService.roomInformation.description}}</p>
+    <small><b>Tags:&nbsp;</b>{{roomService.roomInformation.tags}}</small>
+    <br>
+    <small><b>Location:&nbsp;</b>{{locationService.locationInformation.address}} in
+      {{locationService.locationInformation.city}} -
+      {{locationService.locationInformation.country}}
     </small>
-    <p>Location tags: {{locationService.locationInformation.tags}}</p>
+    <br>
+    <small><b>People:&nbsp;</b>{{roomService.roomInformation.membersOnline}} members are live</small>
     <div style="padding-top: 16px">
       <app-avatars></app-avatars>
     </div>
   </mat-card-content>
   <mat-card-actions>
-    <app-button [link]="'/chat'" [text]="'Enter Room'" [showButtonIcon]="true"
+    <app-button [link]="'/chat'" [text]="'Join Room'" [showButtonIcon]="true"
                 [icon]="'lock_open'"></app-button>
   </mat-card-actions>
 </mat-card>

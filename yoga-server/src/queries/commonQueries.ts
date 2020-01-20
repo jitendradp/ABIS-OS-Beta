@@ -1,9 +1,9 @@
-import {prisma, Profile, Session, Account} from "../generated";
+import {prisma, Profile, Session, User} from "../generated";
 
 export class CommonQueries {
 
-    public static async findUserSessions(accountId: string) : Promise<Session[]> {
-        return await prisma.sessions({where:{account:{id:accountId}, validTo_gt: new Date(), timedOut:null, loggedOut:null}});
+    public static async findUserSessions(userId: string) : Promise<Session[]> {
+        return await prisma.sessions({where:{user:{id:userId}, validTo_gt: new Date(), timedOut:null, loggedOut:null}});
     }
 
     public static async findSession(csrfToken: string, authToken: string) : Promise<Session> {
@@ -22,17 +22,17 @@ export class CommonQueries {
         if (!session){
             return null;
         }
-        return prisma.session({id:session.id}).profile();
+        return prisma.session({id:session.id}).lastUsedProfile();
     }
 
-    public static async findAccountBySession(csrfToken: string, authToken: string) : Promise<{session:Session, account:Account}> {
+    public static async findUserBySession(csrfToken: string, authToken: string) : Promise<{session:Session, user:User}> {
         const session = await this.findSession(csrfToken, authToken);
         if (!session){
             return null;
         }
         const wrapper = {
             session: session,
-            account: await prisma.session({id:session.id}).account()
+            user: await prisma.session({id:session.id}).user()
         };
         return wrapper;
     }

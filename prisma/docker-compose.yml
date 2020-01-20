@@ -7,21 +7,19 @@ services:
       - "4466:4466"
     environment:
       PRISMA_CONFIG: |
-        managementApiSecret: managementApiSecret
         port: 4466
         databases:
           default:
             connector: postgres
             migrations: true
-            host: db
+            host: 192.168.99.100
             port: 5432
             user: postgres
             password: prisma
   db:
-    image: postgres:12
+    image: postgres:latest
     restart: always
     environment:
-      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: prisma
     volumes:
       - postgres_data:/var/lib/postgresql/data

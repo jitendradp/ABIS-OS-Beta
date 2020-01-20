@@ -14,19 +14,15 @@ export class CardMessageComponent {
   creationDate: string;
 
   @Input()
-  showStats: boolean;
-
-  @Input()
   title: string;
-
-  @Input()
-  subtitle: boolean;
 
   @Input()
   message: string;
 
   @Input()
-  picture: string;
+  pictureCreator: string;
 
+  @Input()
+  picturePost: string;
 
 }

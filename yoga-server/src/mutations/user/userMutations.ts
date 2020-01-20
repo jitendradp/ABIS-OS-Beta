@@ -38,7 +38,7 @@ export class UserMutations {
                     id: user.id
                 }
             },
-            profile: null
+            lastUsedProfile: null
         };
         await prisma.createSession(session);
 
@@ -237,7 +237,7 @@ export class UserMutations {
 
         await prisma.updateSession({
             data: {
-                profile: {
+                lastUsedProfile: {
                     connect: {id: profileId}
                 }
             },
@@ -245,8 +245,6 @@ export class UserMutations {
                 authToken: authToken
             }
         });
-
-        await prisma.updateUser({data: {lastUsedProfile: profileId}, where: {id: sessionAndUser.user.id}});
 
         return profileId;
     }

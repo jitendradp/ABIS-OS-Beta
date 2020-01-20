@@ -1,8 +1,8 @@
-<mat-card class="embeddableProfile">
+<mat-card *ngIf="onMenu" class="embeddableProfile">
   <app-content>
     <mat-card-header>
       <img mat-card-avatar class="profilePicture mat-elevation-z10"
-           src="{{profileService.profileInformation.picture}}"
+           src="{{profileService.profileInformation.pictureAvatar}}"
            [matMenuTriggerFor]="statusMenu">
       <mat-menu #statusMenu="matMenu">
         <button mat-menu-item>Set my self away</button>
@@ -34,20 +34,57 @@
     HI I AM CONTENT WHEN COLLAPSED -- A LIST OF THE USER PROFILES GOES HERE
   </mat-card-content>
 </mat-card>
-<!--
-<mat-divider></mat-divider>
-<mat-card class="embeddableDataspace">
-  <mat-card-header>
-    <mat-card-subtitle>
-      <b></b>
-    </mat-card-subtitle>
-    <mat-card-subtitle>
 
-    </mat-card-subtitle>
-    <span class="fill-remaining-space"></span>
-    <button mat-icon-button>
-      <mat-icon>keyboard_arrow_right</mat-icon>
-    </button>
-  </mat-card-header>
+<mat-card *ngIf="onPage"
+          class="profileCard"
+          fxLayout
+          fxLayout.xs="column"
+          fxLayoutAlign="left"
+          fxLayoutGap.xs="0">
+  <div fxFlex="75%">
+    <mat-card-header class="headerProfileStage">
+      <img mat-card-avatar class="profilePicture mat-elevation-z10"
+           src="{{profileService.profileInformation.pictureAvatar}}"
+           [matMenuTriggerFor]="contactMenu">
+      <mat-menu #contactMenu="matMenu">
+        <button mat-menu-item>add contact</button>
+        <button mat-menu-item>follow</button>
+        <button mat-menu-item>instant message</button>
+      </mat-menu>
+      <mat-card-title style="color: white">
+        {{userService.userInformation.firstName}}&nbsp;{{userService.userInformation.lastName}}
+      </mat-card-title>
+      <mat-card-subtitle style="color: white">
+        @{{profileService.profileInformation.name}}
+      </mat-card-subtitle>
+    </mat-card-header>
+  </div>
+  <!-- todo cleanup here make just material-->
+  <div fxFlex="auto">
+    <div class="headerProfileContent"
+         fxLayout
+         fxLayout.xs="row"
+         fxLayoutAlign="center"
+         fxLayoutGap.xs="0">
+      <div fxFlex="25">
+        <span>FOLLOWERS</span><br>
+        <span mat-card-title>687</span>
+      </div>
+      <div fxFlex="25">
+        <span>ROOMS</span><br>
+        <span mat-card-title>39</span>
+      </div>
+      <div fxFlex="25">
+        <span>POSTS</span><br>
+        <span mat-card-title>126</span>
+      </div>
+      <div fxFlex="25">
+        <span>CONTACTS</span><br>
+        <span mat-card-title>89</span>
+      </div>
+    </div>
+  </div>
 </mat-card>
--->
+
+
+
