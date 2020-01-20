@@ -92,6 +92,7 @@ import {ChartMapComponent} from "./components/charts/chart-map/chart-map.compone
 import {ChartSankeyComponent} from "./components/charts/chart-sankey/chart-sankey.component";
 import {ChartTableComponent} from "./components/charts/chart-table/chart-table.component";
 import {SettingsComponent} from "./pages/settings/settings.component";
+import {MaterialElevationDirective} from "./directives/material-elevation.directive";
 
 const defaultActions: IAction[] =
   [
@@ -339,6 +340,7 @@ const appRoutes: Routes = [
     ChartSankeyComponent,
     ChartTableComponent,
     SettingsComponent,
+    MaterialElevationDirective
   ],
   imports: [
     RouterModule.forRoot(
