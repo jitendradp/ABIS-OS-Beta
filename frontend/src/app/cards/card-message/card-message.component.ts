@@ -20,6 +20,9 @@ export class CardMessageComponent {
   message: string;
 
   @Input()
-  picture: string;
+  pictureCreator: string;
+
+  @Input()
+  picturePost: string;
 
 }

@@ -35,8 +35,8 @@
 
 .headerProfileContent {
   height: 100%;
-  min-width: 360px;
-  background-color: #bbbcbd;
+  color: white;
+  min-width: 380px;
   padding-left: 16px;
   padding-top: 16px;
 }
