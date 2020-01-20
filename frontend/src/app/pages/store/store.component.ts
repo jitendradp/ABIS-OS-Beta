@@ -22,7 +22,7 @@ export class StoreComponent {
 
   //todo implement the following array to the store-item.service.ts
 
-  items: storeItem[] = [
+  items: storeItem [] = [
     {
       name: 'Smart Pharmacy App',
       shortDescription: 'Market data for german pharmacies',

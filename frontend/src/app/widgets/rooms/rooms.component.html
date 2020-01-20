@@ -1,0 +1,23 @@
+<div fxLayout="row wrap"
+     fxLayout.lt-sm="column"
+     fxLayoutGap="0px"
+     fxLayoutAlign="left">
+  <div fxFlex="25"
+       fxFlex.lt-md="50"
+       fxFlex.lt-sm="100" *ngFor="let room of rooms">
+    <app-content>
+      <app-card-room
+        [title]="room.title"
+        [name]="room.name"
+        [creator]="room.creator"
+        [pictureLogo]="room.pictureLogo"
+        [tags]="room.tags"
+        [location]="room.location"
+        [membersTotal]="room.membersTotal"
+        [membersLive]="room.membersLive"
+        [description]="room.description"
+        [buttonLink]="room.buttonLink"
+      ></app-card-room>
+    </app-content>
+  </div>
+</div>

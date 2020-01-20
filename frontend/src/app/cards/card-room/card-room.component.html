@@ -1,28 +1,29 @@
-<mat-card style="border-radius: 0">
+<!-- todo shorten title on specific screen view -->
+<mat-card style="border-radius: 0" appMaterialElevation>
   <mat-card-header>
     <img mat-card-avatar style="border-radius: 0"
-         src="{{roomService.roomInformation.pictureLogo}}">
-    <mat-card-title>{{roomService.roomInformation.title}}</mat-card-title>
-    <mat-card-subtitle>@{{roomService.roomInformation.name}}&nbsp;created by&nbsp;<a style="text-decoration: none"
-                                                                                     routerLink="/profile">@{{roomService.roomInformation.creator}}</a>
+         src="{{pictureLogo}}">
+    <mat-card-title>{{title}}</mat-card-title>
+    <mat-card-subtitle>@{{name}}&nbsp;created by&nbsp;<a style="text-decoration: none"
+                                                         routerLink="/profile">@{{creator}}</a>
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <p class="limitRows">{{roomService.roomInformation.description}}</p>
-    <small><b>Tags:&nbsp;</b>{{roomService.roomInformation.tags}}</small>
+    <div style="height: 70px">
+      <p class="limitRows">{{description}}</p>
+    </div>
+    <small><b>Tags:&nbsp;</b>{{tags}}</small>
     <br>
-    <small><b>Location:&nbsp;</b>{{locationService.locationInformation.address}} in
-      {{locationService.locationInformation.city}} -
-      {{locationService.locationInformation.country}}
+    <small><b>Location:&nbsp;</b>{{location}}
     </small>
     <br>
-    <small><b>People:&nbsp;</b>{{roomService.roomInformation.membersOnline}} members are live</small>
+    <small><b>People:&nbsp;</b>{{membersLive}} of {{membersTotal}} members are live</small>
     <div style="padding-top: 16px">
       <app-avatars></app-avatars>
     </div>
   </mat-card-content>
   <mat-card-actions>
-    <app-button [link]="'/chat'" [text]="'Join Room'" [showButtonIcon]="true"
+    <app-button [link]=buttonLink [text]="'Join Room'" [showButtonIcon]="true"
                 [icon]="'lock_open'"></app-button>
   </mat-card-actions>
 </mat-card>

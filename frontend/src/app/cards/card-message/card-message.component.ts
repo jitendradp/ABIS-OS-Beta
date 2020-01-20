@@ -11,7 +11,7 @@ export class CardMessageComponent {
   creator: string;
 
   @Input()
-  creationDate: string;
+  createdAt: string;
 
   @Input()
   title: string;

@@ -30,7 +30,8 @@ import {
   MatStepperModule,
   MatTableModule,
   MatTabsModule,
-  MatToolbarModule, MatTooltipModule,
+  MatToolbarModule,
+  MatTooltipModule,
   MatTreeModule
 } from "@angular/material";
 import {AccessComponent} from './pages/system/access/access.component';
@@ -56,23 +57,23 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HeaderComponent} from './components/header/header.component';
 import {InputComponent} from './components/input/input.component';
 import {WhitespaceComponent} from './components/whitespace/whitespace.component';
-import {ChatComponent} from './chat/chat.component';
+import {ChatComponent} from './widgets/chat/chat.component';
 import {EditorChannelComponent} from './editors/editor-channel/editor-channel.component';
 import {GraphQLModule} from './graphql.module';
 import {HttpClientModule} from '@angular/common/http';
 import {CardIntroComponent} from "./cards/card-intro/card-intro.component";
-import {NavigationComponent} from "./navigation/navigation.component";
+import {NavigationComponent} from "./widgets/navigation/navigation.component";
 import {SwitchProfileComponent} from './pages/system/switch-profile/switch-profile.component';
 import {LogoutComponent} from './pages/system/logout/logout.component';
 import {IAction} from "./actions/IAction";
-import {RoomsComponent} from "./pages/rooms/rooms.component";
+import {RoomsComponent} from "./widgets/rooms/rooms.component";
 import {EditorRoomComponent} from "./editors/editor-room/editor-room.component";
 import {AvatarsComponent} from "./components/avatars/avatars.component";
 import {CardMessageComponent} from "./cards/card-message/card-message.component";
 import {CardRoomComponent} from "./cards/card-room/card-room.component";
 import {CardFormComponent} from "./cards/card-form/card-form.component";
 import {CardStoreComponent} from "./cards/card-store/card-store.component";
-import {SearchComponent} from "./search/search.component";
+import {SearchComponent} from "./widgets/search/search.component";
 import {NgxMapboxGLModule} from "ngx-mapbox-gl";
 import {CardComponent} from "./cards/card/card.component";
 import {EditorCommandComponent} from "./editors/editor-command/editor-command.component";
@@ -84,8 +85,8 @@ import {EditorPortfolioComponent} from "./editors/editor-portfolio/editor-portfo
 import {SmartCryptoAppComponent} from "./smartapps/smart-crypto-app/smart-crypto-app.component";
 import {CardPortfolioComponent} from "./cards/card-portfolio/card-portfolio.component";
 import {CardProfileComponent} from "./cards/card-profile/card-profile.component";
-import {FeedComponent} from "./pages/feed/feed.component";
-import {ContactsComponent} from "./pages/contacts/contacts.component";
+import {FeedComponent} from "./widgets/feed/feed.component";
+import {ContactsComponent} from "./widgets/contacts/contacts.component";
 import {ChartGraphForceComponent} from "./components/charts/chart-graph-force/chart-graph-force.component";
 import {ChartLineComponent} from "./components/charts/chart-line/chart-line.component";
 import {ChartMapComponent} from "./components/charts/chart-map/chart-map.component";
@@ -240,12 +241,6 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'chat-rooms', component: RoomsComponent, data: {
-      "title": "Rooms",
-      "actions": pageActions
-    }
-  },
-  {
     path: 'editor-team', component: EditorRoomComponent, data: {
       "title": "Create new team",
       "actions": defaultActions
@@ -264,26 +259,14 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'chat', component: ChatComponent, data: {
-      "title": "Chat",
+    path: 'settings', component: SettingsComponent, data: {
+      "title": "Settings",
       "actions": defaultActions
     }
   },
   {
     path: 'feed', component: FeedComponent, data: {
-      "title": "Newsfeed",
-      "actions": defaultActions
-    }
-  },
-  {
-    path: 'contacts', component: ContactsComponent, data: {
-      "title": "Contacts",
-      "actions": defaultActions
-    }
-  },
-  {
-    path: 'settings', component: SettingsComponent, data: {
-      "title": "Settings",
+      "title": "Feed",
       "actions": defaultActions
     }
   },

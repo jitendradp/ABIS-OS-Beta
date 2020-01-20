@@ -12,8 +12,8 @@ import {ActionDispatcherService} from "../../services/action-dispatcher.service"
 export class CardProfileComponent {
 
   constructor(
-    protected userService: UserService,
-    protected profileService: ProfileService,
+    private userService: UserService,
+    private profileService: ProfileService,
     private actionDispatcher: ActionDispatcherService,) {
   }
 

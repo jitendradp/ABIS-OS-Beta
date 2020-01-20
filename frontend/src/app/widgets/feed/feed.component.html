@@ -1,0 +1,18 @@
+<div fxLayout="row wrap"
+     fxLayout.lt-sm="column"
+     fxLayoutGap="0px"
+     fxLayoutAlign="left">
+  <div fxFlex="25"
+       fxFlex.lt-md="50"
+       fxFlex.lt-sm="100" *ngFor="let message of messages">
+    <app-content>
+      <app-card-message
+        [message]="message.message"
+        [creator]="message.creator"
+        [createdAt]="message.createdAt"
+        [pictureCreator]="message.pictureCreator"
+        [picturePost]="message.picturePost">
+      </app-card-message>
+    </app-content>
+  </div>
+</div>

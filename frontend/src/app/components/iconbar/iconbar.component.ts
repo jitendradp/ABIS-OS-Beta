@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {MatBottomSheet} from "@angular/material";
-import {SearchComponent} from "../../search/search.component";
+import {SearchComponent} from "../../widgets/search/search.component";
 import {SetVisibility} from "../../actions/ui/sidebar/SetVisibility";
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
 import {ChannelService} from "../../services/channel.service";
@@ -59,7 +59,7 @@ export class IconbarComponent {
   constructor(
     private bottomSheet: MatBottomSheet,
     private actionDispatcher: ActionDispatcherService,
-    protected channelService: ChannelService) {
+    public channelService: ChannelService) {
   }
 
   openBottomSheet() {

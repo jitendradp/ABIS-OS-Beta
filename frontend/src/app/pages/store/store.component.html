@@ -1,12 +1,13 @@
 <!-- todo hard coded first send from api later -->
 <!-- todo move card to label if installed. How can this be done? -->
-<!-- todo map for pharmacy smart app should be filtered on right data -->
-<div fxLayout
-     fxLayout.xs="column"
-     fxLayoutAlign="left"
-     fxLayoutGap="10px"
-     fxLayoutGap.xs="0">
-  <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" *ngFor="let item of items">
+<!-- todo map data for pharmacy smart app should be filtered on right data -->
+<div fxLayout="row wrap"
+     fxLayout.lt-sm="column"
+     fxLayoutGap="0px"
+     fxLayoutAlign="space-around center">
+  <div fxFlex="25"
+       fxFlex.lt-md="50"
+       fxFlex.lt-sm="100" *ngFor="let item of items">
     <app-content>
       <app-card-store
         [logo]="item.logo"

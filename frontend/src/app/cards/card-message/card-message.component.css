@@ -1,8 +1,9 @@
 .embeddableMessage {
   border-radius: 0;
+  margin: auto;
 }
 
-.postPicture{
+.postPicture {
   object-fit: cover;
   height: 300px;
 }
