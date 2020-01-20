@@ -1,6 +1,4 @@
-import {Component} from '@angular/core';
-import {RoomService} from "../../services/room.service";
-import {LocationService} from "../../services/location.service";
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-card-room',
@@ -9,10 +7,35 @@ import {LocationService} from "../../services/location.service";
 })
 export class CardRoomComponent {
 
-  constructor(
-    protected roomService: RoomService,
-    protected locationService: LocationService,
-  ) {
-  }
+
+  @Input()
+  name: string;
+
+  @Input()
+  pictureLogo: string;
+
+  @Input()
+  title: string;
+
+  @Input()
+  creator: string;
+
+  @Input()
+  tags: string;
+
+  @Input()
+  description: string;
+
+  @Input()
+  location: string;
+
+  @Input()
+  membersTotal: number;
+
+  @Input()
+  membersLive: number;
+
+  @Input()
+  buttonLink: string;
 
 }

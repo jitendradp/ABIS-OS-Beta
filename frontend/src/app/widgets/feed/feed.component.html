@@ -1,17 +1,17 @@
 <div fxLayout="row wrap"
      fxLayout.lt-sm="column"
      fxLayoutGap="0px"
-     fxLayoutAlign="space-around center">
+     fxLayoutAlign="left">
   <div fxFlex="25"
-       fxFlex.md="50"
-       fxFlex.sm="100" *ngFor="let item of items">
+       fxFlex.lt-md="50"
+       fxFlex.lt-sm="100" *ngFor="let message of messages">
     <app-content>
       <app-card-message
-        [message]="item.message"
-        [creator]="item.creator"
-        [creationDate]="item.creationDate"
-        [pictureCreator]="item.pictureCreator"
-        [picturePost]="item.picturePost">
+        [message]="message.message"
+        [creator]="message.creator"
+        [createdAt]="message.createdAt"
+        [pictureCreator]="message.pictureCreator"
+        [picturePost]="message.picturePost">
       </app-card-message>
     </app-content>
   </div>

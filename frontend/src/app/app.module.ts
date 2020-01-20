@@ -30,7 +30,8 @@ import {
   MatStepperModule,
   MatTableModule,
   MatTabsModule,
-  MatToolbarModule, MatTooltipModule,
+  MatToolbarModule,
+  MatTooltipModule,
   MatTreeModule
 } from "@angular/material";
 import {AccessComponent} from './pages/system/access/access.component';
