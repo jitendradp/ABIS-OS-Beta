@@ -59,7 +59,7 @@ export class IconbarComponent {
   constructor(
     private bottomSheet: MatBottomSheet,
     private actionDispatcher: ActionDispatcherService,
-    protected channelService: ChannelService) {
+    public channelService: ChannelService) {
   }
 
   openBottomSheet() {
