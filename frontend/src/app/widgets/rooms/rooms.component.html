@@ -1,15 +1,13 @@
 <!-- Explore different public teams, search for a specific team or create your own. -->
-<div fxLayout
-     fxLayout.xs="column"
-     fxLayoutAlign="left"
-     fxLayoutGap="10px"
-     fxLayoutGap.xs="0">
-  <div fxFlex='auto' fxFlex.gt-md='25' fxFlex.gt-sm='50'>
+<div fxLayout="row wrap"
+     fxLayout.lt-sm="column"
+     fxLayoutGap="0px"
+     fxLayoutAlign="space-around center">
+  <div fxFlex="25"
+       fxFlex.lt-md="50"
+       fxFlex.lt-sm="100" *ngFor="let item of items">
     <app-content>
       <app-card-room></app-card-room>
     </app-content>
   </div>
 </div>
-
-
-

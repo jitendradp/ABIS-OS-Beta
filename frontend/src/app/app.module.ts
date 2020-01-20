@@ -85,7 +85,7 @@ import {SmartCryptoAppComponent} from "./smartapps/smart-crypto-app/smart-crypto
 import {CardPortfolioComponent} from "./cards/card-portfolio/card-portfolio.component";
 import {CardProfileComponent} from "./cards/card-profile/card-profile.component";
 import {FeedComponent} from "./widgets/feed/feed.component";
-import {ContactsComponent} from "./pages/contacts/contacts.component";
+import {ContactsComponent} from "./widgets/contacts/contacts.component";
 import {ChartGraphForceComponent} from "./components/charts/chart-graph-force/chart-graph-force.component";
 import {ChartLineComponent} from "./components/charts/chart-line/chart-line.component";
 import {ChartMapComponent} from "./components/charts/chart-map/chart-map.component";
@@ -260,6 +260,12 @@ const appRoutes: Routes = [
   {
     path: 'settings', component: SettingsComponent, data: {
       "title": "Settings",
+      "actions": defaultActions
+    }
+  },
+  {
+    path: 'feed', component: FeedComponent, data: {
+      "title": "Feed",
       "actions": defaultActions
     }
   },
