@@ -1,4 +1,4 @@
-endpoint: http://localhost:4466/AbisStarterkit/dev
+endpoint: http://192.168.99.100:4466/AbisStarterkit/dev
 datamodel: datamodel.prisma
 
 generate:

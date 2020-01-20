@@ -7,7 +7,7 @@ import {ContextParameters} from "graphql-yoga/dist/types";
 import {GroupQueries} from "./queries/groups/groupQueries";
 import {ProfileQueries} from "./queries/profiles/profileQueries";
 import {config} from "./config";
-import {AccountQueries} from "./queries/user/userQueries";
+import {UserQueries} from "./queries/user/userQueries";
 var cookie = require('cookie');
 
 const resolvers = {

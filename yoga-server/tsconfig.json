@@ -8,7 +8,7 @@
     "outDir": "dist",
     "skipLibCheck": true,
     "lib": [
-      "esnext", "dom"
+      "esnext", "esnext.asynciterable", "dom"
     ]
   }
 }
