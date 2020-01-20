@@ -8,7 +8,7 @@ The repository is divided in three folders:
 * /frontend
 
 ## prisma
-Prisma is used as the data layer of the application. It consists of a server and a command line utility. The cmd utility can be used to generate a databese and access-code from a graphql-like schema definition. The backend database can either be postgresql, mysql or mongodb. Our docker-compose file uses postgresql.
+Prisma is used as the data layer of the application. It consists of a server and a command line utility. The cmd utility can be used to generate a database and access-code from a graphql-like schema definition. The backend database can either be postgresql, mysql or mongodb. Our docker-compose file uses postgresql.
 
 You can run a local prisma server by using ```docker-compose up``` with the "/prisma/docker-compose.yml" file.
 Changes to the schema (/prisma/datamodel.prisma) can be deployed to the running instance by using ```prisma deploy```.
@@ -81,6 +81,8 @@ _cd to "/frontend" then run "npm run generate"_
 _run "ng serve --host local.abis-cloud.com" (be sure to include this hostname in your "/etc/hosts")_
 
 If you're on Windows, all the steps above should apply except that you cannot execute the *.sh script to generate and move the prisma client code to the yoga server. In this case you have to perform the windows equivalents of the commands in that shell script manually or write a *.bat file.
+
+Docker for windows: https://docs.docker.com/toolbox/toolbox_install_windows/
 
 Untested for now. Good luck!
 
