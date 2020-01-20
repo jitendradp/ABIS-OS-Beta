@@ -1,4 +1,5 @@
 <app-content *ngIf="isProfile">
+  <app-whitespace></app-whitespace>
   <app-card-form [title]="'Reset password'" [buttonText]="'Submit'">
     <mat-form-field class="full-width">
       <input matInput type="password" placeholder="Current password">
@@ -12,6 +13,7 @@
   </app-card-form>
 </app-content>
 <app-content *ngIf="!isProfile">
+  <app-whitespace></app-whitespace>
   <app-card-form [title]="'Reset password'" [buttonText]="'Submit'">
     <mat-form-field class="full-width">
       <input matInput type="password" placeholder="New password">
