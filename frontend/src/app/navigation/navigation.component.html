@@ -1,38 +1,35 @@
 <app-card-profile [onMenu]="true">
-  <!--<mat-divider></mat-divider>
-<mat-nav-list>
-  <a mat-list-item routerLink="cockpit" (click)="close()">
-    <button mat-icon-button>
-      <mat-icon>bar_chart</mat-icon>
-    </button>
-    <span>Cockpit</span>
-  </a>
-  <a mat-list-item routerLink="store" (click)="close()">
-    <button mat-icon-button>
-      <mat-icon>apps</mat-icon>
-    </button>
-    <span>Apps</span>
-  </a>
-  <a mat-list-item routerLink="map" (click)="close()">
-    <button mat-icon-button>
-      <mat-icon>map</mat-icon>
-    </button>
-    <span>Map</span>
-  </a>
-  <a mat-list-item routerLink="studio" (click)="close()">
-    <button mat-icon-button>
-      <mat-icon>donut_small</mat-icon>
-    </button>
-    <span>Studio</span>
-  </a>
-</mat-nav-list>-->
   <mat-divider></mat-divider>
   <mat-nav-list>
+    <a mat-list-item routerLink="cockpit" (click)="close()">
+      <button mat-icon-button>
+        <mat-icon>bar_chart</mat-icon>
+      </button>
+      <span>Cockpit</span>
+    </a>
+    <a mat-list-item routerLink="store" (click)="close()">
+      <button mat-icon-button>
+        <mat-icon>apps</mat-icon>
+      </button>
+      <span>Smart Apps</span>
+    </a>
+    <a mat-list-item routerLink="studio" (click)="close()">
+      <button mat-icon-button>
+        <mat-icon>donut_small</mat-icon>
+      </button>
+      <span>Datastudio</span>
+    </a>
+    <a mat-list-item routerLink="map" (click)="close()">
+      <button mat-icon-button>
+        <mat-icon>map</mat-icon>
+      </button>
+      <span>Map</span>
+    </a>
     <a mat-list-item class="listItem" routerLink="chat-rooms" (click)="close()">
       <button mat-icon-button>
         <mat-icon>bubble_chart</mat-icon>
       </button>
-      <span>Rooms</span>
+      <span>Public Rooms</span>
     </a>
     <a mat-list-item class="listItem" routerLink="chat" (click)="close()">
       <button mat-icon-button>
@@ -40,17 +37,11 @@
       </button>
       <span>Chat</span>
     </a>
-    <a mat-list-item class="listItem" routerLink="feed" (click)="close()">
-      <button mat-icon-button>
-        <mat-icon>rss_feed</mat-icon>
-      </button>
-      <span>Newsfeed</span>
-    </a>
-    <a mat-list-item class="listItem" routerLink="contacts" (click)="close()">
+    <a mat-list-item class="listItem" routerLink="profile" (click)="close()">
       <button mat-icon-button>
         <mat-icon>people</mat-icon>
       </button>
-      <span>Contacts</span>
+      <span>Social Streams</span>
     </a>
   </mat-nav-list>
 </app-card-profile>

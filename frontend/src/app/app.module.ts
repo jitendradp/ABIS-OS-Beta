@@ -84,7 +84,7 @@ import {EditorPortfolioComponent} from "./editors/editor-portfolio/editor-portfo
 import {SmartCryptoAppComponent} from "./smartapps/smart-crypto-app/smart-crypto-app.component";
 import {CardPortfolioComponent} from "./cards/card-portfolio/card-portfolio.component";
 import {CardProfileComponent} from "./cards/card-profile/card-profile.component";
-import {FeedComponent} from "./pages/feed/feed.component";
+import {FeedComponent} from "./widgets/feed/feed.component";
 import {ContactsComponent} from "./pages/contacts/contacts.component";
 import {ChartGraphForceComponent} from "./components/charts/chart-graph-force/chart-graph-force.component";
 import {ChartLineComponent} from "./components/charts/chart-line/chart-line.component";
