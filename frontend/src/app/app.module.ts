@@ -56,23 +56,23 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HeaderComponent} from './components/header/header.component';
 import {InputComponent} from './components/input/input.component';
 import {WhitespaceComponent} from './components/whitespace/whitespace.component';
-import {ChatComponent} from './chat/chat.component';
+import {ChatComponent} from './widgets/chat/chat.component';
 import {EditorChannelComponent} from './editors/editor-channel/editor-channel.component';
 import {GraphQLModule} from './graphql.module';
 import {HttpClientModule} from '@angular/common/http';
 import {CardIntroComponent} from "./cards/card-intro/card-intro.component";
-import {NavigationComponent} from "./navigation/navigation.component";
+import {NavigationComponent} from "./widgets/navigation/navigation.component";
 import {SwitchProfileComponent} from './pages/system/switch-profile/switch-profile.component';
 import {LogoutComponent} from './pages/system/logout/logout.component';
 import {IAction} from "./actions/IAction";
-import {RoomsComponent} from "./pages/rooms/rooms.component";
+import {RoomsComponent} from "./widgets/rooms/rooms.component";
 import {EditorRoomComponent} from "./editors/editor-room/editor-room.component";
 import {AvatarsComponent} from "./components/avatars/avatars.component";
 import {CardMessageComponent} from "./cards/card-message/card-message.component";
 import {CardRoomComponent} from "./cards/card-room/card-room.component";
 import {CardFormComponent} from "./cards/card-form/card-form.component";
 import {CardStoreComponent} from "./cards/card-store/card-store.component";
-import {SearchComponent} from "./search/search.component";
+import {SearchComponent} from "./widgets/search/search.component";
 import {NgxMapboxGLModule} from "ngx-mapbox-gl";
 import {CardComponent} from "./cards/card/card.component";
 import {EditorCommandComponent} from "./editors/editor-command/editor-command.component";
@@ -240,12 +240,6 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'chat-rooms', component: RoomsComponent, data: {
-      "title": "Rooms",
-      "actions": pageActions
-    }
-  },
-  {
     path: 'editor-team', component: EditorRoomComponent, data: {
       "title": "Create new team",
       "actions": defaultActions
@@ -260,24 +254,6 @@ const appRoutes: Routes = [
   {
     path: 'smart-crypto-app', component: SmartCryptoAppComponent, data: {
       "title": "Smart Crypto App",
-      "actions": defaultActions
-    }
-  },
-  {
-    path: 'chat', component: ChatComponent, data: {
-      "title": "Chat",
-      "actions": defaultActions
-    }
-  },
-  {
-    path: 'feed', component: FeedComponent, data: {
-      "title": "Newsfeed",
-      "actions": defaultActions
-    }
-  },
-  {
-    path: 'contacts', component: ContactsComponent, data: {
-      "title": "Contacts",
       "actions": defaultActions
     }
   },

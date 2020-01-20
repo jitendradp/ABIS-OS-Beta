@@ -4,7 +4,8 @@
 }
 
 .sidebarRight {
-  width: 300px;
+  width: 30%;
+  min-width: 380px;
   padding-top: 56px;
   background-color: #fff;
 }
