@@ -19,12 +19,18 @@ const TREE_DATA: DataspaceNode[] = [
       {name: 'Chaos', icon: 'bubble_chart'},
       {name: 'General', icon: 'bubble_chart'},
       {name: 'Customer Support', icon: 'bubble_chart'},
+      {name: 'Chaos', icon: 'bubble_chart'},
+      {name: 'General', icon: 'bubble_chart'},
+      {name: 'Customer Support', icon: 'bubble_chart'},
     ]
   },
   {
     name: 'Favorite pizza place',
     logo: 'https://images-platform.99static.com/Ng85_ZR79gbqye5j9TVlBB4uoqU=/500x500/top/smart/99designs-contests-attachments/38/38987/attachment_38987002',
     channels: [
+      {name: 'Chaos', icon: 'bubble_chart'},
+      {name: 'General', icon: 'bubble_chart'},
+      {name: 'Customer Support', icon: 'bubble_chart'},
       {name: 'Chaos', icon: 'bubble_chart'},
       {name: 'General', icon: 'bubble_chart'},
       {name: 'Customer Support', icon: 'bubble_chart'},
@@ -36,11 +42,17 @@ const TREE_DATA: DataspaceNode[] = [
       {name: 'Chaos', icon: 'bubble_chart'},
       {name: 'General', icon: 'bubble_chart'},
       {name: 'Customer Support', icon: 'bubble_chart'},
+      {name: 'Chaos', icon: 'bubble_chart'},
+      {name: 'General', icon: 'bubble_chart'},
+      {name: 'Customer Support', icon: 'bubble_chart'},
     ]
   },
   {
     name: 'Dahoam is dahoam', logo: 'https://www.freelogodesign.org/Content/img/logo-samples/flooop.png',
     channels: [
+      {name: 'Chaos', icon: 'bubble_chart'},
+      {name: 'General', icon: 'bubble_chart'},
+      {name: 'Customer Support', icon: 'bubble_chart'},
       {name: 'Chaos', icon: 'bubble_chart'},
       {name: 'General', icon: 'bubble_chart'},
       {name: 'Customer Support', icon: 'bubble_chart'},

@@ -1,8 +1,20 @@
 <!--  <button (click)="actionDispatcher.dispatch({name:'Abis.Chat.Room.Create'})" mat-icon-button>
         <mat-icon>add_circle_outline</mat-icon>
       </button>-->
-<mat-tab-group>
+
+<mat-tab-group class="chatNavWrapper">
   <mat-tab label="GROUPS">
+    <mat-toolbar class="chatNavToolbar">
+      <button mat-button>
+        <mat-icon>explore</mat-icon>
+        Explore
+      </button>
+      <button mat-button>
+        <mat-icon>group_add</mat-icon>
+        Add group
+      </button>
+    </mat-toolbar>
+    <mat-divider></mat-divider>
     <mat-nav-list>
       <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
         <mat-tree-node *matTreeNodeDef="let node;">
