@@ -94,7 +94,8 @@ import {ChartSankeyComponent} from "./components/charts/chart-sankey/chart-sanke
 import {ChartTableComponent} from "./components/charts/chart-table/chart-table.component";
 import {SettingsComponent} from "./pages/settings/settings.component";
 import {MaterialElevationDirective} from "./directives/material-elevation.directive";
-import {ChatNavigationComponent} from "./pages/chat/chat-navigation/chat-navigation.component";
+import {ChatNavigationComponent} from "./pages/chat-refactor/chat-navigation/chat-navigation.component";
+import {ChatRefactorComponent} from "./pages/chat-refactor/chat-refactor.component";
 
 const defaultActions: IAction[] =
   [
@@ -325,7 +326,8 @@ const appRoutes: Routes = [
     ChartTableComponent,
     SettingsComponent,
     MaterialElevationDirective,
-    ChatNavigationComponent
+    ChatNavigationComponent,
+    ChatRefactorComponent
   ],
   imports: [
     RouterModule.forRoot(
