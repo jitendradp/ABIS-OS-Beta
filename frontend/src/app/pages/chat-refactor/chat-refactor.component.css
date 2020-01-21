@@ -2,6 +2,7 @@
   border-radius: 0;
   height: calc(100vh - 56px);
   padding: unset;
+  box-shadow: none;
 }
 
 .chatContent {
@@ -12,6 +13,7 @@
   height: calc(100% - 56px);
   background-color: #eee;
   padding: unset;
+  box-shadow: none;
 }
 
 .chatInput {
@@ -21,6 +23,7 @@
   height: 56px;
   width: 100%;
   padding: unset;
+  box-shadow: none;
 }
 
 .chatContent::-webkit-scrollbar-thumb {

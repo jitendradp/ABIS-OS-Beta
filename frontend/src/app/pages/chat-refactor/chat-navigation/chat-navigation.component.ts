@@ -39,7 +39,7 @@ const TREE_DATA: DataspaceNode[] = [
     ]
   },
   {
-    name: 'Dahoam is dahoam', logo: 'https://live.staticflickr.com/8151/7413013712_e55a4f3146_b.jpg',
+    name: 'Dahoam is dahoam', logo: 'https://www.freelogodesign.org/Content/img/logo-samples/flooop.png',
     channels: [
       {name: 'Chaos', icon: 'bubble_chart'},
       {name: 'General', icon: 'bubble_chart'},
