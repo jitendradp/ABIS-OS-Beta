@@ -57,8 +57,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HeaderComponent} from './components/header/header.component';
 import {InputComponent} from './components/input/input.component';
 import {WhitespaceComponent} from './components/whitespace/whitespace.component';
-import {ChatComponent} from './widgets/chat/chat.component';
-import {EditorChannelComponent} from './editors/editor-channel/editor-channel.component';
+import {ChatComponent} from './pages/chat/chat.component';
+import {EditorChannelComponent} from './dialogs/editor-channel/editor-channel.component';
 import {GraphQLModule} from './graphql.module';
 import {HttpClientModule} from '@angular/common/http';
 import {CardIntroComponent} from "./cards/card-intro/card-intro.component";
@@ -67,7 +67,7 @@ import {SwitchProfileComponent} from './pages/system/switch-profile/switch-profi
 import {LogoutComponent} from './pages/system/logout/logout.component';
 import {IAction} from "./actions/IAction";
 import {RoomsComponent} from "./widgets/rooms/rooms.component";
-import {EditorRoomComponent} from "./editors/editor-room/editor-room.component";
+import {EditorRoomComponent} from "./dialogs/editor-room/editor-room.component";
 import {AvatarsComponent} from "./components/avatars/avatars.component";
 import {CardMessageComponent} from "./cards/card-message/card-message.component";
 import {CardRoomComponent} from "./cards/card-room/card-room.component";
@@ -76,12 +76,12 @@ import {CardStoreComponent} from "./cards/card-store/card-store.component";
 import {SearchComponent} from "./widgets/search/search.component";
 import {NgxMapboxGLModule} from "ngx-mapbox-gl";
 import {CardComponent} from "./cards/card/card.component";
-import {EditorCommandComponent} from "./editors/editor-command/editor-command.component";
+import {EditorCommandComponent} from "./dialogs/editor-command/editor-command.component";
 import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
 import {DeviceDetectorModule} from "ngx-device-detector";
 import {ClusterPopupComponent} from "./pages/map/cluster-popup/cluster-popup.component";
 import {AgGridModule} from "ag-grid-angular";
-import {EditorPortfolioComponent} from "./editors/editor-portfolio/editor-portfolio.component";
+import {EditorPortfolioComponent} from "./dialogs/editor-portfolio/editor-portfolio.component";
 import {SmartCryptoAppComponent} from "./smartapps/smart-crypto-app/smart-crypto-app.component";
 import {CardPortfolioComponent} from "./cards/card-portfolio/card-portfolio.component";
 import {CardProfileComponent} from "./cards/card-profile/card-profile.component";
@@ -94,6 +94,7 @@ import {ChartSankeyComponent} from "./components/charts/chart-sankey/chart-sanke
 import {ChartTableComponent} from "./components/charts/chart-table/chart-table.component";
 import {SettingsComponent} from "./pages/settings/settings.component";
 import {MaterialElevationDirective} from "./directives/material-elevation.directive";
+import {ChatNavigationComponent} from "./pages/chat/chat-navigation/chat-navigation.component";
 
 const defaultActions: IAction[] =
   [
@@ -323,7 +324,8 @@ const appRoutes: Routes = [
     ChartSankeyComponent,
     ChartTableComponent,
     SettingsComponent,
-    MaterialElevationDirective
+    MaterialElevationDirective,
+    ChatNavigationComponent
   ],
   imports: [
     RouterModule.forRoot(

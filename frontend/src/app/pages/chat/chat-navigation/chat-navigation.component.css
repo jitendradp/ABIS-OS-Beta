@@ -1,0 +1,33 @@
+.chatColumn {
+  border-radius: 0;
+  height: calc(100vh - 56px);
+  padding: unset;
+}
+
+.chatContent {
+  overflow: hidden;
+  border-radius: 0;
+  overflow-y: scroll;
+  position: relative;
+  height: calc(100% - 56px);
+  background-color: #eee;
+  padding: unset;
+}
+
+.chatInput {
+  position: absolute;
+  bottom: 0;
+  border-radius: 0;
+  height: 56px;
+  width: 100%;
+  padding: unset;
+}
+
+.chatContent::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.chatContent::-webkit-scrollbar {
+  width: 8px;
+  background: #c2c2c2;
+}
