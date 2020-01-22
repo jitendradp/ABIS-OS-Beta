@@ -62,7 +62,7 @@ import {EditorChannelComponent} from './dialogs/editor-channel/editor-channel.co
 import {GraphQLModule} from './graphql.module';
 import {HttpClientModule} from '@angular/common/http';
 import {CardIntroComponent} from "./cards/card-intro/card-intro.component";
-import {NavigationComponent} from "./widgets/navigation/navigation.component";
+import {NavigationComponent} from "./navigation/navigation.component";
 import {SwitchProfileComponent} from './pages/system/switch-profile/switch-profile.component';
 import {LogoutComponent} from './pages/system/logout/logout.component';
 import {IAction} from "./actions/IAction";
@@ -86,7 +86,6 @@ import {SmartCryptoAppComponent} from "./smartapps/smart-crypto-app/smart-crypto
 import {CardPortfolioComponent} from "./cards/card-portfolio/card-portfolio.component";
 import {CardProfileComponent} from "./cards/card-profile/card-profile.component";
 import {FeedComponent} from "./widgets/feed/feed.component";
-import {ContactsComponent} from "./widgets/contacts/contacts.component";
 import {ChartGraphForceComponent} from "./components/charts/chart-graph-force/chart-graph-force.component";
 import {ChartLineComponent} from "./components/charts/chart-line/chart-line.component";
 import {ChartMapComponent} from "./components/charts/chart-map/chart-map.component";
@@ -96,6 +95,10 @@ import {SettingsComponent} from "./pages/settings/settings.component";
 import {MaterialElevationDirective} from "./directives/material-elevation.directive";
 import {ChatNavigationComponent} from "./pages/chat-refactor/chat-navigation/chat-navigation.component";
 import {ChatRefactorComponent} from "./pages/chat-refactor/chat-refactor.component";
+import {ChipComponent} from "./components/chip/chip.component";
+import {CardContactComponent} from "./cards/card-contact/card-contact.component";
+import {GroupListComponent} from "./widgets/group-list/group-list.component";
+import {ContactListComponent} from "./widgets/contact-list/contact-list.component";
 
 const defaultActions: IAction[] =
   [
@@ -318,7 +321,6 @@ const appRoutes: Routes = [
     CardPortfolioComponent,
     CardProfileComponent,
     FeedComponent,
-    ContactsComponent,
     ChartGraphForceComponent,
     ChartLineComponent,
     ChartMapComponent,
@@ -327,7 +329,11 @@ const appRoutes: Routes = [
     SettingsComponent,
     MaterialElevationDirective,
     ChatNavigationComponent,
-    ChatRefactorComponent
+    ChatRefactorComponent,
+    ChipComponent,
+    CardContactComponent,
+    GroupListComponent,
+    ContactListComponent
   ],
   imports: [
     RouterModule.forRoot(

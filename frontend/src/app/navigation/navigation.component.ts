@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import {ActionDispatcherService} from "../../services/action-dispatcher.service";
-import {SetVisibility} from "../../actions/ui/sidebar/SetVisibility";
+import {SetVisibility} from "../actions/ui/sidebar/SetVisibility";
+import {ActionDispatcherService} from "../services/action-dispatcher.service";
 
 @Component({
   selector: 'app-navigation',

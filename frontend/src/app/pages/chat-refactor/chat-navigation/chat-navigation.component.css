@@ -2,9 +2,3 @@
   height: 100%;
   overflow: hidden;
 }
-
-.chatNavToolbar {
-  background-color: white;
-  height: 40px;
-  padding: unset;
-}

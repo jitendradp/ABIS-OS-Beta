@@ -1,36 +1,9 @@
-<!--  <button (click)="actionDispatcher.dispatch({name:'Abis.Chat.Room.Create'})" mat-icon-button>
-        <mat-icon>add_circle_outline</mat-icon>
-      </button>-->
-
 <mat-tab-group class="chatNavWrapper">
   <mat-tab label="GROUPS">
-    <mat-toolbar class="chatNavToolbar">
-      <button mat-button>
-        <mat-icon>explore</mat-icon>
-        Explore
-      </button>
-      <button mat-button>
-        <mat-icon>group_add</mat-icon>
-        Add group
-      </button>
-    </mat-toolbar>
-    <mat-divider></mat-divider>
-    <mat-nav-list>
-      <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
-        <mat-tree-node *matTreeNodeDef="let node;">
-          <button mat-icon-button disabled></button>
-          <mat-icon>{{node.icon}}</mat-icon>
-          {{node.name}}
-        </mat-tree-node>
-        <mat-tree-node *matTreeNodeDef="let node; when: hasChild">
-          <a mat-list-item matTreeNodeToggle>
-            <app-logo [url]="node.logo"></app-logo>
-            <span style="padding-left: 8px">{{node.name}}</span>
-          </a>
-        </mat-tree-node>
-      </mat-tree>
-    </mat-nav-list>
+    <app-group-list [showActions]="true"></app-group-list>
   </mat-tab>
-  <mat-tab label="CONTACTS"> Content 2</mat-tab>
+  <mat-tab label="CONTACTS">
+    <app-contact-list [showActions]="true"></app-contact-list>
+  </mat-tab>
   <mat-tab label="CHATS"> Content 3</mat-tab>
 </mat-tab-group>

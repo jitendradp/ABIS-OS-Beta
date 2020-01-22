@@ -1,0 +1,11 @@
+<!-- todo according to w3c you can not place an input into a button! Find a better solution!
+ https://stackoverflow.com/questions/33420402/file-input-field-inside-button-doesnt-work-in-firefox -->
+<button mat-flat-button color="primary">
+  <mat-icon (click)="collapsed = !collapsed" onclick="focusMethod()">search</mat-icon>
+  <span *ngIf="!collapsed" style="font-size: 14px">Search</span>
+  <input id="inputField" type="text" style="border:none; padding-left: 4px" placeholder="Type your query..."
+         *ngIf="collapsed">
+</button>
+
+
+
