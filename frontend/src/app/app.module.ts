@@ -66,11 +66,10 @@ import {NavigationComponent} from "./navigation/navigation.component";
 import {SwitchProfileComponent} from './pages/system/switch-profile/switch-profile.component';
 import {LogoutComponent} from './pages/system/logout/logout.component';
 import {IAction} from "./actions/IAction";
-import {RoomsComponent} from "./widgets/rooms/rooms.component";
 import {EditorRoomComponent} from "./dialogs/editor-room/editor-room.component";
 import {AvatarsComponent} from "./components/avatars/avatars.component";
 import {CardMessageComponent} from "./cards/card-message/card-message.component";
-import {CardRoomComponent} from "./cards/card-room/card-room.component";
+import {CardGroupComponent} from "./cards/card-group/card-group.component";
 import {CardFormComponent} from "./cards/card-form/card-form.component";
 import {CardStoreComponent} from "./cards/card-store/card-store.component";
 import {SearchComponent} from "./widgets/search/search.component";
@@ -100,6 +99,7 @@ import {CardContactComponent} from "./cards/card-contact/card-contact.component"
 import {GroupListComponent} from "./widgets/group-list/group-list.component";
 import {ContactListComponent} from "./widgets/contact-list/contact-list.component";
 import {AvatarComponent} from "./components/avatar/avatar.component";
+import {GroupTreeComponent} from "./widgets/group-tree/group-tree.component";
 
 const defaultActions: IAction[] =
   [
@@ -276,6 +276,12 @@ const appRoutes: Routes = [
       "actions": defaultActions
     }
   },
+  {
+    path: 'group-list', component: GroupListComponent, data: {
+      "title": "Groups",
+      "actions": defaultActions
+    }
+  },
 ];
 
 
@@ -306,11 +312,10 @@ const appRoutes: Routes = [
     NavigationComponent,
     SwitchProfileComponent,
     LogoutComponent,
-    RoomsComponent,
     EditorRoomComponent,
     AvatarsComponent,
     CardMessageComponent,
-    CardRoomComponent,
+    CardGroupComponent,
     CardFormComponent,
     CardStoreComponent,
     SearchComponent,
@@ -335,7 +340,8 @@ const appRoutes: Routes = [
     CardContactComponent,
     GroupListComponent,
     ContactListComponent,
-    AvatarComponent
+    AvatarComponent,
+    GroupTreeComponent
   ],
   imports: [
     RouterModule.forRoot(

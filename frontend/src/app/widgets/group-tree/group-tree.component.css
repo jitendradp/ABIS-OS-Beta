@@ -13,9 +13,3 @@
   padding-top: unset;
 }
 
-.groupListWrapper {
-  overflow-y: scroll;
-  position: relative;
-  overflow-x: hidden;
-  height: calc(100vh - 112px);
-}

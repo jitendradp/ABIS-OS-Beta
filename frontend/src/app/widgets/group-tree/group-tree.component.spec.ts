@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RoomsComponent } from './rooms.component';
+import { GroupTreeComponent } from './group-tree.component';
 
-describe('ExplorerComponent', () => {
-  let component: RoomsComponent;
-  let fixture: ComponentFixture<RoomsComponent>;
+describe('GroupTreeComponent', () => {
+  let component: GroupTreeComponent;
+  let fixture: ComponentFixture<GroupTreeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RoomsComponent ]
+      declarations: [ GroupTreeComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RoomsComponent);
+    fixture = TestBed.createComponent(GroupTreeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

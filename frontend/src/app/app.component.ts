@@ -26,6 +26,7 @@ import {EditorCommandComponent} from "./dialogs/editor-command/editor-command.co
 import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {RouteChanged} from "./actions/routes/RouteChanged";
+import {GroupListComponent} from "./widgets/group-list/group-list.component";
 
 @Component({
   selector: 'app-root',
@@ -99,6 +100,9 @@ export class AppComponent {
       case "Abis.Chat.Room.Create":
         this.openRoomCreateDialog();
         break;
+      case "Abis.Chat.Room.Explore":
+        this.openRoomExploreDialog();
+        break;
       case "Abis.Cockpit.Command.Create":
         this.openCockpitCommandDialog();
         break;
@@ -161,6 +165,17 @@ export class AppComponent {
 
   public openRoomCreateDialog(): void {
     const dialogRef = this._dialog.open(EditorRoomComponent, {
+      width: '50%',
+      minWidth: '300px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  public openRoomExploreDialog(): void {
+    const dialogRef = this._dialog.open(GroupListComponent, {
       width: '50%',
       minWidth: '300px'
     });

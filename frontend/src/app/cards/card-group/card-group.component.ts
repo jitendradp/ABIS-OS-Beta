@@ -1,11 +1,11 @@
 import {Component, Input} from '@angular/core';
 
 @Component({
-  selector: 'app-card-room',
-  templateUrl: './card-room.component.html',
-  styleUrls: ['./card-room.component.css']
+  selector: 'app-card-group',
+  templateUrl: './card-group.component.html',
+  styleUrls: ['./card-group.component.css']
 })
-export class CardRoomComponent {
+export class CardGroupComponent {
 
 
   @Input()

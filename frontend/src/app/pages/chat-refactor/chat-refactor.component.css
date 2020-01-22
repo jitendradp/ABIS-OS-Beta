@@ -1,11 +1,3 @@
-.chatColumn {
-  border-radius: 0;
-  height: calc(100vh - 56px);
-  padding: unset;
-  box-shadow: none;
-  overflow: hidden;
-}
-
 .chatContent {
   overflow: hidden;
   border-radius: 0;
@@ -17,7 +9,16 @@
   box-shadow: none;
 }
 
-.chatInput {
+.chatColumn {
+  border-radius: 0;
+  height: calc(100vh - 56px);
+  padding: unset;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+/*todo float the buttons on the navigation of the chat under when changing the width by opening the right sidepanel */
+.chatInputWrapper {
   position: absolute;
   bottom: 0;
   border-radius: 0;
@@ -34,4 +35,25 @@
 .chatContent::-webkit-scrollbar {
   width: 8px;
   background: #c2c2c2;
+}
+
+.messageInput {
+  background-color: #4e4c56;
+  width: 100%;
+}
+
+.messageInputButton {
+  float: right;
+  height: 56px;
+  border-radius: 0;
+  box-shadow: none;
+  padding-right: 16px;
+}
+
+.messageInputTextarea {
+  padding-left: 16px;
+}
+
+::placeholder { /* Firefox, Chrome, Opera */
+  color: white;
 }

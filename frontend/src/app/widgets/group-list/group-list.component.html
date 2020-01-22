@@ -1,38 +1,25 @@
 <!-- todo combine the mat toolbar navigation to new component -->
-<div *ngIf="showActions">
-  <mat-toolbar class="chatNavToolbar">
-    <button mat-flat-button color="primary" (click)="collapsed = !collapsed">
-      <mat-icon>search</mat-icon>
-      Search
-    </button>
-    <span class="chatNavToolbarSpacer"></span>
-    <button mat-flat-button color="primary">
-      <mat-icon>explore</mat-icon>
-      Explore
-    </button>&nbsp;
-    <button mat-flat-button color="primary" (click)="actionDispatcher.dispatch({name:'Abis.Chat.Room.Create'})">
-      <mat-icon>group_add</mat-icon>
-      New group
-    </button>
-  </mat-toolbar>
-  <div style="padding-left: 16px; padding-right: 16px;" *ngIf="collapsed">
-    <app-input style="font-size: 14px" [placeholder]="'Type your search query...'"
+<mat-toolbar *ngIf="showSearch" class="chatNavToolbar">
+  <div style="width: 100%">
+    <app-input style="font-size: 14px" [showPlaceholderIconPrefix]="true" [placeholderIconPrefix]="'search'"
+               [placeholder]="'Type your search query...'"
                [appearance]="'outline'"></app-input>
   </div>
-</div>
+</mat-toolbar>
 <app-whitespace [height]="'8px'"></app-whitespace>
-<mat-nav-list>
-  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
-    <mat-tree-node *matTreeNodeDef="let node;">
-      <button mat-icon-button disabled></button>
-      <mat-icon>{{node.icon}}</mat-icon>
-      {{node.name}}
-    </mat-tree-node>
-    <mat-tree-node *matTreeNodeDef="let node; when: hasChild">
-      <a mat-list-item matTreeNodeToggle>
-        <app-logo [url]="node.logo"></app-logo>
-        <span style="padding-left: 8px">{{node.name}}</span>
-      </a>
-    </mat-tree-node>
-  </mat-tree>
-</mat-nav-list>
+<div class="groupListWrapper">
+  <app-content *ngFor="let room of rooms">
+    <app-card-group
+      [title]="room.title"
+      [name]="room.name"
+      [creator]="room.creator"
+      [pictureLogo]="room.pictureLogo"
+      [tags]="room.tags"
+      [location]="room.location"
+      [membersTotal]="room.membersTotal"
+      [membersLive]="room.membersLive"
+      [description]="room.description"
+      [buttonLink]="room.buttonLink">
+    </app-card-group>
+  </app-content>
+</div>
