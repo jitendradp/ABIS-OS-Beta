@@ -42,14 +42,6 @@
   padding-top: 7px;
 }
 
-/* todo dynamic status indicator for the profile picture */
-.profilePicture {
-  margin-top: -5px;
-  width: 48px;
-  height: 48px;
-  border: solid #2ecc71 3px;
-}
-
 .fill-remaining-space {
   /* This fills the remaining space, by using flexbox.
      Every toolbar row uses a flexbox row layout. */

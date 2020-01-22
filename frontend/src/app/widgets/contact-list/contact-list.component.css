@@ -8,3 +8,7 @@
   background-color: white;
   height: 56px;
 }
+
+.mat-list-base {
+  padding-top: unset;
+}

@@ -99,6 +99,7 @@ import {ChipComponent} from "./components/chip/chip.component";
 import {CardContactComponent} from "./cards/card-contact/card-contact.component";
 import {GroupListComponent} from "./widgets/group-list/group-list.component";
 import {ContactListComponent} from "./widgets/contact-list/contact-list.component";
+import {AvatarComponent} from "./components/avatar/avatar.component";
 
 const defaultActions: IAction[] =
   [
@@ -333,7 +334,8 @@ const appRoutes: Routes = [
     ChipComponent,
     CardContactComponent,
     GroupListComponent,
-    ContactListComponent
+    ContactListComponent,
+    AvatarComponent
   ],
   imports: [
     RouterModule.forRoot(

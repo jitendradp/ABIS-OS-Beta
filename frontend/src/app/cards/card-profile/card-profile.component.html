@@ -1,14 +1,7 @@
 <mat-card *ngIf="onMenu" class="embeddableProfile">
   <app-content>
     <mat-card-header>
-      <img mat-card-avatar class="profilePicture mat-elevation-z10"
-           src="{{profileService.profileInformation.pictureAvatar}}"
-           [matMenuTriggerFor]="statusMenu">
-      <mat-menu #statusMenu="matMenu">
-        <button mat-menu-item>Set my self away</button>
-        <button mat-menu-item>Set my self busy</button>
-        <button mat-menu-item>Set me online</button>
-      </mat-menu>
+      <app-avatar mat-card-avatar [url]="profileService.profileInformation.pictureAvatar"></app-avatar>
       <mat-card-title>
         {{userService.userInformation.firstName}}&nbsp;{{userService.userInformation.lastName}}
       </mat-card-title>

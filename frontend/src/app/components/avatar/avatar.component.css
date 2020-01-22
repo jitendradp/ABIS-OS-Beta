@@ -1,0 +1,11 @@
+/* todo dynamic status indicator for the profile picture */
+.profilePicture {
+  width: 40px;
+  height: 40px;
+  background-color: #2ecc71;
+  border: solid #2ecc71 3px;
+}
+
+.profilePictureWrapper {
+  padding-right: 8px;
+}

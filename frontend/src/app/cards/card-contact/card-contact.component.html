@@ -1,1 +1,7 @@
-<p>card-contact works!</p>
+<mat-card appMaterialElevation class="cardContact">
+  <mat-card-header>
+    <app-avatar mat-card-avatar [url]="contactPicture"></app-avatar>
+    <mat-card-title>{{contactFullName}}</mat-card-title>
+    <mat-card-subtitle>Hello I am a slogan</mat-card-subtitle>
+  </mat-card-header>
+</mat-card>

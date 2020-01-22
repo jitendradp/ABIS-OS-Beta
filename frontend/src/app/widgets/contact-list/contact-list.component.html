@@ -10,7 +10,7 @@
       <mat-icon>explore</mat-icon>
       Explore
     </button>&nbsp;
-    <button mat-flat-button color="primary" (click)="actionDispatcher.dispatch({name:'Abis.Chat.Room.Create'})">
+    <button mat-flat-button color="primary">
       <mat-icon>group_add</mat-icon>
       New group
     </button>
@@ -20,3 +20,12 @@
                [appearance]="'outline'"></app-input>
   </div>
 </div>
+<app-whitespace [height]="'8px'"></app-whitespace>
+<mat-nav-list>
+  <app-card-contact [contactFullName]="'David Chang'"></app-card-contact>
+  <app-card-contact [contactFullName]="'David Chang'"></app-card-contact>
+  <app-card-contact [contactFullName]="'David Chang'"></app-card-contact>
+  <app-card-contact [contactFullName]="'David Chang'"></app-card-contact>
+  <app-card-contact [contactFullName]="'David Chang'"></app-card-contact>
+</mat-nav-list>
+
