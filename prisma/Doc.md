@@ -39,7 +39,9 @@ Entries are broadly categorized into the following categories:
 Every object (except: Sessions, Memberships and Tags) can be tagged. A Tag consist of a "type" and "value".  
 Each profile with access to another object, can tag that object exactly once with any given "type" and "value" combination.    
 Tags, alongside Groups, are the second structural entity that can be used to organize information in ABIS.  
-They are used to link different objects together to e.g. form a message-thread. 
+They are used to link different objects together to e.g. form a message-thread.  
+  
+  _TODO: It might make sense to have "private" Tags. Don't know yet if such properties should be in this model or in a layer above.._ 
 * **Location**  
 Stands for a "place on earth". Can either be an address, geo-position or OSM node.  
 Profiles, Groups and Entries can have a Location attached. Its also used on the Session.  
