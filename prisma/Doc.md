@@ -19,7 +19,7 @@ Profiles participate in Groups via a Membership.
 * **Group**  
 Groups are the main structural entity in the schema. They contain Entries (user- and system-generated).  
 Further, all access rights are modelled in terms of Groups: _All members of a group can access all the Entries it contains._  
-Groups can be of type PRIVATE (only the owner can see and access it and its contents), ONE_ONE_ONE (a Group with immutable Membership-list that contains only two profiles) or ROOM (regular public or private room).  
+Groups can be of type PRIVATE (only the owner can see and access it and its contents), ONE_ON_ONE (a Group with immutable Membership-list that contains only two profiles) or ROOM (regular public or private room).  
 A lot of features will utilize hidden system-created or default Groups under the hood (contact list etc.). 
 * **Membership**  
 Every Group can have many members (and has always one - the creator of the group). Only Profiles can be members of Groups.  
@@ -72,7 +72,9 @@ The owner can configure the group in a way that puts every new Membership to a P
 A special case of Membership is the PUBLIC Membership. It is granted automatically for public Groups. In that case, the Profile that becomes member, is the creator of the Membership (self-invite). 
 The only ACTIVE Membership of a public Group ever will be the one of its owner. 
 
-### EMPTY-Entries and Tags
+_TODO: What happens if a room is changed from "public" to !"public"?_
+
+### EMPTY-Entries and Link-Tags
 A special case of an Entry is the EMPTY-Entry. It is used solely as metadata carrier and must not contain any content.  
 The Entry's "type"-property must not be changed once the Entry was created. The metadata itself is made up from special Tags.  
   
@@ -91,4 +93,4 @@ The Tags themselves are not subject of this document. However, there is an essen
    * A Message-Entry is created by a suitable app and stored to a PRIVATE group.  
    * Then an EMPTY-Entry with a Link-Tag that points to the message is created in the destination Group. 
 
-TODO: Add more use cases.
+_TODO: Add more use cases._
