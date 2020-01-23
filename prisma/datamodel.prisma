@@ -15,16 +15,16 @@
 # *Authentication:*
 #  Internal/External?!
 # *Authorization:*
-#  * All user interactions are triggered by a profile.
-#    Profiles can only see and interact with Entries in Groups that they're member of.
-#    To become a Member they have to be invited to a group or the group must be public.
-#    Neither Groups nor Entries can be nested. Instead they can be linked together with specific Tags.
+#  * All user interactions are triggered by a profile. [right]
+#    Profiles can only see and interact with Entries in Groups that they're member of. [if the entry is public anybody could see it]
+#    To become a Member they have to be invited to a group or the group must be public. [Or they can knock the fucking door and enter, if someone inside is willing to open]
+#    Neither Groups nor Entries can be nested. Instead they can be linked together with specific Tags. [tags should be linked and/or nested]
 #    If a link-tag points to a Group or Entry to which the Profile has no access (the Group is not public or the Profile is not a Member),
-#    it cannot follow this link.
+#    it cannot follow this link. [request/approval principal, to be found some lines above: the request will trigger an event, sent to an profile inside the group (or even who was mentioned on an item), who could possibly decide, to approve the request, e.g. of viewing the requested item, or not]
 #    However, if an "EMPTY"-Entry points directly to other document-Entries (DATA_* or a MESSAGE),
-#    the links can be resolved by everybody who has access to this "EMPTY"-Entry.
-#    That way, documents, messages or threads can be made available to profiles outside of the originating group.
-#    When the original content was deleted, the "tag carrier"-Entry stays in place but stops working.
+#    the links can be resolved by everybody who has access to this "EMPTY"-Entry. [What is the case? Please specify]
+#    That way, documents, messages or threads can be made available to profiles outside of the originating group. [by approval to some authority, who is member in a group of the item, or was mentioned on an item/entry]
+#    When the original content was deleted, the "tag carrier"-Entry stays in place but stops working. [it is just archived or in production (live) the owner decides that]
 #  * Internal/External?!
 # *Browse public groups:*
 # *Manage contacts:*
@@ -47,6 +47,7 @@ type User {
 	challenge: String       								# An additional string for e.g. verify email, second login factor etc.
 	profiles: [Profile!]!									# The user's profiles (e.g. private|business - each session can use a different profile)
 	sessions: [Session!]!                                   # The user's sessions
+	tags: [Tag!]!
 }
 
 type Session {
@@ -77,10 +78,11 @@ type Profile {
 	id: ID! @id @unique
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime @updatedAt
-	creator: User!                                          # The user that created and owns that profile
+	owner: User!                                          # The user that created and owns that profile
 	name: String!											# The profile's name that is displayed in groups
 	timezone: String										# The profile's local timezone (can override the user's timezone or is null)
 	status: ProfileStatus!                                  # Every profile has a current status
+	location: Location
 	type: ProfileType!                                      # The user can set a type for this profile
 	isHidden: Boolean!	                                    # If true, then the profile can't be found within the global search
 	isBot: Boolean!                                         # Indicates if the profile is a human or a machine
@@ -89,6 +91,7 @@ type Profile {
 	pictureBanner: String									# The url to an image file for the banner
 	memberships: [Membership!]! @relation(name: "Memberships", link: TABLE)  # The memberships of that profile in groups
 	invitations: [Membership!]! @relation(name: "Invitations", link: TABLE) # The memberships of that profile in groups
+	tags: [Tag!]!
 }
 
 enum ProfileType {
@@ -118,7 +121,7 @@ type Group {
 	id: ID! @id @unique
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime @updatedAt
-	creator: Profile!										# The host profile of this group. Is the group admin.
+	owner: Profile!										    # The host profile of this group. Is the group admin.
     type: GroupType!									    # Different types of groups
 	name: String!											# The name of the group
 	title: String											# An optional, prominent short title, what the group is about
@@ -175,7 +178,8 @@ type Entry {
     eventId: String                                         # The "id" of the Event that 'caused' this entry.
     appId: String                                           # The "id" of the App that should be used to interpret and/or write this entry (null = system entries). Can be further specified by a Tag.
  	createdAt: DateTime! @createdAt
- 	creator: Profile!                                       # The profile that created this entry.
+ 	owner: Profile!                                       # The profile that created this entry.
+ 	name:String!
  	content: Json											# The content of the entry. Further specified by "type".
  	location: Location!                                     # The location where the event has occurred
 	tags: [Tag!]!											# Meta information as hashes to classify the object
@@ -206,10 +210,10 @@ enum EntryType {
 type Tag {
    	id: ID! @id @unique
    	createdAt: DateTime! @createdAt
-	creator: Profile!										# The profile that created the tag
+	owner: Profile!										# The profile that created the tag
 	type: String!                                           # The tag's type (e.g. location-accessibility:wheelchair where "location-accessibility" is the type and "wheelchair" is the tag content).
 	                                                        #  * There can be multiple tags of the same "type"
-	                                                        #  * There can be more than one tag with the same "type" and "value" from different "creator"s.
+	                                                        #  * There can be more than one tag with the same "type" and "value" from different "owner"s.
    	value: String!                                          # The tag content itself
 
     # parents: Tags should be flat. They're much more flexible than hierarchies this way.
@@ -219,7 +223,7 @@ type Location {
 	id: ID! @id @unique
 	createdAt: DateTime! @createdAt                         # Every location was uniquely tagged by someone
 	updatedAt: DateTime! @updatedAt                         # The information of that location has been changed
-	creator: Profile!										# The profile that created that location
+	owner: Profile!										# The profile that created that location
 	type: LocationType!										# OSM_NODE, GEO_POINT or ADDRESS
 	name: String										    # Locations can have names ("Mom", "Home", "John's crib" or "Henry's Burgers"..)
 	tags: [Tag!]!											# Can e.g. be pre-defined location-category tags or user created ones
