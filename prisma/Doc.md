@@ -44,18 +44,12 @@ Every object has an "owner" property that links to a profile. By default, the "o
 
 **Entry:**  
 * Entries can be deleted by the group-owner.
-* Deleted entries can be retrieved by the one who deleted it.
-
-Because group-owners can delete entries they don't own, it is encouraged to "draft" new entries in a profile-private group and then only link them to the destination group. This way, ssers (at least theoretically) can stay in full control of their data.
+* Deleted entries could always be retrieved by the one who created it.
 
 ###  Membership
-Groups basically consist of Entries and Profiles that can access them. This access is granted with a Membership.  
-Memberships don't have an owner and can be deleted by the "member" or the Group-owner (TODO: think about the consequences of an ownership-transfer).   
+Groups basically consist of entries and profiles. Access and rights to a group are managed within a membership. Memberships have no owner but creator. The creator of a membership could always cancel it at any time. Memberships can not be transfered.
  
-Memberships are formed when other members of a group invite someone to the Group. They are then the "creator" of that Membership. The first ACTIVE Membership in a Group, belongs always to the Group-owner.  
-  
-The membership can be granted conditionally, based on the preferences of the Group-owner.  
-The owner can configure the group in a way that puts every new Membership to a PENDING state. Its then up to the Group-owner to change that status to ACTIVE.  
+Memberships are formed when a member of a group invites someone to the group. They are then the "creator" of that membership. The first ACTIVE membership in a Group, belongs always to the group-owner.  The membership can be granted conditionally, based on the preferences of the group-owner. The owner can configure the group in a way that puts every new Membership to a PENDING state. Its then up to the group-owner to change that status to ACTIVE.  
   
 A special case of Membership is the PUBLIC Membership. It is granted automatically for public Groups. In that case, the Profile that becomes member, is the creator of the Membership (self-invite). 
 The only ACTIVE Membership of a public Group ever will be the one of its owner. 
@@ -63,22 +57,19 @@ The only ACTIVE Membership of a public Group ever will be the one of its owner.
 _TODO: What happens if a room is changed from "public" to !"public"?_
 
 ### EMPTY-Entries and Link-Tags
-A special case of an Entry is the EMPTY-Entry. It is used solely as metadata carrier and must not contain any content.  
-The Entry's "type"-property must not be changed once the Entry was created. The metadata itself is made up from special Tags.  
+A special case of an entry is the EMPTY-Entry. It is used solely as metadata carrier and must not contain any content. The entry's "type"-property must not be changed once the entry was created. The metadata itself is made up from special tags.  
   
-This type is used to link other objects together and give them a structure. Examples are: Comments, Threads, etc.  
+This type is used to link other objects together and give them a structure. Examples are: Comments, threads, etc.  
 
 The Tags themselves are not subject of this document. However, there is an essential rule:  
-* Link-Tags on EMPTY-Entries are always resolvable by everyone who can see the Entry if the link points to another Entry of type "DATA_*".
+* Link-Tags on EMPTY-Entries are always resolvable by everyone who can see the entry if the link points to another entry of type "DATA_*".
   
 ## Use cases
-### Post to a public group
-1) User logs in and chooses a Profile:  
-   * Session with associated Profile is created
-2) Profile finds a public group of interest and joins the Group:  
-   * Membership with type PUBLIC is created by the Profile
-3) Profile posts a message to the Group:  
+### Common user interactions
+1) User logs in to ABIS and chooses his profile:  
+   * Session with associated profile is created
+2) Profile discovers a public group of interest and joins it:  
+   * Membership with type PUBLIC is created by the joining profile
+3) A profile posts a message to a private group of four members:  
    * A Message-Entry is created by a suitable app and stored to a PRIVATE group.  
-   * Then an EMPTY-Entry with a Link-Tag that points to the message is created in the destination Group. 
-
-_TODO: Add more use cases._
+   * Then an EMPTY-Entry with a Link-Tag that points to the message is created in the destination group. 
