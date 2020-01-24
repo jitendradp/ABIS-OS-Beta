@@ -39,7 +39,6 @@ import {ContentComponent} from './components/content/content.component';
 import {ButtonComponent} from './components/button/button.component';
 import {RegisterComponent} from './pages/system/register/register.component';
 import {SigninComponent} from './pages/system/signin/signin.component';
-import {ProfileComponent} from './pages/profile/profile.component';
 import {IconbarComponent} from './components/iconbar/iconbar.component';
 import {StoreComponent} from './pages/store/store.component';
 import {FlexLayoutModule} from "@angular/flex-layout";
@@ -64,7 +63,6 @@ import {SwitchProfileComponent} from './dialogs/switch-profile/switch-profile.co
 import {LogoutComponent} from './pages/system/logout/logout.component';
 import {IAction} from "./actions/IAction";
 import {EditorGroupComponent} from "./dialogs/editor-group/editor-group.component";
-import {AvatarsComponent} from "./components/avatars/avatars.component";
 import {CardMessageComponent} from "./cards/card-message/card-message.component";
 import {CardGroupComponent} from "./cards/card-group/card-group.component";
 import {CardFormComponent} from "./cards/card-form/card-form.component";
@@ -87,7 +85,7 @@ import {ChartLineComponent} from "./components/charts/chart-line/chart-line.comp
 import {ChartMapComponent} from "./components/charts/chart-map/chart-map.component";
 import {ChartSankeyComponent} from "./components/charts/chart-sankey/chart-sankey.component";
 import {ChartTableComponent} from "./components/charts/chart-table/chart-table.component";
-import {SettingsComponent} from "./pages/settings/settings.component";
+import {SettingsComponent} from "./pages/system/settings/settings.component";
 import {MaterialElevationDirective} from "./directives/material-elevation.directive";
 import {ChatNavigationComponent} from "./navigation/chat-navigation/chat-navigation.component";
 import {ChipComponent} from "./components/chip/chip.component";
@@ -98,6 +96,7 @@ import {AvatarComponent} from "./components/avatar/avatar.component";
 import {ListChipComponent} from "./lists/list-chip/list-chip.component";
 import {ChatComponent} from "./pages/chat/chat.component";
 import {ResetPasswordComponent} from "./pages/system/reset-password/reset-password.component";
+import {ListMemberComponent} from "./lists/list-member/list-member.component";
 
 const defaultActions: IAction[] =
   [
@@ -151,12 +150,6 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'profile', component: ProfileComponent, data: {
-      "title": "Profile",
-      "actions": defaultActions
-    }
-  },
-  {
     path: 'cockpit', component: CockpitComponent, data: {
       "title": "Cockpit",
       "actions": defaultActions
@@ -177,12 +170,6 @@ const appRoutes: Routes = [
   {
     path: 'map', component: MapComponent, data: {
       "title": "Map",
-      "actions": defaultActions
-    }
-  },
-  {
-    path: 'invite', component: InviteComponent, data: {
-      "title": "Invite",
       "actions": defaultActions
     }
   },
@@ -257,7 +244,6 @@ const appRoutes: Routes = [
     ButtonComponent,
     RegisterComponent,
     SigninComponent,
-    ProfileComponent,
     IconbarComponent,
     StoreComponent,
     StudioComponent,
@@ -274,7 +260,6 @@ const appRoutes: Routes = [
     SwitchProfileComponent,
     LogoutComponent,
     EditorGroupComponent,
-    AvatarsComponent,
     CardMessageComponent,
     CardGroupComponent,
     CardFormComponent,
@@ -303,7 +288,8 @@ const appRoutes: Routes = [
     ListContactComponent,
     AvatarComponent,
     ListChipComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    ListMemberComponent
   ],
   imports: [
     RouterModule.forRoot(
