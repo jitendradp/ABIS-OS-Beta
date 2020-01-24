@@ -15,6 +15,8 @@ export class ListChipComponent {
 
   @Input()
   placeholder: string = "Add chips...";
+
+  selectable = true;
   removable = true;
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
