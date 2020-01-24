@@ -1,8 +1,8 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {Profile} from "../../../../generated/abis-api";
-import {UserService} from "../../../services/user.service";
-import {ProfileService} from "../../../services/profile.service";
-import {Logger, LoggerService, LogSeverity} from "../../../services/logger.service";
+import {Profile} from "../../../generated/abis-api";
+import {UserService} from "../../services/user.service";
+import {ProfileService} from "../../services/profile.service";
+import {Logger, LoggerService, LogSeverity} from "../../services/logger.service";
 
 @Component({
   selector: 'app-switch-profile',

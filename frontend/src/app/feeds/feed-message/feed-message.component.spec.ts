@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChipListComponent } from './chip-list.component';
+import { FeedMessageComponent } from './feed-message.component';
 
-describe('ChipListComponent', () => {
-  let component: ChipListComponent;
-  let fixture: ComponentFixture<ChipListComponent>;
+describe('FeedComponent', () => {
+  let component: FeedMessageComponent;
+  let fixture: ComponentFixture<FeedMessageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChipListComponent ]
+      declarations: [ FeedMessageComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ChipListComponent);
+    fixture = TestBed.createComponent(FeedMessageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

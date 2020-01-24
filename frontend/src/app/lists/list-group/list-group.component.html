@@ -1,4 +1,33 @@
 <!-- todo combine the mat toolbar navigation to new component -->
+<div *ngIf="asDialogList">
+<mat-toolbar *ngIf="showSearch" class="chatNavToolbar">
+  <div style="width: 100%">
+    <app-input style="font-size: 14px" [showPlaceholderIconPrefix]="true" [placeholderIconPrefix]="'search'"
+               [placeholder]="'Type your search query...'"
+               [appearance]="'outline'"></app-input>
+  </div>
+</mat-toolbar>
+<app-whitespace [height]="'8px'"></app-whitespace>
+<div class="groupListWrapper">
+  <app-content *ngFor="let group of groups">
+    <app-card-group
+      [title]="group.title"
+      [name]="group.name"
+      [creator]="group.creator"
+      [pictureLogo]="group.pictureLogo"
+      [tags]="group.tags"
+      [location]="group.location"
+      [membersTotal]="group.membersTotal"
+      [membersLive]="group.membersLive"
+      [description]="group.description"
+      [buttonLink]="group.buttonLink">
+    </app-card-group>
+  </app-content>
+</div>
+</div>
+
+<!-- todo combine the mat toolbar navigation to new component -->
+<div *ngIf="asTree">
 <div *ngIf="showActions">
   <mat-toolbar class="chatNavToolbar">
     <button mat-flat-button color="primary" (click)="collapsed = !collapsed">
@@ -36,3 +65,4 @@
     </mat-tree-node>
   </mat-tree>
 </mat-nav-list>
+</div>

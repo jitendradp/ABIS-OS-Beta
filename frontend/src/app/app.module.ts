@@ -50,20 +50,17 @@ import {ProfileService} from "./services/profile.service";
 import {CockpitComponent} from './pages/cockpit/cockpit.component';
 import {MapComponent} from './pages/map/map.component';
 import {InviteComponent} from './pages/system/invite/invite.component';
-import {ResetComponent} from './pages/system/reset/reset.component';
-import {ForgotComponent} from './pages/system/forgot/forgot.component';
 import {LogoComponent} from './components/logo/logo.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HeaderComponent} from './components/header/header.component';
 import {InputComponent} from './components/input/input.component';
 import {WhitespaceComponent} from './components/whitespace/whitespace.component';
-import {ChatComponent} from './pages/chat/chat.component';
 import {EditorChannelComponent} from './dialogs/editor-channel/editor-channel.component';
 import {GraphQLModule} from './graphql.module';
 import {HttpClientModule} from '@angular/common/http';
 import {CardIntroComponent} from "./cards/card-intro/card-intro.component";
 import {NavigationComponent} from "./navigation/navigation.component";
-import {SwitchProfileComponent} from './pages/system/switch-profile/switch-profile.component';
+import {SwitchProfileComponent} from './dialogs/switch-profile/switch-profile.component';
 import {LogoutComponent} from './pages/system/logout/logout.component';
 import {IAction} from "./actions/IAction";
 import {EditorGroupComponent} from "./dialogs/editor-group/editor-group.component";
@@ -72,7 +69,7 @@ import {CardMessageComponent} from "./cards/card-message/card-message.component"
 import {CardGroupComponent} from "./cards/card-group/card-group.component";
 import {CardFormComponent} from "./cards/card-form/card-form.component";
 import {CardStoreComponent} from "./cards/card-store/card-store.component";
-import {SearchComponent} from "./widgets/search/search.component";
+import {SearchComponent} from "./search/search.component";
 import {NgxMapboxGLModule} from "ngx-mapbox-gl";
 import {CardComponent} from "./cards/card/card.component";
 import {EditorCommandComponent} from "./dialogs/editor-command/editor-command.component";
@@ -84,7 +81,7 @@ import {EditorPortfolioComponent} from "./dialogs/editor-portfolio/editor-portfo
 import {SmartCryptoAppComponent} from "./smartapps/smart-crypto-app/smart-crypto-app.component";
 import {CardPortfolioComponent} from "./cards/card-portfolio/card-portfolio.component";
 import {CardProfileComponent} from "./cards/card-profile/card-profile.component";
-import {FeedComponent} from "./widgets/feed/feed.component";
+import {FeedMessageComponent} from "./feeds/feed-message/feed-message.component";
 import {ChartGraphForceComponent} from "./components/charts/chart-graph-force/chart-graph-force.component";
 import {ChartLineComponent} from "./components/charts/chart-line/chart-line.component";
 import {ChartMapComponent} from "./components/charts/chart-map/chart-map.component";
@@ -92,15 +89,15 @@ import {ChartSankeyComponent} from "./components/charts/chart-sankey/chart-sanke
 import {ChartTableComponent} from "./components/charts/chart-table/chart-table.component";
 import {SettingsComponent} from "./pages/settings/settings.component";
 import {MaterialElevationDirective} from "./directives/material-elevation.directive";
-import {ChatNavigationComponent} from "./pages/chat-refactor/chat-navigation/chat-navigation.component";
-import {ChatRefactorComponent} from "./pages/chat-refactor/chat-refactor.component";
+import {ChatNavigationComponent} from "./navigation/chat-navigation/chat-navigation.component";
 import {ChipComponent} from "./components/chip/chip.component";
 import {CardContactComponent} from "./cards/card-contact/card-contact.component";
-import {GroupListComponent} from "./widgets/group-list/group-list.component";
-import {ContactListComponent} from "./widgets/contact-list/contact-list.component";
+import {ListGroupComponent} from "./lists/list-group/list-group.component";
+import {ListContactComponent} from "./lists/list-contact/list-contact.component";
 import {AvatarComponent} from "./components/avatar/avatar.component";
-import {GroupTreeComponent} from "./widgets/group-tree/group-tree.component";
-import {ChipListComponent} from "./widgets/chip-list/chip-list.component";
+import {ListChipComponent} from "./lists/list-chip/list-chip.component";
+import {ChatComponent} from "./pages/chat/chat.component";
+import {ResetPasswordComponent} from "./pages/system/reset-password/reset-password.component";
 
 const defaultActions: IAction[] =
   [
@@ -190,15 +187,9 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'reset-password', component: ResetComponent, data: {
+    path: 'reset-password', component: ResetPasswordComponent, data: {
       "title": "Reset password",
-      "actions": minActions
-    }
-  },
-  {
-    path: 'forgot-password', component: ForgotComponent, data: {
-      "title": "Forgot password",
-      "actions": minActions
+      "actions": defaultActions
     }
   },
   {
@@ -250,7 +241,7 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'group-list', component: GroupListComponent, data: {
+    path: 'group-list', component: ListGroupComponent, data: {
       "title": "Groups",
       "actions": defaultActions
     }
@@ -273,13 +264,10 @@ const appRoutes: Routes = [
     CockpitComponent,
     MapComponent,
     InviteComponent,
-    ResetComponent,
-    ForgotComponent,
     LogoComponent,
     HeaderComponent,
     InputComponent,
     WhitespaceComponent,
-    ChatComponent,
     EditorChannelComponent,
     CardIntroComponent,
     NavigationComponent,
@@ -299,7 +287,7 @@ const appRoutes: Routes = [
     SmartCryptoAppComponent,
     CardPortfolioComponent,
     CardProfileComponent,
-    FeedComponent,
+    FeedMessageComponent,
     ChartGraphForceComponent,
     ChartLineComponent,
     ChartMapComponent,
@@ -308,14 +296,14 @@ const appRoutes: Routes = [
     SettingsComponent,
     MaterialElevationDirective,
     ChatNavigationComponent,
-    ChatRefactorComponent,
+    ChatComponent,
     ChipComponent,
     CardContactComponent,
-    GroupListComponent,
-    ContactListComponent,
+    ListGroupComponent,
+    ListContactComponent,
     AvatarComponent,
-    GroupTreeComponent,
-    ChipListComponent
+    ListChipComponent,
+    ResetPasswordComponent
   ],
   imports: [
     RouterModule.forRoot(

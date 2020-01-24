@@ -26,7 +26,7 @@ import {EditorCommandComponent} from "./dialogs/editor-command/editor-command.co
 import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {RouteChanged} from "./actions/routes/RouteChanged";
-import {GroupListComponent} from "./widgets/group-list/group-list.component";
+import {ListGroupComponent} from "./lists/list-group/list-group.component";
 import {InviteComponent} from "./pages/system/invite/invite.component";
 
 @Component({
@@ -179,7 +179,7 @@ export class AppComponent {
   }
 
   public openGroupExploreDialog(): void {
-    const dialogRef = this._dialog.open(GroupListComponent, {
+    const dialogRef = this._dialog.open(ListGroupComponent, {
       width: '50%',
       minWidth: '300px'
     });

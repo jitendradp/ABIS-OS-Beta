@@ -9,11 +9,11 @@ export interface feedItem {
 }
 
 @Component({
-  selector: 'app-feed',
-  templateUrl: './feed.component.html',
-  styleUrls: ['./feed.component.css']
+  selector: 'app-feed-message',
+  templateUrl: './feed-message.component.html',
+  styleUrls: ['./feed-message.component.css']
 })
-export class FeedComponent {
+export class FeedMessageComponent {
 
   messages: feedItem [] = [
     {

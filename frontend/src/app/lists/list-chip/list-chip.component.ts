@@ -7,16 +7,14 @@ export interface Chip {
 }
 
 @Component({
-  selector: 'app-chip-list',
-  templateUrl: './chip-list.component.html',
-  styleUrls: ['./chip-list.component.css']
+  selector: 'app-list-chip',
+  templateUrl: './list-chip.component.html',
+  styleUrls: ['./list-chip.component.css']
 })
-export class ChipListComponent {
+export class ListChipComponent {
 
   @Input()
   placeholder: string = "Add chips...";
-
-  selectable = true;
   removable = true;
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
