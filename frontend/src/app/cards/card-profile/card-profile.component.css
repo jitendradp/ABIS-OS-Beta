@@ -14,7 +14,7 @@
   border-radius: 0;
   padding: unset;
   background-color: #7d56ff;
-  max-height: 168px;
+  max-height: 133px;
 }
 
 .headerProfileStage {
@@ -39,7 +39,7 @@
   color: white;
   min-width: 380px;
   padding-left: 16px;
-  padding-top: 16px;
+  padding-top: 7px;
 }
 
 /* todo dynamic status indicator for the profile picture */

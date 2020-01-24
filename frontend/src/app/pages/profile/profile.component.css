@@ -23,3 +23,15 @@
 .iconSpace {
   padding-right: 16px;
 }
+
+.chatWrapper {
+  height: calc(100vh - 56px - 77px - 48px - 1px);
+}
+
+@media screen and (max-width: 735px) {
+  .chatWrapper {
+    height: calc(100vh - 145px - 48px - 56px);
+  }
+}
+
+

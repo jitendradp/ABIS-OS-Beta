@@ -1,3 +1,15 @@
 .edgeSpace {
   padding: 16px 16px 16px 16px;
 }
+
+@media screen and (max-width: 1200px) {
+  .edgeSpace {
+    padding: 8px 8px 8px 8px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .edgeSpace {
+    padding: 8px 0 8px 0;
+  }
+}
