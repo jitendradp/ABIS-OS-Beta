@@ -27,6 +27,7 @@ import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {RouteChanged} from "./actions/routes/RouteChanged";
 import {GroupListComponent} from "./widgets/group-list/group-list.component";
+import {InviteComponent} from "./pages/system/invite/invite.component";
 
 @Component({
   selector: 'app-root',
@@ -99,6 +100,9 @@ export class AppComponent {
         break;
       case "Abis.Chat.Group.Create":
         this.openGroupCreateDialog();
+        break;
+      case "Abis.Chat.Contact.Invite":
+        this.openContactInviteDialog();
         break;
       case "Abis.Chat.Group.Explore":
         this.openGroupExploreDialog();
@@ -176,6 +180,17 @@ export class AppComponent {
 
   public openGroupExploreDialog(): void {
     const dialogRef = this._dialog.open(GroupListComponent, {
+      width: '50%',
+      minWidth: '300px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  public openContactInviteDialog(): void {
+    const dialogRef = this._dialog.open(InviteComponent, {
       width: '50%',
       minWidth: '300px'
     });

@@ -1,11 +1,14 @@
 <!-- todo optimize on mobile view. maybe make the stepper vertical instead -->
-<mat-card-title>Create chat room</mat-card-title>
+<mat-card-title>New chat group</mat-card-title>
 <mat-horizontal-stepper [linear]="!isLinear" #stepper>
   <mat-step [stepControl]="firstFormGroup">
     <form [formGroup]="firstFormGroup">
-      <ng-template matStepLabel>New room</ng-template>
+      <ng-template matStepLabel>Create</ng-template>
       <mat-form-field class="fullWidth">
         <input matInput type="text" placeholder="Group name" required formControlName="firstCtrl">
+      </mat-form-field>
+      <mat-form-field class="fullWidth">
+        <input matInput type="email" placeholder="Description">
       </mat-form-field>
       <div class="fullWidth">
         <mat-radio-group aria-label="Select an option" [required]="true">
@@ -27,15 +30,10 @@
     <form [formGroup]="secondFormGroup">
       <ng-template matStepLabel>Add details</ng-template>
       <!-- todo add chips with autocomplete -->
-      <mat-form-field class="fullWidth">
-        <input matInput type="text" placeholder="Hashtags..." required>
-      </mat-form-field>
+      <app-chip-list></app-chip-list>
       <mat-form-field class="fullWidth">
         <input matInput type="text" placeholder="Group address" required
                formControlName="secondCtrl">
-      </mat-form-field>
-      <mat-form-field class="fullWidth">
-        <input matInput type="email" placeholder="Description">
       </mat-form-field>
       <app-content>
         <button mat-button>Upload Logo</button>

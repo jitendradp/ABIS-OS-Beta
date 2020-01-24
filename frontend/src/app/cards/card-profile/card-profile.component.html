@@ -1,7 +1,7 @@
 <!-- might be the same such as the card contact rethink about -->
 <mat-card *ngIf="onMenu" class="embeddableProfile">
   <app-content>
-    <mat-card-header>
+    <mat-card-header style="padding-left: 16px; padding-right: 16px">
       <app-avatar mat-card-avatar [url]="profileService.profileInformation.pictureAvatar"></app-avatar>
       <mat-card-title>
         {{userService.userInformation.firstName}}&nbsp;{{userService.userInformation.lastName}}

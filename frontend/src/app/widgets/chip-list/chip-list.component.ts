@@ -1,24 +1,26 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
 import {MatChipInputEvent} from "@angular/material";
 
-
-export interface Member {
+export interface Chip {
   name: string;
 }
 
 @Component({
-  selector: 'app-invite',
-  templateUrl: './invite.component.html',
-  styleUrls: ['./invite.component.css']
+  selector: 'app-chip-list',
+  templateUrl: './chip-list.component.html',
+  styleUrls: ['./chip-list.component.css']
 })
-export class InviteComponent {
+export class ChipListComponent {
+
+  @Input()
+  placeholder: string = "Add chips...";
 
   selectable = true;
   removable = true;
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  members: Member[] = [];
+  chips: Chip[] = [];
 
   add(event: MatChipInputEvent): void {
     const input = event.input;
@@ -26,7 +28,7 @@ export class InviteComponent {
 
     // Add our member
     if ((value || '').trim()) {
-      this.members.push({name: value.trim()});
+      this.chips.push({name: value.trim()});
     }
 
     // Reset the input value
@@ -35,11 +37,11 @@ export class InviteComponent {
     }
   }
 
-  remove(member: Member): void {
-    const index = this.members.indexOf(member);
+  remove(chip: Chip): void {
+    const index = this.chips.indexOf(chip);
 
     if (index >= 0) {
-      this.members.splice(index, 1);
+      this.chips.splice(index, 1);
     }
   }
 }

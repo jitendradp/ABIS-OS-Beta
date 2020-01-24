@@ -100,6 +100,7 @@ import {GroupListComponent} from "./widgets/group-list/group-list.component";
 import {ContactListComponent} from "./widgets/contact-list/contact-list.component";
 import {AvatarComponent} from "./components/avatar/avatar.component";
 import {GroupTreeComponent} from "./widgets/group-tree/group-tree.component";
+import {ChipListComponent} from "./widgets/chip-list/chip-list.component";
 
 const defaultActions: IAction[] =
   [
@@ -313,7 +314,8 @@ const appRoutes: Routes = [
     GroupListComponent,
     ContactListComponent,
     AvatarComponent,
-    GroupTreeComponent
+    GroupTreeComponent,
+    ChipListComponent
   ],
   imports: [
     RouterModule.forRoot(
