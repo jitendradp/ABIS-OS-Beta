@@ -3,17 +3,14 @@ This schema is used as the core for the structured data storage on the ABIS plat
 
 ## Types
 * **User**  
-A natural person can register an ABIS user account. All personal or secret details like the email address, password hash, phone number, etc.. are stored here. This type must only be used internally. Users interact with other users through their profiles.
+A natural person can sign up an ABIS user (account). All personal or secret details of the user, like the email address, password hash, phone number, etc.. are stored here. This type must only be used internally. Users interact with other users through their profiles.
 
 * **Session**  
-When a User successfully logged on, a session will be created.  
-This type contains the bearer- and csrf-token for that session. These must be used with every api call that requires authentication/authorization.  
-A Session is always bound to a Profile. When the User switches the Profile, a new Session must be established.
+When a user has successfully logged on to ABIS, a session will be created. This type contains the bearer- and csrf-token for that session. These must be used with every api call that requires authentication/authorization. A Session is always bound to a Profile. When the user switches the profile, a new session must be established.
 
 * **Profile**  
-Users can create multiple Profiles (and must at least have one). Profiles represent Users in Groups.   
-A User could have e.g. a "private" and a "business" profile, both participating in different groups for different purposes.  
-Profiles participate in Groups via a Membership.
+Users can create multiple profiles, at least one. Profiles are like avatars and represent users in groups. A User could own for example a "private" and a "business" profile, both participating in different groups for different purposes and notifications. Profiles participate in Groups through a membership.
+
 * **Group**  
 Groups are the main structural entity in the schema. They contain Entries (user- and system-generated).  
 Further, all access rights are modelled in terms of Groups: _All members of a group can access all the Entries it contains._  
