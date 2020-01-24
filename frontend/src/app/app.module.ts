@@ -66,7 +66,7 @@ import {NavigationComponent} from "./navigation/navigation.component";
 import {SwitchProfileComponent} from './pages/system/switch-profile/switch-profile.component';
 import {LogoutComponent} from './pages/system/logout/logout.component';
 import {IAction} from "./actions/IAction";
-import {EditorRoomComponent} from "./dialogs/editor-room/editor-room.component";
+import {EditorGroupComponent} from "./dialogs/editor-group/editor-group.component";
 import {AvatarsComponent} from "./components/avatars/avatars.component";
 import {CardMessageComponent} from "./cards/card-message/card-message.component";
 import {CardGroupComponent} from "./cards/card-group/card-group.component";
@@ -130,34 +130,6 @@ const minActions: IAction[] =
       side: "left",
       state: "toggle"
     },
-  ];
-
-const pageActions: IAction[] =
-  [
-
-    <SetVisibility>{
-      name: SetVisibility.Name,
-      label: "Open/Close Menu",
-      icon: "menu",
-      side: "left",
-      state: "toggle"
-    },
-
-    <SetVisibility>{
-      name: SetVisibility.Name,
-      label: "Add new item",
-      icon: "add_circle_outline",
-      side: "middle",
-      state: "toggle"
-    },
-
-    <SetVisibility>{
-      name: SetVisibility.Name,
-      label: "Open/Close Alerts",
-      icon: "notifications",
-      side: "right",
-      state: "toggle"
-    }
   ];
 
 
@@ -247,7 +219,7 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'editor-team', component: EditorRoomComponent, data: {
+    path: 'editor-team', component: EditorGroupComponent, data: {
       "title": "Create new team",
       "actions": defaultActions
     }
@@ -312,7 +284,7 @@ const appRoutes: Routes = [
     NavigationComponent,
     SwitchProfileComponent,
     LogoutComponent,
-    EditorRoomComponent,
+    EditorGroupComponent,
     AvatarsComponent,
     CardMessageComponent,
     CardGroupComponent,

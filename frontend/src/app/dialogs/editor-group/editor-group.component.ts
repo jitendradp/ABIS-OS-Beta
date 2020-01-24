@@ -2,11 +2,11 @@ import {Component, Input} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
-  selector: 'app-editor-room',
-  templateUrl: './editor-room.component.html',
-  styleUrls: ['./editor-room.component.css']
+  selector: 'app-editor-group',
+  templateUrl: './editor-group.component.html',
+  styleUrls: ['./editor-group.component.css']
 })
-export class EditorRoomComponent {
+export class EditorGroupComponent {
 
   @Input()
   isPublic: boolean;

@@ -21,7 +21,7 @@ import {SwitchProfile} from "./actions/routes/SwitchProfile";
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {LogEntry} from "./services/logger.service";
 import {Back} from "./actions/routes/Back";
-import {EditorRoomComponent} from "./dialogs/editor-room/editor-room.component";
+import {EditorGroupComponent} from "./dialogs/editor-group/editor-group.component";
 import {EditorCommandComponent} from "./dialogs/editor-command/editor-command.component";
 import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
 import {DeviceDetectorService} from "ngx-device-detector";
@@ -97,11 +97,11 @@ export class AppComponent {
       case "Abis.Chat.Channel.Create":
         this.openChannelCreateDialog();
         break;
-      case "Abis.Chat.Room.Create":
-        this.openRoomCreateDialog();
+      case "Abis.Chat.Group.Create":
+        this.openGroupCreateDialog();
         break;
-      case "Abis.Chat.Room.Explore":
-        this.openRoomExploreDialog();
+      case "Abis.Chat.Group.Explore":
+        this.openGroupExploreDialog();
         break;
       case "Abis.Cockpit.Command.Create":
         this.openCockpitCommandDialog();
@@ -163,8 +163,8 @@ export class AppComponent {
     });
   }
 
-  public openRoomCreateDialog(): void {
-    const dialogRef = this._dialog.open(EditorRoomComponent, {
+  public openGroupCreateDialog(): void {
+    const dialogRef = this._dialog.open(EditorGroupComponent, {
       width: '50%',
       minWidth: '300px'
     });
@@ -174,7 +174,7 @@ export class AppComponent {
     });
   }
 
-  public openRoomExploreDialog(): void {
+  public openGroupExploreDialog(): void {
     const dialogRef = this._dialog.open(GroupListComponent, {
       width: '50%',
       minWidth: '300px'

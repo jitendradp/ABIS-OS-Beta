@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { RoomService } from '../room.service';
+import { GroupService } from '../group.service';
 
 describe('TeamService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: RoomService = TestBed.get(RoomService);
+    const service: GroupService = TestBed.get(GroupService);
     expect(service).toBeTruthy();
   });
 });

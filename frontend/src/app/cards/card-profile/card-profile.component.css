@@ -8,6 +8,7 @@
   border-radius: 0;
   box-shadow: none;
   height: 42px;
+  padding-top: unset;
 }
 
 .profileCard {

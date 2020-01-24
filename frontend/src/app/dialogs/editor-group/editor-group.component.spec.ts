@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditorRoomComponent } from './editor-room.component';
+import { EditorGroupComponent } from './editor-group.component';
 
 describe('TeamEditorComponent', () => {
-  let component: EditorRoomComponent;
-  let fixture: ComponentFixture<EditorRoomComponent>;
+  let component: EditorGroupComponent;
+  let fixture: ComponentFixture<EditorGroupComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditorRoomComponent ]
+      declarations: [ EditorGroupComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditorRoomComponent);
+    fixture = TestBed.createComponent(EditorGroupComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 
-export type RoomInformation = {
+export type GroupInformation = {
   name: string,
   title: string,
   description: string,
@@ -18,9 +18,9 @@ export type RoomInformation = {
 @Injectable({
   providedIn: 'root'
 })
-export class RoomService {
+export class GroupService {
 
-  public roomInformation: RoomInformation = {
+  public groupInformation: GroupInformation = {
     "creator": "tomsawyer88",
     "createdAt": "2019-09-21",
     "name": "tum",
