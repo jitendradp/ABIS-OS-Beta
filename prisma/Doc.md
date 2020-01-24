@@ -66,10 +66,11 @@ The Tags themselves are not subject of this document. However, there is an essen
   
 ## Use cases
 ### Common user interactions
-1) User logs in to ABIS and chooses his profile:  
-   * Session with associated profile is created
-2) Profile discovers a public group of interest and joins it:  
-   * Membership with type PUBLIC is created by the joining profile
-3) A profile posts a message to a private group of four members:  
-   * A Message-Entry is created by a suitable app and stored to a PRIVATE group.  
-   * Then an EMPTY-Entry with a Link-Tag that points to the message is created in the destination group. 
+1) A unknown person registers an user account on ABIS and creates his first profile.
+2) The person logs in to ABIS and chooses his profile. The last page he visited with this profile is now restored.
+3) The user creates a second profile for his working purposes. Different groups, resources, actions and contacts are listed there.
+4) The user joins a public group and posts a comment. Other user profiles within this group, interact with it e.g. starting to like or commenting it.
+5) The owner of the group thinks some content that was posted is inappropriated. So he decides to delete some entries posted. But, the one user who posted that inappropriate content reactivates it again. The group owner cancels his membership on that group and locks him out.
+6) A user wants to deploy a smart app with his working profile. He browses the cloud store in ABIS and chooses a smart app which contains some market data about the environment and a free flight-calculator for CO2-Footprints. He installs the smart-app within his user-dataspace and starts working with that app. After a while he decides to post some calucations, he had made with this app, to some groups where he is a member of. Some groups, where he wants posts stuff from this app in, are in his working and others in his private profile.
+7) A user discovers an interesting post in a public group with his private profile and wants to share it within his private working group. He shares the post it on behalf of his working profile to three different private groups where he is a member of. Then he also thinks it might be interesting for his family members too. So he decides to post it on behalf of his private profile to several groups too.
+8) Some apps are used to create a shared experience and trigger workflows. A workflow from a app was triggered and a user recevices a notification within his e.g. working profile. He checks the lastest news and clicks on the notification. He is forwared to the group channel thread where he was mentioned at. A different user, his boss needs a confirmation. He checks it and grants it. The boss is now notified and the dialog changes to status fullfilled.
