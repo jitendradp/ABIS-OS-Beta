@@ -97,6 +97,7 @@ import {ListChipComponent} from "./lists/list-chip/list-chip.component";
 import {ChatComponent} from "./pages/chat/chat.component";
 import {ResetPasswordComponent} from "./pages/system/reset-password/reset-password.component";
 import {ListMemberComponent} from "./lists/list-member/list-member.component";
+import {FeedNotificationComponent} from "./feeds/feed-notification/feed-notification.component";
 
 const defaultActions: IAction[] =
   [
@@ -289,7 +290,8 @@ const appRoutes: Routes = [
     AvatarComponent,
     ListChipComponent,
     ResetPasswordComponent,
-    ListMemberComponent
+    ListMemberComponent,
+    FeedNotificationComponent,
   ],
   imports: [
     RouterModule.forRoot(
