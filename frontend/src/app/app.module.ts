@@ -39,7 +39,6 @@ import {ContentComponent} from './components/content/content.component';
 import {ButtonComponent} from './components/button/button.component';
 import {RegisterComponent} from './pages/system/register/register.component';
 import {SigninComponent} from './pages/system/signin/signin.component';
-import {ProfileComponent} from './pages/profile/profile.component';
 import {IconbarComponent} from './components/iconbar/iconbar.component';
 import {StoreComponent} from './pages/store/store.component';
 import {FlexLayoutModule} from "@angular/flex-layout";
@@ -50,30 +49,25 @@ import {ProfileService} from "./services/profile.service";
 import {CockpitComponent} from './pages/cockpit/cockpit.component';
 import {MapComponent} from './pages/map/map.component';
 import {InviteComponent} from './pages/system/invite/invite.component';
-import {ResetComponent} from './pages/system/reset/reset.component';
-import {ForgotComponent} from './pages/system/forgot/forgot.component';
 import {LogoComponent} from './components/logo/logo.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HeaderComponent} from './components/header/header.component';
 import {InputComponent} from './components/input/input.component';
 import {WhitespaceComponent} from './components/whitespace/whitespace.component';
-import {ChatComponent} from './pages/chat/chat.component';
 import {EditorChannelComponent} from './dialogs/editor-channel/editor-channel.component';
 import {GraphQLModule} from './graphql.module';
 import {HttpClientModule} from '@angular/common/http';
 import {CardIntroComponent} from "./cards/card-intro/card-intro.component";
-import {NavigationComponent} from "./widgets/navigation/navigation.component";
-import {SwitchProfileComponent} from './pages/system/switch-profile/switch-profile.component';
+import {NavigationComponent} from "./navigation/navigation.component";
+import {SwitchProfileComponent} from './dialogs/switch-profile/switch-profile.component';
 import {LogoutComponent} from './pages/system/logout/logout.component';
 import {IAction} from "./actions/IAction";
-import {RoomsComponent} from "./widgets/rooms/rooms.component";
-import {EditorRoomComponent} from "./dialogs/editor-room/editor-room.component";
-import {AvatarsComponent} from "./components/avatars/avatars.component";
+import {EditorGroupComponent} from "./dialogs/editor-group/editor-group.component";
 import {CardMessageComponent} from "./cards/card-message/card-message.component";
-import {CardRoomComponent} from "./cards/card-room/card-room.component";
+import {CardGroupComponent} from "./cards/card-group/card-group.component";
 import {CardFormComponent} from "./cards/card-form/card-form.component";
 import {CardStoreComponent} from "./cards/card-store/card-store.component";
-import {SearchComponent} from "./widgets/search/search.component";
+import {SearchComponent} from "./search/search.component";
 import {NgxMapboxGLModule} from "ngx-mapbox-gl";
 import {CardComponent} from "./cards/card/card.component";
 import {EditorCommandComponent} from "./dialogs/editor-command/editor-command.component";
@@ -85,17 +79,24 @@ import {EditorPortfolioComponent} from "./dialogs/editor-portfolio/editor-portfo
 import {SmartCryptoAppComponent} from "./smartapps/smart-crypto-app/smart-crypto-app.component";
 import {CardPortfolioComponent} from "./cards/card-portfolio/card-portfolio.component";
 import {CardProfileComponent} from "./cards/card-profile/card-profile.component";
-import {FeedComponent} from "./widgets/feed/feed.component";
-import {ContactsComponent} from "./widgets/contacts/contacts.component";
+import {FeedMessageComponent} from "./feeds/feed-message/feed-message.component";
 import {ChartGraphForceComponent} from "./components/charts/chart-graph-force/chart-graph-force.component";
 import {ChartLineComponent} from "./components/charts/chart-line/chart-line.component";
 import {ChartMapComponent} from "./components/charts/chart-map/chart-map.component";
 import {ChartSankeyComponent} from "./components/charts/chart-sankey/chart-sankey.component";
 import {ChartTableComponent} from "./components/charts/chart-table/chart-table.component";
-import {SettingsComponent} from "./pages/settings/settings.component";
+import {SettingsComponent} from "./pages/system/settings/settings.component";
 import {MaterialElevationDirective} from "./directives/material-elevation.directive";
-import {ChatNavigationComponent} from "./pages/chat-refactor/chat-navigation/chat-navigation.component";
-import {ChatRefactorComponent} from "./pages/chat-refactor/chat-refactor.component";
+import {ChatNavigationComponent} from "./navigation/chat-navigation/chat-navigation.component";
+import {ChipComponent} from "./components/chip/chip.component";
+import {CardContactComponent} from "./cards/card-contact/card-contact.component";
+import {ListGroupComponent} from "./lists/list-group/list-group.component";
+import {ListContactComponent} from "./lists/list-contact/list-contact.component";
+import {AvatarComponent} from "./components/avatar/avatar.component";
+import {ListChipComponent} from "./lists/list-chip/list-chip.component";
+import {ChatComponent} from "./pages/chat/chat.component";
+import {ResetPasswordComponent} from "./pages/system/reset-password/reset-password.component";
+import {ListMemberComponent} from "./lists/list-member/list-member.component";
 
 const defaultActions: IAction[] =
   [
@@ -128,34 +129,6 @@ const minActions: IAction[] =
     },
   ];
 
-const pageActions: IAction[] =
-  [
-
-    <SetVisibility>{
-      name: SetVisibility.Name,
-      label: "Open/Close Menu",
-      icon: "menu",
-      side: "left",
-      state: "toggle"
-    },
-
-    <SetVisibility>{
-      name: SetVisibility.Name,
-      label: "Add new item",
-      icon: "add_circle_outline",
-      side: "middle",
-      state: "toggle"
-    },
-
-    <SetVisibility>{
-      name: SetVisibility.Name,
-      label: "Open/Close Alerts",
-      icon: "notifications",
-      side: "right",
-      state: "toggle"
-    }
-  ];
-
 
 const appRoutes: Routes = [
   {
@@ -174,12 +147,6 @@ const appRoutes: Routes = [
     path: 'register', component: RegisterComponent, data: {
       "title": "Sign up",
       "actions": minActions
-    }
-  },
-  {
-    path: 'profile', component: ProfileComponent, data: {
-      "title": "Profile",
-      "actions": defaultActions
     }
   },
   {
@@ -207,21 +174,9 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'invite', component: InviteComponent, data: {
-      "title": "Invite",
-      "actions": defaultActions
-    }
-  },
-  {
-    path: 'reset-password', component: ResetComponent, data: {
+    path: 'reset-password', component: ResetPasswordComponent, data: {
       "title": "Reset password",
-      "actions": minActions
-    }
-  },
-  {
-    path: 'forgot-password', component: ForgotComponent, data: {
-      "title": "Forgot password",
-      "actions": minActions
+      "actions": defaultActions
     }
   },
   {
@@ -243,7 +198,7 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'editor-team', component: EditorRoomComponent, data: {
+    path: 'editor-team', component: EditorGroupComponent, data: {
       "title": "Create new team",
       "actions": defaultActions
     }
@@ -272,6 +227,12 @@ const appRoutes: Routes = [
       "actions": defaultActions
     }
   },
+  {
+    path: 'group-list', component: ListGroupComponent, data: {
+      "title": "Groups",
+      "actions": defaultActions
+    }
+  },
 ];
 
 
@@ -283,30 +244,24 @@ const appRoutes: Routes = [
     ButtonComponent,
     RegisterComponent,
     SigninComponent,
-    ProfileComponent,
     IconbarComponent,
     StoreComponent,
     StudioComponent,
     CockpitComponent,
     MapComponent,
     InviteComponent,
-    ResetComponent,
-    ForgotComponent,
     LogoComponent,
     HeaderComponent,
     InputComponent,
     WhitespaceComponent,
-    ChatComponent,
     EditorChannelComponent,
     CardIntroComponent,
     NavigationComponent,
     SwitchProfileComponent,
     LogoutComponent,
-    RoomsComponent,
-    EditorRoomComponent,
-    AvatarsComponent,
+    EditorGroupComponent,
     CardMessageComponent,
-    CardRoomComponent,
+    CardGroupComponent,
     CardFormComponent,
     CardStoreComponent,
     SearchComponent,
@@ -317,8 +272,7 @@ const appRoutes: Routes = [
     SmartCryptoAppComponent,
     CardPortfolioComponent,
     CardProfileComponent,
-    FeedComponent,
-    ContactsComponent,
+    FeedMessageComponent,
     ChartGraphForceComponent,
     ChartLineComponent,
     ChartMapComponent,
@@ -327,7 +281,15 @@ const appRoutes: Routes = [
     SettingsComponent,
     MaterialElevationDirective,
     ChatNavigationComponent,
-    ChatRefactorComponent
+    ChatComponent,
+    ChipComponent,
+    CardContactComponent,
+    ListGroupComponent,
+    ListContactComponent,
+    AvatarComponent,
+    ListChipComponent,
+    ResetPasswordComponent,
+    ListMemberComponent
   ],
   imports: [
     RouterModule.forRoot(

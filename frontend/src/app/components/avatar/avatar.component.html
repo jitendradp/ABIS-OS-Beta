@@ -1,0 +1,12 @@
+<!-- todo combine with the avatars component and check for right spacing around the image -->
+<!-- todo make status indicator flexible -->
+<div class="profilePictureWrapper">
+  <img mat-card-avatar class="profilePicture mat-elevation-z10"
+       src="{{url}}" onError="this.src='./assets/error-images/picture.png';"
+       [matMenuTriggerFor]="statusMenu">
+  <mat-menu #statusMenu="matMenu">
+    <button mat-menu-item>Set my self away</button>
+    <button mat-menu-item>Set my self busy</button>
+    <button mat-menu-item>Set me online</button>
+  </mat-menu>
+</div>

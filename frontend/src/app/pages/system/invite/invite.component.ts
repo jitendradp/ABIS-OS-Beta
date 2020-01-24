@@ -14,8 +14,6 @@ export interface Member {
 })
 export class InviteComponent {
 
-
-  visible = true;
   selectable = true;
   removable = true;
   addOnBlur = true;

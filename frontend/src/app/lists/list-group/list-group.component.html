@@ -1,0 +1,68 @@
+<!-- todo combine the mat toolbar navigation to new component -->
+<div *ngIf="asDialogList">
+<mat-toolbar *ngIf="showSearch" class="chatNavToolbar">
+  <div style="width: 100%">
+    <app-input style="font-size: 14px" [showPlaceholderIconPrefix]="true" [placeholderIconPrefix]="'search'"
+               [placeholder]="'Type your search query...'"
+               [appearance]="'outline'"></app-input>
+  </div>
+</mat-toolbar>
+<app-whitespace [height]="'8px'"></app-whitespace>
+<div class="groupListWrapper">
+  <app-content *ngFor="let group of groups">
+    <app-card-group
+      [title]="group.title"
+      [name]="group.name"
+      [creator]="group.creator"
+      [pictureLogo]="group.pictureLogo"
+      [tags]="group.tags"
+      [location]="group.location"
+      [membersTotal]="group.membersTotal"
+      [membersLive]="group.membersLive"
+      [description]="group.description"
+      [buttonLink]="group.buttonLink">
+    </app-card-group>
+  </app-content>
+</div>
+</div>
+
+<!-- todo combine the mat toolbar navigation to new component -->
+<div *ngIf="asTree">
+<div *ngIf="showActions">
+  <mat-toolbar class="chatNavToolbar">
+    <button mat-flat-button color="primary" (click)="collapsed = !collapsed">
+      <mat-icon>search</mat-icon>
+      <span fxHide fxShow.gt-md>&nbsp;Search</span>
+    </button>&nbsp;
+    <span class="chatNavToolbarSpacer"></span>
+    <button mat-flat-button color="primary" (click)="actionDispatcher.dispatch({name:'Abis.Chat.Group.Explore'})">
+      <mat-icon>explore</mat-icon>
+      <span fxHide fxShow.gt-md>&nbsp;Explore</span>
+    </button>&nbsp;
+    <button mat-flat-button color="primary" (click)="actionDispatcher.dispatch({name:'Abis.Chat.Group.Create'})">
+      <mat-icon>add_circle</mat-icon>
+      <span fxHide fxShow.gt-md>&nbsp;Add</span>
+    </button>
+  </mat-toolbar>
+  <div style="padding-left: 16px; padding-right: 16px;" *ngIf="collapsed">
+    <app-input style="font-size: 14px" [placeholder]="'Type your search query...'"
+               [appearance]="'outline'"></app-input>
+  </div>
+</div>
+<app-whitespace [height]="'8px'"></app-whitespace>
+<mat-nav-list>
+  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+    <mat-tree-node *matTreeNodeDef="let node;">
+      <button mat-icon-button disabled></button>
+      <mat-icon>{{node.icon}}</mat-icon>
+      {{node.name}}
+    </mat-tree-node>
+    <mat-tree-node *matTreeNodeDef="let node; when: hasChild">
+      <a mat-list-item matTreeNodeToggle>
+        <app-logo [url]="node.logo"></app-logo>
+        <span style="padding-left: 8px">{{node.name}}</span>
+      </a>
+    </mat-tree-node>
+  </mat-tree>
+</mat-nav-list>
+</div>

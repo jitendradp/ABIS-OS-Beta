@@ -17,12 +17,21 @@ export class InputComponent {
   type: string;
 
   @Input()
+  appearance: string;
+
+  @Input()
   placeholder: string;
+
+  @Input()
+  placeholderIconPrefix: string;
 
   @Input()
   hint: string;
 
   @Input ()
   showHint: boolean;
+
+  @Input ()
+  showPlaceholderIconPrefix: boolean;
 
 }

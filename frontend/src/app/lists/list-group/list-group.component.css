@@ -1,0 +1,21 @@
+/*todo combine the mat toolbar navigation to new component*/
+
+.chatNavToolbarSpacer {
+  flex: 1 1 auto;
+}
+
+.chatNavToolbar {
+  background-color: white;
+  height: 56px;
+}
+
+.mat-list-base {
+  padding-top: unset;
+}
+
+.groupListWrapper {
+  overflow-y: scroll;
+  position: relative;
+  overflow-x: hidden;
+  height: calc(100vh - 112px);
+}

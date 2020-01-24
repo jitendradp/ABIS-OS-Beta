@@ -1,125 +1,24 @@
-<app-chat-refactor></app-chat-refactor>
-<!--<app-chat-navigation></app-chat-navigation>-->
-
-<!-- todo timestamp of sent message align with content -->
-<!-- todo align content same row -->
-<!-- todo align content same row -->
-<!-- todo fix the timestamp of sent message item in chat -->
-<!-- todo create mobile view for chat: Swipe Sidepanel up and down on mobile view that the chat area is more visible -->
-<!-- todo !! optimize the textarea in chat input to expand to the top is more than two lines of content is entered -->
-<!--<div id="frame"
-     fxLayout
-     fxLayout.xs="column"
-     fxLayoutAlign="left"
+<div fxLayout="row wrap"
+     fxLayout.lt-sm="column"
      fxLayoutGap="0px"
-     fxLayoutGap.xs="0">
-  <div id="sidepanel" fxFlex="25%">
-    <div id="contacts">
-      <app-content>
-        <mat-list>
-          <mat-card-header>
-            <h3 style="margin-left: -24px; margin-top: -3px" mat-subheader>ROOMS</h3>
-            <div class="flex-item"
-                 fxFlex fxLayoutAlign="end start">
-              <button (click)="actionDispatcher.dispatch({name:'Abis.Chat.Room.Create'})" mat-icon-button>
-                <mat-icon>add_circle_outline</mat-icon>
-              </button>
-            </div>
-          </mat-card-header>
-          <mat-tree style="background: unset" [dataSource]="dataSource" [treeControl]="treeControl">
-            <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
-              <button mat-icon-button disabled></button>
-              <mat-icon>{{node.icon}}</mat-icon>
-              {{node.name}}
-            </mat-tree-node>
-            <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
-              <button mat-icon-button matTreeNodeToggle
-                      [attr.aria-label]="'toggle ' + node.name">
-                <mat-icon class="mat-icon-rtl-mirror">
-                  {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
-                </mat-icon>
-              </button>
-              <app-logo [url]="node.logo"></app-logo>
-              {{node.name}}
-            </mat-tree-node>
-          </mat-tree>
-        </mat-list>
-      </app-content>
-      <mat-divider></mat-divider>
-      <app-content>
-        <mat-list>
-          <mat-card-header>
-            <h3 style="margin-left: -24px; margin-top: -3px" mat-subheader>DIRECT MESSAGES</h3>
-            <div class="flex-item"
-                 fxFlex fxLayoutAlign="end start">
-              <button mat-icon-button>
-                <mat-icon>add_circle_outline</mat-icon>
-              </button>
-            </div>
-          </mat-card-header>
-          <mat-list-item *ngFor="let member of members">
-            <mat-icon mat-list-icon>person</mat-icon>
-            <h4 mat-line>{{member.name}}</h4>
-            <small mat-line>{{member.status}}</small>
-          </mat-list-item>
-        </mat-list>
-      </app-content>
-    </div>
-  </div>
-  <div class="content" fxFlex="75%">
-    <mat-card class="chatSectionHeader">
-      <app-iconbar [onChatHeader]="true"></app-iconbar>
+     fxLayoutAlign="left stretch">
+  <mat-card class="chatColumn" fxFlex="25" fxFlex.gt-md="27">
+    <app-chat-navigation></app-chat-navigation>
+  </mat-card>
+  <mat-card class="chatColumn" fxFlex="75" fxFlex.gt-md="73">
+
+    <mat-card class="chatContent">
+      <app-feed-message></app-feed-message>
     </mat-card>
-    <div class="messages">
-      <ul>
-        <li class="sent">
-          <img src="http://emilcarlsson.se/assets/mikeross.png" alt=""/>
-          <p>How the hell am I supposed to get a jury to believe you when I am not even sure that I do?!</p>
-        </li>
-        <li class="replies">
-          <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt=""/>
-          <p>When you're backed against the wall, break the god damn thing down.</p>
-          <small style="float: right; margin-right: -100px">9:12 AM, Today</small>
-        </li>
-        <li class="replies">
-          <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt=""/>
-          <p>Excuses don't win championships.</p>
-          <small style="float: right; margin-right: -100px">9:12 AM, Today</small>
-        </li>
-        <li class="sent">
-          <img src="http://emilcarlsson.se/assets/mikeross.png" alt=""/>
-          <p>Oh yeah, did Michael Jordan tell you that?</p>
-        </li>
-        <li class="replies">
-          <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt=""/>
-          <p>No, I told him that.</p>
-          <small style="float: right; margin-right: -100px">9:12 AM, Today</small>
-        </li>
-        <li class="replies">
-          <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt=""/>
-          <p>What are your choices when someone puts a gun to your head?</p>
-          <small style="float: right; margin-right: -100px">9:12 AM, Today</small>
-        </li>
-        <li class="sent">
-          <img src="http://emilcarlsson.se/assets/mikeross.png" alt=""/>
-          <p>What are you talking about? You do what they say or they shoot you.</p>
-        </li>
-        <li class="replies">
-          <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt=""/>
-          <p>Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a
-            hundred and forty six other things.</p>
-          <small style="float: right; margin-right: -100px">9:12 AM, Today</small>
-        </li>
-      </ul>
-    </div>
-    <div class="messageInput">
-      <mat-form-field appearance="none" class="messageInputTextarea">
-        <textarea style="color: white;" [matTextareaAutosize] matInput placeholder="Write your message..."></textarea>
-      </mat-form-field>
-      <button mat-flat-button class="messageInputButton" color="primary">
-        <mat-icon>send</mat-icon>
-      </button>
-    </div>
-  </div>
+    <mat-card class="chatInputWrapper">
+      <div class="messageInput">
+        <mat-form-field appearance="none" class="messageInputTextarea">
+          <textarea style="color: white;" [matTextareaAutosize] matInput placeholder="Write your message..."></textarea>
+        </mat-form-field>
+        <button mat-flat-button class="messageInputButton" color="primary">
+          <mat-icon>send</mat-icon>
+        </button>
+      </div>
+    </mat-card>
+  </mat-card>
 </div>
--->

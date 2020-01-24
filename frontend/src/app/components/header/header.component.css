@@ -1,12 +1,15 @@
-.header {
+.headerWrapper {
   position: fixed;
-  color: white;
   position: -webkit-sticky; /* For macOS/iOS Safari */
   top: 0; /* Sets the sticky toolbar to be on top */
   z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
-  height: 56px;
   width: 100%;
+}
+
+.header {
+  color: white;
   background: #222;
+  height: 53px;
 }
 
 .fill-remaining-space {
@@ -15,3 +18,25 @@
   flex: 1 1 auto;
 }
 
+.subline {
+  height: 3px;
+  z-index: 997;
+  animation: pulseLine infinite 12s alternate;
+  transition: all .6s ease;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* todo start the animation in the center and ease out to left and right*/
+
+@keyframes pulseLine {
+  0% {
+    background-color: #204AAB;
+  }
+  50% {
+    background-color: #2ecc71;
+  }
+  100% {
+    background-color: #333;
+  }
+}

@@ -1,3 +1,4 @@
+<div class="headerWrapper">
 <mat-toolbar class="header">
   <button *ngFor="let action of leftActions" mat-icon-button (click)="actionDispatcher.dispatch(action);">
     <mat-icon>{{action.icon}}</mat-icon>
@@ -14,3 +15,5 @@
   </button>
   <!-- todo add some notification badge on the icons if needed in the header dynamically -->
 </mat-toolbar>
+<div class="subline"></div>
+</div>

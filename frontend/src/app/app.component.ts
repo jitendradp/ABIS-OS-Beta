@@ -21,11 +21,13 @@ import {SwitchProfile} from "./actions/routes/SwitchProfile";
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {LogEntry} from "./services/logger.service";
 import {Back} from "./actions/routes/Back";
-import {EditorRoomComponent} from "./dialogs/editor-room/editor-room.component";
+import {EditorGroupComponent} from "./dialogs/editor-group/editor-group.component";
 import {EditorCommandComponent} from "./dialogs/editor-command/editor-command.component";
 import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {RouteChanged} from "./actions/routes/RouteChanged";
+import {ListGroupComponent} from "./lists/list-group/list-group.component";
+import {InviteComponent} from "./pages/system/invite/invite.component";
 
 @Component({
   selector: 'app-root',
@@ -96,8 +98,14 @@ export class AppComponent {
       case "Abis.Chat.Channel.Create":
         this.openChannelCreateDialog();
         break;
-      case "Abis.Chat.Room.Create":
-        this.openRoomCreateDialog();
+      case "Abis.Chat.Group.Create":
+        this.openGroupCreateDialog();
+        break;
+      case "Abis.Chat.Contact.Invite":
+        this.openContactInviteDialog();
+        break;
+      case "Abis.Chat.Group.Explore":
+        this.openGroupExploreDialog();
         break;
       case "Abis.Cockpit.Command.Create":
         this.openCockpitCommandDialog();
@@ -159,8 +167,30 @@ export class AppComponent {
     });
   }
 
-  public openRoomCreateDialog(): void {
-    const dialogRef = this._dialog.open(EditorRoomComponent, {
+  public openGroupCreateDialog(): void {
+    const dialogRef = this._dialog.open(EditorGroupComponent, {
+      width: '50%',
+      minWidth: '300px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  public openGroupExploreDialog(): void {
+    const dialogRef = this._dialog.open(ListGroupComponent, {
+      width: '50%',
+      minWidth: '300px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  public openContactInviteDialog(): void {
+    const dialogRef = this._dialog.open(InviteComponent, {
       width: '50%',
       minWidth: '300px'
     });

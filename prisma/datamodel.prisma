@@ -1,250 +1,155 @@
-# Request for comments:
-#
-# ***Focus of this schema:***
-# The schema should be able to capture all state, that is necessary to successfully re-create a user session after
-# refreshing the browser by pressing the F5 key without great user interruption.
-# UI state should be re-created from this db, the user-settings and the browser's localstorage.
-# Realtime (Event-streams) and statistical data are not stored here.
-# Instead "Entries" are stored in "Groups".
-#
-# **Principles**
-# * Relations (e.g. hierarchies for message-threads etc.) are created using Tags.
-#
-# **Functionality that must be realizable using this schema:**
-# *Signup*
-# *Authentication:*
-#  Internal/External?!
-# *Authorization:*
-#  * All user interactions are triggered by a profile. [right]
-#    Profiles can only see and interact with Entries in Groups that they're member of. [if the entry is public anybody could see it]
-#    To become a Member they have to be invited to a group or the group must be public. [Or they can knock the fucking door and enter, if someone inside is willing to open]
-#    Neither Groups nor Entries can be nested. Instead they can be linked together with specific Tags. [tags should be linked and/or nested]
-#    If a link-tag points to a Group or Entry to which the Profile has no access (the Group is not public or the Profile is not a Member),
-#    it cannot follow this link. [request/approval principal, to be found some lines above: the request will trigger an event, sent to an profile inside the group (or even who was mentioned on an item), who could possibly decide, to approve the request, e.g. of viewing the requested item, or not]
-#    However, if an "EMPTY"-Entry points directly to other document-Entries (DATA_* or a MESSAGE),
-#    the links can be resolved by everybody who has access to this "EMPTY"-Entry. [What is the case? Please specify]
-#    That way, documents, messages or threads can be made available to profiles outside of the originating group. [by approval to some authority, who is member in a group of the item, or was mentioned on an item/entry]
-#    When the original content was deleted, the "tag carrier"-Entry stays in place but stops working. [it is just archived or in production (live) the owner decides that]
-#  * Internal/External?!
-# *Browse public groups:*
-# *Manage contacts:*
-#  Internal/External?!
-# ...
-
-# A natural person.
 type User {
 	id: ID! @id @unique
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime @updatedAt
-	firstName: String!                                      # The first name of the person
-	lastName: String!										# The family name of the person
-	timezone: String!										# The user's local timezone
-	email: String! @unique									# A common digital identity
-	mobilePhone: String                                     # Adding a second information for the identity
-	passwordSalt: String!									# Adding a random string to the password hash
-	passwordHash: String!									# A fully hashed password including salt e.g. bcrypt
-	isVerified: Boolean!									# The user's email address was verified or not
-	challenge: String       								# An additional string for e.g. verify email, second login factor etc.
-	profiles: [Profile!]!									# The user's profiles (e.g. private|business - each session can use a different profile)
-	sessions: [Session!]!                                   # The user's sessions
+	firstName: String!
+	lastName: String!
+	timezone: String!
+	email: String! @unique
+	mobilePhone: String
+	passwordSalt: String!
+	passwordHash: String!
+	isVerified: Boolean!
+	challenge: String
+	profiles: [Profile!]!
+	sessions: [Session!]!
 	tags: [Tag!]!
 }
 
 type Session {
 	id: ID! @id @unique
-	createdAt: DateTime! @createdAt                         # The point in time when the user logged on.
-	updatedAt: DateTime @updatedAt                          # The point in time when the session was refreshed (validTo was incremented).
-	csrfToken: String! @unique                              # The (client-code) cross site request forgery token that must be sent with every request.
-	authToken: String! @unique                              # The (http-only cookie) bearer token that identifies the user.
-	validTo: DateTime!                                      # Until when the auth/csrf-token combination is valid.
-	timedOut: DateTime                                      # The point in time when the session timed out.
-	loggedOut: DateTime                                     # The point in time when the user logged-off (or "null" when still logged on or timed out).
-	user: User!                                             # The logged-on user. ## For security there can only be one user session active at the same time
-	                                                        #                         > Wouldn't make a hard decision on that in this layer.
-	                                                        #                           There a valid cases for multiple sessions like simultaneous smartphone and desktop use.
-	profile: Profile!                                       # The profile that was used before closing that session
-	                                                        #  > I think that a session should only be valid for the use with one profile.
-	                                                        #    Whenever the user switches the profile, we will establish a new session in the background.
-	                                                        #    The idea is to avoid trouble with status updates etc. on profile switch.
-	                                                        #    -> Its easier to only implement only the session change - more or less a refinement of login/logout!?
-	location: Location										# A (most likely estimated) GEO_POINT-Location of the user's location at the time of log-on.
-	ipAddress: String!                                      # The ip address that was used by the enpoint for logging on.
-	                                                        #  > We should ask for re-authentication when the client ip changed.
+	createdAt: DateTime! @createdAt
+	updatedAt: DateTime @updatedAt
+	csrfToken: String! @unique
+	authToken: String! @unique
+	validTo: DateTime!
+	timedOut: DateTime
+	loggedOut: DateTime
+	user: User!
+	profile: Profile!
+	location: Location
+	ipAddress: String!
 }
 
-# The chosen representations of a user or of its bots.
-# All participative features are used through profiles.
 type Profile {
 	id: ID! @id @unique
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime @updatedAt
-	owner: User!                                          # The user that created and owns that profile
-	name: String!											# The profile's name that is displayed in groups
-	timezone: String										# The profile's local timezone (can override the user's timezone or is null)
-	status: ProfileStatus!                                  # Every profile has a current status
+	owner: User!
+	name: String!
+	timezone: String
+	status: ProfileStatus!
 	location: Location
-	type: ProfileType!                                      # The user can set a type for this profile
-	isHidden: Boolean!	                                    # If true, then the profile can't be found within the global search
-	isBot: Boolean!                                         # Indicates if the profile is a human or a machine
-	slogan: String											# A slogan of the profile that is displayed in groups
-	pictureAvatar: String!									# The url to an image file for the avatar. There is always an default image.
-	pictureBanner: String									# The url to an image file for the banner
-	memberships: [Membership!]! @relation(name: "Memberships", link: TABLE)  # The memberships of that profile in groups
-	invitations: [Membership!]! @relation(name: "Invitations", link: TABLE) # The memberships of that profile in groups
+	type: ProfileType!
+	isHidden: Boolean!
+	isBot: Boolean!
+	slogan: String
+	pictureAvatar: String!
+	pictureBanner: String
+	memberships: [Membership!]! @relation(name: "Memberships", link: TABLE)
+	invitations: [Membership!]! @relation(name: "Invitations", link: TABLE)
 	tags: [Tag!]!
 }
 
 enum ProfileType {
-	PRIVATE											        # A privately used profile.
-	BUSINESS				    							# A profile thats used for business.
+	PRIVATE
+	BUSINESS
 }
 
-# These are the persistent status only.
-# Other (real-time) status can be defined in yoga-server.
-# If that is the case, they should just overlay the persisted value.
-# It must also be assured that the real-time values extend the semantics of the types listed here:
-#     OK: ONLINE|AWAY|DO_NOT_DISTURB -> TYPING
-# Not OK: OFFLINE -> TYPING
 enum ProfileStatus {
-	OFFLINE					    							# The profile is offline so not reachable
-	DO_NOT_DISTURB									        # The profile is available but notification has been turned off
-	AWAY												    # The profile is off the keyboard but notification is turned on
-	ONLINE											        # The profile is online and reachable
+	OFFLINE
+	DO_NOT_DISTURB
+	AWAY
+	ONLINE
 }
 
-# Groups resources and entries around profiles
-# A "PRIVATE" group is created for every profile. It is used to store "DATA_JSON"-entries with associated "appId".
-# A proposed format for the appId is: "abis.contacts:1.1.0.33", "abis.calender:2.0.0.7", ..
-# The "abis.contacts:*" app would then query all entries with this appId, interpret them and
-# present the profile its contacts together with actions that can be taken.
 type Group {
 	id: ID! @id @unique
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime @updatedAt
-	owner: Profile!										    # The host profile of this group. Is the group admin.
-    type: GroupType!									    # Different types of groups
-	name: String!											# The name of the group
-	title: String											# An optional, prominent short title, what the group is about
-	description: String  									# An optional, detailed description what the group is about
-	tags: [Tag!]!											# Meta information as hashes to classify this object
-	logo: String!    								        # An image file path. A default picture is required (should be auto-generated on the server if not user provided)
-	banner: String                                          # An optional larger image for the group
-	isPublic: Boolean!										# When true, everybody can see and join the group
-	members: [Membership!]!									# Profiles that are participating in that group
-	entries: [Entry!]!									    # Entrys with a specific content
-	location: Location										# A location in the real world
-
-	# parent: Group "nesting" can be realized with "ref:ID"-tags (or similar) to be interpreted and cached by yoga.
+	owner: Profile!
+    type: GroupType!
+	name: String!
+	title: String
+	description: String
+	tags: [Tag!]!
+	logo: String!
+	banner: String
+	isPublic: Boolean!
+	members: [Membership!]!
+	entries: [Entry!]!
+	location: Location
 }
 
 enum GroupType {
-    PRIVATE                                                 # A profile's very own personal space where it can store Entries that can only be accessed by their owner (exactly one per profile).
-    ONE_ON_ONE                                              # A group with an immutable member list of two that can be created only once per combination of two profiles.
-    ROOM					    							# A chat room that hosts a group of people and conversations
-
-	# Threads: Can be represented by tags
-	# Followers: Is app-specific
-	# Channel: Redundant. Is either "ONE_ON_ONE" or "ROOM".
+    PRIVATE
+    ONE_ON_ONE
+    ROOM
 }
 
-# A Profile can be member in different Groups.
-# Memberships are created by someone (a profile invited another profile to join).
 type Membership {
 	id: ID! @id @unique
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime @updatedAt
-	status: MembershipStatus!                               # A value that indicates if the membership is blocked (profile is banned from group), yet to be approved (PENDING), public, active or inactive (profile left the group)
-	creator: Profile! @relation(name: "Creator", link: TABLE) # A profile that has invited this profile to a group
-	group: Group!											# The group where the profile is a member of
-	member: Profile! @relation(name: "Member", link: TABLE) # The profile either bot or human
-	showHistory: Boolean!									# The profile can see the full history. If false, the profile can only see entries that have been created after it joined.
-
-	# groupPinned: Should be in "UserSettings" or alike.
+	status: MembershipStatus!
+	creator: Profile! @relation(name: "Creator", link: TABLE)
+	group: Group!
+	member: Profile! @relation(name: "Member", link: TABLE)
+	showHistory: Boolean!
 }
 
 enum MembershipStatus {
-    BLOCKED  # The profile is banned.
-    PENDING  # The group owner requires approval before accepting new group members.
-    PUBLIC   # In public groups, everybody can join with a PUBLIC membership status.
-             #  There are also ACTIVE full members in public groups (the owner and/or mods).
-    ACTIVE   # A full member.
-    # INACTIVE ## > If someone leaves a group, the Membership should be deleted. The join/leave-entries should be stored elsewhere.
+    BLOCKED
+    PENDING
+    PUBLIC
+    ACTIVE
 }
 
-# Entries have a longer lifetime as Events and usually origin from a user interaction.
 type Entry {
     id: ID! @id @unique
- 	type: EntryType!                                        # Indicates the purpose of this event
-    eventId: String                                         # The "id" of the Event that 'caused' this entry.
-    appId: String                                           # The "id" of the App that should be used to interpret and/or write this entry (null = system entries). Can be further specified by a Tag.
+ 	type: EntryType!
+    eventId: String
+    appId: String
  	createdAt: DateTime! @createdAt
- 	owner: Profile!                                       # The profile that created this entry.
+ 	owner: Profile!
  	name:String!
- 	content: Json											# The content of the entry. Further specified by "type".
- 	location: Location!                                     # The location where the event has occurred
-	tags: [Tag!]!											# Meta information as hashes to classify the object
-
-    # isRead: can be realized with tags
-    # isPinned: should be in UserSettings
-    # isPrivate: not necessary because people who shouldn't see
-    # parent: "nesting" can be realized with "ref:ID"-tags (or similar) to be interpreted and cached by yoga.
+ 	content: Json
+ 	location: Location!
+	tags: [Tag!]!
 }
 
-# Entries live in Groups and represent different things that are specified by this enum.
 enum EntryType {
-    EMPTY         # The entry is empty. Can be useful as a "carrier" for metadata Tags.
-    DATA_JSON     # The entry contains a json object (to be interpreted by an app - or raw if none is associated)
-    DATA_TABLE    # The entry contains a table (or a reference to one - to be interpreted by an app - or raw if none is associated)
-    DATA_DOCUMENT # The entry contains a plain or richt text document (or a reference to one - to be interpreted by an app - or raw if none is associated)
-    DATA_PICTURE  # The entry contains a picture (or a reference to one)
-    DATA_FILE     # The entry contains an arbitary file (or a reference to one)
-
-    # message: is DATA_JSON interpreted by the "abis.chat:*" app
-    # notifications: are handled by events and yoga
-    # post: is a message
-    # comment: is a message with a tag that points to the "parent" message/topic/..
-    # private message: is a regular message in a "ONE_ON_ONE" group
-    # reactions: can be realized with tags
+    EMPTY
+    DATA_JSON
+    DATA_TABLE
+    DATA_DOCUMENT
+    DATA_PICTURE
+    DATA_FILE
 }
 
 type Tag {
    	id: ID! @id @unique
    	createdAt: DateTime! @createdAt
-	owner: Profile!										# The profile that created the tag
-	type: String!                                           # The tag's type (e.g. location-accessibility:wheelchair where "location-accessibility" is the type and "wheelchair" is the tag content).
-	                                                        #  * There can be multiple tags of the same "type"
-	                                                        #  * There can be more than one tag with the same "type" and "value" from different "owner"s.
-   	value: String!                                          # The tag content itself
-
-    # parents: Tags should be flat. They're much more flexible than hierarchies this way.
+	owner: Profile!
+	type: String!
+   	value: String!
 }
 
 type Location {
 	id: ID! @id @unique
-	createdAt: DateTime! @createdAt                         # Every location was uniquely tagged by someone
-	updatedAt: DateTime! @updatedAt                         # The information of that location has been changed
-	owner: Profile!										# The profile that created that location
-	type: LocationType!										# OSM_NODE, GEO_POINT or ADDRESS
-	name: String										    # Locations can have names ("Mom", "Home", "John's crib" or "Henry's Burgers"..)
-	tags: [Tag!]!											# Can e.g. be pre-defined location-category tags or user created ones
-
-	# If the type is "OSM_NODE", this field contains a direct reference to an open street map object
-	osmNodeId: String
-
-	# If the type is "ADDRESS", these fields can be filled. All values should be in the official language at that location.
-	addressLine1: String
-	addressLine2: String
+	createdAt: DateTime! @createdAt
+	updatedAt: DateTime! @updatedAt
+	owner: Profile!
+	type: LocationType!
+	name: String
+	tags: [Tag!]!
+	address: String
 	addressCity: String
 	addressZipCode: String
 	addressCountry: String
-	# continent is implicit when the address is known
-
-	# If the type is "GEO_POINT", these fields must be filled (are optional though, so that other types of locations can still be created)
-	geoPointLatitude: Float								    # Locates a point on a map from north to south
-	geoPointLongitude: Float								# Locates a point on a map from east to west
-	geoPointRadiusMeter: Float							    # The radius from the center of the location in meters
-
-	# visits: I would suggest that we store analytical data somewhere else. The sole number of visits is only useful in a narrow context.
+	geoPointLatitude: Float
+	geoPointLongitude: Float
+	geoPointRadiusMeter: Float
 }
 
 enum LocationType {

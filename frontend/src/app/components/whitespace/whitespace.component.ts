@@ -1,15 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-whitespace',
   templateUrl: './whitespace.component.html',
   styleUrls: ['./whitespace.component.css']
 })
-export class WhitespaceComponent implements OnInit {
+export class WhitespaceComponent {
 
-  constructor() { }
-
-  ngOnInit() {
-  }
+  @Input()
+  height: string = "16px";
 
 }
