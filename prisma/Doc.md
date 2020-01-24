@@ -1,17 +1,15 @@
 # Prisma data model
-This schema is used as the main means for structured data storage on the ABIS platform.  
-It stores system- as well as user-data and has a few main concepts which will be explained in detail throughout this document.    
-  
-We start by explaining all major types and then try to put them in perspective by discussing the principles behind this design and its use cases.
+This schema is used as the core for the structured data storage on the ABIS platform.  It stores system- as well as user-data and has a few main concepts which will be explained in detail throughout this document. We start by explaining all major entities (types) and then try to put them in perspective by discussing the principles behind this design and its use cases.
 
 ## Types
 * **User**  
-A registered User. Represents a natural person. Stores personal details like the email-address, password hash, phone no., etc..  
-This type must only be used internally. Users interact with other Users via their Profiles.
+A natural person can register an ABIS user account. All personal or secret details like the email address, password hash, phone number, etc.. are stored here. This type must only be used internally. Users interact with other users through their profiles.
+
 * **Session**  
 When a User successfully logged on, a session will be created.  
 This type contains the bearer- and csrf-token for that session. These must be used with every api call that requires authentication/authorization.  
 A Session is always bound to a Profile. When the User switches the Profile, a new Session must be established.
+
 * **Profile**  
 Users can create multiple Profiles (and must at least have one). Profiles represent Users in Groups.   
 A User could have e.g. a "private" and a "business" profile, both participating in different groups for different purposes.  
