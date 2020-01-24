@@ -26,9 +26,12 @@
         Dataspace (3.87 of 20 GB)
       </mat-card-subtitle>
       <span class="fill-remaining-space"></span>
-      <button mat-icon-button>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon>keyboard_arrow_right</mat-icon>
       </button>
+      <mat-menu #menu="matMenu">
+        <app-card-dataspace></app-card-dataspace>
+      </mat-menu>
     </mat-card-header>
   </mat-card>
   <!-- show/hide button when user is not logged in -->

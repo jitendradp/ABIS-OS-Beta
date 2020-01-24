@@ -98,6 +98,9 @@ import {ChatComponent} from "./pages/chat/chat.component";
 import {ResetPasswordComponent} from "./pages/system/reset-password/reset-password.component";
 import {ListMemberComponent} from "./lists/list-member/list-member.component";
 import {FeedNotificationComponent} from "./feeds/feed-notification/feed-notification.component";
+import {ListDataspaceComponent} from "./lists/list-dataspace/list-dataspace.component";
+import {ListProfileComponent} from "./lists/list-profile/list-profile.component";
+import {CardDataspaceComponent} from "./cards/card-dataspace/card-dataspace.component";
 
 const defaultActions: IAction[] =
   [
@@ -292,6 +295,9 @@ const appRoutes: Routes = [
     ResetPasswordComponent,
     ListMemberComponent,
     FeedNotificationComponent,
+    ListDataspaceComponent,
+    ListProfileComponent,
+    CardDataspaceComponent,
   ],
   imports: [
     RouterModule.forRoot(
