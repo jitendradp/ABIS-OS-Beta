@@ -1,15 +1,40 @@
 .avatar img {
   border-radius: 50%;
   position: relative;
-  height: 40px;
-  width: 40px;
+  height: 36px;
+  width: 36px;
   left: -5px;
   margin-left: -15px;
   z-index: 1;
 }
 
 .avatars {
-  direction: rtl;  /* This is to get the stack with left on top */
-  text-align: left;  /* Now need to explitly align left */
-  padding-left: 25px;  /* Same value as the negative margin */
+  direction: rtl; /* This is to get the stack with left on top */
+  text-align: left; /* Now need to explicit align left */
+  padding-left: 25px; /* Same value as the negative margin */
+  padding-top: 4px;
+}
+
+/* todo border color depends on the actual status of the member e.g. is online or offline or away... */
+.imgBorder {
+  background-color: #2ecc71;
+  box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4);
+  -moz-box-shadow: 0 1px 2px rgba(34, 25, 25, 0.4);
+  -webkit-box-shadow: 0 1px 3px rgba(34, 25, 25, 0.4);
+  border-radius: 7px;
+}
+
+img.zoom {
+  transition: transform 0.8s;
+  -moz-transition: transform 0.8s;
+  -webkit-transition: transform 0.8s;
+  -o-transition: transform 0.8s;
+}
+
+img.zoom:hover {
+  transform: scale(1.3, 1.3);
+  -moz-transform: scale(1.3, 1.3);
+  -webkit-transform: scale(1.3, 1.3);
+  -o-transform: scale(1.3, 1.3);
+  -ms-transform: scale(1.3, 1.3);
 }

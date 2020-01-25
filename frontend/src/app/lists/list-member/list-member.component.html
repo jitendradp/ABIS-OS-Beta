@@ -1,25 +1,8 @@
-<!-- todo change component to avatar list -->
+<!-- todo change component to avatar component -->
+<!-- todo I don't understand why he is not eating that member -->
 <div class="avatars">
-  <span class="avatar">
-        <img src="https://www.fillmurray.com/50/50" width="50" height="50"/>
-    </span>
-  <span class="avatar">
-        <img src="https://www.fillmurray.com/100/100" width="50" height="50"/>
-    </span>
-  <span class="avatar">
-        <img src="https://www.fillmurray.com/200/200" width="50" height="50"/>
-    </span>
-  <span class="avatar">
-        <img src="https://www.fillmurray.com/150/150" width="50" height="50"/>
-    </span>
-  <span class="avatar">
-        <img src="https://www.fillmurray.com/50/50" width="50" height="50"/>
-    </span>
-  <!-- Variable amount more avatars -->
-  <span class="avatar">
-        <img src="https://www.fillmurray.com/50/50" width="50" height="50"/>
-    </span>
-  <span class="avatar">
-        <img src="https://www.fillmurray.com/100/100" width="50" height="50"/>
-    </span>
+  <span class="avatar" *ngFor="let member of members">
+    <img src="member.picture" onError="this.src='./assets/error-images/picture.png';" width="30" height="30"
+         class="imgBorder zoom"/>
+  </span>
 </div>
