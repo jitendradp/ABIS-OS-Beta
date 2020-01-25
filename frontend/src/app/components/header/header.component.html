@@ -1,19 +1,20 @@
 <div class="headerWrapper">
-<mat-toolbar class="header">
-  <button *ngFor="let action of leftActions" mat-icon-button (click)="actionDispatcher.dispatch(action);">
-    <mat-icon>{{action.icon}}</mat-icon>
-  </button>
-  <div style="margin-left: 16px">
-    {{title}}
-  </div>
-  <button *ngFor="let action of midActions" mat-icon-button (click)="actionDispatcher.dispatch(action);">
-    <mat-icon>{{action.icon}}</mat-icon>
-  </button>
-  <span class="fill-remaining-space"></span>
-  <button *ngFor="let action of rightActions" mat-icon-button (click)="actionDispatcher.dispatch(action);">
-    <mat-icon matBadge="15" matBadgePosition="after" matBadgeColor="warn">{{action.icon}}</mat-icon>
-  </button>
-  <!-- todo add some notification badge on the icons if needed in the header dynamically -->
-</mat-toolbar>
-<div class="subline"></div>
+  <mat-toolbar class="header">
+    <button *ngFor="let action of leftActions" mat-icon-button (click)="actionDispatcher.dispatch(action);">
+      <mat-icon>{{action.icon}}</mat-icon>
+    </button>
+    <div style="margin-left: 16px">
+      {{title}}
+    </div>
+    <button *ngFor="let action of midActions" mat-icon-button (click)="actionDispatcher.dispatch(action);">
+      <mat-icon>{{action.icon}}</mat-icon>
+    </button>
+    <span class="fill-remaining-space"></span>
+    <span>CHAT</span>
+    <button *ngFor="let action of rightActions" mat-icon-button (click)="actionDispatcher.dispatch(action);">
+      <mat-icon matBadge="15" matBadgePosition="after" matBadgeColor="warn">{{action.icon}}</mat-icon>
+    </button>
+    <!-- todo add some notification badge on the icons if needed in the header dynamically -->
+  </mat-toolbar>
+  <div class="subline"></div>
 </div>

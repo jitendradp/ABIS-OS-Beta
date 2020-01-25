@@ -59,17 +59,5 @@ export class StoreComponent {
       isInstalled: false,
       isDisabled: true,
     },
-    {
-      name: 'Smart Facebook App',
-      shortDescription: 'Monitor and control facebook campaigns',
-      logo: './assets/logos/socialmediapirates.png',
-      status: 'Setup',
-      publisher: 'Socialmedia Piraten UG',
-      description: 'Monitor and control your social media campaigns on facebook pages and facebook ads.',
-      team: '/teams',
-      link: '/map',
-      isInstalled: false,
-      isDisabled: true,
-    },
   ];
 }

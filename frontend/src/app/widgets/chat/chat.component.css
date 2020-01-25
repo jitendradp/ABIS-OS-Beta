@@ -1,6 +1,24 @@
 .chatContentHeader {
   height: 48px;
   background: white;
+  margin: unset;
+}
+
+/*todo refactor delete */
+.chatGroupLogo {
+  padding-left: 16px;
+  margin: auto;
+}
+
+/*todo refactor delete */
+.chatGroupHeaderTitle {
+  padding-top: 3px;
+  margin-left: -8px;
+}
+
+/*todo refactor delete */
+.chatGroupHeaderSubtitle {
+  margin-top: 3px;
 }
 
 .fill-remaining-space {
@@ -8,7 +26,6 @@
      Every toolbar row uses a flexbox row layout. */
   flex: 1 1 auto;
 }
-
 
 .chatContent {
   overflow: hidden;

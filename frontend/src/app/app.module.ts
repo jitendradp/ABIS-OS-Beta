@@ -21,10 +21,13 @@ import {
   MatListModule,
   MatMenuModule,
   MatNativeDateModule,
-  MatOptionModule, MatPaginatorModule, MatProgressBarModule,
+  MatOptionModule,
+  MatPaginatorModule,
+  MatProgressBarModule,
   MatRadioModule,
   MatSelectModule,
-  MatSidenavModule, MatSliderModule,
+  MatSidenavModule,
+  MatSliderModule,
   MatSlideToggleModule,
   MatSnackBarModule,
   MatStepperModule,
@@ -116,22 +119,11 @@ const defaultActions: IAction[] =
     // todo show/hide when user is logged in or not
     <SetVisibility>{
       name: SetVisibility.Name,
-      label: "Open/Close Notifications",
-      icon: "notifications",
+      label: "Open/Close Chat",
+      icon: "chat",
       side: "right",
       state: "toggle"
     }
-  ];
-
-const minActions: IAction[] =
-  [
-    <SetVisibility>{
-      name: SetVisibility.Name,
-      label: "Open/Close Menu",
-      icon: "menu",
-      side: "left",
-      state: "toggle"
-    },
   ];
 
 
@@ -139,19 +131,19 @@ const appRoutes: Routes = [
   {
     path: '', component: AccessComponent, data: {
       "title": "Welcome",
-      "actions": minActions
+      "actions": defaultActions
     }
   },
   {
     path: 'signin', component: SigninComponent, data: {
       "title": "Login",
-      "actions": minActions
+      "actions": defaultActions
     }
   },
   {
     path: 'register', component: RegisterComponent, data: {
       "title": "Sign up",
-      "actions": minActions
+      "actions": defaultActions
     }
   },
   {
@@ -199,7 +191,7 @@ const appRoutes: Routes = [
   {
     path: 'logout', component: LogoutComponent, data: {
       "title": "Logout",
-      "actions": minActions
+      "actions": defaultActions
     }
   },
   {

@@ -1,9 +1,8 @@
-<div fxLayout
-     fxLayout.xs="column"
-     fxLayoutAlign="left"
-     fxLayoutGap="10px"
-     fxLayoutGap.xs="0">
-  <div fxFlex='auto' fxFlex.gt-md='50' fxFlex.gt-sm='100'>
+<div fxLayout="row wrap"
+     fxLayout.lt-sm="column"
+     fxLayoutGap="0px"
+     fxLayoutAlign="left stretch">
+  <div fxFlex='50' fxFlex.sm='100'>
     <app-content>
       <app-card [showContent]="true" [showHeader]="true" [title]="'Portfolio Overview'"
                 [subtitle]="'My crypto smart app cockpit widget'"
@@ -13,7 +12,7 @@
       </app-card>
     </app-content>
   </div>
-  <div fxFlex='auto' fxFlex.gt-md='50' fxFlex.gt-sm='80'>
+  <div fxFlex='50' fxFlex.sm='100'>
     <app-content>
       <app-card [showContent]="true" [showHeader]="true" [title]="'Earthquake Forecast'"
                 [subtitle]="'My climate change smart alert widget for the next 7 days'"
@@ -23,7 +22,7 @@
       </app-card>
     </app-content>
   </div>
-  <div fxFlex='auto' fxFlex.gt-md='50' fxFlex.gt-sm='80'>
+  <div fxFlex='50' fxFlex.sm='100'>
     <app-content>
       <app-card [showContent]="true" [showHeader]="true" [title]="'Social Media Connections'"
                 [subtitle]="'My network on social media'"
