@@ -1,0 +1,19 @@
+.threadMessages {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: relative;
+  /* todo make the height here more flexible to the actual height of the parent container have fun */
+  height: 500px;
+}
+
+.sent {
+  float: right;
+}
+
+.replies {
+  float: left;
+}
+
+img {
+  width: 40px;
+}

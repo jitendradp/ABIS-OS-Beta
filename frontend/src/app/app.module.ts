@@ -101,6 +101,7 @@ import {FeedNotificationComponent} from "./feeds/feed-notification/feed-notifica
 import {ListDataspaceComponent} from "./lists/list-dataspace/list-dataspace.component";
 import {ListProfileComponent} from "./lists/list-profile/list-profile.component";
 import {CardDataspaceComponent} from "./cards/card-dataspace/card-dataspace.component";
+import {FeedThreadComponent} from "./feeds/feed-thread/feed-thread.component";
 
 const defaultActions: IAction[] =
   [
@@ -298,6 +299,7 @@ const appRoutes: Routes = [
     ListDataspaceComponent,
     ListProfileComponent,
     CardDataspaceComponent,
+    FeedThreadComponent,
   ],
   imports: [
     RouterModule.forRoot(
