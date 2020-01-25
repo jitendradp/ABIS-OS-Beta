@@ -10,8 +10,8 @@
         <mat-card-title>{{creator}}</mat-card-title>
         <mat-card-subtitle>{{createdAt}}</mat-card-subtitle>
       </mat-card-header>
-      <mat-card-content style="height: 56px;">
-        <span class="limitRows">{{message}}</span>
+      <mat-card-content class="limitRows">
+        {{message}}
       </mat-card-content>
       <img mat-card-image class="postPicture" src="{{picturePost}}">
       <mat-card-actions>
@@ -37,15 +37,10 @@
         </mat-grid-list>
       </mat-card-actions>
     </div>
-    <div *ngIf="!collapsedSplit" fxFlex="50" fxFlex.gt-md="30">
-      <mat-card class="splitMessage">
-        <app-content>
-          <app-feed-thread>
-          </app-feed-thread>
-          <app-whitespace></app-whitespace>
-          <app-input [appearance]="'outline'" [placeholder]="'Write your comment...'"></app-input>
-        </app-content>
-      </mat-card>
-    </div>
+    <mat-card-content class="splitMessage" *ngIf="!collapsedSplit" fxFlex="50" fxFlex.gt-md="50">
+      <app-content>
+        <app-feed-thread></app-feed-thread>
+      </app-content>
+    </mat-card-content>
   </div>
 </mat-card>

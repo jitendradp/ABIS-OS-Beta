@@ -1,7 +1,16 @@
 <!-- Create a card-thread component of that -->
-<div class="threadMessages">
-  <mat-card *ngFor="let post of posts" style="border-radius: 0; box-shadow: none">
-    <p>{{post.creator}}</p>
-    <small>{{post.message}}</small>
-  </mat-card>
-</div>
+<mat-card class="threadWrapper">
+  <mat-card-title>Thread</mat-card-title>
+  <mat-card-content class="threadMessagesList">
+    <mat-card class="threadMessage" *ngFor="let post of posts">
+      <mat-card-header>
+        <app-avatar mat-card-avatar [url]="post.pictureCreator"></app-avatar>
+        <mat-card-title>{{post.creator}}</mat-card-title>
+        <mat-card-subtitle>{{post.createdAt}}</mat-card-subtitle>
+      </mat-card-header>
+      <app-whitespace></app-whitespace>
+      <mat-card-content>{{post.message}}</mat-card-content>
+    </mat-card>
+  </mat-card-content>
+  <app-input [appearance]="'outline'" [placeholder]="'Write your comment...'"></app-input>
+</mat-card>
