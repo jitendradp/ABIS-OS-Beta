@@ -30,17 +30,13 @@
 </div>
 
 <div *ngIf="onChatHeader">
-  <div>
-    <mat-icon>lock</mat-icon>
-    chaos
-  </div>
   <div class="subtitle">
     <mat-icon class="chatHeaderIcon">star_border</mat-icon>
     <span class="extendedIconLabelSpacing">|</span>
     <mat-icon class="chatHeaderIcon">person_outline</mat-icon>
-    <span class="iconLabelSpacing">{{channelService.channelInformation.members_count}}</span>
-    <span class="extendedIconLabelSpacing">|</span>
-    <span class="iconLabelSpacing">{{channelService.channelInformation.description}}</span>
+    <span class="iconLabelSpacing">{{membersCount}}</span>
+    <span class="extendedIconLabelSpacing" fxHide fxShow.gt-sm>|</span>
+    <span class="iconLabelSpacing" fxHide fxShow.gt-sm>{{description}}</span>
   </div>
 </div>
 

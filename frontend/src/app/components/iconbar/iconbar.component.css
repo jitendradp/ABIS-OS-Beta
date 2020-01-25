@@ -6,9 +6,9 @@
 
 .subtitle {
   font-size: 14px;
-  line-height: 23px;
   padding-top: 4px;
   padding-left: 4px;
+  margin-top: -18px;
 }
 
 .chatHeaderIcon {
