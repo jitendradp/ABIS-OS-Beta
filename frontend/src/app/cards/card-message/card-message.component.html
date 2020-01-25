@@ -37,7 +37,7 @@
         </mat-grid-list>
       </mat-card-actions>
     </div>
-      <mat-divider [vertical]="true"></mat-divider>
+    <div *ngIf="!collapsedSplit" fxFlex="50" fxFlex.gt-md="30">
       <mat-card class="splitMessage">
         <app-content>
           <app-feed-thread>
