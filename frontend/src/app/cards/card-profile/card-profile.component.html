@@ -1,26 +1,24 @@
 <!-- might be the same such as the card contact rethink about -->
 <mat-card *ngIf="onMenu" class="embeddableProfile">
-  <app-content>
-    <mat-card-header style="padding-left: 16px; padding-right: 16px">
-      <app-avatar mat-card-avatar [url]="profileService.profileInformation.pictureAvatar"></app-avatar>
-      <mat-card-title>
-        {{userService.userInformation.firstName}}&nbsp;{{userService.userInformation.lastName}}
-      </mat-card-title>
-      <mat-card-subtitle>
-        @{{profileService.profileInformation.name}}
-      </mat-card-subtitle>
-      <span class="fill-remaining-space"></span>
-      <button mat-icon-button (click)="collapsed = !collapsed">
-        <mat-icon *ngIf="!collapsed">arrow_drop_down</mat-icon>
-        <mat-icon *ngIf="collapsed">arrow_drop_up</mat-icon>
-      </button>
-    </mat-card-header>
-    <mat-divider></mat-divider>
-  </app-content>
-  <mat-card class="embeddableDataspace">
+  <mat-card-header class="profileHeader">
+    <app-avatar mat-card-avatar [url]="profileService.profileInformation.pictureAvatar"></app-avatar>
+    <mat-card-title>
+      {{userService.userInformation.firstName}}&nbsp;{{userService.userInformation.lastName}}
+    </mat-card-title>
+    <mat-card-subtitle style="color: whitesmoke">
+      @{{profileService.profileInformation.name}}
+    </mat-card-subtitle>
+    <span class="fill-remaining-space"></span>
+    <button mat-icon-button (click)="collapsed = !collapsed">
+      <mat-icon *ngIf="!collapsed">arrow_drop_down</mat-icon>
+      <mat-icon *ngIf="collapsed">arrow_drop_up</mat-icon>
+    </button>
+  </mat-card-header>
+  <mat-divider></mat-divider>
+  <mat-card class="currentDataspace">
     <mat-card-header>
       <mat-card-title>
-        Team DBI
+        Private Vault
       </mat-card-title>
       <mat-card-subtitle>
         Dataspace (3.87 of 20 GB)
@@ -34,10 +32,10 @@
       </mat-menu>
     </mat-card-header>
   </mat-card>
-  <!-- show/hide button when user is not logged in -->
+  <!-- show/hide button when user is not logged in
   <div (click)="close()">
     <app-button [lessStyle]="true" [link]='"/"' [text]="'Sign In / Register'"></app-button>
-  </div>
+  </div>-->
   <mat-card-content *ngIf="!collapsed">
     <ng-content></ng-content>
   </mat-card-content>
