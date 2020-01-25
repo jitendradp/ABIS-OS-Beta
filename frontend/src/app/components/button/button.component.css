@@ -10,7 +10,8 @@
 }
 
 .maxButtonClean {
-  background: #204AAB;
+  /*background: #204AAB;*/
+  background: #ffa82e;
   width: 100%;
   color: white;
   border-radius: 0;

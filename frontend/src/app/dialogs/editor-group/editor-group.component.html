@@ -30,10 +30,11 @@
     <form [formGroup]="secondFormGroup">
       <ng-template matStepLabel>Add details</ng-template>
       <!-- todo add chips with autocomplete -->
-      <app-list-chip></app-list-chip>
+      <app-list-chip [placeholder]="'Add tags...'"></app-list-chip>
       <mat-form-field class="fullWidth">
-        <input matInput type="text" placeholder="Group address" required
+        <input matInput type="text" placeholder="Address" required
                formControlName="secondCtrl">
+        <mat-hint>Where is your group located?</mat-hint>
       </mat-form-field>
       <app-content>
         <button mat-button>Upload Logo</button>

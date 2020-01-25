@@ -1,14 +1,20 @@
+.profileHeader {
+  padding: 16px 16px 8px;
+  background: #333;
+  color: white;
+}
+
 .embeddableProfile {
   border-radius: 0;
   box-shadow: none;
   padding: unset;
 }
 
-.embeddableDataspace {
+.currentDataspace {
   border-radius: 0;
-  box-shadow: none;
-  height: 42px;
-  padding-top: unset;
+  padding-top: 8px;
+  box-shadow: unset;
+  height: 40px;
 }
 
 .profileCard {

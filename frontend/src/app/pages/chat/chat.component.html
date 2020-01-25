@@ -2,12 +2,19 @@
      fxLayout.lt-sm="column"
      fxLayoutGap="0px"
      fxLayoutAlign="left stretch">
-  <mat-card class="chatColumn" fxFlex="25" fxFlex.gt-md="27">
+  <mat-card class="chatColumn" fxFlex="25" fxFlex.gt-md="20" fxFlex.lt-lg="35">
     <app-chat-navigation></app-chat-navigation>
   </mat-card>
-  <mat-card class="chatColumn" fxFlex="75" fxFlex.gt-md="73">
-
+  <mat-card class="chatColumn" fxFlex="75" fxFlex.gt-md="80" fxFlex.lt-lg="65">
     <mat-card class="chatContent">
+      <mat-card-header class="chatContentHeader">
+        <mat-card-title style="margin-top: 3px">Chaos</mat-card-title>
+        <mat-card-subtitle>
+          <app-iconbar [onChatHeader]="true" [description]="'Enter the void'" [membersCount]="893"></app-iconbar>
+        </mat-card-subtitle>
+        <span class="fill-remaining-space"></span>
+        <app-list-member></app-list-member>
+      </mat-card-header>
       <app-feed-message></app-feed-message>
     </mat-card>
     <mat-card class="chatInputWrapper">
