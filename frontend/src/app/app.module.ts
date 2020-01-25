@@ -94,7 +94,7 @@ import {ListGroupComponent} from "./lists/list-group/list-group.component";
 import {ListContactComponent} from "./lists/list-contact/list-contact.component";
 import {AvatarComponent} from "./components/avatar/avatar.component";
 import {ListChipComponent} from "./lists/list-chip/list-chip.component";
-import {ChatComponent} from "./pages/chat/chat.component";
+import {ChatComponent} from "./widgets/chat/chat.component";
 import {ResetPasswordComponent} from "./pages/system/reset-password/reset-password.component";
 import {ListMemberComponent} from "./lists/list-member/list-member.component";
 import {FeedNotificationComponent} from "./feeds/feed-notification/feed-notification.component";
@@ -223,12 +223,6 @@ const appRoutes: Routes = [
   {
     path: 'settings', component: SettingsComponent, data: {
       "title": "Settings",
-      "actions": defaultActions
-    }
-  },
-  {
-    path: 'chat', component: ChatComponent, data: {
-      "title": "Chat",
       "actions": defaultActions
     }
   },

@@ -7,6 +7,15 @@
   min-height: 350px;
 }
 
+.threadMessagesList::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.threadMessagesList::-webkit-scrollbar {
+  width: 8px;
+  background: #c2c2c2;
+}
+
 .sent {
   float: right;
 }
