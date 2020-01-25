@@ -25,4 +25,7 @@ export class CardMessageComponent {
   @Input()
   picturePost: string;
 
+  @Input()
+  collapsedSplit: boolean;
+
 }

@@ -3,7 +3,7 @@
        fxLayout.lt-sm="column"
        fxLayoutGap="0px"
        fxLayoutAlign="left stretch">
-    <div fxFlex="50" fxFlex.gt-md="70">
+    <div fxFlex>
       <mat-card-header>
         <img mat-card-avatar src="{{pictureCreator}}"
              onError="this.src='./assets/error-images/picture.png';">
@@ -23,7 +23,7 @@
             <small>89</small>
           </mat-grid-tile>
           <mat-grid-tile>
-            <button mat-icon-button>
+            <button mat-icon-button (click)="collapsedSplit = !collapsedSplit">
               <mat-icon matTooltip="Comment">comment</mat-icon>
             </button>
             <small>284</small>
@@ -37,9 +37,14 @@
         </mat-grid-list>
       </mat-card-actions>
     </div>
-    <div fxFlex="50" fxFlex.gt-md="30">
+      <mat-divider [vertical]="true"></mat-divider>
       <mat-card class="splitMessage">
-        <app-feed-thread></app-feed-thread>
+        <app-content>
+          <app-feed-thread>
+          </app-feed-thread>
+          <app-whitespace></app-whitespace>
+          <app-input [appearance]="'outline'" [placeholder]="'Write your comment...'"></app-input>
+        </app-content>
       </mat-card>
     </div>
   </div>
