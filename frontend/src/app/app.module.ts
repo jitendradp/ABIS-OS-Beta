@@ -106,6 +106,14 @@ import {ListProfileComponent} from "./lists/list-profile/list-profile.component"
 import {CardDataspaceComponent} from "./cards/card-dataspace/card-dataspace.component";
 import {FeedThreadComponent} from "./feeds/feed-thread/feed-thread.component";
 import {CardChatComponent} from "./cards/card-chat/card-chat.component";
+import {CalendarComponent} from "./pages/calendar/calendar.component";
+import {CalendarModule, DateAdapter} from 'angular-calendar';
+import {adapterFactory} from 'angular-calendar/date-adapters/moment';
+import * as moment from 'moment';
+
+export function momentAdapterFactory() {
+  return adapterFactory(moment);
+};
 
 const defaultActions: IAction[] =
   [
@@ -225,6 +233,12 @@ const appRoutes: Routes = [
       "actions": defaultActions
     }
   },
+  {
+    path: 'calendar', component: CalendarComponent, data: {
+      "title": "Calendar",
+      "actions": defaultActions
+    }
+  },
 ];
 
 
@@ -288,6 +302,7 @@ const appRoutes: Routes = [
     CardDataspaceComponent,
     FeedThreadComponent,
     CardChatComponent,
+    CalendarComponent,
   ],
   imports: [
     RouterModule.forRoot(
@@ -340,7 +355,8 @@ const appRoutes: Routes = [
     NgxMapboxGLModule.withConfig({
       accessToken: 'pk.eyJ1IjoiZGF2ZXdhdmVhYmlzY2xvdWQiLCJhIjoiY2s0eXYycjhzMDRhczNkbXF6dzNkMzlzayJ9.nyAc-uTfNfDTF0lxmZ3a3Q', // Optionnal, can also be set per map (accessToken input of mgl-map)
       geocoderAccessToken: 'pk.eyJ1IjoiZGF2ZXdhdmVhYmlzY2xvdWQiLCJhIjoiY2s0eXYycjhzMDRhczNkbXF6dzNkMzlzayJ9.nyAc-uTfNfDTF0lxmZ3a3Q' // Optionnal, specify if different from the map access token, can also be set per mgl-geocoder (accessToken input of mgl-geocoder)
-    })
+    }),
+    CalendarModule.forRoot({provide: DateAdapter, useFactory: momentAdapterFactory})
   ],
   providers: [ProfileService],
   entryComponents: [SearchComponent],
