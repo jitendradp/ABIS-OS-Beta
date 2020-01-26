@@ -110,6 +110,7 @@ import {CalendarComponent} from "./pages/calendar/calendar.component";
 import {CalendarModule, DateAdapter} from 'angular-calendar';
 import {adapterFactory} from 'angular-calendar/date-adapters/moment';
 import * as moment from 'moment';
+import {CalendarDaysComponent} from "./widgets/calendar/calendar-days/calendar-days.component";
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -303,6 +304,7 @@ const appRoutes: Routes = [
     FeedThreadComponent,
     CardChatComponent,
     CalendarComponent,
+    CalendarDaysComponent,
   ],
   imports: [
     RouterModule.forRoot(
