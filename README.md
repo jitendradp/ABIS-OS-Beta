@@ -1,6 +1,3 @@
-# ABIS OS Alpha SDK
-UI Demo: https://dbidev.github.io/
-
 # Overview
 The repository is divided in three folders:
 * /prisma
