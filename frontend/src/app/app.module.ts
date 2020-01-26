@@ -105,6 +105,7 @@ import {ListDataspaceComponent} from "./lists/list-dataspace/list-dataspace.comp
 import {ListProfileComponent} from "./lists/list-profile/list-profile.component";
 import {CardDataspaceComponent} from "./cards/card-dataspace/card-dataspace.component";
 import {FeedThreadComponent} from "./feeds/feed-thread/feed-thread.component";
+import {CardChatComponent} from "./cards/card-chat/card-chat.component";
 
 const defaultActions: IAction[] =
   [
@@ -286,6 +287,7 @@ const appRoutes: Routes = [
     ListProfileComponent,
     CardDataspaceComponent,
     FeedThreadComponent,
+    CardChatComponent,
   ],
   imports: [
     RouterModule.forRoot(

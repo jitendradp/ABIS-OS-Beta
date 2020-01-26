@@ -6,28 +6,8 @@
     <app-chat-navigation></app-chat-navigation>
   </mat-card>
   <mat-card class="chatColumn" fxFlex.md="75" fxFlex="67" fxShow fxHide.sm>
-    <mat-card class="chatContent">
-      <mat-card-header class="chatContentHeader">
-        <app-logo class="chatGroupLogo" mat-card-avatar
-                  [url]="'https://seeklogo.com/images/E/E_ON-logo-30694E2407-seeklogo.com.png'"></app-logo>
-        <mat-card-title class="chatGroupHeaderTitle">E.ON Energie Solar<span>&nbsp;>&nbsp;</span>Chaos</mat-card-title>
-        <mat-card-subtitle class="chatGroupHeaderSubtitle">
-          <app-iconbar [onChatHeader]="true" [description]="'Enter the void'" [membersCount]="893"></app-iconbar>
-        </mat-card-subtitle>
-        <span class="fill-remaining-space"></span>
-        <app-list-member></app-list-member>
-      </mat-card-header>
-      <app-feed-message></app-feed-message>
-    </mat-card>
-    <mat-card class="chatInputWrapper">
-      <div class="messageInput">
-        <mat-form-field appearance="none" class="messageInputTextarea">
-          <textarea style="color: white;" [matTextareaAutosize] matInput placeholder="Write your message..."></textarea>
-        </mat-form-field>
-        <button mat-flat-button class="messageInputButton" color="primary">
-          <mat-icon>send</mat-icon>
-        </button>
-      </div>
-    </mat-card>
+    <app-card-chat [chatGroupDescription]="'Welcome to the future'" [chatGroupTitle]="'E.ON Solar'"
+                   [chatGroupSubtitle]="'Customer Support'" [chatGroupMembersCount]="345"
+                   [chatGroupLogo]="'https://seeklogo.com/images/E/E_ON-logo-30694E2407-seeklogo.com.png'"></app-card-chat>
   </mat-card>
 </div>

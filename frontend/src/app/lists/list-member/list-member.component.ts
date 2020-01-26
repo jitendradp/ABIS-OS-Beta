@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 
-export interface profileItem {
+export interface Profile {
   name: string;
   lastSeen: string;
   picture: string;
@@ -15,7 +15,7 @@ export interface profileItem {
 
 export class ListMemberComponent {
 
-  groupMembers: profileItem [] = [
+  participants: Profile [] = [
     {
       name: 'John Doe',
       lastSeen: 'Friday, 2020-01-01 9:15 AM',
