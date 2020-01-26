@@ -1,5 +1,4 @@
-# ABIS OS Alpha SDK
-UI Demo: https://dbidev.github.io/
+# ABIS OS BETA
 
 # Overview
 The repository is divided in three folders:
