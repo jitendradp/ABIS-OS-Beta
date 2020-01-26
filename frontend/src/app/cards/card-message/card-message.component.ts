@@ -28,4 +28,13 @@ export class CardMessageComponent {
   @Input()
   collapsedSplit: boolean;
 
+  @Input()
+  commentsCount: number;
+
+  @Input()
+  likesCount: number;
+
+  @Input()
+  sharesCount: number;
+
 }

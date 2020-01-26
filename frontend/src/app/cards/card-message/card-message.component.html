@@ -10,7 +10,7 @@
         <mat-card-title>{{creator}}</mat-card-title>
         <mat-card-subtitle>{{createdAt}}</mat-card-subtitle>
       </mat-card-header>
-      <mat-card-content class="limitRows">
+      <mat-card-content>
         {{message}}
       </mat-card-content>
       <img mat-card-image class="postPicture" src="{{picturePost}}">
@@ -20,19 +20,19 @@
             <button mat-icon-button>
               <mat-icon matTooltip="Like">thumb_up</mat-icon>
             </button>
-            <small>89</small>
+            <small>{{likesCount}}</small>
           </mat-grid-tile>
           <mat-grid-tile>
             <button mat-icon-button (click)="collapsedSplit = !collapsedSplit">
               <mat-icon matTooltip="Comment">comment</mat-icon>
             </button>
-            <small>284</small>
+            <small>{{commentsCount}}</small>
           </mat-grid-tile>
           <mat-grid-tile>
             <button mat-icon-button>
               <mat-icon matTooltip="Share">share</mat-icon>
             </button>
-            <small>38</small>
+            <small>{{sharesCount}}</small>
           </mat-grid-tile>
         </mat-grid-list>
       </mat-card-actions>

@@ -6,12 +6,3 @@
   object-fit: cover;
   height: 300px;
 }
-
-
-
-.limitRows {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-}
