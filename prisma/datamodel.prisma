@@ -1,3 +1,4 @@
+# [@Daniel: Changed from creator to owner why? Because the creator could be retrieved from the membership (1 st member of group) and the owner could be the last person in the group so it is transferable, like in whats app groups]
 # Request for comments:
 #
 # ***Focus of this schema:***
@@ -78,7 +79,7 @@ type Profile {
 	id: ID! @id @unique
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime @updatedAt
-	creator: User!                                                              # The user that created that profile owns it
+	owner: User!                                                              # The user that created that profile owns it
 	name: String!											                    # The profile's name that is displayed in groups
 	timezone: String										                    # The profile's local timezone (can override the user's timezone or is null)
 	status: ProfileStatus!                                                      # Every profile has a current availability status for e.g. the chat
@@ -121,7 +122,7 @@ type Group {
 	id: ID! @id @unique
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime @updatedAt
-	creator: Profile!										# The host profile of this group. He is the group admin.
+	owner: Profile!										# The host profile of this group. He is the group admin.
     type: GroupType!									    # Different types of groups
 	name: String!											# The name of the group
 	title: String											# An optional, prominent short title, what the group is about
@@ -153,7 +154,7 @@ type Membership {
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime @updatedAt
 	status: MembershipStatus!                                   # A value that indicates if the membership is blocked (profile is banned from group), yet to be approved (PENDING), public, active or inactive (profile left the group)
-	creator: Profile! @relation(name: "Creator", link: TABLE)   # A profile that has invited this profile to a group
+	owner: Profile! @relation(name: "Creator", link: TABLE)   # A profile that has invited this profile to a group
 	group: Group!											    # The group where the profile is a member of
 	member: Profile! @relation(name: "Member", link: TABLE)     # The profile either bot or human
 	showHistory: Boolean!									    # The profile can see the full history. If false, the profile can only see entries that have been created after it joined.
@@ -177,7 +178,7 @@ type Entry {
  	type: EntryType!                                        # Indicates the purpose of this event
     eventId: String                                         # The "id" of the Event that 'caused' this entry.
     appId: String                                           # The "id" of the App that should be used to interpret and/or write this entry (null = system entries). Can be further specified by a Tag. [@Daniel: Where does the information for this app id comes from?]
- 	creator: Profile!                                       # The profile that created this entry.
+ 	owner: Profile!                                       # The profile that created this entry.
  	name: String!                                           # A human readable name to indicates what kind of entry it is
  	content: Json											# The content of the entry. Further specified by "type".
  	location: Location!                                     # The location where the event has occurred [@Daniel: Where can this information be retrieved from?]
@@ -209,7 +210,7 @@ enum EntryType {
 type Tag {
    	id: ID! @id @unique
    	createdAt: DateTime! @createdAt
-	creator: Profile!										# The profile that created the tag
+	owner: Profile!										# The profile that created the tag
 	type: String!                                           # The tag's type (e.g. location-accessibility:wheelchair where "location-accessibility" is the type and "wheelchair" is the tag content).
 	                                                        #  * There can be multiple tags of the same "type"
 	                                                        #  * There can be more than one tag with the same "type" and "value" from different "owner"s.
@@ -221,7 +222,7 @@ type Location {
 	id: ID! @id @unique
 	createdAt: DateTime! @createdAt                         # Every location was uniquely tagged by someone
 	updatedAt: DateTime! @updatedAt                         # The information of that location has been changed
-	creator: Profile!										# The profile that marked that location [@Daniel: Then is is possible that we have more than one creator for the same location!]
+	owner: Profile!										# The profile that marked that location [@Daniel: Then is is possible that we have more than one owner for the same location!]
 	type: LocationType!										# OSM_NODE, GEO_POINT or ADDRESS
 	name: String										    # Locations can have names ("Mom", "Home", "John's crib" or "Henry's Burgers"..)
 	tags: [Tag!]!											# Can e.g. be pre-defined location-category tags or user created ones
