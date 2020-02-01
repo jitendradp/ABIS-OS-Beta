@@ -1,5 +1,3 @@
-# ABIS OS BETA
-
 # Overview
 The repository is divided in three folders:
 * /prisma
