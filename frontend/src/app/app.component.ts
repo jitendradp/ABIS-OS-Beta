@@ -169,7 +169,7 @@ export class AppComponent {
 
   public openGroupCreateDialog(): void {
     const dialogRef = this._dialog.open(EditorGroupComponent, {
-      width: '50%',
+      width: '30%',
       minWidth: '300px'
     });
 

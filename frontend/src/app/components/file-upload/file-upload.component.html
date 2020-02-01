@@ -1,0 +1,2 @@
+<input #picInput hidden="true" type="file" onclick="this.value=null" (change)="picInputChange($event)" accept="image/*" />
+<button mat-flat-button color="primary" (click)="picInput.click()">{{buttonTitle}}</button>

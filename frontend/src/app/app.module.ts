@@ -111,6 +111,7 @@ import {CalendarModule, DateAdapter} from 'angular-calendar';
 import {adapterFactory} from 'angular-calendar/date-adapters/moment';
 import * as moment from 'moment';
 import {CalendarDaysComponent} from "./widgets/calendar/calendar-days/calendar-days.component";
+import {FileUploadComponent} from "./components/file-upload/file-upload.component";
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -305,6 +306,7 @@ const appRoutes: Routes = [
     CardChatComponent,
     CalendarComponent,
     CalendarDaysComponent,
+    FileUploadComponent,
   ],
   imports: [
     RouterModule.forRoot(

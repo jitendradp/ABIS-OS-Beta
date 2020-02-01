@@ -8,19 +8,19 @@
         <input matInput type="text" placeholder="Group name" required formControlName="firstCtrl">
       </mat-form-field>
       <mat-form-field class="fullWidth">
-        <input matInput type="email" placeholder="Description">
+        <input matInput type="text" placeholder="Description">
+        <mat-hint>Add a short description about your group.</mat-hint>
       </mat-form-field>
-      <div class="fullWidth">
-        <mat-radio-group aria-label="Select an option" [required]="true">
-          <mat-radio-button class="radioSpacing" [checked]="true" [value]="isPublic">Private room</mat-radio-button>
-          <mat-radio-button class="radioSpacing" [value]="!isPublic">Public room</mat-radio-button>
-        </mat-radio-group>
-      </div>
-      <!--todo show different hint depending on the current selected radio button -->
-      <app-content>
-        <mat-hint *ngIf="isPublic" align="start">Anybody can view and join public rooms.</mat-hint>
-        <mat-hint *ngIf="!isPublic" align="start">Private rooms are only for invited members.</mat-hint>
-      </app-content>
+      <app-whitespace [height]="'32px'"></app-whitespace>
+      <mat-radio-group class="fullWidth" aria-label="Select an option" [required]="true">
+        <mat-radio-button [checked]="true" [value]="isPublic"
+                          matTooltip="Private rooms are only for invited members.">Private room
+        </mat-radio-button>
+        <mat-radio-button class="radioSpacing" [value]="!isPublic"
+                          matTooltip="Anybody can view and join public rooms.">Public room
+        </mat-radio-button>
+      </mat-radio-group>
+      <app-whitespace></app-whitespace>
       <app-content>
         <button mat-button matStepperNext class="maxButton">Next</button>
       </app-content>
@@ -30,14 +30,14 @@
     <form [formGroup]="secondFormGroup">
       <ng-template matStepLabel>Add details</ng-template>
       <!-- todo add chips with autocomplete -->
-      <app-list-chip [placeholder]="'Add tags...'"></app-list-chip>
+      <app-list-chip [placeholder]="'Tags...'"></app-list-chip>
       <mat-form-field class="fullWidth">
         <input matInput type="text" placeholder="Address" required
                formControlName="secondCtrl">
         <mat-hint>Where is your group located?</mat-hint>
       </mat-form-field>
       <app-content>
-        <button mat-button>Upload Logo</button>
+        <app-file-upload></app-file-upload>
       </app-content>
       <app-content>
         <button mat-button routerLink="/chat" class="maxButton">Complete</button>

@@ -67,7 +67,9 @@
             <input matInput type="email" placeholder="Your slogan"
                    formControlName="slogan" maxlength="35">
           </mat-form-field>
-          <button mat-button>Upload Picture</button>
+          <app-content>
+            <app-file-upload></app-file-upload>
+          </app-content>
           <app-content>
             <button [disabled]="!step3Data || !step3Data.name" mat-button matStepperNext class="maxButton"
                     (click)="submitStep3($event)">Complete
