@@ -88,7 +88,6 @@ import {ChartLineComponent} from "./components/charts/chart-line/chart-line.comp
 import {ChartMapComponent} from "./components/charts/chart-map/chart-map.component";
 import {ChartSankeyComponent} from "./components/charts/chart-sankey/chart-sankey.component";
 import {ChartTableComponent} from "./components/charts/chart-table/chart-table.component";
-import {SettingsComponent} from "./pages/system/settings/settings.component";
 import {MaterialElevationDirective} from "./directives/material-elevation.directive";
 import {ChatNavigationComponent} from "./navigation/chat-navigation/chat-navigation.component";
 import {ChipComponent} from "./components/chip/chip.component";
@@ -113,6 +112,7 @@ import * as moment from 'moment';
 import {CalendarDaysComponent} from "./widgets/calendar/calendar-days/calendar-days.component";
 import {FileUploadComponent} from "./components/file-upload/file-upload.component";
 import {ListChatComponent} from "./lists/list-chat/list-chat.component";
+import {EditorProfileComponent} from "./dialogs/editor-profile/editor-profile.component";
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -225,12 +225,6 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'settings', component: SettingsComponent, data: {
-      "title": "Settings",
-      "actions": defaultActions
-    }
-  },
-  {
     path: 'group-list', component: ListGroupComponent, data: {
       "title": "Groups",
       "actions": defaultActions
@@ -287,7 +281,6 @@ const appRoutes: Routes = [
     ChartMapComponent,
     ChartSankeyComponent,
     ChartTableComponent,
-    SettingsComponent,
     MaterialElevationDirective,
     ChatNavigationComponent,
     ChatComponent,
@@ -309,6 +302,7 @@ const appRoutes: Routes = [
     CalendarDaysComponent,
     FileUploadComponent,
     ListChatComponent,
+    EditorProfileComponent,
   ],
   imports: [
     RouterModule.forRoot(
