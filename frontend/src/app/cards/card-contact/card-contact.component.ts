@@ -13,4 +13,7 @@ export class CardContactComponent {
   @Input()
   contactFullName: string;
 
+  @Input()
+  subtitle: string;
+
 }

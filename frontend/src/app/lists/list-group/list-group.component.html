@@ -53,14 +53,15 @@
   <mat-nav-list>
     <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
       <mat-tree-node *matTreeNodeDef="let node;">
-        <button mat-icon-button disabled></button>
-        <mat-icon>{{node.icon}}</mat-icon>
-        {{node.name}}
+        <a mat-list-item>
+          <mat-icon>{{node.icon}}</mat-icon>&nbsp;
+          <span>{{node.name}}</span>
+        </a>
       </mat-tree-node>
       <mat-tree-node *matTreeNodeDef="let node; when: hasChild">
         <a mat-list-item matTreeNodeToggle>
-          <app-logo [url]="node.logo"></app-logo>
-          <span style="padding-left: 8px">{{node.name}}</span>
+          <app-logo [url]="node.logo"></app-logo>&nbsp;
+          <span>{{node.name}}</span>
           <span class="fill-remaining-space"></span>
           <!-- todo the click on the menu of the group opens the tab this has to be preffented -->
           <button mat-icon-button [matMenuTriggerFor]="menu">

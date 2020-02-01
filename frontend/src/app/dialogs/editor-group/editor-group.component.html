@@ -5,7 +5,7 @@
     <form [formGroup]="firstFormGroup">
       <ng-template matStepLabel>Create</ng-template>
       <mat-form-field class="fullWidth">
-        <input matInput type="text" placeholder="Group name" required formControlName="firstCtrl">
+        <input matInput type="text" placeholder="Group name" required formControlName="firstCtrl" maxlength="35">
       </mat-form-field>
       <mat-form-field class="fullWidth">
         <input matInput type="text" placeholder="Description">
@@ -33,7 +33,7 @@
       <app-list-chip [placeholder]="'Tags...'"></app-list-chip>
       <mat-form-field class="fullWidth">
         <input matInput type="text" placeholder="Address" required
-               formControlName="secondCtrl">
+               formControlName="secondCtrl" maxlength="65">
         <mat-hint>Where is your group located?</mat-hint>
       </mat-form-field>
       <app-content>
