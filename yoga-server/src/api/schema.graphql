@@ -557,7 +557,7 @@ type Query {
     findRooms(csrfToken:String! searchText:String) : [Room!]!
 
     # Finds all Members of the specified Room if the session's Agent has access to it.
-    findMembers(csrfToken:String! roomId:ID! searchText:String) : [Membership!]!
+    findMemberships(csrfToken:String! roomId:ID! searchText:String) : [Membership!]!
 
     # Lists the Entries of a specified Group (any group: Stash, Channel or Room).
     # An optional from- and to-date filter can be specified for temporal pagination.
