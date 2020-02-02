@@ -339,6 +339,27 @@ type GeoPoint implements Location {
 	geoPointRadiusMeter: Float!
 }
 
+type Account {
+    id: ID!
+    type: UserType!
+
+    createdAt: DateTime!
+    updatedAt: DateTime
+
+    location: Location
+    timezone: String!
+
+    email: String!
+
+    # Only if "type == UserType.Person":
+    personFirstName: String
+    personLastName: String
+    personPhone: String
+    personMobilePhone: String
+
+    # Only if "type == UserType.Organization":
+    organizationName: String
+}
 
 #
 # Mutation-Types
