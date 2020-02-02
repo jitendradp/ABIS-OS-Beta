@@ -56,7 +56,7 @@ type Group {
     id: ID! @id @unique
     type: GroupType!
 
-    # owners cannot ne members in the groups they own
+    # owners cannot be members in the groups they own
     owner: Agent!
 
     createdBy: ID!
@@ -154,6 +154,7 @@ type Agent {
     # Only when "type == AgentType.Profile":
     profileSlogan: String
     profileAvatar: String
+    profileJobTitle: String
     profileBanner: String
     profileType: ProfileType
 
@@ -219,12 +220,12 @@ type User {
     personMobilePhone: String
 
     # Only if "type == UserType.Institution":
-    institutionName: String
+    organizationName: String
 }
 
 enum UserType {
     Person,
-    Institution
+    Organization
 }
 
 type Session {
