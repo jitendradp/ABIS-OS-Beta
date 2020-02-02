@@ -28,7 +28,6 @@ export class ButtonComponent {
   @Input()
   lessStyle: boolean = false;
 
-
   @Output()
   click: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
 

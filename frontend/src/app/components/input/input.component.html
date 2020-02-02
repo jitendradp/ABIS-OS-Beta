@@ -2,7 +2,8 @@
 <form>
   <mat-form-field appearance="{{appearance}}" style="width: 100%; height: 100%">
     <input [style.color]="color" matInput type="{{type}}" placeholder="{{placeholder}}" value="{{inputValue}}">
-    <mat-icon *ngIf="showPlaceholderIconPrefix" matPrefix style="vertical-align: center">{{placeholderIconPrefix}}</mat-icon>
+    <mat-icon *ngIf="showPlaceholderIconPrefix" matPrefix style="vertical-align: center">{{placeholderIconPrefix}}
+    </mat-icon>
+    <mat-hint *ngIf="showHint" align="start">{{hint}}</mat-hint>
   </mat-form-field>
-  <mat-hint *ngIf="showHint" align="start">{{hint}}</mat-hint>
 </form>

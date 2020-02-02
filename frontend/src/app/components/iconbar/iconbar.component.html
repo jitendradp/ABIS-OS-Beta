@@ -13,13 +13,13 @@
 
 <div *ngIf="onMenu">
   <div class="subline"></div>
-  <mat-grid-list class="quickButtons" cols="2" rowHeight="53px">
-    <mat-grid-tile (click)="close()">
+  <mat-grid-list class="quickButtons" cols="1" rowHeight="53px">
+    <!--<mat-grid-tile (click)="close()">
       <button routerLink="settings" mat-button class="tileButton">
         <mat-icon>settings_applications</mat-icon>
         <span class="iconLabelSpacing">Settings</span>
       </button>
-    </mat-grid-tile>
+    </mat-grid-tile>-->
     <mat-grid-tile (click)="close()">
       <button routerLink="signin" mat-button class="tileButton">
         <mat-icon>power_settings_new</mat-icon>

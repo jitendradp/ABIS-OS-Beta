@@ -1,0 +1,46 @@
+<app-content>
+  <app-card-form [title]="'Edit user'">
+    <app-input
+      [type]="'text'"
+      [placeholder]="'First name'"
+      [inputValue]="">
+    </app-input>
+    <app-whitespace></app-whitespace>
+    <app-input
+      [type]="'text'"
+      [placeholder]="'Last name'"
+      [inputValue]="">
+    </app-input>
+  </app-card-form>
+</app-content>
+<app-content>
+  <app-card-form [title]="'Edit profile'">
+    <app-input
+      [type]="'text'"
+      [placeholder]="'Display name'"
+      [inputValue]=""
+      [showHint]="true"
+      [hint]="'How your name will show up in groups.'">
+    </app-input>
+    <app-whitespace></app-whitespace>
+    <app-input
+      [type]="'text'"
+      [placeholder]="'What I do'"
+      [inputValue]=""
+      [showHint]="true"
+      [hint]="'Let people know what you do.'">
+    </app-input>
+    <app-whitespace></app-whitespace>
+    <app-input
+      [type]="'text'"
+      [placeholder]="'Your slogan'"
+      [inputValue]="">
+    </app-input>
+    <app-whitespace></app-whitespace>
+    <app-input
+      [type]="'tel'"
+      [placeholder]="'Phone'"
+      [inputValue]="">
+    </app-input>
+  </app-card-form>
+</app-content>
