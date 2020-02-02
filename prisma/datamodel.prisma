@@ -219,7 +219,7 @@ type User {
     personPhone: String
     personMobilePhone: String
 
-    # Only if "type == UserType.Institution":
+    # Only if "type == UserType.Organization":
     organizationName: String
 }
 
