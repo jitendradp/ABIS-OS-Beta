@@ -1,4 +1,4 @@
-import {prisma, Profile, Session, User} from "../generated";
+import {prisma, Agent, Session, User} from "../../generated";
 
 export class CommonQueries {
 
@@ -6,23 +6,23 @@ export class CommonQueries {
         return await prisma.sessions({where:{user:{id:userId}, validTo_gt: new Date(), timedOut:null, loggedOut:null}});
     }
 
-    public static async findSession(csrfToken: string, authToken: string) : Promise<Session> {
-        const sessions = await prisma.sessions({where:{csrfToken, authToken, validTo_gt: new Date(), timedOut:null, loggedOut:null}});
+    public static async findSession(csrfToken: string, bearerToken: string) : Promise<Session> {
+        const sessions = await prisma.sessions({where:{csrfToken, bearerToken, validTo_gt: new Date(), timedOut:null, loggedOut:null}});
         if (sessions.length == 1) {
             return sessions[0];
         } else if (sessions.length > 1) {
-            throw new Error("There is more than one session for a csrfToken/authToken combination. Go, get a gun and shoot yourself!");
+            throw new Error("There is more than one session for a csrfToken/bearerToken combination. Go, get a gun and shoot yourself!");
         }
 
         return null;
     }
 
-    public static async findProfileBySession(csrfToken: string, authToken: string) : Promise<Profile> {
+    public static async findAgentBySession(csrfToken: string, authToken: string) : Promise<Agent> {
         const session = await this.findSession(csrfToken, authToken);
         if (!session){
             return null;
         }
-        return prisma.session({id:session.id}).lastUsedProfile();
+        return prisma.session({id:session.id}).agent();
     }
 
     public static async findUserBySession(csrfToken: string, authToken: string) : Promise<{session:Session, user:User}> {

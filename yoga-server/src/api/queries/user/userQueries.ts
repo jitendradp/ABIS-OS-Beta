@@ -7,9 +7,21 @@ export class UserQueries {
             id: sessionAndUser.user.id,
             createdAt: sessionAndUser.user.createdAt,
             email: sessionAndUser.user.email,
-            firstName: sessionAndUser.user.firstName,
-            lastName: sessionAndUser.user.lastName
+            firstName: sessionAndUser.user.personFirstName,
+            lastName: sessionAndUser.user.personLastName
         };
         return userInformation;
+    }
+
+    static myAccount(csrfToken: string, bearerToken: string) {
+        return undefined;
+    }
+
+    static myProfiles(csrfToken: string, bearerToken: string) {
+        return undefined;
+    }
+
+    static myServices(csrfToken: string, bearerToken: string) {
+        return undefined;
     }
 }
