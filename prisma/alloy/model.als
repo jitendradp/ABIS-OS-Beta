@@ -48,11 +48,10 @@ abstract sig Group {
 
 	fact "Es gibt keine Gruppe, die mehr als eine SingleMembership des selben Users enthält" {
 		no g: Group 						// Keine Gruppe
-		| some m, m': SingleMembership		// kann zwei SingleMemberships
+		| some disj m, m': SingleMembership		// kann zwei SingleMemberships
 		| m.member.owner = m'.member.owner	// des selben Benutzers
 	    && m in g.memberships				// enthalten
 		&& m' in g.memberships				// ..
-		&& not(m=m')
 	}
 
 	fact "Es gibt keine Gruppe, mit einer SingleMembership eines Users, wenn der User auch Owner der Gruppe ist" {
@@ -82,9 +81,8 @@ abstract sig Group {
 
 	fact "Es gibt keine Gruppe, die zwei Mitgliedschaften des selben Agents enthält" {
 		no g: Group
-		| some m, m': g.memberships
-		| not(m = m')
-		&& m.member = m'.member
+		| some disj m, m': g.memberships
+		| m.member = m'.member
 	}
 
 	//
@@ -143,10 +141,9 @@ sig Channel extends Group {
 
 	fact "Es gibt keine zwei Channels mit derselben owner/member-Kombination" {
 		/// Es gibt keine zwei Channels, mit demselben owner und mitglied
-		no c, c': Channel
+		no disj c, c': Channel
 		| some m, m': Membership
-		| not(c = c')
-		&& m in c.memberships
+		| m in c.memberships
 		&& m' in c'.memberships
 		&& c.owner = c'.owner
 		&& m.member = m'.member
