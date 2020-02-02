@@ -10,6 +10,23 @@ import {GroupQueries2} from "./api/queries/groups/groupQueries2";
 var cookie = require('cookie');
 
 const resolvers = {
+    // Resolvers for interface types
+    Location: {
+        __resolveType: (collection) => {
+            return false;
+        }
+    },
+    Agent: {
+        __resolveType: (collection) => {
+            return false;
+        }
+    },
+    Group: {
+        __resolveType: (collection) => {
+            return false;
+        }
+    },
+    // Query resolvers
     Query: {
         async myAccount(root, {csrfToken}, ctx) {
             return UserQueries.myAccount(csrfToken, ctx.bearerToken);
@@ -42,6 +59,7 @@ const resolvers = {
             return GroupQueries2.getEntries(csrfToken, ctx.bearerToken, groupId, from, to);
         }
     },
+    // Mutation resolvers
     Mutation: {
         async signup(root, {signupInput}) {
             if (signupInput.tyoe == "Person") {
