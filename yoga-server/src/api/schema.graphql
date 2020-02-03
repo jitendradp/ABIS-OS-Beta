@@ -18,7 +18,7 @@ type Tag {
     value: String!
 }
 
-type Taggregate {
+type TagAggregate {
     type: String!
     count: Integer!
 }
@@ -37,7 +37,7 @@ interface Location {
     name: String
 
     tags: [Tag!]!
-    taggregate:[Taggregate!]!       # Contains the tag-counts grouped by their type.
+    tagAggregate:[TagAggregate!]!       # Contains the tag-counts grouped by their type.
 }
 
 type OpenStreetMapNode implements Location {
@@ -54,7 +54,7 @@ type OpenStreetMapNode implements Location {
     name: String
 
     tags: [Tag!]!
-    taggregate:[Taggregate!]!       # Contains the tag-counts grouped by their type.
+    tagAggregate:[TagAggregate!]!       # Contains the tag-counts grouped by their type.
 
     osmNodeId:String!
 }
@@ -73,7 +73,7 @@ type Address implements Location {
     name: String
 
     tags: [Tag!]!
-    taggregate:[Taggregate!]!       # Contains the tag-counts grouped by their type.
+    tagAggregate:[TagAggregate!]!       # Contains the tag-counts grouped by their type.
 
     line1: String!
     line2: String
@@ -96,7 +96,7 @@ type GeoPoint implements Location {
     name: String
 
     tags: [Tag!]!
-    taggregate:[Taggregate!]!       # Contains the tag-counts grouped by their type.
+    tagAggregate:[TagAggregate!]!       # Contains the tag-counts grouped by their type.
 
     geoPointLatitude: Float!
     geoPointLongitude: Float!
@@ -288,7 +288,7 @@ type Room implements Group {
     memberships: [Membership!]!     # Empty when returned in searches.
 
     tags: [Tag!]!
-    taggregate:[Taggregate!]!       # Contains the tag-counts grouped by their type.
+    tagAggregate:[TagAggregate!]!       # Contains the tag-counts grouped by their type.
 }
 
 #
@@ -473,7 +473,7 @@ type Entry {
     contentEncoding: ContentEncoding
 
     tags: [Tag!]!
-    taggregate:[Taggregate!]!       # Contains the tag-counts grouped by their type.
+    tagAggregate:[TagAggregate!]!       # Contains the tag-counts grouped by their type.
 }
 
 enum EntryType {
