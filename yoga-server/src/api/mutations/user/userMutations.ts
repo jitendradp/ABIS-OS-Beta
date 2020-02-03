@@ -1,6 +1,5 @@
 import {
-    Location,
-    prisma, Session, SessionCreateInput, User
+    prisma, Session, User
 } from "../../../generated";
 import {Helpers} from "../../../helper/Helpers";
 import {ResponseDelay} from "../../../helper/ResponseDelay";
@@ -9,33 +8,6 @@ import {Request} from "express";
 import {config} from "../../../config";
 import {CommonQueries} from "../../queries/commonQueries";
 import {ActionResponse} from "../actionResponse";
-
-export type AddTagInput = {
-    type:string,
-    value:string
-};
-export type CreateLocationInput = {
-    type: string,
-    name: string,
-
-    // Only if "type == LocationType.OpenStreetMap":
-    osmNodeId?: string,
-
-    // Only if "type == LocationType.Address":
-    addressLine1?: string,
-    addressLine2?: string,
-    addressCity?: string,
-    addressZipCode?: string,
-    addressCountry?: string,
-
-    // Only if "type == LocationType.GeoPoint":
-    geoPointLatitude?: number,
-    geoPointLongitude?: number,
-    geoPointRadiusMeter?: number,
-
-    tags: [AddTagInput]
-};
-export type TokenPair = { bearerToken: string, csrfToken: string };
 
 export class UserMutations {
 
@@ -51,9 +23,15 @@ export class UserMutations {
         const delay = new ResponseDelay(config.auth.normalizedResponseTime);
         let actionResponse: ActionResponse = null;
 
-        const user = await prisma.user({email: email});
+        let user:User = null;
+        try {
+            user = await prisma.user({email: email});
+        } catch (e) {
+            actionResponse = Helpers.softAbortInvalidRequest("Couldn't find a user during login for the following reason: " + JSON.stringify(e));
+        }
+
         if (!user) {
-            actionResponse = this.softAbortInvalidRequest("User " + email + " is unknown.");
+            actionResponse = Helpers.softAbortInvalidRequest("User " + email + " is unknown.");
         }
 
         if (!actionResponse && user.challenge) {
@@ -61,12 +39,16 @@ export class UserMutations {
             // Send another email verification message to remind the user
             // noinspection ES6MissingAwait Should run in async fire and forget style so that it doesn't slow up the main logic
             Mailer.sendEmailVerificationCode(user);
-            actionResponse = this.softAbortInvalidRequest("User " + user.id + " tried to log-in before verifying the email address.");
+            actionResponse = Helpers.softAbortInvalidRequest("User " + user.id + " tried to log-in before verifying the email address.");
         }
 
-        const pwdCheckResult = await UserMutations.bcrypt.compare(password, user.passwordHash);
+        let pwdCheckResult: boolean;
+        if (!actionResponse) {
+            pwdCheckResult = await UserMutations.bcrypt.compare(password, user.passwordHash);
+        }
+
         if (!actionResponse && !pwdCheckResult) {
-            actionResponse = this.softAbortInvalidRequest("User " + user.id + " tried to log-in with an invalid password.");
+            actionResponse = Helpers.softAbortInvalidRequest("User " + user.id + " tried to log-in with an invalid password.");
         }
 
         let session:Session = null;
@@ -74,12 +56,12 @@ export class UserMutations {
             try {
                 session = await UserMutations.createSessionForUser(user.id);
             } catch (e) {
-                actionResponse = this.softAbortInvalidRequest("Couldn't create a session for the following reason: " + JSON.stringify(e));
+                actionResponse = Helpers.softAbortInvalidRequest("Couldn't create a session for the following reason: " + JSON.stringify(e));
             }
         }
 
-        if (!session) {
-            actionResponse = this.softAbortInvalidRequest("No session was generated during login attempt of user " + user.id + ".");
+        if (!actionResponse && !session) {
+            actionResponse = Helpers.softAbortInvalidRequest("No session was generated during login attempt of user " + user.id + ".");
         }
 
         if (!actionResponse) {
@@ -87,7 +69,7 @@ export class UserMutations {
             try {
                 UserMutations.setBearerTokenCookie(session.bearerToken, request);
             } catch (e) {
-                actionResponse = this.softAbortInvalidRequest("Couldn't create a session for the following reason: " + JSON.stringify(e));
+                actionResponse = Helpers.softAbortInvalidRequest("Couldn't create a session for the following reason: " + JSON.stringify(e));
             }
         }
 
@@ -140,7 +122,7 @@ export class UserMutations {
 
         const users = await prisma.users({where: {challenge: code.trim()}});
         if (users.length !== 1) {
-            const errorId = this.abortInvalidRequest("Found no matching user for the specified email verification code " + code + ".", false);
+            const errorId = Helpers.abortInvalidRequest("Found no matching user for the specified email verification code " + code + ".", false);
             let response = <ActionResponse> {
                 success: false,
                 code: errorId,
@@ -161,6 +143,8 @@ export class UserMutations {
                 id: user.id
             }
         });
+
+        Helpers.log("The e-mail address of user '" + user.id + "' is now verified.");
 
         const session = await UserMutations.createSessionForUser(user.id);
         UserMutations.setBearerTokenCookie(session.bearerToken, request);
@@ -224,23 +208,6 @@ export class UserMutations {
             personMobilePhone: mobilePhone,
             challenge: Helpers.getRandomBase64String(8),
         });
-    }
-
-
-    private static abortInvalidRequest(msg: string, _throw?:boolean) : string {
-        const logId = Helpers.logId(msg);
-        if (_throw) {
-            throw "Invalid request. Error id: " + logId;
-        }
-        return logId;
-    }
-
-    private static softAbortInvalidRequest(msg: string) : ActionResponse {
-        const errorId = this.abortInvalidRequest(msg, false);
-        return <ActionResponse>{
-            success: false,
-            code: errorId
-        };
     }
 
     /**
@@ -334,7 +301,7 @@ export class UserMutations {
         if (existingUser) {
             // noinspection ES6MissingAwait - Fire and forget to not block the request
             Mailer.sendUserReminder(existingUser);
-            actionResponse = this.softAbortInvalidRequest("There is already a registered user with the email address: " + existingUser.email);
+            actionResponse = Helpers.softAbortInvalidRequest("There is already a registered user with the email address: " + existingUser.email);
         }
 
         if (!actionResponse) {
@@ -351,7 +318,7 @@ export class UserMutations {
 
                 Helpers.log("Created a new user (id: " + newUser.id + ").");
             } catch (e) {
-                actionResponse = this.softAbortInvalidRequest("Couldn't create a new user for the following reason: " + JSON.stringify(e));
+                actionResponse = Helpers.softAbortInvalidRequest("Couldn't create a new user for the following reason: " + JSON.stringify(e));
             }
         }
 
@@ -361,7 +328,7 @@ export class UserMutations {
                 // noinspection ES6MissingAwait Should run in async fire and forget style so that it doesn't slow up the main logic
                 Mailer.sendEmailVerificationCode(newUser);
             } catch (e) {
-                actionResponse = this.softAbortInvalidRequest("Couldn't send a verfication mail to a new user for the following reason: " + JSON.stringify(e));
+                actionResponse = Helpers.softAbortInvalidRequest("Couldn't send a verfication mail to a new user for the following reason: " + JSON.stringify(e));
             }
         }
 
@@ -370,7 +337,7 @@ export class UserMutations {
                 // Create the first profile of the new user
                 await this.createFirstProfile(newUser);
             } catch (e) {
-                actionResponse = this.softAbortInvalidRequest("Couldn't create the first profile for a new user (id:" + newUser.id + ") for the following reason: " + JSON.stringify(e));
+                actionResponse = Helpers.softAbortInvalidRequest("Couldn't create the first profile for a new user (id:" + newUser.id + ") for the following reason: " + JSON.stringify(e));
             }
         }
 

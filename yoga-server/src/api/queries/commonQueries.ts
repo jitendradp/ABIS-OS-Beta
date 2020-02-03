@@ -17,16 +17,16 @@ export class CommonQueries {
         return null;
     }
 
-    public static async findAgentBySession(csrfToken: string, authToken: string) : Promise<Agent> {
-        const session = await this.findSession(csrfToken, authToken);
+    public static async findAgentBySession(csrfToken: string, bearerToken: string) : Promise<Agent> {
+        const session = await this.findSession(csrfToken, bearerToken);
         if (!session){
             return null;
         }
         return prisma.session({id:session.id}).agent();
     }
 
-    public static async findUserBySession(csrfToken: string, authToken: string) : Promise<{session:Session, user:User}> {
-        const session = await this.findSession(csrfToken, authToken);
+    public static async findUserBySession(csrfToken: string, bearerToken: string) : Promise<{session:Session, user:User}> {
+        const session = await this.findSession(csrfToken, bearerToken);
         if (!session){
             return null;
         }

@@ -247,7 +247,7 @@ type Membership {
     updatedAt: DateTime
 
     groupType: GroupType    # Is only set to a value when returned by "query myMemberships()".
-    group: Group            # When navigated from a Group, this is 'null'.
+    group: Group            # .. When navigated from a Group, this is 'null'.
 
     member: Agent!          # This is only set when queried from a group.
 

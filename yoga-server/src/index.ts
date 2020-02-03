@@ -118,7 +118,7 @@ server.use(morgan('combined'));
 server.start({
     cors: {
         methods: ["OPTIONS", "POST"],
-        origin: "http://" + config.env.domain + ":4200",
+        origin: "*",// "http://" + config.env.domain + ":4200",
         allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept",
         optionsSuccessStatus: 200,
         credentials: true
