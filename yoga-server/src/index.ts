@@ -1,5 +1,5 @@
 import {GraphQLServer} from 'graphql-yoga'
-import {GroupType, prisma} from './generated'
+import {GroupType, prisma, UserType} from './generated'
 import {UserMutations} from "./api/mutations/user/userMutations";
 import {ContextParameters} from "graphql-yoga/dist/types";
 import {config} from "./config";
@@ -62,7 +62,7 @@ const resolvers = {
     // Mutation resolvers
     Mutation: {
         async signup(root, {signupInput}) {
-            if (signupInput.tyoe == "Person") {
+            if (signupInput.type == <UserType>"Person") {
                 return UserMutations.createPerson(
                     signupInput.type,
                     signupInput.email,
@@ -72,7 +72,7 @@ const resolvers = {
                     signupInput.timezone,
                     signupInput.personPhone,
                     signupInput.personMobilePhone);
-            } else if (signupInput.tyoe == "Organization") {
+            } else if (signupInput.type == <UserType>"Organization") {
                 return UserMutations.createOrganization(
                     signupInput.type,
                     signupInput.email,

@@ -678,7 +678,9 @@ export type AgentOrderByInput =
   | "profileBanner_ASC"
   | "profileBanner_DESC"
   | "profileType_ASC"
-  | "profileType_DESC";
+  | "profileType_DESC"
+  | "serviceDescription_ASC"
+  | "serviceDescription_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -853,6 +855,7 @@ export interface AgentCreateInput {
   profileJobTitle?: Maybe<String>;
   profileBanner?: Maybe<String>;
   profileType?: Maybe<ProfileType>;
+  serviceDescription?: Maybe<String>;
 }
 
 export type EntryWhereUniqueInput = AtLeastOne<{
@@ -1053,6 +1056,7 @@ export interface AgentUpdateInput {
   profileJobTitle?: Maybe<String>;
   profileBanner?: Maybe<String>;
   profileType?: Maybe<ProfileType>;
+  serviceDescription?: Maybe<String>;
 }
 
 export interface SessionScalarWhereInput {
@@ -1618,6 +1622,7 @@ export interface AgentUpdateManyMutationInput {
   profileJobTitle?: Maybe<String>;
   profileBanner?: Maybe<String>;
   profileType?: Maybe<ProfileType>;
+  serviceDescription?: Maybe<String>;
 }
 
 export interface AgentUpdateManyWithWhereNestedInput {
@@ -1810,6 +1815,20 @@ export interface AgentScalarWhereInput {
   profileType_not?: Maybe<ProfileType>;
   profileType_in?: Maybe<ProfileType[] | ProfileType>;
   profileType_not_in?: Maybe<ProfileType[] | ProfileType>;
+  serviceDescription?: Maybe<String>;
+  serviceDescription_not?: Maybe<String>;
+  serviceDescription_in?: Maybe<String[] | String>;
+  serviceDescription_not_in?: Maybe<String[] | String>;
+  serviceDescription_lt?: Maybe<String>;
+  serviceDescription_lte?: Maybe<String>;
+  serviceDescription_gt?: Maybe<String>;
+  serviceDescription_gte?: Maybe<String>;
+  serviceDescription_contains?: Maybe<String>;
+  serviceDescription_not_contains?: Maybe<String>;
+  serviceDescription_starts_with?: Maybe<String>;
+  serviceDescription_not_starts_with?: Maybe<String>;
+  serviceDescription_ends_with?: Maybe<String>;
+  serviceDescription_not_ends_with?: Maybe<String>;
   AND?: Maybe<AgentScalarWhereInput[] | AgentScalarWhereInput>;
   OR?: Maybe<AgentScalarWhereInput[] | AgentScalarWhereInput>;
   NOT?: Maybe<AgentScalarWhereInput[] | AgentScalarWhereInput>;
@@ -2672,6 +2691,7 @@ export interface AgentUpdateManyDataInput {
   profileJobTitle?: Maybe<String>;
   profileBanner?: Maybe<String>;
   profileType?: Maybe<ProfileType>;
+  serviceDescription?: Maybe<String>;
 }
 
 export interface AgentUpdateDataInput {
@@ -2688,6 +2708,7 @@ export interface AgentUpdateDataInput {
   profileJobTitle?: Maybe<String>;
   profileBanner?: Maybe<String>;
   profileType?: Maybe<ProfileType>;
+  serviceDescription?: Maybe<String>;
 }
 
 export interface AgentUpsertWithWhereUniqueNestedInput {
@@ -3048,6 +3069,20 @@ export interface AgentWhereInput {
   profileType_not?: Maybe<ProfileType>;
   profileType_in?: Maybe<ProfileType[] | ProfileType>;
   profileType_not_in?: Maybe<ProfileType[] | ProfileType>;
+  serviceDescription?: Maybe<String>;
+  serviceDescription_not?: Maybe<String>;
+  serviceDescription_in?: Maybe<String[] | String>;
+  serviceDescription_not_in?: Maybe<String[] | String>;
+  serviceDescription_lt?: Maybe<String>;
+  serviceDescription_lte?: Maybe<String>;
+  serviceDescription_gt?: Maybe<String>;
+  serviceDescription_gte?: Maybe<String>;
+  serviceDescription_contains?: Maybe<String>;
+  serviceDescription_not_contains?: Maybe<String>;
+  serviceDescription_starts_with?: Maybe<String>;
+  serviceDescription_not_starts_with?: Maybe<String>;
+  serviceDescription_ends_with?: Maybe<String>;
+  serviceDescription_not_ends_with?: Maybe<String>;
   AND?: Maybe<AgentWhereInput[] | AgentWhereInput>;
   OR?: Maybe<AgentWhereInput[] | AgentWhereInput>;
   NOT?: Maybe<AgentWhereInput[] | AgentWhereInput>;
@@ -4123,6 +4158,7 @@ export interface Agent {
   profileJobTitle?: String;
   profileBanner?: String;
   profileType?: ProfileType;
+  serviceDescription?: String;
 }
 
 export interface AgentPromise extends Promise<Agent>, Fragmentable {
@@ -4142,6 +4178,7 @@ export interface AgentPromise extends Promise<Agent>, Fragmentable {
   profileJobTitle: () => Promise<String>;
   profileBanner: () => Promise<String>;
   profileType: () => Promise<ProfileType>;
+  serviceDescription: () => Promise<String>;
 }
 
 export interface AgentSubscription
@@ -4163,6 +4200,7 @@ export interface AgentSubscription
   profileJobTitle: () => Promise<AsyncIterator<String>>;
   profileBanner: () => Promise<AsyncIterator<String>>;
   profileType: () => Promise<AsyncIterator<ProfileType>>;
+  serviceDescription: () => Promise<AsyncIterator<String>>;
 }
 
 export interface AgentNullablePromise
@@ -4184,6 +4222,7 @@ export interface AgentNullablePromise
   profileJobTitle: () => Promise<String>;
   profileBanner: () => Promise<String>;
   profileType: () => Promise<ProfileType>;
+  serviceDescription: () => Promise<String>;
 }
 
 export interface User {
@@ -4369,6 +4408,7 @@ export interface AgentPreviousValues {
   profileJobTitle?: String;
   profileBanner?: String;
   profileType?: ProfileType;
+  serviceDescription?: String;
 }
 
 export interface AgentPreviousValuesPromise
@@ -4389,6 +4429,7 @@ export interface AgentPreviousValuesPromise
   profileJobTitle: () => Promise<String>;
   profileBanner: () => Promise<String>;
   profileType: () => Promise<ProfileType>;
+  serviceDescription: () => Promise<String>;
 }
 
 export interface AgentPreviousValuesSubscription
@@ -4409,6 +4450,7 @@ export interface AgentPreviousValuesSubscription
   profileJobTitle: () => Promise<AsyncIterator<String>>;
   profileBanner: () => Promise<AsyncIterator<String>>;
   profileType: () => Promise<AsyncIterator<ProfileType>>;
+  serviceDescription: () => Promise<AsyncIterator<String>>;
 }
 
 export interface MembershipConnection {

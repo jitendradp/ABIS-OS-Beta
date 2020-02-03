@@ -536,8 +536,6 @@ type Account {
     organizationName: String
 }
 
-
-
 type Query {
     myAccount(csrfToken: String!) : Account!
 

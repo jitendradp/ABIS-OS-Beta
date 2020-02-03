@@ -19,6 +19,7 @@ export const typeDefs = /* GraphQL */ `type Agent {
   profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
+  serviceDescription: String
 }
 
 type AgentConnection {
@@ -42,6 +43,7 @@ input AgentCreateInput {
   profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
+  serviceDescription: String
 }
 
 input AgentCreateManyInput {
@@ -90,6 +92,8 @@ enum AgentOrderByInput {
   profileBanner_DESC
   profileType_ASC
   profileType_DESC
+  serviceDescription_ASC
+  serviceDescription_DESC
 }
 
 type AgentPreviousValues {
@@ -108,6 +112,7 @@ type AgentPreviousValues {
   profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
+  serviceDescription: String
 }
 
 input AgentScalarWhereInput {
@@ -279,6 +284,20 @@ input AgentScalarWhereInput {
   profileType_not: ProfileType
   profileType_in: [ProfileType!]
   profileType_not_in: [ProfileType!]
+  serviceDescription: String
+  serviceDescription_not: String
+  serviceDescription_in: [String!]
+  serviceDescription_not_in: [String!]
+  serviceDescription_lt: String
+  serviceDescription_lte: String
+  serviceDescription_gt: String
+  serviceDescription_gte: String
+  serviceDescription_contains: String
+  serviceDescription_not_contains: String
+  serviceDescription_starts_with: String
+  serviceDescription_not_starts_with: String
+  serviceDescription_ends_with: String
+  serviceDescription_not_ends_with: String
   AND: [AgentScalarWhereInput!]
   OR: [AgentScalarWhereInput!]
   NOT: [AgentScalarWhereInput!]
@@ -332,6 +351,7 @@ input AgentUpdateDataInput {
   profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
+  serviceDescription: String
 }
 
 input AgentUpdateInput {
@@ -348,6 +368,7 @@ input AgentUpdateInput {
   profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
+  serviceDescription: String
 }
 
 input AgentUpdateManyDataInput {
@@ -363,6 +384,7 @@ input AgentUpdateManyDataInput {
   profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
+  serviceDescription: String
 }
 
 input AgentUpdateManyInput {
@@ -390,6 +412,7 @@ input AgentUpdateManyMutationInput {
   profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
+  serviceDescription: String
 }
 
 input AgentUpdateManyWithWhereNestedInput {
@@ -590,6 +613,20 @@ input AgentWhereInput {
   profileType_not: ProfileType
   profileType_in: [ProfileType!]
   profileType_not_in: [ProfileType!]
+  serviceDescription: String
+  serviceDescription_not: String
+  serviceDescription_in: [String!]
+  serviceDescription_not_in: [String!]
+  serviceDescription_lt: String
+  serviceDescription_lte: String
+  serviceDescription_gt: String
+  serviceDescription_gte: String
+  serviceDescription_contains: String
+  serviceDescription_not_contains: String
+  serviceDescription_starts_with: String
+  serviceDescription_not_starts_with: String
+  serviceDescription_ends_with: String
+  serviceDescription_not_ends_with: String
   AND: [AgentWhereInput!]
   OR: [AgentWhereInput!]
   NOT: [AgentWhereInput!]

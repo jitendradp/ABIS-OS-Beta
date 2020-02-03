@@ -1,6 +1,6 @@
 import {
     Location,
-    prisma, SessionCreateInput, User
+    prisma, Session, SessionCreateInput, User
 } from "../../../generated";
 import {Helpers} from "../../../helper/Helpers";
 import {ResponseDelay} from "../../../helper/ResponseDelay";
@@ -57,6 +57,7 @@ export class UserMutations {
         }
 
         if (!actionResponse && user.challenge) {
+            // TODO: Don't allow spam with this and only send reminders in intervals of ca. 30 min.
             // Send another email verification message to remind the user
             // noinspection ES6MissingAwait Should run in async fire and forget style so that it doesn't slow up the main logic
             Mailer.sendEmailVerificationCode(user);
@@ -68,22 +69,23 @@ export class UserMutations {
             actionResponse = this.softAbortInvalidRequest("User " + user.id + " tried to log-in with an invalid password.");
         }
 
-        let tokenPair:TokenPair = null;
+        let session:Session = null;
         if (!actionResponse) {
             try {
-                tokenPair = await UserMutations.createSessionForUser(user.id);
+                session = await UserMutations.createSessionForUser(user.id);
             } catch (e) {
                 actionResponse = this.softAbortInvalidRequest("Couldn't create a session for the following reason: " + JSON.stringify(e));
             }
         }
 
-        if (!tokenPair) {
-            actionResponse = this.softAbortInvalidRequest("The token pair for the session wasn't generated.");
+        if (!session) {
+            actionResponse = this.softAbortInvalidRequest("No session was generated during login attempt of user " + user.id + ".");
         }
 
         if (!actionResponse) {
+            Helpers.log("Created a new session for user (id: " + user.id + ") and agent (id: " +  + ").");
             try {
-                UserMutations.setBearerTokenCookie(tokenPair.bearerToken, request);
+                UserMutations.setBearerTokenCookie(session.bearerToken, request);
             } catch (e) {
                 actionResponse = this.softAbortInvalidRequest("Couldn't create a session for the following reason: " + JSON.stringify(e));
             }
@@ -92,7 +94,7 @@ export class UserMutations {
         if (!actionResponse) {
             actionResponse = <ActionResponse>{
                 success: true,
-                data: tokenPair.csrfToken
+                data: session.csrfToken
             };
         }
 
@@ -246,7 +248,7 @@ export class UserMutations {
      * @param userId
      * @param agentId
      */
-    private static async createSessionForUser(userId: string, agentId?: string): Promise<TokenPair> {
+    private static async createSessionForUser(userId: string, agentId?: string): Promise<Session> {
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
 
@@ -260,7 +262,7 @@ export class UserMutations {
             throw new Error("Couldn't find a default agent for user id '" + userId + "'.");
         }
 
-        const session = <SessionCreateInput>{
+        const session = await prisma.createSession({
             timedOut: null,
             csrfToken: csrfToken,
             bearerToken: bearerToken,
@@ -275,14 +277,9 @@ export class UserMutations {
                     id: agentId
                 }
             }
-        };
+        });
 
-        await prisma.createSession(session);
-
-        return {
-            bearerToken,
-            csrfToken
-        };
+        return session;
     }
 
     private static async getFirstAgentOfUser(userId:string) : Promise<string> {
@@ -310,16 +307,34 @@ export class UserMutations {
         });
     }
 
-    private static async createUser(password:string, newUserData:User) {
+    private static async createFirstProfile(user:User) {
+        const newProfile = await prisma.createAgent({
+            owner: user.id,
+            createdBy: user.id,
+            name: user.personFirstName + "'s Profile",
+            profileAvatar: "/assets/logos/abis-logo.png",
+            status: "Offline",
+            type: "Profile"
+        });
+        await prisma.updateUser({where:{id:user.id}, data: {
+            agents: {
+                connect: {
+                    id: newProfile.id
+                }
+            }
+        }});
+        return newProfile;
+    }
+
+    private static async createUser(password:string, newUser:User) {
         let actionResponse: ActionResponse = null;
         const delay = new ResponseDelay(config.auth.normalizedResponseTime);
 
-        let user = await prisma.user({email: newUserData.email});
-        if (user) {
-            actionResponse = this.softAbortInvalidRequest("There is already a registered user with the email address: " + newUserData.email);
-
+        let existingUser = await prisma.user({email: newUser.email});
+        if (existingUser) {
             // noinspection ES6MissingAwait - Fire and forget to not block the request
-            Mailer.sendUserReminder(user);
+            Mailer.sendUserReminder(existingUser);
+            actionResponse = this.softAbortInvalidRequest("There is already a registered user with the email address: " + existingUser.email);
         }
 
         if (!actionResponse) {
@@ -327,30 +342,42 @@ export class UserMutations {
                 const salt = await UserMutations.bcrypt.genSalt(config.auth.bcryptRounds);
                 const hash = await UserMutations.bcrypt.hash(password, salt);
 
-                user.id = null;
-                user.passwordSalt = salt;
-                user.passwordHash = hash;
+                newUser.passwordSalt = salt;
+                newUser.passwordHash = hash;
 
-                let created = await prisma.createUser(user);
+                let created = await prisma.createUser(newUser);
+                newUser.id = created.id;
+                newUser.createdAt = created.createdAt;
 
-                user.id = created.id;
-                user.createdAt = created.createdAt;
-
-                Helpers.log("Created a new user (id: " + user.id + ") for email address: " + user.email);
-
-                // noinspection ES6MissingAwait Should run in async fire and forget style so that it doesn't slow up the main logic
-                Mailer.sendEmailVerificationCode(user);
-
-                await UserMutations.createUser(password, newUserData);
+                Helpers.log("Created a new user (id: " + newUser.id + ").");
             } catch (e) {
-                actionResponse = this.softAbortInvalidRequest("Couldn't create a user for the following reason: " + JSON.stringify(e));
+                actionResponse = this.softAbortInvalidRequest("Couldn't create a new user for the following reason: " + JSON.stringify(e));
+            }
+        }
+
+        if (!actionResponse) {
+            try {
+                Helpers.log("Sending account verification email to a new user (id: " + newUser.id + ").");
+                // noinspection ES6MissingAwait Should run in async fire and forget style so that it doesn't slow up the main logic
+                Mailer.sendEmailVerificationCode(newUser);
+            } catch (e) {
+                actionResponse = this.softAbortInvalidRequest("Couldn't send a verfication mail to a new user for the following reason: " + JSON.stringify(e));
+            }
+        }
+
+        if (!actionResponse) {
+            try {
+                // Create the first profile of the new user
+                await this.createFirstProfile(newUser);
+            } catch (e) {
+                actionResponse = this.softAbortInvalidRequest("Couldn't create the first profile for a new user (id:" + newUser.id + ") for the following reason: " + JSON.stringify(e));
             }
         }
 
         if (!actionResponse) {
             actionResponse = <ActionResponse>{
                 success: true,
-                data: user.id
+                data: newUser.id
             };
         }
 
