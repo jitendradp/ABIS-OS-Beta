@@ -1,4 +1,31 @@
 # The main persistence model of ABIS. See "alloy/model.als" for more details.
+type ContentEncoding {
+    id: ID! @id @unique
+    type: EncodingType!
+
+    maintainer: ID!     # The Agent that maintains the schema
+
+    createdBy: ID!
+    createdAt: DateTime! @createdAt
+
+    updatedBy: ID
+    updatedAt: DateTime @updatedAt
+
+    name: String!
+    charset: String!
+}
+
+enum EncodingType {
+    Custom
+    Base64
+    Microformat
+    TableSchema
+    JsonSchema
+    XmlSchema
+    GqlSchema
+    RdfSchema
+    Owl
+}
 
 type Entry {
     # NOTE: All Entries must be in the "entries"-list of exactly one Group
@@ -6,7 +33,7 @@ type Entry {
     id: ID! @id @unique
     type: EntryType!
 
-    owner: Agent!
+    owner: ID!
 
     createdBy: ID!
     createdAt: DateTime! @createdAt
@@ -15,25 +42,28 @@ type Entry {
     updatedAt: DateTime @updatedAt
 
     name: String
+
     content: Json
+    contentEncoding: ID
 
     tags: [Tag!]!
 }
 
 enum EntryType {
-    EMPTY
-    DATA_JSON
-    DATA_TABLE
-    DATA_DOCUMENT
-    DATA_PICTURE
-    DATA_FILE
+    Empty
+    Json
+    Table
+    Document
+    Picture
+    File
+    Thing
 }
 
 type Inbox {
     # NOTE: The "owner" of an Inbox must be the same as the "owner" of the Group it "represents".
     id: ID! @id @unique
 
-    owner: Agent!
+    owner: ID!
 
     createdBy: ID!
     createdAt: DateTime! @createdAt
@@ -49,7 +79,7 @@ type Group {
     # NOTE: No Group has Memberships which haven't been created either by the group owner or a member of the group.
     # NOTE: No Group has more than one Membership of type "Single" for the same User
     # NOTE: No Group has a Membership of type "Single" for a User that is already owner of that Group.
-    # NOTE: There are no two Groups that contain a "Single"-, as well as a "Multi"-Membership for the same User.
+    # NOTE: No Group contains a "Single"-, as well as a "Multi"-Membership for the same User.
     # NOTE: No Group contains exactly one "Multi"-Membership of a User who's not the owner of that Group
     # NOTE: No Group has more than one Membership with the same "member".
 
@@ -57,7 +87,7 @@ type Group {
     type: GroupType!
 
     # owners cannot be members in the groups they own
-    owner: Agent!
+    owner: ID!
 
     createdBy: ID!
     createdAt: DateTime! @createdAt
@@ -99,7 +129,7 @@ enum GroupType {
 
     # Room: A public or closed Group of Agents.
     # NOTE: Every Room has a Inbox.
-    # NOTE: No not-public Room has Memberships that have been created by their members.
+    # NOTE: No not-public Room has Memberships that have been self-created by (creator == member).
     Room
 }
 
@@ -125,6 +155,7 @@ type Membership {
 }
 
 enum MembershipType {
+    Invite,
     # Single: Indicates that a User has only one Membership
     #         via a "Profile"- or "Service"-Agent in the same Group.
     Single,
@@ -157,8 +188,6 @@ type Agent {
     profileJobTitle: String
     profileBanner: String
     profileType: ProfileType
-
-    tags: [Tag!]!
 }
 
 enum AgentType {
@@ -253,13 +282,10 @@ type Tag {
     id: ID! @id @unique
     type: String!
 
-    owner: Agent!
+    owner: ID!
 
     createdBy: ID!
     createdAt: DateTime! @createdAt
-
-    updatedBy: ID
-    updatedAt: DateTime @updatedAt
 
    	value: String!
 }
@@ -268,7 +294,7 @@ type Location {
     id: ID! @id @unique
     type: LocationType!
 
-    owner: Agent!
+    owner: ID!
 
     createdBy: ID!
     createdAt: DateTime! @createdAt

@@ -1,3 +1,5 @@
+import {ActionResponse} from "../api/mutations/actionResponse";
+
 export class Helpers {
     public static getRandomBase64String(len) {
         let randomNumbers = require("crypto").randomBytes(Math.ceil((len * 3) / 4))
@@ -16,5 +18,21 @@ export class Helpers {
         let id = Helpers.getRandomBase64String(8);
         console.log("[" + new Date().toISOString() + " - Error id: " + id + "] " + msg);
         return id;
+    }
+
+    public static abortInvalidRequest(msg: string, _throw?:boolean) : string {
+        const logId = Helpers.logId(msg);
+        if (_throw === undefined || _throw === true) {
+            throw "Invalid request. Error id: " + logId;
+        }
+        return logId;
+    }
+
+    public static softAbortInvalidRequest(msg: string) : ActionResponse {
+        const errorId = this.abortInvalidRequest(msg, false);
+        return <ActionResponse>{
+            success: false,
+            code: errorId
+        };
     }
 }

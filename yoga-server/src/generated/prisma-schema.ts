@@ -16,9 +16,10 @@ export const typeDefs = /* GraphQL */ `type Agent {
   location: Location
   profileSlogan: String
   profileAvatar: String
+  profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
-  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
+  serviceDescription: String
 }
 
 type AgentConnection {
@@ -36,12 +37,13 @@ input AgentCreateInput {
   name: String!
   status: AgentStatus!
   timezone: String
-  location: LocationCreateOneWithoutOwnerInput
+  location: LocationCreateOneInput
   profileSlogan: String
   profileAvatar: String
+  profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
-  tags: TagCreateManyWithoutOwnerInput
+  serviceDescription: String
 }
 
 input AgentCreateManyInput {
@@ -52,48 +54,6 @@ input AgentCreateManyInput {
 input AgentCreateOneInput {
   create: AgentCreateInput
   connect: AgentWhereUniqueInput
-}
-
-input AgentCreateOneWithoutLocationInput {
-  create: AgentCreateWithoutLocationInput
-  connect: AgentWhereUniqueInput
-}
-
-input AgentCreateOneWithoutTagsInput {
-  create: AgentCreateWithoutTagsInput
-  connect: AgentWhereUniqueInput
-}
-
-input AgentCreateWithoutLocationInput {
-  id: ID
-  type: AgentType!
-  owner: ID!
-  createdBy: ID!
-  updatedBy: ID
-  name: String!
-  status: AgentStatus!
-  timezone: String
-  profileSlogan: String
-  profileAvatar: String
-  profileBanner: String
-  profileType: ProfileType
-  tags: TagCreateManyWithoutOwnerInput
-}
-
-input AgentCreateWithoutTagsInput {
-  id: ID
-  type: AgentType!
-  owner: ID!
-  createdBy: ID!
-  updatedBy: ID
-  name: String!
-  status: AgentStatus!
-  timezone: String
-  location: LocationCreateOneWithoutOwnerInput
-  profileSlogan: String
-  profileAvatar: String
-  profileBanner: String
-  profileType: ProfileType
 }
 
 type AgentEdge {
@@ -126,10 +86,14 @@ enum AgentOrderByInput {
   profileSlogan_DESC
   profileAvatar_ASC
   profileAvatar_DESC
+  profileJobTitle_ASC
+  profileJobTitle_DESC
   profileBanner_ASC
   profileBanner_DESC
   profileType_ASC
   profileType_DESC
+  serviceDescription_ASC
+  serviceDescription_DESC
 }
 
 type AgentPreviousValues {
@@ -145,8 +109,10 @@ type AgentPreviousValues {
   timezone: String
   profileSlogan: String
   profileAvatar: String
+  profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
+  serviceDescription: String
 }
 
 input AgentScalarWhereInput {
@@ -286,6 +252,20 @@ input AgentScalarWhereInput {
   profileAvatar_not_starts_with: String
   profileAvatar_ends_with: String
   profileAvatar_not_ends_with: String
+  profileJobTitle: String
+  profileJobTitle_not: String
+  profileJobTitle_in: [String!]
+  profileJobTitle_not_in: [String!]
+  profileJobTitle_lt: String
+  profileJobTitle_lte: String
+  profileJobTitle_gt: String
+  profileJobTitle_gte: String
+  profileJobTitle_contains: String
+  profileJobTitle_not_contains: String
+  profileJobTitle_starts_with: String
+  profileJobTitle_not_starts_with: String
+  profileJobTitle_ends_with: String
+  profileJobTitle_not_ends_with: String
   profileBanner: String
   profileBanner_not: String
   profileBanner_in: [String!]
@@ -304,6 +284,20 @@ input AgentScalarWhereInput {
   profileType_not: ProfileType
   profileType_in: [ProfileType!]
   profileType_not_in: [ProfileType!]
+  serviceDescription: String
+  serviceDescription_not: String
+  serviceDescription_in: [String!]
+  serviceDescription_not_in: [String!]
+  serviceDescription_lt: String
+  serviceDescription_lte: String
+  serviceDescription_gt: String
+  serviceDescription_gte: String
+  serviceDescription_contains: String
+  serviceDescription_not_contains: String
+  serviceDescription_starts_with: String
+  serviceDescription_not_starts_with: String
+  serviceDescription_ends_with: String
+  serviceDescription_not_ends_with: String
   AND: [AgentScalarWhereInput!]
   OR: [AgentScalarWhereInput!]
   NOT: [AgentScalarWhereInput!]
@@ -351,12 +345,13 @@ input AgentUpdateDataInput {
   name: String
   status: AgentStatus
   timezone: String
-  location: LocationUpdateOneWithoutOwnerInput
+  location: LocationUpdateOneInput
   profileSlogan: String
   profileAvatar: String
+  profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
-  tags: TagUpdateManyWithoutOwnerInput
+  serviceDescription: String
 }
 
 input AgentUpdateInput {
@@ -367,12 +362,13 @@ input AgentUpdateInput {
   name: String
   status: AgentStatus
   timezone: String
-  location: LocationUpdateOneWithoutOwnerInput
+  location: LocationUpdateOneInput
   profileSlogan: String
   profileAvatar: String
+  profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
-  tags: TagUpdateManyWithoutOwnerInput
+  serviceDescription: String
 }
 
 input AgentUpdateManyDataInput {
@@ -385,8 +381,10 @@ input AgentUpdateManyDataInput {
   timezone: String
   profileSlogan: String
   profileAvatar: String
+  profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
+  serviceDescription: String
 }
 
 input AgentUpdateManyInput {
@@ -411,8 +409,10 @@ input AgentUpdateManyMutationInput {
   timezone: String
   profileSlogan: String
   profileAvatar: String
+  profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
+  serviceDescription: String
 }
 
 input AgentUpdateManyWithWhereNestedInput {
@@ -427,50 +427,6 @@ input AgentUpdateOneRequiredInput {
   connect: AgentWhereUniqueInput
 }
 
-input AgentUpdateOneRequiredWithoutLocationInput {
-  create: AgentCreateWithoutLocationInput
-  update: AgentUpdateWithoutLocationDataInput
-  upsert: AgentUpsertWithoutLocationInput
-  connect: AgentWhereUniqueInput
-}
-
-input AgentUpdateOneRequiredWithoutTagsInput {
-  create: AgentCreateWithoutTagsInput
-  update: AgentUpdateWithoutTagsDataInput
-  upsert: AgentUpsertWithoutTagsInput
-  connect: AgentWhereUniqueInput
-}
-
-input AgentUpdateWithoutLocationDataInput {
-  type: AgentType
-  owner: ID
-  createdBy: ID
-  updatedBy: ID
-  name: String
-  status: AgentStatus
-  timezone: String
-  profileSlogan: String
-  profileAvatar: String
-  profileBanner: String
-  profileType: ProfileType
-  tags: TagUpdateManyWithoutOwnerInput
-}
-
-input AgentUpdateWithoutTagsDataInput {
-  type: AgentType
-  owner: ID
-  createdBy: ID
-  updatedBy: ID
-  name: String
-  status: AgentStatus
-  timezone: String
-  location: LocationUpdateOneWithoutOwnerInput
-  profileSlogan: String
-  profileAvatar: String
-  profileBanner: String
-  profileType: ProfileType
-}
-
 input AgentUpdateWithWhereUniqueNestedInput {
   where: AgentWhereUniqueInput!
   data: AgentUpdateDataInput!
@@ -479,16 +435,6 @@ input AgentUpdateWithWhereUniqueNestedInput {
 input AgentUpsertNestedInput {
   update: AgentUpdateDataInput!
   create: AgentCreateInput!
-}
-
-input AgentUpsertWithoutLocationInput {
-  update: AgentUpdateWithoutLocationDataInput!
-  create: AgentCreateWithoutLocationInput!
-}
-
-input AgentUpsertWithoutTagsInput {
-  update: AgentUpdateWithoutTagsDataInput!
-  create: AgentCreateWithoutTagsInput!
 }
 
 input AgentUpsertWithWhereUniqueNestedInput {
@@ -635,6 +581,20 @@ input AgentWhereInput {
   profileAvatar_not_starts_with: String
   profileAvatar_ends_with: String
   profileAvatar_not_ends_with: String
+  profileJobTitle: String
+  profileJobTitle_not: String
+  profileJobTitle_in: [String!]
+  profileJobTitle_not_in: [String!]
+  profileJobTitle_lt: String
+  profileJobTitle_lte: String
+  profileJobTitle_gt: String
+  profileJobTitle_gte: String
+  profileJobTitle_contains: String
+  profileJobTitle_not_contains: String
+  profileJobTitle_starts_with: String
+  profileJobTitle_not_starts_with: String
+  profileJobTitle_ends_with: String
+  profileJobTitle_not_ends_with: String
   profileBanner: String
   profileBanner_not: String
   profileBanner_in: [String!]
@@ -653,9 +613,20 @@ input AgentWhereInput {
   profileType_not: ProfileType
   profileType_in: [ProfileType!]
   profileType_not_in: [ProfileType!]
-  tags_every: TagWhereInput
-  tags_some: TagWhereInput
-  tags_none: TagWhereInput
+  serviceDescription: String
+  serviceDescription_not: String
+  serviceDescription_in: [String!]
+  serviceDescription_not_in: [String!]
+  serviceDescription_lt: String
+  serviceDescription_lte: String
+  serviceDescription_gt: String
+  serviceDescription_gte: String
+  serviceDescription_contains: String
+  serviceDescription_not_contains: String
+  serviceDescription_starts_with: String
+  serviceDescription_not_starts_with: String
+  serviceDescription_ends_with: String
+  serviceDescription_not_ends_with: String
   AND: [AgentWhereInput!]
   OR: [AgentWhereInput!]
   NOT: [AgentWhereInput!]
@@ -666,6 +637,10 @@ input AgentWhereUniqueInput {
 }
 
 type AggregateAgent {
+  count: Int!
+}
+
+type AggregateContentEncoding {
   count: Int!
 }
 
@@ -705,53 +680,46 @@ type BatchPayload {
   count: Long!
 }
 
-scalar DateTime
-
-type Entry {
+type ContentEncoding {
   id: ID!
-  type: EntryType!
-  owner: Agent!
+  type: EncodingType!
+  maintainer: ID!
   createdBy: ID!
   createdAt: DateTime!
   updatedBy: ID
   updatedAt: DateTime
-  name: String
-  content: Json
-  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
+  name: String!
+  charset: String!
 }
 
-type EntryConnection {
+type ContentEncodingConnection {
   pageInfo: PageInfo!
-  edges: [EntryEdge]!
-  aggregate: AggregateEntry!
+  edges: [ContentEncodingEdge]!
+  aggregate: AggregateContentEncoding!
 }
 
-input EntryCreateInput {
+input ContentEncodingCreateInput {
   id: ID
-  type: EntryType!
-  owner: AgentCreateOneInput!
+  type: EncodingType!
+  maintainer: ID!
   createdBy: ID!
   updatedBy: ID
-  name: String
-  content: Json
-  tags: TagCreateManyInput
+  name: String!
+  charset: String!
 }
 
-input EntryCreateManyInput {
-  create: [EntryCreateInput!]
-  connect: [EntryWhereUniqueInput!]
-}
-
-type EntryEdge {
-  node: Entry!
+type ContentEncodingEdge {
+  node: ContentEncoding!
   cursor: String!
 }
 
-enum EntryOrderByInput {
+enum ContentEncodingOrderByInput {
   id_ASC
   id_DESC
   type_ASC
   type_DESC
+  maintainer_ASC
+  maintainer_DESC
   createdBy_ASC
   createdBy_DESC
   createdAt_ASC
@@ -762,22 +730,59 @@ enum EntryOrderByInput {
   updatedAt_DESC
   name_ASC
   name_DESC
-  content_ASC
-  content_DESC
+  charset_ASC
+  charset_DESC
 }
 
-type EntryPreviousValues {
+type ContentEncodingPreviousValues {
   id: ID!
-  type: EntryType!
+  type: EncodingType!
+  maintainer: ID!
   createdBy: ID!
   createdAt: DateTime!
   updatedBy: ID
   updatedAt: DateTime
-  name: String
-  content: Json
+  name: String!
+  charset: String!
 }
 
-input EntryScalarWhereInput {
+type ContentEncodingSubscriptionPayload {
+  mutation: MutationType!
+  node: ContentEncoding
+  updatedFields: [String!]
+  previousValues: ContentEncodingPreviousValues
+}
+
+input ContentEncodingSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ContentEncodingWhereInput
+  AND: [ContentEncodingSubscriptionWhereInput!]
+  OR: [ContentEncodingSubscriptionWhereInput!]
+  NOT: [ContentEncodingSubscriptionWhereInput!]
+}
+
+input ContentEncodingUpdateInput {
+  type: EncodingType
+  maintainer: ID
+  createdBy: ID
+  updatedBy: ID
+  name: String
+  charset: String
+}
+
+input ContentEncodingUpdateManyMutationInput {
+  type: EncodingType
+  maintainer: ID
+  createdBy: ID
+  updatedBy: ID
+  name: String
+  charset: String
+}
+
+input ContentEncodingWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -792,10 +797,24 @@ input EntryScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  type: EntryType
-  type_not: EntryType
-  type_in: [EntryType!]
-  type_not_in: [EntryType!]
+  type: EncodingType
+  type_not: EncodingType
+  type_in: [EncodingType!]
+  type_not_in: [EncodingType!]
+  maintainer: ID
+  maintainer_not: ID
+  maintainer_in: [ID!]
+  maintainer_not_in: [ID!]
+  maintainer_lt: ID
+  maintainer_lte: ID
+  maintainer_gt: ID
+  maintainer_gte: ID
+  maintainer_contains: ID
+  maintainer_not_contains: ID
+  maintainer_starts_with: ID
+  maintainer_not_starts_with: ID
+  maintainer_ends_with: ID
+  maintainer_not_ends_with: ID
   createdBy: ID
   createdBy_not: ID
   createdBy_in: [ID!]
@@ -854,6 +873,226 @@ input EntryScalarWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
+  charset: String
+  charset_not: String
+  charset_in: [String!]
+  charset_not_in: [String!]
+  charset_lt: String
+  charset_lte: String
+  charset_gt: String
+  charset_gte: String
+  charset_contains: String
+  charset_not_contains: String
+  charset_starts_with: String
+  charset_not_starts_with: String
+  charset_ends_with: String
+  charset_not_ends_with: String
+  AND: [ContentEncodingWhereInput!]
+  OR: [ContentEncodingWhereInput!]
+  NOT: [ContentEncodingWhereInput!]
+}
+
+input ContentEncodingWhereUniqueInput {
+  id: ID
+}
+
+scalar DateTime
+
+enum EncodingType {
+  Custom
+  Base64
+  Microformat
+  TableSchema
+  JsonSchema
+  XmlSchema
+  GqlSchema
+  RdfSchema
+  Owl
+}
+
+type Entry {
+  id: ID!
+  type: EntryType!
+  owner: ID!
+  createdBy: ID!
+  createdAt: DateTime!
+  updatedBy: ID
+  updatedAt: DateTime
+  name: String
+  content: Json
+  contentEncoding: ID
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
+}
+
+type EntryConnection {
+  pageInfo: PageInfo!
+  edges: [EntryEdge]!
+  aggregate: AggregateEntry!
+}
+
+input EntryCreateInput {
+  id: ID
+  type: EntryType!
+  owner: ID!
+  createdBy: ID!
+  updatedBy: ID
+  name: String
+  content: Json
+  contentEncoding: ID
+  tags: TagCreateManyInput
+}
+
+input EntryCreateManyInput {
+  create: [EntryCreateInput!]
+  connect: [EntryWhereUniqueInput!]
+}
+
+type EntryEdge {
+  node: Entry!
+  cursor: String!
+}
+
+enum EntryOrderByInput {
+  id_ASC
+  id_DESC
+  type_ASC
+  type_DESC
+  owner_ASC
+  owner_DESC
+  createdBy_ASC
+  createdBy_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedBy_ASC
+  updatedBy_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  name_ASC
+  name_DESC
+  content_ASC
+  content_DESC
+  contentEncoding_ASC
+  contentEncoding_DESC
+}
+
+type EntryPreviousValues {
+  id: ID!
+  type: EntryType!
+  owner: ID!
+  createdBy: ID!
+  createdAt: DateTime!
+  updatedBy: ID
+  updatedAt: DateTime
+  name: String
+  content: Json
+  contentEncoding: ID
+}
+
+input EntryScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  type: EntryType
+  type_not: EntryType
+  type_in: [EntryType!]
+  type_not_in: [EntryType!]
+  owner: ID
+  owner_not: ID
+  owner_in: [ID!]
+  owner_not_in: [ID!]
+  owner_lt: ID
+  owner_lte: ID
+  owner_gt: ID
+  owner_gte: ID
+  owner_contains: ID
+  owner_not_contains: ID
+  owner_starts_with: ID
+  owner_not_starts_with: ID
+  owner_ends_with: ID
+  owner_not_ends_with: ID
+  createdBy: ID
+  createdBy_not: ID
+  createdBy_in: [ID!]
+  createdBy_not_in: [ID!]
+  createdBy_lt: ID
+  createdBy_lte: ID
+  createdBy_gt: ID
+  createdBy_gte: ID
+  createdBy_contains: ID
+  createdBy_not_contains: ID
+  createdBy_starts_with: ID
+  createdBy_not_starts_with: ID
+  createdBy_ends_with: ID
+  createdBy_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedBy: ID
+  updatedBy_not: ID
+  updatedBy_in: [ID!]
+  updatedBy_not_in: [ID!]
+  updatedBy_lt: ID
+  updatedBy_lte: ID
+  updatedBy_gt: ID
+  updatedBy_gte: ID
+  updatedBy_contains: ID
+  updatedBy_not_contains: ID
+  updatedBy_starts_with: ID
+  updatedBy_not_starts_with: ID
+  updatedBy_ends_with: ID
+  updatedBy_not_ends_with: ID
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  contentEncoding: ID
+  contentEncoding_not: ID
+  contentEncoding_in: [ID!]
+  contentEncoding_not_in: [ID!]
+  contentEncoding_lt: ID
+  contentEncoding_lte: ID
+  contentEncoding_gt: ID
+  contentEncoding_gte: ID
+  contentEncoding_contains: ID
+  contentEncoding_not_contains: ID
+  contentEncoding_starts_with: ID
+  contentEncoding_not_starts_with: ID
+  contentEncoding_ends_with: ID
+  contentEncoding_not_ends_with: ID
   AND: [EntryScalarWhereInput!]
   OR: [EntryScalarWhereInput!]
   NOT: [EntryScalarWhereInput!]
@@ -878,40 +1117,45 @@ input EntrySubscriptionWhereInput {
 }
 
 enum EntryType {
-  EMPTY
-  DATA_JSON
-  DATA_TABLE
-  DATA_DOCUMENT
-  DATA_PICTURE
-  DATA_FILE
+  Empty
+  Json
+  Table
+  Document
+  Picture
+  File
+  Thing
 }
 
 input EntryUpdateDataInput {
   type: EntryType
-  owner: AgentUpdateOneRequiredInput
+  owner: ID
   createdBy: ID
   updatedBy: ID
   name: String
   content: Json
+  contentEncoding: ID
   tags: TagUpdateManyInput
 }
 
 input EntryUpdateInput {
   type: EntryType
-  owner: AgentUpdateOneRequiredInput
+  owner: ID
   createdBy: ID
   updatedBy: ID
   name: String
   content: Json
+  contentEncoding: ID
   tags: TagUpdateManyInput
 }
 
 input EntryUpdateManyDataInput {
   type: EntryType
+  owner: ID
   createdBy: ID
   updatedBy: ID
   name: String
   content: Json
+  contentEncoding: ID
 }
 
 input EntryUpdateManyInput {
@@ -928,10 +1172,12 @@ input EntryUpdateManyInput {
 
 input EntryUpdateManyMutationInput {
   type: EntryType
+  owner: ID
   createdBy: ID
   updatedBy: ID
   name: String
   content: Json
+  contentEncoding: ID
 }
 
 input EntryUpdateManyWithWhereNestedInput {
@@ -969,7 +1215,20 @@ input EntryWhereInput {
   type_not: EntryType
   type_in: [EntryType!]
   type_not_in: [EntryType!]
-  owner: AgentWhereInput
+  owner: ID
+  owner_not: ID
+  owner_in: [ID!]
+  owner_not_in: [ID!]
+  owner_lt: ID
+  owner_lte: ID
+  owner_gt: ID
+  owner_gte: ID
+  owner_contains: ID
+  owner_not_contains: ID
+  owner_starts_with: ID
+  owner_not_starts_with: ID
+  owner_ends_with: ID
+  owner_not_ends_with: ID
   createdBy: ID
   createdBy_not: ID
   createdBy_in: [ID!]
@@ -1028,6 +1287,20 @@ input EntryWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
+  contentEncoding: ID
+  contentEncoding_not: ID
+  contentEncoding_in: [ID!]
+  contentEncoding_not_in: [ID!]
+  contentEncoding_lt: ID
+  contentEncoding_lte: ID
+  contentEncoding_gt: ID
+  contentEncoding_gte: ID
+  contentEncoding_contains: ID
+  contentEncoding_not_contains: ID
+  contentEncoding_starts_with: ID
+  contentEncoding_not_starts_with: ID
+  contentEncoding_ends_with: ID
+  contentEncoding_not_ends_with: ID
   tags_every: TagWhereInput
   tags_some: TagWhereInput
   tags_none: TagWhereInput
@@ -1043,7 +1316,7 @@ input EntryWhereUniqueInput {
 type Group {
   id: ID!
   type: GroupType!
-  owner: Agent!
+  owner: ID!
   createdBy: ID!
   createdAt: DateTime!
   updatedBy: ID
@@ -1069,7 +1342,7 @@ type GroupConnection {
 input GroupCreateInput {
   id: ID
   type: GroupType!
-  owner: AgentCreateOneInput!
+  owner: ID!
   createdBy: ID!
   updatedBy: ID
   isPublic: Boolean!
@@ -1092,7 +1365,7 @@ input GroupCreateOneWithoutInboxInput {
 input GroupCreateWithoutInboxInput {
   id: ID
   type: GroupType!
-  owner: AgentCreateOneInput!
+  owner: ID!
   createdBy: ID!
   updatedBy: ID
   isPublic: Boolean!
@@ -1116,6 +1389,8 @@ enum GroupOrderByInput {
   id_DESC
   type_ASC
   type_DESC
+  owner_ASC
+  owner_DESC
   createdBy_ASC
   createdBy_DESC
   createdAt_ASC
@@ -1141,6 +1416,7 @@ enum GroupOrderByInput {
 type GroupPreviousValues {
   id: ID!
   type: GroupType!
+  owner: ID!
   createdBy: ID!
   createdAt: DateTime!
   updatedBy: ID
@@ -1179,7 +1455,7 @@ enum GroupType {
 
 input GroupUpdateInput {
   type: GroupType
-  owner: AgentUpdateOneRequiredInput
+  owner: ID
   createdBy: ID
   updatedBy: ID
   isPublic: Boolean
@@ -1196,6 +1472,7 @@ input GroupUpdateInput {
 
 input GroupUpdateManyMutationInput {
   type: GroupType
+  owner: ID
   createdBy: ID
   updatedBy: ID
   isPublic: Boolean
@@ -1215,7 +1492,7 @@ input GroupUpdateOneRequiredWithoutInboxInput {
 
 input GroupUpdateWithoutInboxDataInput {
   type: GroupType
-  owner: AgentUpdateOneRequiredInput
+  owner: ID
   createdBy: ID
   updatedBy: ID
   isPublic: Boolean
@@ -1253,7 +1530,20 @@ input GroupWhereInput {
   type_not: GroupType
   type_in: [GroupType!]
   type_not_in: [GroupType!]
-  owner: AgentWhereInput
+  owner: ID
+  owner_not: ID
+  owner_in: [ID!]
+  owner_not_in: [ID!]
+  owner_lt: ID
+  owner_lte: ID
+  owner_gt: ID
+  owner_gte: ID
+  owner_contains: ID
+  owner_not_contains: ID
+  owner_starts_with: ID
+  owner_not_starts_with: ID
+  owner_ends_with: ID
+  owner_not_ends_with: ID
   createdBy: ID
   createdBy_not: ID
   createdBy_in: [ID!]
@@ -1391,7 +1681,7 @@ input GroupWhereUniqueInput {
 
 type Inbox {
   id: ID!
-  owner: Agent!
+  owner: ID!
   createdBy: ID!
   createdAt: DateTime!
   updatedBy: ID
@@ -1407,7 +1697,7 @@ type InboxConnection {
 
 input InboxCreateInput {
   id: ID
-  owner: AgentCreateOneInput!
+  owner: ID!
   createdBy: ID!
   updatedBy: ID
   represents: GroupCreateOneWithoutInboxInput!
@@ -1420,7 +1710,7 @@ input InboxCreateOneWithoutRepresentsInput {
 
 input InboxCreateWithoutRepresentsInput {
   id: ID
-  owner: AgentCreateOneInput!
+  owner: ID!
   createdBy: ID!
   updatedBy: ID
 }
@@ -1433,6 +1723,8 @@ type InboxEdge {
 enum InboxOrderByInput {
   id_ASC
   id_DESC
+  owner_ASC
+  owner_DESC
   createdBy_ASC
   createdBy_DESC
   createdAt_ASC
@@ -1445,6 +1737,7 @@ enum InboxOrderByInput {
 
 type InboxPreviousValues {
   id: ID!
+  owner: ID!
   createdBy: ID!
   createdAt: DateTime!
   updatedBy: ID
@@ -1470,13 +1763,14 @@ input InboxSubscriptionWhereInput {
 }
 
 input InboxUpdateInput {
-  owner: AgentUpdateOneRequiredInput
+  owner: ID
   createdBy: ID
   updatedBy: ID
   represents: GroupUpdateOneRequiredWithoutInboxInput
 }
 
 input InboxUpdateManyMutationInput {
+  owner: ID
   createdBy: ID
   updatedBy: ID
 }
@@ -1491,7 +1785,7 @@ input InboxUpdateOneWithoutRepresentsInput {
 }
 
 input InboxUpdateWithoutRepresentsDataInput {
-  owner: AgentUpdateOneRequiredInput
+  owner: ID
   createdBy: ID
   updatedBy: ID
 }
@@ -1516,7 +1810,20 @@ input InboxWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  owner: AgentWhereInput
+  owner: ID
+  owner_not: ID
+  owner_in: [ID!]
+  owner_not_in: [ID!]
+  owner_lt: ID
+  owner_lte: ID
+  owner_gt: ID
+  owner_gte: ID
+  owner_contains: ID
+  owner_not_contains: ID
+  owner_starts_with: ID
+  owner_not_starts_with: ID
+  owner_ends_with: ID
+  owner_not_ends_with: ID
   createdBy: ID
   createdBy_not: ID
   createdBy_in: [ID!]
@@ -1576,7 +1883,7 @@ scalar Json
 type Location {
   id: ID!
   type: LocationType!
-  owner: Agent!
+  owner: ID!
   createdBy: ID!
   createdAt: DateTime!
   updatedBy: ID
@@ -1603,7 +1910,7 @@ type LocationConnection {
 input LocationCreateInput {
   id: ID
   type: LocationType!
-  owner: AgentCreateOneWithoutLocationInput!
+  owner: ID!
   createdBy: ID!
   updatedBy: ID
   name: String
@@ -1624,29 +1931,6 @@ input LocationCreateOneInput {
   connect: LocationWhereUniqueInput
 }
 
-input LocationCreateOneWithoutOwnerInput {
-  create: LocationCreateWithoutOwnerInput
-  connect: LocationWhereUniqueInput
-}
-
-input LocationCreateWithoutOwnerInput {
-  id: ID
-  type: LocationType!
-  createdBy: ID!
-  updatedBy: ID
-  name: String
-  osmNodeId: String
-  addressLine1: String
-  addressLine2: String
-  addressCity: String
-  addressZipCode: String
-  addressCountry: String
-  geoPointLatitude: Float
-  geoPointLongitude: Float
-  geoPointRadiusMeter: Float
-  tags: TagCreateManyInput
-}
-
 type LocationEdge {
   node: Location!
   cursor: String!
@@ -1657,6 +1941,8 @@ enum LocationOrderByInput {
   id_DESC
   type_ASC
   type_DESC
+  owner_ASC
+  owner_DESC
   createdBy_ASC
   createdBy_DESC
   createdAt_ASC
@@ -1690,6 +1976,7 @@ enum LocationOrderByInput {
 type LocationPreviousValues {
   id: ID!
   type: LocationType!
+  owner: ID!
   createdBy: ID!
   createdAt: DateTime!
   updatedBy: ID
@@ -1732,7 +2019,7 @@ enum LocationType {
 
 input LocationUpdateDataInput {
   type: LocationType
-  owner: AgentUpdateOneRequiredWithoutLocationInput
+  owner: ID
   createdBy: ID
   updatedBy: ID
   name: String
@@ -1750,7 +2037,7 @@ input LocationUpdateDataInput {
 
 input LocationUpdateInput {
   type: LocationType
-  owner: AgentUpdateOneRequiredWithoutLocationInput
+  owner: ID
   createdBy: ID
   updatedBy: ID
   name: String
@@ -1768,6 +2055,7 @@ input LocationUpdateInput {
 
 input LocationUpdateManyMutationInput {
   type: LocationType
+  owner: ID
   createdBy: ID
   updatedBy: ID
   name: String
@@ -1791,40 +2079,9 @@ input LocationUpdateOneInput {
   connect: LocationWhereUniqueInput
 }
 
-input LocationUpdateOneWithoutOwnerInput {
-  create: LocationCreateWithoutOwnerInput
-  update: LocationUpdateWithoutOwnerDataInput
-  upsert: LocationUpsertWithoutOwnerInput
-  delete: Boolean
-  disconnect: Boolean
-  connect: LocationWhereUniqueInput
-}
-
-input LocationUpdateWithoutOwnerDataInput {
-  type: LocationType
-  createdBy: ID
-  updatedBy: ID
-  name: String
-  osmNodeId: String
-  addressLine1: String
-  addressLine2: String
-  addressCity: String
-  addressZipCode: String
-  addressCountry: String
-  geoPointLatitude: Float
-  geoPointLongitude: Float
-  geoPointRadiusMeter: Float
-  tags: TagUpdateManyInput
-}
-
 input LocationUpsertNestedInput {
   update: LocationUpdateDataInput!
   create: LocationCreateInput!
-}
-
-input LocationUpsertWithoutOwnerInput {
-  update: LocationUpdateWithoutOwnerDataInput!
-  create: LocationCreateWithoutOwnerInput!
 }
 
 input LocationWhereInput {
@@ -1846,7 +2103,20 @@ input LocationWhereInput {
   type_not: LocationType
   type_in: [LocationType!]
   type_not_in: [LocationType!]
-  owner: AgentWhereInput
+  owner: ID
+  owner_not: ID
+  owner_in: [ID!]
+  owner_not_in: [ID!]
+  owner_lt: ID
+  owner_lte: ID
+  owner_gt: ID
+  owner_gte: ID
+  owner_contains: ID
+  owner_not_contains: ID
+  owner_starts_with: ID
+  owner_not_starts_with: ID
+  owner_ends_with: ID
+  owner_not_ends_with: ID
   createdBy: ID
   createdBy_not: ID
   createdBy_in: [ID!]
@@ -2179,6 +2449,7 @@ input MembershipSubscriptionWhereInput {
 }
 
 enum MembershipType {
+  Invite
   Single
   Multi
 }
@@ -2323,6 +2594,12 @@ type Mutation {
   upsertAgent(where: AgentWhereUniqueInput!, create: AgentCreateInput!, update: AgentUpdateInput!): Agent!
   deleteAgent(where: AgentWhereUniqueInput!): Agent
   deleteManyAgents(where: AgentWhereInput): BatchPayload!
+  createContentEncoding(data: ContentEncodingCreateInput!): ContentEncoding!
+  updateContentEncoding(data: ContentEncodingUpdateInput!, where: ContentEncodingWhereUniqueInput!): ContentEncoding
+  updateManyContentEncodings(data: ContentEncodingUpdateManyMutationInput!, where: ContentEncodingWhereInput): BatchPayload!
+  upsertContentEncoding(where: ContentEncodingWhereUniqueInput!, create: ContentEncodingCreateInput!, update: ContentEncodingUpdateInput!): ContentEncoding!
+  deleteContentEncoding(where: ContentEncodingWhereUniqueInput!): ContentEncoding
+  deleteManyContentEncodings(where: ContentEncodingWhereInput): BatchPayload!
   createEntry(data: EntryCreateInput!): Entry!
   updateEntry(data: EntryUpdateInput!, where: EntryWhereUniqueInput!): Entry
   updateManyEntries(data: EntryUpdateManyMutationInput!, where: EntryWhereInput): BatchPayload!
@@ -2399,6 +2676,9 @@ type Query {
   agent(where: AgentWhereUniqueInput!): Agent
   agents(where: AgentWhereInput, orderBy: AgentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Agent]!
   agentsConnection(where: AgentWhereInput, orderBy: AgentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AgentConnection!
+  contentEncoding(where: ContentEncodingWhereUniqueInput!): ContentEncoding
+  contentEncodings(where: ContentEncodingWhereInput, orderBy: ContentEncodingOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ContentEncoding]!
+  contentEncodingsConnection(where: ContentEncodingWhereInput, orderBy: ContentEncodingOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ContentEncodingConnection!
   entry(where: EntryWhereUniqueInput!): Entry
   entries(where: EntryWhereInput, orderBy: EntryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Entry]!
   entriesConnection(where: EntryWhereInput, orderBy: EntryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EntryConnection!
@@ -2816,6 +3096,7 @@ input SessionWhereUniqueInput {
 
 type Subscription {
   agent(where: AgentSubscriptionWhereInput): AgentSubscriptionPayload
+  contentEncoding(where: ContentEncodingSubscriptionWhereInput): ContentEncodingSubscriptionPayload
   entry(where: EntrySubscriptionWhereInput): EntrySubscriptionPayload
   group(where: GroupSubscriptionWhereInput): GroupSubscriptionPayload
   inbox(where: InboxSubscriptionWhereInput): InboxSubscriptionPayload
@@ -2829,11 +3110,9 @@ type Subscription {
 type Tag {
   id: ID!
   type: String!
-  owner: Agent!
+  owner: ID!
   createdBy: ID!
   createdAt: DateTime!
-  updatedBy: ID
-  updatedAt: DateTime
   value: String!
 }
 
@@ -2846,28 +3125,14 @@ type TagConnection {
 input TagCreateInput {
   id: ID
   type: String!
-  owner: AgentCreateOneWithoutTagsInput!
+  owner: ID!
   createdBy: ID!
-  updatedBy: ID
   value: String!
 }
 
 input TagCreateManyInput {
   create: [TagCreateInput!]
   connect: [TagWhereUniqueInput!]
-}
-
-input TagCreateManyWithoutOwnerInput {
-  create: [TagCreateWithoutOwnerInput!]
-  connect: [TagWhereUniqueInput!]
-}
-
-input TagCreateWithoutOwnerInput {
-  id: ID
-  type: String!
-  createdBy: ID!
-  updatedBy: ID
-  value: String!
 }
 
 type TagEdge {
@@ -2880,14 +3145,12 @@ enum TagOrderByInput {
   id_DESC
   type_ASC
   type_DESC
+  owner_ASC
+  owner_DESC
   createdBy_ASC
   createdBy_DESC
   createdAt_ASC
   createdAt_DESC
-  updatedBy_ASC
-  updatedBy_DESC
-  updatedAt_ASC
-  updatedAt_DESC
   value_ASC
   value_DESC
 }
@@ -2895,10 +3158,9 @@ enum TagOrderByInput {
 type TagPreviousValues {
   id: ID!
   type: String!
+  owner: ID!
   createdBy: ID!
   createdAt: DateTime!
-  updatedBy: ID
-  updatedAt: DateTime
   value: String!
 }
 
@@ -2931,6 +3193,20 @@ input TagScalarWhereInput {
   type_not_starts_with: String
   type_ends_with: String
   type_not_ends_with: String
+  owner: ID
+  owner_not: ID
+  owner_in: [ID!]
+  owner_not_in: [ID!]
+  owner_lt: ID
+  owner_lte: ID
+  owner_gt: ID
+  owner_gte: ID
+  owner_contains: ID
+  owner_not_contains: ID
+  owner_starts_with: ID
+  owner_not_starts_with: ID
+  owner_ends_with: ID
+  owner_not_ends_with: ID
   createdBy: ID
   createdBy_not: ID
   createdBy_in: [ID!]
@@ -2953,28 +3229,6 @@ input TagScalarWhereInput {
   createdAt_lte: DateTime
   createdAt_gt: DateTime
   createdAt_gte: DateTime
-  updatedBy: ID
-  updatedBy_not: ID
-  updatedBy_in: [ID!]
-  updatedBy_not_in: [ID!]
-  updatedBy_lt: ID
-  updatedBy_lte: ID
-  updatedBy_gt: ID
-  updatedBy_gte: ID
-  updatedBy_contains: ID
-  updatedBy_not_contains: ID
-  updatedBy_starts_with: ID
-  updatedBy_not_starts_with: ID
-  updatedBy_ends_with: ID
-  updatedBy_not_ends_with: ID
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
   value: String
   value_not: String
   value_in: [String!]
@@ -3014,24 +3268,22 @@ input TagSubscriptionWhereInput {
 
 input TagUpdateDataInput {
   type: String
-  owner: AgentUpdateOneRequiredWithoutTagsInput
+  owner: ID
   createdBy: ID
-  updatedBy: ID
   value: String
 }
 
 input TagUpdateInput {
   type: String
-  owner: AgentUpdateOneRequiredWithoutTagsInput
+  owner: ID
   createdBy: ID
-  updatedBy: ID
   value: String
 }
 
 input TagUpdateManyDataInput {
   type: String
+  owner: ID
   createdBy: ID
-  updatedBy: ID
   value: String
 }
 
@@ -3049,21 +3301,9 @@ input TagUpdateManyInput {
 
 input TagUpdateManyMutationInput {
   type: String
+  owner: ID
   createdBy: ID
-  updatedBy: ID
   value: String
-}
-
-input TagUpdateManyWithoutOwnerInput {
-  create: [TagCreateWithoutOwnerInput!]
-  delete: [TagWhereUniqueInput!]
-  connect: [TagWhereUniqueInput!]
-  set: [TagWhereUniqueInput!]
-  disconnect: [TagWhereUniqueInput!]
-  update: [TagUpdateWithWhereUniqueWithoutOwnerInput!]
-  upsert: [TagUpsertWithWhereUniqueWithoutOwnerInput!]
-  deleteMany: [TagScalarWhereInput!]
-  updateMany: [TagUpdateManyWithWhereNestedInput!]
 }
 
 input TagUpdateManyWithWhereNestedInput {
@@ -3071,33 +3311,15 @@ input TagUpdateManyWithWhereNestedInput {
   data: TagUpdateManyDataInput!
 }
 
-input TagUpdateWithoutOwnerDataInput {
-  type: String
-  createdBy: ID
-  updatedBy: ID
-  value: String
-}
-
 input TagUpdateWithWhereUniqueNestedInput {
   where: TagWhereUniqueInput!
   data: TagUpdateDataInput!
-}
-
-input TagUpdateWithWhereUniqueWithoutOwnerInput {
-  where: TagWhereUniqueInput!
-  data: TagUpdateWithoutOwnerDataInput!
 }
 
 input TagUpsertWithWhereUniqueNestedInput {
   where: TagWhereUniqueInput!
   update: TagUpdateDataInput!
   create: TagCreateInput!
-}
-
-input TagUpsertWithWhereUniqueWithoutOwnerInput {
-  where: TagWhereUniqueInput!
-  update: TagUpdateWithoutOwnerDataInput!
-  create: TagCreateWithoutOwnerInput!
 }
 
 input TagWhereInput {
@@ -3129,7 +3351,20 @@ input TagWhereInput {
   type_not_starts_with: String
   type_ends_with: String
   type_not_ends_with: String
-  owner: AgentWhereInput
+  owner: ID
+  owner_not: ID
+  owner_in: [ID!]
+  owner_not_in: [ID!]
+  owner_lt: ID
+  owner_lte: ID
+  owner_gt: ID
+  owner_gte: ID
+  owner_contains: ID
+  owner_not_contains: ID
+  owner_starts_with: ID
+  owner_not_starts_with: ID
+  owner_ends_with: ID
+  owner_not_ends_with: ID
   createdBy: ID
   createdBy_not: ID
   createdBy_in: [ID!]
@@ -3152,28 +3387,6 @@ input TagWhereInput {
   createdAt_lte: DateTime
   createdAt_gt: DateTime
   createdAt_gte: DateTime
-  updatedBy: ID
-  updatedBy_not: ID
-  updatedBy_in: [ID!]
-  updatedBy_not_in: [ID!]
-  updatedBy_lt: ID
-  updatedBy_lte: ID
-  updatedBy_gt: ID
-  updatedBy_gte: ID
-  updatedBy_contains: ID
-  updatedBy_not_contains: ID
-  updatedBy_starts_with: ID
-  updatedBy_not_starts_with: ID
-  updatedBy_ends_with: ID
-  updatedBy_not_ends_with: ID
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
   value: String
   value_not: String
   value_in: [String!]
@@ -3213,7 +3426,7 @@ type User {
   personLastName: String
   personPhone: String
   personMobilePhone: String
-  institutionName: String
+  organizationName: String
 }
 
 type UserConnection {
@@ -3236,7 +3449,7 @@ input UserCreateInput {
   personLastName: String
   personPhone: String
   personMobilePhone: String
-  institutionName: String
+  organizationName: String
 }
 
 input UserCreateOneWithoutSessionsInput {
@@ -3257,7 +3470,7 @@ input UserCreateWithoutSessionsInput {
   personLastName: String
   personPhone: String
   personMobilePhone: String
-  institutionName: String
+  organizationName: String
 }
 
 type UserEdge {
@@ -3292,8 +3505,8 @@ enum UserOrderByInput {
   personPhone_DESC
   personMobilePhone_ASC
   personMobilePhone_DESC
-  institutionName_ASC
-  institutionName_DESC
+  organizationName_ASC
+  organizationName_DESC
 }
 
 type UserPreviousValues {
@@ -3310,7 +3523,7 @@ type UserPreviousValues {
   personLastName: String
   personPhone: String
   personMobilePhone: String
-  institutionName: String
+  organizationName: String
 }
 
 type UserSubscriptionPayload {
@@ -3333,7 +3546,7 @@ input UserSubscriptionWhereInput {
 
 enum UserType {
   Person
-  Institution
+  Organization
 }
 
 input UserUpdateInput {
@@ -3349,7 +3562,7 @@ input UserUpdateInput {
   personLastName: String
   personPhone: String
   personMobilePhone: String
-  institutionName: String
+  organizationName: String
 }
 
 input UserUpdateManyMutationInput {
@@ -3363,7 +3576,7 @@ input UserUpdateManyMutationInput {
   personLastName: String
   personPhone: String
   personMobilePhone: String
-  institutionName: String
+  organizationName: String
 }
 
 input UserUpdateOneRequiredWithoutSessionsInput {
@@ -3385,7 +3598,7 @@ input UserUpdateWithoutSessionsDataInput {
   personLastName: String
   personPhone: String
   personMobilePhone: String
-  institutionName: String
+  organizationName: String
 }
 
 input UserUpsertWithoutSessionsInput {
@@ -3560,20 +3773,20 @@ input UserWhereInput {
   personMobilePhone_not_starts_with: String
   personMobilePhone_ends_with: String
   personMobilePhone_not_ends_with: String
-  institutionName: String
-  institutionName_not: String
-  institutionName_in: [String!]
-  institutionName_not_in: [String!]
-  institutionName_lt: String
-  institutionName_lte: String
-  institutionName_gt: String
-  institutionName_gte: String
-  institutionName_contains: String
-  institutionName_not_contains: String
-  institutionName_starts_with: String
-  institutionName_not_starts_with: String
-  institutionName_ends_with: String
-  institutionName_not_ends_with: String
+  organizationName: String
+  organizationName_not: String
+  organizationName_in: [String!]
+  organizationName_not_in: [String!]
+  organizationName_lt: String
+  organizationName_lte: String
+  organizationName_gt: String
+  organizationName_gte: String
+  organizationName_contains: String
+  organizationName_not_contains: String
+  organizationName_starts_with: String
+  organizationName_not_starts_with: String
+  organizationName_ends_with: String
+  organizationName_not_ends_with: String
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

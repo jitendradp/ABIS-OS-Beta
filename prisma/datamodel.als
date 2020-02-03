@@ -2,7 +2,7 @@
 // Ein Alloy-Modell für das Prisma-Basisdatenmodell.
 //
 // TODO: Es sind noch keine Operationen implementiert.
-// TODO: Folgende Typen sind noch gar nicht modelliert: Session, Tag, Location.
+// TODO: Folgende Typen sind noch gar nicht modelliert: Session, Tag, Location. ContentEncoding
 
 // ====================================
 // Entry
@@ -11,7 +11,7 @@ sig Entry {
 	owner: one Profile
 }
 
-	fact "Alle Einträge müssen in einer Gruppe sein" {
+	fact "E.G.1 Alle Einträge müssen in einer Gruppe sein" {
 		all e: Entry
 		| one g: Group
 		| e in g.entries
@@ -28,17 +28,14 @@ abstract sig Group {
 	entries: set Entry
 }
 
-	//
-	// Membership
-	//
-	fact "Der 'owner' einer Gruppe darf nicht Mitglied der Gruppe sein" {
+	fact "G.M.1 Der 'owner' einer Gruppe darf nicht Mitglied der Gruppe sein" {
 		no g: Group 				// Es gibt keine Gruppe,
 		| some m: Membership 		// .. mit einer oder mehreren Mitgliedschaften,
 		| m in g.memberships 		// .. die in dieser Gruppe enthalten sind,
 		&& g.owner = m.member 		// .. und deren 'member' auch 'owner' der Gruppe ist.
 	}
 
-	fact "Keine Gruppe hat Mitgliedschaften, die nicht von einem Gruppen-owner, einem Mitglied der Gruppe oder dem Mitglied selber erstellt wurden" {
+	fact "G.M.2 Keine Gruppe hat Mitgliedschaften, die nicht von einem Gruppen-owner, einem Mitglied der Gruppe oder dem Mitglied selber erstellt wurden" {
 		no g: Group
 		| some m: g.memberships
 		| not(m.creator = g.owner
@@ -46,22 +43,22 @@ abstract sig Group {
 		   || m.creator = m.member)
 	}
 
-	fact "Es gibt keine Gruppe, die mehr als eine SingleMembership des selben Users enthält" {
+	fact "G.M.3 Es gibt keine Gruppe, die mehr als eine SingleMembership des selben Users enthält" {
 		no g: Group 						// Keine Gruppe
-		| some disj m, m': SingleMembership		// kann zwei SingleMemberships
+		| some disj m, m': SingleMembership	// kann zwei SingleMemberships
 		| m.member.owner = m'.member.owner	// des selben Benutzers
 	    && m in g.memberships				// enthalten
 		&& m' in g.memberships				// ..
 	}
 
-	fact "Es gibt keine Gruppe, mit einer SingleMembership eines Users, wenn der User auch Owner der Gruppe ist" {
+	fact "G.M.4 Es gibt keine Gruppe, mit einer SingleMembership eines Users, wenn der User auch Owner der Gruppe ist" {
 		no g: Group
 		| some m: SingleMembership
 		| m in g.memberships
 		&& m.member.owner = g.owner.owner
 	}
 
-	fact "Es gibt keine Gruppe die sowohl eine Single- als auch eine MultiMembership des selben Users enthält" {
+	fact "G.M.5 Es gibt keine Gruppe die sowohl eine Single- als auch eine MultiMembership des selben Users enthält" {
 		// Sollte das der Fall sein, muss die bisher existierende SingleMembership in eine MultiMembership umgewandelt werden
 		no g: Group
 		| some m, m': Membership
@@ -72,23 +69,20 @@ abstract sig Group {
 		&& m' in g.memberships
 	}
 
-	fact "Es gibt keine Gruppe, die nur eine MultiMembership eines Users enthält, der nicht owner der Gruppe ist" {
+	fact "G.M.6 Es gibt keine Gruppe, die nur eine MultiMembership eines Users enthält, der nicht owner der Gruppe ist" {
 		no g: Group
 		| one m: MultiMembership
 		| m in g.memberships
 		&& not(m.member.owner = g.owner.owner)
 	}
 
-	fact "Es gibt keine Gruppe, die zwei Mitgliedschaften des selben Agents enthält" {
+	fact "G.M.7 Es gibt keine Gruppe, die zwei Mitgliedschaften des selben Agents enthält" {
 		no g: Group
 		| some disj m, m': g.memberships
 		| m.member = m'.member
 	}
 
-	//
-	// Entries
-	//
-	fact "Es gibt keine Gruppe, die Entries von nicht-ownern oder nicht-Mitgliedern enthält" {
+	fact "G.E.1 Es gibt keine Gruppe, die Entries von nicht-ownern oder nicht-Mitgliedern enthält" {
 		// Verlässt ein Mitglied die Gruppe, wird die ownership seiner Entries an den Gruppepn-Owner übertragen.
 		// TODO: Das tatsächliche prisma-Modell benötigt neben dem "owner"-Feld immer auch ein "creator" Feld.
 		no g: Group
@@ -104,12 +98,12 @@ abstract sig Group {
 sig Stash extends Group {
 }
 
-	fact "Ein Stash hat keine Mitglieder" {
+	fact "S.M.1 Ein Stash hat keine Mitglieder" {
 		all s: Stash
 		| no s.memberships
 	}
 
-	fact "Es gibt keinen Stash mit Einträgen, deren Owner nicht auch der Owner des Stash ist" {
+	fact "S.E.1 Es gibt keinen Stash mit Einträgen, deren Owner nicht auch der Owner des Stash ist" {
 		no s: Stash
 		| some e: s.entries
 		| not(e.owner = s.owner)
@@ -125,21 +119,18 @@ sig Stash extends Group {
 sig Channel extends Group {
 }
 
-	//
-	// Memberships
-	//
-	fact "Ein Channel hat immer genau ein Mitglied" {
+	fact "C.M.1 Ein Channel hat immer genau ein Mitglied" {
 		all c: Channel
 		| one c.memberships
 	}
 	// TODO: fact "Die Mitglieder eines Channels dürfen sich nach der ersten Zuweisung nicht mehr ändern" {}
-	fact "Es gibt keine Channels mit Mitgliedschaften, die nicht vom Channel-Owner erstellt wurden" {
+	fact "C.M.2 Es gibt keine Channels mit Mitgliedschaften, die nicht vom Channel-Owner erstellt wurden" {
 		no c: Channel
 		| some m: c.memberships
 		| not(m.creator = c.owner)
 	}
 
-	fact "Es gibt keine zwei Channels mit derselben owner/member-Kombination" {
+	fact "C.M.3 Es gibt keine zwei Channels mit derselben owner/member-Kombination" {
 		/// Es gibt keine zwei Channels, mit demselben owner und mitglied
 		no disj c, c': Channel
 		| some m, m': Membership
@@ -149,10 +140,7 @@ sig Channel extends Group {
 		&& m.member = m'.member
 	}
 
-	//
-	// Entries
-	//
-	fact "Es gibt keinen Channels mit Einträgen, deren Owner nicht auch der Owner des Channels ist" {
+	fact "C.E.1 Es gibt keinen Channels mit Einträgen, deren Owner nicht auch der Owner des Channels ist" {
 		no c: Channel
 		| some e: c.entries
 		| not(e.owner = c.owner)
@@ -167,7 +155,7 @@ sig Inbox {
 	represents: one Room
 }
 
-	fact "Der 'owner' der Inbox ist auch 'owner' des repräsentierten Raums" {
+	fact "I.1 Der 'owner' der Inbox ist auch 'owner' des repräsentierten Raums" {
 		all i: Inbox
 		| i.owner = i.represents.owner
 	}
@@ -179,13 +167,13 @@ sig Room extends Group {
 	isPublic: one Boolean
 }
 
-	fact "Jeder Raum hat eine Inbox" {
+	fact "R.I.1 Jeder Raum hat eine Inbox" {
 		all r: Room
 		| one i: Inbox
 		| i.represents = r
 	}
 
-	fact "Kein nicht-öffentlicher Raum hat Mitgliedschaften, die von ihrem Mitglied selbst erstellt wurden" {
+	fact "R.M.1 Kein nicht-öffentlicher Raum hat Mitgliedschaften, die von ihrem Mitglied selbst erstellt wurden" {
 		no r: Room
 		| some m: Membership
 		| m in r.memberships
@@ -201,7 +189,7 @@ abstract sig Membership {
 	creator: one Agent
 }
 
-	fact "Alle Mitgliedschaften müssen jeweils genau in einer Gruppe sein" {
+	fact "M.G.1 Alle Mitgliedschaften müssen jeweils genau in einer Gruppe sein" {
 		all m: Membership 			// Für jede Mitgliedschaft,
 		| one g: Group				// .. gibt es exakt eine Gruppe,
 		| m in g.memberships		// .. in deren 'memberships' sie enthalten ist.
@@ -239,7 +227,7 @@ abstract sig Agent {
 sig Profile extends Agent {
 }
 
-	fact "Jedes Profil hat mindestens einen Stash" {
+	fact "P.S.1 Jedes Profil hat mindestens einen Stash" {
 		all p: Profile
 		| some s:Stash
 		| s.owner = p
@@ -256,13 +244,13 @@ sig Profile extends Agent {
 sig Service extends Agent {
 }
 
-	fact "Es gibt keinen Service, der nicht genau eine Mitgliedschaft hat" {
+	fact "Se.M.1 Es gibt keinen Service, der nicht genau eine Mitgliedschaft hat" {
 		no s:Service
 		| no m: Membership
 		| m.member = s
 	}
 
-	fact "Es gibt keinen Service, dessen Mitgliedschaft nicht von einem Profil erstellt wurde" {
+	fact "Se.M.2 Es gibt keinen Service, dessen Mitgliedschaft nicht von einem Profil erstellt wurde" {
 	    // Es gelten ansonsten alle anderen Regeln für das Erstellen von Mitgliedschaften
 		no s:Service
 		| some m: Membership
@@ -278,7 +266,7 @@ sig Service extends Agent {
 sig User {
 }
 
-	fact "Alle Benutzer müssen mind. ein Profil besitzen" {
+	fact "U.P.1 Alle Benutzer müssen mind. ein Profil besitzen" {
 		all u: User
 		| some p: Profile
 		| p.owner = u

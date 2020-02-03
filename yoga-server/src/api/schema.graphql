@@ -1,0 +1,633 @@
+scalar DateTime
+scalar Json
+scalar ID
+scalar Integer
+
+type Tag {
+    id: ID!
+    type: String!           # reserved types are '#' (hashtag) and '@' (mention). Maybe more to follow..
+
+    owner: ID!
+
+    createdBy: ID!
+    createdAt: DateTime!
+
+    updatedBy: ID
+    updatedAt: DateTime
+
+    value: String!
+}
+
+type Taggregate {
+    type: String!
+    count: Integer!
+}
+
+interface Location {
+    id: ID!
+
+    owner: ID!
+
+    createdBy: ID!
+    createdAt: DateTime!
+
+    updatedBy: ID
+    updatedAt: DateTime
+
+    name: String
+
+    tags: [Tag!]!
+    taggregate:[Taggregate!]!       # Contains the tag-counts grouped by their type.
+}
+
+type OpenStreetMapNode implements Location {
+    id: ID!
+
+    owner: ID!
+
+    createdBy: ID!
+    createdAt: DateTime!
+
+    updatedBy: ID
+    updatedAt: DateTime
+
+    name: String
+
+    tags: [Tag!]!
+    taggregate:[Taggregate!]!       # Contains the tag-counts grouped by their type.
+
+    osmNodeId:String!
+}
+
+type Address implements Location {
+    id: ID!
+
+    owner: ID!
+
+    createdBy: ID!
+    createdAt: DateTime!
+
+    updatedBy: ID
+    updatedAt: DateTime
+
+    name: String
+
+    tags: [Tag!]!
+    taggregate:[Taggregate!]!       # Contains the tag-counts grouped by their type.
+
+    line1: String!
+    line2: String
+    city: String!
+    zipCode: String!
+    country: String!
+}
+
+type GeoPoint implements Location {
+    id: ID!
+
+    owner: ID!
+
+    createdBy: ID!
+    createdAt: DateTime!
+
+    updatedBy: ID
+    updatedAt: DateTime
+
+    name: String
+
+    tags: [Tag!]!
+    taggregate:[Taggregate!]!       # Contains the tag-counts grouped by their type.
+
+    geoPointLatitude: Float!
+    geoPointLongitude: Float!
+    geoPointRadiusMeter: Float!
+}
+
+type Inbox {
+    id: ID!
+}
+
+enum GroupType {
+    Channel,
+    Room
+}
+
+interface Agent {
+    id: ID!
+
+    createdBy: ID!
+    createdAt: DateTime!
+
+    updatedBy: ID
+    updatedAt: DateTime
+
+    name: String!
+
+    timezone: String!
+    location: Location
+}
+
+enum ProfileStatus {
+    Offline
+    DoNotDisturb
+    Away
+    Available
+}
+
+type Profile implements Agent {
+    id: ID!
+
+    createdBy: ID!
+    createdAt: DateTime!
+
+    updatedBy: ID
+    updatedAt: DateTime
+
+    name: String!
+
+    timezone: String!
+    location: Location
+
+    profileType: ProfileType!
+    avatar: String!
+    status: ProfileStatus!
+    banner: String
+    slogan: String
+    jobTitle: String
+}
+
+enum ServiceStatus {
+    Running
+    Suspended
+    Failed
+    Succeeded
+}
+
+type Service implements Agent {
+    id: ID!
+
+    createdBy: ID!
+    createdAt: DateTime!
+
+    updatedBy: ID
+    updatedAt: DateTime
+
+    name: String!
+
+    timezone: String!
+    location: Location
+
+    status: ServiceStatus!
+    description: String
+}
+
+interface Group {
+    id: ID!
+
+    owner: ID!              # The id of the Agent that owns the Group
+
+    createdBy: ID!          # The id of the Agent that created the Group
+    createdAt: DateTime!
+
+    updatedBy: ID           # The id of the Agent that last modified the Group
+    updatedAt: DateTime
+
+    name: String!
+
+    entryCount: Integer
+}
+
+type Stash implements Group {
+    id: ID!
+
+    owner: ID!              # The id of the Agent that owns the Group
+
+    createdBy: ID!          # The id of the Agent that created the Group
+    createdAt: DateTime!
+
+    updatedBy: ID           # The id of the Agent that last modified the Group
+    updatedAt: DateTime
+
+    name: String!
+
+    entryCount: Integer
+
+    tags: [Tag!]!
+}
+
+type Channel implements Group {
+    id: ID!
+
+    owner: ID!              # The id of the Agent that owns the Group
+
+    createdBy: ID!          # The id of the Agent that created the Group
+    createdAt: DateTime!
+
+    updatedBy: ID           # The id of the Agent that last modified the Group
+    updatedAt: DateTime
+
+    name: String!
+
+    entryCount: Integer
+
+    sender: Agent!
+    receiver: Agent!
+
+    reverse: Channel        # When existing, contains the reverse channel.
+}
+
+type Membership {
+    id: ID!
+    type: MembershipType!
+
+    createdBy: ID!
+    createdAt: DateTime!
+
+    updatedBy: ID
+    updatedAt: DateTime
+
+    groupType: GroupType    # Is only set to a value when returned by "query myMemberships()".
+    group: Group            # .. When navigated from a Group, this is 'null'.
+
+    member: Agent!          # This is only set when queried from a group.
+
+    showHistory: Boolean!
+}
+
+enum MembershipType {
+    Invite,
+    Single,
+    Multi
+}
+
+type Room implements Group {
+    id: ID!
+
+    owner: ID!              # The id of the Agent that owns the Group
+
+    createdBy: ID!          # The id of the Agent that created the Group
+    createdAt: DateTime!
+
+    updatedBy: ID           # The id of the Agent that last modified the Group
+    updatedAt: DateTime
+
+    name: String!
+
+    entryCount: Integer
+
+    isPrivate: Boolean!
+
+    title: String
+    description: String
+    logo: String
+    banner: String
+
+    inbox: Inbox!
+
+    memberCount: Integer
+    memberships: [Membership!]!     # Empty when returned in searches.
+
+    tags: [Tag!]!
+    taggregate:[Taggregate!]!       # Contains the tag-counts grouped by their type.
+}
+
+#
+# Mutation-Types
+#
+type ActionResponse {
+    success: Boolean!
+    code: String
+    message: String
+    data: String
+}
+
+input SignupInput {
+    type: UserType!
+
+    timezone: String!
+
+    email: String!
+    password: String!
+
+    # Only if "type == UserType.Person":
+    personFirstName: String
+    personLastName: String
+    personPhone: String
+    personMobilePhone: String
+
+    # Only if "type == UserType.Organization":
+    organizationName: String
+}
+
+enum UserType {
+    Person,
+    Organization
+}
+
+enum ProfileType {
+    Business,
+    Private
+}
+
+input CreateProfileInput {
+    type:ProfileType!
+    name:String!
+    picture:String
+    timezone:String
+    location: CreateLocationInput
+}
+
+input UpdateProfileInput {
+    id: ID!
+    type:ProfileType!
+    name:String!
+    picture:String
+    timezone:String
+    location: CreateLocationInput
+    status:ProfileStatus!
+}
+
+input CreateStashInput {
+    name: String!
+}
+
+input UpdateStashInput {
+    id: ID!
+    name: String!
+}
+
+input CreateChannelInput {
+    receiver: ID! # The id of the receiving agent
+}
+
+input CreateRoomInput {
+    name: String!
+    title: String
+    description: String
+    logo: String
+    banner: String
+    tags: [AddTagInput!]!
+}
+
+input UpdateRoomInput {
+    id: ID!
+    name: String!
+    title: String
+    description: String
+    logo: String
+    banner: String
+}
+
+input CreateEntryInput {
+    type: EntryType!
+
+    name: String
+
+    content: Json
+    contentEncoding: ID
+
+    tags: [AddTagInput!]!
+}
+
+input UpdateEntryInput {
+    id: ID!
+
+    name: String
+
+    content: Json
+    contentEncoding: ID
+}
+
+enum LocationType {
+    OpenStreetMap
+    Address
+    GeoPoint
+}
+
+input CreateLocationInput {
+    id: ID
+    type: LocationType!
+
+    name: String
+
+    # Only if "type == LocationType.OpenStreetMap":
+    osmNodeId: String
+
+    # Only if "type == LocationType.Address":
+    addressLine1: String
+    addressLine2: String
+    addressCity: String
+    addressZipCode: String
+    addressCountry: String
+
+    # Only if "type == LocationType.GeoPoint":
+    geoPointLatitude: Float
+    geoPointLongitude: Float
+    geoPointRadiusMeter: Float
+
+    tags: [AddTagInput!]!
+}
+
+input UpdateLocationInput {
+    id:ID!
+    type: LocationType!
+
+    name: String
+
+    # Only if "type == LocationType.OpenStreetMap":
+    osmNodeId: String
+
+    # Only if "type == LocationType.Address":
+    addressLine1: String
+    addressLine2: String
+    addressCity: String
+    addressZipCode: String
+    addressCountry: String
+
+    # Only if "type == LocationType.GeoPoint":
+    geoPointLatitude: Float
+    geoPointLongitude: Float
+    geoPointRadiusMeter: Float
+}
+
+input AddTagInput {
+    type: String!
+    value: String!
+}
+
+type Entry {
+    id: ID!
+    type: EntryType!
+
+    owner: ID!
+
+    createdBy: ID!
+    createdAt: DateTime!
+
+    updatedBy: ID
+    updatedAt: DateTime
+
+    name: String
+
+    content: Json
+    contentEncoding: ContentEncoding
+
+    tags: [Tag!]!
+    taggregate:[Taggregate!]!       # Contains the tag-counts grouped by their type.
+}
+
+enum EntryType {
+    Empty
+    Json
+    Table
+    Document
+    Picture
+    File
+    Thing
+}
+
+type ContentEncoding {
+    id: ID!
+    type: EncodingType!
+
+    maintainer: ID!     # The Agent that maintains the schema
+
+    createdBy: ID!
+    createdAt: DateTime!
+
+    updatedBy: ID
+    updatedAt: DateTime
+
+    name: String!
+    charset: String!
+}
+
+enum EncodingType {
+    Custom
+    Base64
+    Microformat
+    TableSchema
+    JsonSchema
+    XmlSchema
+    GqlSchema
+    RdfSchema
+    Owl
+}
+
+type Account {
+    id: ID!
+    type: UserType!
+
+    createdAt: DateTime!
+    updatedAt: DateTime
+
+    location: Location
+    timezone: String!
+
+    email: String!
+
+    # Only if "type == UserType.Person":
+    personFirstName: String
+    personLastName: String
+    personPhone: String
+    personMobilePhone: String
+
+    # Only if "type == UserType.Organization":
+    organizationName: String
+}
+
+type Query {
+    myAccount(csrfToken: String!) : Account!
+
+    myProfiles(csrfToken: String!) : [Profile]!
+
+    myServices(csrfToken: String!) : [Service]!
+
+    myStashes(csrfToken: String!) : [Stash!]!
+
+    myChannels(csrfToken: String!) : [Channel!]!
+
+    myRooms(csrfToken: String!) : [Room!]!
+
+    myMemberships(csrfToken:String! groupType:GroupType isPublic:Boolean) : [Membership!]!
+
+    # Finds all Rooms to which the session's Agent has access.
+    findRooms(csrfToken:String! searchText:String) : [Room!]!
+
+    # Finds all Members of the specified Room if the session's Agent has access to it.
+    findMemberships(csrfToken:String! roomId:ID! searchText:String) : [Membership!]!
+
+    # Lists the Entries of a specified Group (any group: Stash, Channel or Room).
+    # An optional from- and to-date filter can be specified for temporal pagination.
+    getEntries(csrfToken:String! groupId:ID! from:DateTime to:DateTime) : [Entry!]!
+}
+
+type Mutation {
+    #
+    # Signup
+    #
+    signup(signupInput:SignupInput!) : ActionResponse!
+    verifyEmail(code:String!) : ActionResponse!
+
+    #
+    # Login, Logout, VerifySession
+    #
+    login(email:String! password:String!) : ActionResponse!
+    logout(csrfToken:String!) : ActionResponse!
+
+    verifySession(csrfToken:String!) : ActionResponse!
+
+    #
+    # Agents
+    #
+    createProfile(csrfToken:String! createProfileInput:CreateProfileInput!) : Profile
+    updateProfile(csrfToken:String! updateProfileInput:UpdateProfileInput!) : Profile
+    deleteProfile(csrfToken:String! id:ID!) : ActionResponse!
+
+    #
+    # Groups
+    #
+    createStash(csrfToken:String! createStashInput:CreateStashInput) : Stash
+    updateStash(csrfToken:String! updateStashInput:UpdateStashInput) : Stash
+    deleteStash(csrfToken:String! id:ID!) : ActionResponse!
+
+    createChannel(csrfToken:String! createChannelInput:CreateChannelInput) : Channel
+    deleteChannel(csrfToken:String! id:ID!) : ActionResponse!
+
+    createRoom(csrfToken:String! createRoomInput:CreateRoomInput) : Room
+    updateRoom(csrfToken:String! updateRoomInput:UpdateRoomInput) : Room
+    deleteRoom(csrfToken:String! id:ID!) : ActionResponse!
+
+    #
+    # Entries
+    #
+    createEntry(csrfToken:String! createEntryInput:CreateEntryInput) : Entry
+    updateEntry(csrfToken:String! updateEntryInput:UpdateEntryInput) : Entry
+    deleteEntry(csrfToken:String! id:ID!) : ActionResponse!
+
+    #
+    # Memberships
+    #
+    join(csrfToken:String! groupId:ID!) : Membership
+    leave(csrfToken:String! groupId:ID!) : ActionResponse!
+    invite(csrfToken:String! agentId:ID! toGroupId:ID!) : ActionResponse! # The invited agent receives the invite and can then "join" to accept the invite.
+    kick(csrfToken:String! agentId:ID! fromGroupId:ID!) : ActionResponse! # Group owners can kick agents from the group. (Removes the memebership)
+
+    #
+    # Tags
+    #
+    addTag(csrfToken:String! to:ID! addTagInput:AddTagInput) : Tag  # Adds a tag to an object and returns it. Locations, Groups and Entries can be tagged.
+    removeTag(csrfToken:String! tagId:ID!) : ActionResponse!        # Removes a specific tag.
+
+    #
+    # Locations
+    #
+    createLocation(csrfToken:String! createLocationInput:CreateLocationInput) : Location
+    updateLocation(csrfToken:String! updateLocationInput:UpdateLocationInput) : Location
+    deleteLocation(csrfToken:String! id:ID!) : ActionResponse!
+
+    #
+    # Ownership
+    #
+    # giveOwnership(csrfToken:String! ofObjectId:ID! toAgentId:ID!) : ActionResponse!
+}

@@ -17,6 +17,7 @@ export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
   agent: (where?: AgentWhereInput) => Promise<boolean>;
+  contentEncoding: (where?: ContentEncodingWhereInput) => Promise<boolean>;
   entry: (where?: EntryWhereInput) => Promise<boolean>;
   group: (where?: GroupWhereInput) => Promise<boolean>;
   inbox: (where?: InboxWhereInput) => Promise<boolean>;
@@ -65,6 +66,27 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => AgentConnectionPromise;
+  contentEncoding: (
+    where: ContentEncodingWhereUniqueInput
+  ) => ContentEncodingNullablePromise;
+  contentEncodings: (args?: {
+    where?: ContentEncodingWhereInput;
+    orderBy?: ContentEncodingOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<ContentEncoding>;
+  contentEncodingsConnection: (args?: {
+    where?: ContentEncodingWhereInput;
+    orderBy?: ContentEncodingOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => ContentEncodingConnectionPromise;
   entry: (where: EntryWhereUniqueInput) => EntryNullablePromise;
   entries: (args?: {
     where?: EntryWhereInput;
@@ -239,6 +261,28 @@ export interface Prisma {
   }) => AgentPromise;
   deleteAgent: (where: AgentWhereUniqueInput) => AgentPromise;
   deleteManyAgents: (where?: AgentWhereInput) => BatchPayloadPromise;
+  createContentEncoding: (
+    data: ContentEncodingCreateInput
+  ) => ContentEncodingPromise;
+  updateContentEncoding: (args: {
+    data: ContentEncodingUpdateInput;
+    where: ContentEncodingWhereUniqueInput;
+  }) => ContentEncodingPromise;
+  updateManyContentEncodings: (args: {
+    data: ContentEncodingUpdateManyMutationInput;
+    where?: ContentEncodingWhereInput;
+  }) => BatchPayloadPromise;
+  upsertContentEncoding: (args: {
+    where: ContentEncodingWhereUniqueInput;
+    create: ContentEncodingCreateInput;
+    update: ContentEncodingUpdateInput;
+  }) => ContentEncodingPromise;
+  deleteContentEncoding: (
+    where: ContentEncodingWhereUniqueInput
+  ) => ContentEncodingPromise;
+  deleteManyContentEncodings: (
+    where?: ContentEncodingWhereInput
+  ) => BatchPayloadPromise;
   createEntry: (data: EntryCreateInput) => EntryPromise;
   updateEntry: (args: {
     data: EntryUpdateInput;
@@ -379,6 +423,9 @@ export interface Subscription {
   agent: (
     where?: AgentSubscriptionWhereInput
   ) => AgentSubscriptionPayloadSubscription;
+  contentEncoding: (
+    where?: ContentEncodingSubscriptionWhereInput
+  ) => ContentEncodingSubscriptionPayloadSubscription;
   entry: (
     where?: EntrySubscriptionWhereInput
   ) => EntrySubscriptionPayloadSubscription;
@@ -413,31 +460,38 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type InboxOrderByInput =
+export type TagOrderByInput =
   | "id_ASC"
   | "id_DESC"
+  | "type_ASC"
+  | "type_DESC"
+  | "owner_ASC"
+  | "owner_DESC"
   | "createdBy_ASC"
   | "createdBy_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
-  | "updatedBy_ASC"
-  | "updatedBy_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
+  | "value_ASC"
+  | "value_DESC";
 
-export type EntryType =
-  | "EMPTY"
-  | "DATA_JSON"
-  | "DATA_TABLE"
-  | "DATA_DOCUMENT"
-  | "DATA_PICTURE"
-  | "DATA_FILE";
+export type EncodingType =
+  | "Custom"
+  | "Base64"
+  | "Microformat"
+  | "TableSchema"
+  | "JsonSchema"
+  | "XmlSchema"
+  | "GqlSchema"
+  | "RdfSchema"
+  | "Owl";
 
 export type GroupOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "type_ASC"
   | "type_DESC"
+  | "owner_ASC"
+  | "owner_DESC"
   | "createdBy_ASC"
   | "createdBy_DESC"
   | "createdAt_ASC"
@@ -499,29 +553,17 @@ export type SessionOrderByInput =
 
 export type ProfileType = "Business" | "Private";
 
-export type UserType = "Person" | "Institution";
+export type UserType = "Person" | "Organization";
 
-export type TagOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "type_ASC"
-  | "type_DESC"
-  | "createdBy_ASC"
-  | "createdBy_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedBy_ASC"
-  | "updatedBy_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC"
-  | "value_ASC"
-  | "value_DESC";
+export type MembershipType = "Invite" | "Single" | "Multi";
 
 export type LocationOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "type_ASC"
   | "type_DESC"
+  | "owner_ASC"
+  | "owner_DESC"
   | "createdBy_ASC"
   | "createdBy_DESC"
   | "createdAt_ASC"
@@ -551,11 +593,46 @@ export type LocationOrderByInput =
   | "geoPointRadiusMeter_ASC"
   | "geoPointRadiusMeter_DESC";
 
+export type GroupType = "Stash" | "Channel" | "Room";
+
+export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+
+export type ContentEncodingOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "type_ASC"
+  | "type_DESC"
+  | "maintainer_ASC"
+  | "maintainer_DESC"
+  | "createdBy_ASC"
+  | "createdBy_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedBy_ASC"
+  | "updatedBy_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "charset_ASC"
+  | "charset_DESC";
+
+export type EntryType =
+  | "Empty"
+  | "Json"
+  | "Table"
+  | "Document"
+  | "Picture"
+  | "File"
+  | "Thing";
+
 export type EntryOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "type_ASC"
   | "type_DESC"
+  | "owner_ASC"
+  | "owner_DESC"
   | "createdBy_ASC"
   | "createdBy_DESC"
   | "createdAt_ASC"
@@ -567,7 +644,9 @@ export type EntryOrderByInput =
   | "name_ASC"
   | "name_DESC"
   | "content_ASC"
-  | "content_DESC";
+  | "content_DESC"
+  | "contentEncoding_ASC"
+  | "contentEncoding_DESC";
 
 export type AgentOrderByInput =
   | "id_ASC"
@@ -594,28 +673,14 @@ export type AgentOrderByInput =
   | "profileSlogan_DESC"
   | "profileAvatar_ASC"
   | "profileAvatar_DESC"
+  | "profileJobTitle_ASC"
+  | "profileJobTitle_DESC"
   | "profileBanner_ASC"
   | "profileBanner_DESC"
   | "profileType_ASC"
-  | "profileType_DESC";
-
-export type GroupType = "Stash" | "Channel" | "Room";
-
-export type MembershipType = "Single" | "Multi";
-
-export type MutationType = "CREATED" | "UPDATED" | "DELETED";
-
-export type LocationType = "OpenStreetMap" | "Address" | "GeoPoint";
-
-export type AgentStatus =
-  | "Offline"
-  | "DoNotDisturb"
-  | "Away"
-  | "Available"
-  | "Running"
-  | "Suspended"
-  | "Failed"
-  | "Succeeded";
+  | "profileType_DESC"
+  | "serviceDescription_ASC"
+  | "serviceDescription_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -644,72 +709,52 @@ export type UserOrderByInput =
   | "personPhone_DESC"
   | "personMobilePhone_ASC"
   | "personMobilePhone_DESC"
-  | "institutionName_ASC"
-  | "institutionName_DESC";
+  | "organizationName_ASC"
+  | "organizationName_DESC";
 
-export interface EntryCreateInput {
+export type InboxOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "owner_ASC"
+  | "owner_DESC"
+  | "createdBy_ASC"
+  | "createdBy_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedBy_ASC"
+  | "updatedBy_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type LocationType = "OpenStreetMap" | "Address" | "GeoPoint";
+
+export type AgentStatus =
+  | "Offline"
+  | "DoNotDisturb"
+  | "Away"
+  | "Available"
+  | "Running"
+  | "Suspended"
+  | "Failed"
+  | "Succeeded";
+
+export interface ContentEncodingCreateInput {
   id?: Maybe<ID_Input>;
-  type: EntryType;
-  owner: AgentCreateOneInput;
+  type: EncodingType;
+  maintainer: ID_Input;
   createdBy: ID_Input;
   updatedBy?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  content?: Maybe<Json>;
-  tags?: Maybe<TagCreateManyInput>;
+  name: String;
+  charset: String;
 }
 
 export type AgentWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface AgentUpdateInput {
-  type?: Maybe<AgentType>;
+export interface LocationUpdateInput {
+  type?: Maybe<LocationType>;
   owner?: Maybe<ID_Input>;
-  createdBy?: Maybe<ID_Input>;
-  updatedBy?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  status?: Maybe<AgentStatus>;
-  timezone?: Maybe<String>;
-  location?: Maybe<LocationUpdateOneWithoutOwnerInput>;
-  profileSlogan?: Maybe<String>;
-  profileAvatar?: Maybe<String>;
-  profileBanner?: Maybe<String>;
-  profileType?: Maybe<ProfileType>;
-  tags?: Maybe<TagUpdateManyWithoutOwnerInput>;
-}
-
-export interface LocationUpdateManyMutationInput {
-  type?: Maybe<LocationType>;
-  createdBy?: Maybe<ID_Input>;
-  updatedBy?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  osmNodeId?: Maybe<String>;
-  addressLine1?: Maybe<String>;
-  addressLine2?: Maybe<String>;
-  addressCity?: Maybe<String>;
-  addressZipCode?: Maybe<String>;
-  addressCountry?: Maybe<String>;
-  geoPointLatitude?: Maybe<Float>;
-  geoPointLongitude?: Maybe<Float>;
-  geoPointRadiusMeter?: Maybe<Float>;
-}
-
-export interface LocationUpdateOneWithoutOwnerInput {
-  create?: Maybe<LocationCreateWithoutOwnerInput>;
-  update?: Maybe<LocationUpdateWithoutOwnerDataInput>;
-  upsert?: Maybe<LocationUpsertWithoutOwnerInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<LocationWhereUniqueInput>;
-}
-
-export interface EntryCreateManyInput {
-  create?: Maybe<EntryCreateInput[] | EntryCreateInput>;
-  connect?: Maybe<EntryWhereUniqueInput[] | EntryWhereUniqueInput>;
-}
-
-export interface LocationUpdateWithoutOwnerDataInput {
-  type?: Maybe<LocationType>;
   createdBy?: Maybe<ID_Input>;
   updatedBy?: Maybe<ID_Input>;
   name?: Maybe<String>;
@@ -725,26 +770,48 @@ export interface LocationUpdateWithoutOwnerDataInput {
   tags?: Maybe<TagUpdateManyInput>;
 }
 
-export type EntryWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
+export interface GroupCreateWithoutInboxInput {
+  id?: Maybe<ID_Input>;
+  type: GroupType;
+  owner: ID_Input;
+  createdBy: ID_Input;
+  updatedBy?: Maybe<ID_Input>;
+  isPublic: Boolean;
+  memberships?: Maybe<MembershipCreateManyInput>;
+  name: String;
+  title?: Maybe<String>;
+  description?: Maybe<String>;
+  logo: String;
+  banner?: Maybe<String>;
+  entries?: Maybe<EntryCreateManyInput>;
+  tags?: Maybe<TagCreateManyInput>;
+}
 
-export interface TagUpdateManyInput {
-  create?: Maybe<TagCreateInput[] | TagCreateInput>;
-  update?: Maybe<
-    TagUpdateWithWhereUniqueNestedInput[] | TagUpdateWithWhereUniqueNestedInput
-  >;
-  upsert?: Maybe<
-    TagUpsertWithWhereUniqueNestedInput[] | TagUpsertWithWhereUniqueNestedInput
-  >;
-  delete?: Maybe<TagWhereUniqueInput[] | TagWhereUniqueInput>;
-  connect?: Maybe<TagWhereUniqueInput[] | TagWhereUniqueInput>;
-  set?: Maybe<TagWhereUniqueInput[] | TagWhereUniqueInput>;
-  disconnect?: Maybe<TagWhereUniqueInput[] | TagWhereUniqueInput>;
-  deleteMany?: Maybe<TagScalarWhereInput[] | TagScalarWhereInput>;
-  updateMany?: Maybe<
-    TagUpdateManyWithWhereNestedInput[] | TagUpdateManyWithWhereNestedInput
-  >;
+export interface InboxUpdateManyMutationInput {
+  owner?: Maybe<ID_Input>;
+  createdBy?: Maybe<ID_Input>;
+  updatedBy?: Maybe<ID_Input>;
+}
+
+export interface InboxCreateOneWithoutRepresentsInput {
+  create?: Maybe<InboxCreateWithoutRepresentsInput>;
+  connect?: Maybe<InboxWhereUniqueInput>;
+}
+
+export interface GroupUpsertWithoutInboxInput {
+  update: GroupUpdateWithoutInboxDataInput;
+  create: GroupCreateWithoutInboxInput;
+}
+
+export interface TagSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<TagWhereInput>;
+  AND?: Maybe<TagSubscriptionWhereInput[] | TagSubscriptionWhereInput>;
+  OR?: Maybe<TagSubscriptionWhereInput[] | TagSubscriptionWhereInput>;
+  NOT?: Maybe<TagSubscriptionWhereInput[] | TagSubscriptionWhereInput>;
 }
 
 export interface SessionSubscriptionWhereInput {
@@ -758,9 +825,76 @@ export interface SessionSubscriptionWhereInput {
   NOT?: Maybe<SessionSubscriptionWhereInput[] | SessionSubscriptionWhereInput>;
 }
 
-export interface TagUpdateWithWhereUniqueNestedInput {
-  where: TagWhereUniqueInput;
-  data: TagUpdateDataInput;
+export interface LocationSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<LocationWhereInput>;
+  AND?: Maybe<
+    LocationSubscriptionWhereInput[] | LocationSubscriptionWhereInput
+  >;
+  OR?: Maybe<LocationSubscriptionWhereInput[] | LocationSubscriptionWhereInput>;
+  NOT?: Maybe<
+    LocationSubscriptionWhereInput[] | LocationSubscriptionWhereInput
+  >;
+}
+
+export interface AgentCreateInput {
+  id?: Maybe<ID_Input>;
+  type: AgentType;
+  owner: ID_Input;
+  createdBy: ID_Input;
+  updatedBy?: Maybe<ID_Input>;
+  name: String;
+  status: AgentStatus;
+  timezone?: Maybe<String>;
+  location?: Maybe<LocationCreateOneInput>;
+  profileSlogan?: Maybe<String>;
+  profileAvatar?: Maybe<String>;
+  profileJobTitle?: Maybe<String>;
+  profileBanner?: Maybe<String>;
+  profileType?: Maybe<ProfileType>;
+  serviceDescription?: Maybe<String>;
+}
+
+export type EntryWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface LocationCreateOneInput {
+  create?: Maybe<LocationCreateInput>;
+  connect?: Maybe<LocationWhereUniqueInput>;
+}
+
+export interface EntrySubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<EntryWhereInput>;
+  AND?: Maybe<EntrySubscriptionWhereInput[] | EntrySubscriptionWhereInput>;
+  OR?: Maybe<EntrySubscriptionWhereInput[] | EntrySubscriptionWhereInput>;
+  NOT?: Maybe<EntrySubscriptionWhereInput[] | EntrySubscriptionWhereInput>;
+}
+
+export interface LocationCreateInput {
+  id?: Maybe<ID_Input>;
+  type: LocationType;
+  owner: ID_Input;
+  createdBy: ID_Input;
+  updatedBy?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  osmNodeId?: Maybe<String>;
+  addressLine1?: Maybe<String>;
+  addressLine2?: Maybe<String>;
+  addressCity?: Maybe<String>;
+  addressZipCode?: Maybe<String>;
+  addressCountry?: Maybe<String>;
+  geoPointLatitude?: Maybe<Float>;
+  geoPointLongitude?: Maybe<Float>;
+  geoPointRadiusMeter?: Maybe<Float>;
+  tags?: Maybe<TagCreateManyInput>;
 }
 
 export interface EntryWhereInput {
@@ -782,7 +916,20 @@ export interface EntryWhereInput {
   type_not?: Maybe<EntryType>;
   type_in?: Maybe<EntryType[] | EntryType>;
   type_not_in?: Maybe<EntryType[] | EntryType>;
-  owner?: Maybe<AgentWhereInput>;
+  owner?: Maybe<ID_Input>;
+  owner_not?: Maybe<ID_Input>;
+  owner_in?: Maybe<ID_Input[] | ID_Input>;
+  owner_not_in?: Maybe<ID_Input[] | ID_Input>;
+  owner_lt?: Maybe<ID_Input>;
+  owner_lte?: Maybe<ID_Input>;
+  owner_gt?: Maybe<ID_Input>;
+  owner_gte?: Maybe<ID_Input>;
+  owner_contains?: Maybe<ID_Input>;
+  owner_not_contains?: Maybe<ID_Input>;
+  owner_starts_with?: Maybe<ID_Input>;
+  owner_not_starts_with?: Maybe<ID_Input>;
+  owner_ends_with?: Maybe<ID_Input>;
+  owner_not_ends_with?: Maybe<ID_Input>;
   createdBy?: Maybe<ID_Input>;
   createdBy_not?: Maybe<ID_Input>;
   createdBy_in?: Maybe<ID_Input[] | ID_Input>;
@@ -841,6 +988,20 @@ export interface EntryWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
+  contentEncoding?: Maybe<ID_Input>;
+  contentEncoding_not?: Maybe<ID_Input>;
+  contentEncoding_in?: Maybe<ID_Input[] | ID_Input>;
+  contentEncoding_not_in?: Maybe<ID_Input[] | ID_Input>;
+  contentEncoding_lt?: Maybe<ID_Input>;
+  contentEncoding_lte?: Maybe<ID_Input>;
+  contentEncoding_gt?: Maybe<ID_Input>;
+  contentEncoding_gte?: Maybe<ID_Input>;
+  contentEncoding_contains?: Maybe<ID_Input>;
+  contentEncoding_not_contains?: Maybe<ID_Input>;
+  contentEncoding_starts_with?: Maybe<ID_Input>;
+  contentEncoding_not_starts_with?: Maybe<ID_Input>;
+  contentEncoding_ends_with?: Maybe<ID_Input>;
+  contentEncoding_not_ends_with?: Maybe<ID_Input>;
   tags_every?: Maybe<TagWhereInput>;
   tags_some?: Maybe<TagWhereInput>;
   tags_none?: Maybe<TagWhereInput>;
@@ -849,44 +1010,39 @@ export interface EntryWhereInput {
   NOT?: Maybe<EntryWhereInput[] | EntryWhereInput>;
 }
 
-export interface TagUpdateDataInput {
-  type?: Maybe<String>;
-  owner?: Maybe<AgentUpdateOneRequiredWithoutTagsInput>;
-  createdBy?: Maybe<ID_Input>;
-  updatedBy?: Maybe<ID_Input>;
-  value?: Maybe<String>;
+export interface TagCreateManyInput {
+  create?: Maybe<TagCreateInput[] | TagCreateInput>;
+  connect?: Maybe<TagWhereUniqueInput[] | TagWhereUniqueInput>;
 }
 
-export interface InboxSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<InboxWhereInput>;
-  AND?: Maybe<InboxSubscriptionWhereInput[] | InboxSubscriptionWhereInput>;
-  OR?: Maybe<InboxSubscriptionWhereInput[] | InboxSubscriptionWhereInput>;
-  NOT?: Maybe<InboxSubscriptionWhereInput[] | InboxSubscriptionWhereInput>;
+export interface UserUpdateManyMutationInput {
+  type?: Maybe<UserType>;
+  email?: Maybe<String>;
+  timezone?: Maybe<String>;
+  challenge?: Maybe<String>;
+  passwordSalt?: Maybe<String>;
+  passwordHash?: Maybe<String>;
+  personFirstName?: Maybe<String>;
+  personLastName?: Maybe<String>;
+  personPhone?: Maybe<String>;
+  personMobilePhone?: Maybe<String>;
+  organizationName?: Maybe<String>;
 }
 
-export interface AgentUpdateOneRequiredWithoutTagsInput {
-  create?: Maybe<AgentCreateWithoutTagsInput>;
-  update?: Maybe<AgentUpdateWithoutTagsDataInput>;
-  upsert?: Maybe<AgentUpsertWithoutTagsInput>;
-  connect?: Maybe<AgentWhereUniqueInput>;
+export interface TagCreateInput {
+  id?: Maybe<ID_Input>;
+  type: String;
+  owner: ID_Input;
+  createdBy: ID_Input;
+  value: String;
 }
 
-export interface EntrySubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<EntryWhereInput>;
-  AND?: Maybe<EntrySubscriptionWhereInput[] | EntrySubscriptionWhereInput>;
-  OR?: Maybe<EntrySubscriptionWhereInput[] | EntrySubscriptionWhereInput>;
-  NOT?: Maybe<EntrySubscriptionWhereInput[] | EntrySubscriptionWhereInput>;
+export interface SessionUpdateManyWithWhereNestedInput {
+  where: SessionScalarWhereInput;
+  data: SessionUpdateManyDataInput;
 }
 
-export interface AgentUpdateWithoutTagsDataInput {
+export interface AgentUpdateInput {
   type?: Maybe<AgentType>;
   owner?: Maybe<ID_Input>;
   createdBy?: Maybe<ID_Input>;
@@ -894,27 +1050,124 @@ export interface AgentUpdateWithoutTagsDataInput {
   name?: Maybe<String>;
   status?: Maybe<AgentStatus>;
   timezone?: Maybe<String>;
-  location?: Maybe<LocationUpdateOneWithoutOwnerInput>;
+  location?: Maybe<LocationUpdateOneInput>;
   profileSlogan?: Maybe<String>;
   profileAvatar?: Maybe<String>;
+  profileJobTitle?: Maybe<String>;
   profileBanner?: Maybe<String>;
   profileType?: Maybe<ProfileType>;
+  serviceDescription?: Maybe<String>;
 }
 
-export interface AgentSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<AgentWhereInput>;
-  AND?: Maybe<AgentSubscriptionWhereInput[] | AgentSubscriptionWhereInput>;
-  OR?: Maybe<AgentSubscriptionWhereInput[] | AgentSubscriptionWhereInput>;
-  NOT?: Maybe<AgentSubscriptionWhereInput[] | AgentSubscriptionWhereInput>;
+export interface SessionScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  csrfToken?: Maybe<String>;
+  csrfToken_not?: Maybe<String>;
+  csrfToken_in?: Maybe<String[] | String>;
+  csrfToken_not_in?: Maybe<String[] | String>;
+  csrfToken_lt?: Maybe<String>;
+  csrfToken_lte?: Maybe<String>;
+  csrfToken_gt?: Maybe<String>;
+  csrfToken_gte?: Maybe<String>;
+  csrfToken_contains?: Maybe<String>;
+  csrfToken_not_contains?: Maybe<String>;
+  csrfToken_starts_with?: Maybe<String>;
+  csrfToken_not_starts_with?: Maybe<String>;
+  csrfToken_ends_with?: Maybe<String>;
+  csrfToken_not_ends_with?: Maybe<String>;
+  bearerToken?: Maybe<String>;
+  bearerToken_not?: Maybe<String>;
+  bearerToken_in?: Maybe<String[] | String>;
+  bearerToken_not_in?: Maybe<String[] | String>;
+  bearerToken_lt?: Maybe<String>;
+  bearerToken_lte?: Maybe<String>;
+  bearerToken_gt?: Maybe<String>;
+  bearerToken_gte?: Maybe<String>;
+  bearerToken_contains?: Maybe<String>;
+  bearerToken_not_contains?: Maybe<String>;
+  bearerToken_starts_with?: Maybe<String>;
+  bearerToken_not_starts_with?: Maybe<String>;
+  bearerToken_ends_with?: Maybe<String>;
+  bearerToken_not_ends_with?: Maybe<String>;
+  validTo?: Maybe<DateTimeInput>;
+  validTo_not?: Maybe<DateTimeInput>;
+  validTo_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  validTo_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  validTo_lt?: Maybe<DateTimeInput>;
+  validTo_lte?: Maybe<DateTimeInput>;
+  validTo_gt?: Maybe<DateTimeInput>;
+  validTo_gte?: Maybe<DateTimeInput>;
+  timedOut?: Maybe<DateTimeInput>;
+  timedOut_not?: Maybe<DateTimeInput>;
+  timedOut_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  timedOut_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  timedOut_lt?: Maybe<DateTimeInput>;
+  timedOut_lte?: Maybe<DateTimeInput>;
+  timedOut_gt?: Maybe<DateTimeInput>;
+  timedOut_gte?: Maybe<DateTimeInput>;
+  loggedOut?: Maybe<DateTimeInput>;
+  loggedOut_not?: Maybe<DateTimeInput>;
+  loggedOut_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  loggedOut_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  loggedOut_lt?: Maybe<DateTimeInput>;
+  loggedOut_lte?: Maybe<DateTimeInput>;
+  loggedOut_gt?: Maybe<DateTimeInput>;
+  loggedOut_gte?: Maybe<DateTimeInput>;
+  ipAddress?: Maybe<String>;
+  ipAddress_not?: Maybe<String>;
+  ipAddress_in?: Maybe<String[] | String>;
+  ipAddress_not_in?: Maybe<String[] | String>;
+  ipAddress_lt?: Maybe<String>;
+  ipAddress_lte?: Maybe<String>;
+  ipAddress_gt?: Maybe<String>;
+  ipAddress_gte?: Maybe<String>;
+  ipAddress_contains?: Maybe<String>;
+  ipAddress_not_contains?: Maybe<String>;
+  ipAddress_starts_with?: Maybe<String>;
+  ipAddress_not_starts_with?: Maybe<String>;
+  ipAddress_ends_with?: Maybe<String>;
+  ipAddress_not_ends_with?: Maybe<String>;
+  AND?: Maybe<SessionScalarWhereInput[] | SessionScalarWhereInput>;
+  OR?: Maybe<SessionScalarWhereInput[] | SessionScalarWhereInput>;
+  NOT?: Maybe<SessionScalarWhereInput[] | SessionScalarWhereInput>;
 }
 
-export interface AgentUpsertWithoutTagsInput {
-  update: AgentUpdateWithoutTagsDataInput;
-  create: AgentCreateWithoutTagsInput;
+export interface LocationUpdateOneInput {
+  create?: Maybe<LocationCreateInput>;
+  update?: Maybe<LocationUpdateDataInput>;
+  upsert?: Maybe<LocationUpsertNestedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<LocationWhereUniqueInput>;
 }
 
 export interface MembershipWhereInput {
@@ -988,10 +1241,1131 @@ export interface MembershipWhereInput {
   NOT?: Maybe<MembershipWhereInput[] | MembershipWhereInput>;
 }
 
+export interface LocationUpdateDataInput {
+  type?: Maybe<LocationType>;
+  owner?: Maybe<ID_Input>;
+  createdBy?: Maybe<ID_Input>;
+  updatedBy?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  osmNodeId?: Maybe<String>;
+  addressLine1?: Maybe<String>;
+  addressLine2?: Maybe<String>;
+  addressCity?: Maybe<String>;
+  addressZipCode?: Maybe<String>;
+  addressCountry?: Maybe<String>;
+  geoPointLatitude?: Maybe<Float>;
+  geoPointLongitude?: Maybe<Float>;
+  geoPointRadiusMeter?: Maybe<Float>;
+  tags?: Maybe<TagUpdateManyInput>;
+}
+
+export interface SessionUpsertWithWhereUniqueWithoutUserInput {
+  where: SessionWhereUniqueInput;
+  update: SessionUpdateWithoutUserDataInput;
+  create: SessionCreateWithoutUserInput;
+}
+
+export interface TagUpdateManyInput {
+  create?: Maybe<TagCreateInput[] | TagCreateInput>;
+  update?: Maybe<
+    TagUpdateWithWhereUniqueNestedInput[] | TagUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    TagUpsertWithWhereUniqueNestedInput[] | TagUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<TagWhereUniqueInput[] | TagWhereUniqueInput>;
+  connect?: Maybe<TagWhereUniqueInput[] | TagWhereUniqueInput>;
+  set?: Maybe<TagWhereUniqueInput[] | TagWhereUniqueInput>;
+  disconnect?: Maybe<TagWhereUniqueInput[] | TagWhereUniqueInput>;
+  deleteMany?: Maybe<TagScalarWhereInput[] | TagScalarWhereInput>;
+  updateMany?: Maybe<
+    TagUpdateManyWithWhereNestedInput[] | TagUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface SessionUpdateWithWhereUniqueWithoutUserInput {
+  where: SessionWhereUniqueInput;
+  data: SessionUpdateWithoutUserDataInput;
+}
+
+export interface TagUpdateWithWhereUniqueNestedInput {
+  where: TagWhereUniqueInput;
+  data: TagUpdateDataInput;
+}
+
+export interface InboxWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  owner?: Maybe<ID_Input>;
+  owner_not?: Maybe<ID_Input>;
+  owner_in?: Maybe<ID_Input[] | ID_Input>;
+  owner_not_in?: Maybe<ID_Input[] | ID_Input>;
+  owner_lt?: Maybe<ID_Input>;
+  owner_lte?: Maybe<ID_Input>;
+  owner_gt?: Maybe<ID_Input>;
+  owner_gte?: Maybe<ID_Input>;
+  owner_contains?: Maybe<ID_Input>;
+  owner_not_contains?: Maybe<ID_Input>;
+  owner_starts_with?: Maybe<ID_Input>;
+  owner_not_starts_with?: Maybe<ID_Input>;
+  owner_ends_with?: Maybe<ID_Input>;
+  owner_not_ends_with?: Maybe<ID_Input>;
+  createdBy?: Maybe<ID_Input>;
+  createdBy_not?: Maybe<ID_Input>;
+  createdBy_in?: Maybe<ID_Input[] | ID_Input>;
+  createdBy_not_in?: Maybe<ID_Input[] | ID_Input>;
+  createdBy_lt?: Maybe<ID_Input>;
+  createdBy_lte?: Maybe<ID_Input>;
+  createdBy_gt?: Maybe<ID_Input>;
+  createdBy_gte?: Maybe<ID_Input>;
+  createdBy_contains?: Maybe<ID_Input>;
+  createdBy_not_contains?: Maybe<ID_Input>;
+  createdBy_starts_with?: Maybe<ID_Input>;
+  createdBy_not_starts_with?: Maybe<ID_Input>;
+  createdBy_ends_with?: Maybe<ID_Input>;
+  createdBy_not_ends_with?: Maybe<ID_Input>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedBy?: Maybe<ID_Input>;
+  updatedBy_not?: Maybe<ID_Input>;
+  updatedBy_in?: Maybe<ID_Input[] | ID_Input>;
+  updatedBy_not_in?: Maybe<ID_Input[] | ID_Input>;
+  updatedBy_lt?: Maybe<ID_Input>;
+  updatedBy_lte?: Maybe<ID_Input>;
+  updatedBy_gt?: Maybe<ID_Input>;
+  updatedBy_gte?: Maybe<ID_Input>;
+  updatedBy_contains?: Maybe<ID_Input>;
+  updatedBy_not_contains?: Maybe<ID_Input>;
+  updatedBy_starts_with?: Maybe<ID_Input>;
+  updatedBy_not_starts_with?: Maybe<ID_Input>;
+  updatedBy_ends_with?: Maybe<ID_Input>;
+  updatedBy_not_ends_with?: Maybe<ID_Input>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  represents?: Maybe<GroupWhereInput>;
+  AND?: Maybe<InboxWhereInput[] | InboxWhereInput>;
+  OR?: Maybe<InboxWhereInput[] | InboxWhereInput>;
+  NOT?: Maybe<InboxWhereInput[] | InboxWhereInput>;
+}
+
+export interface TagUpdateDataInput {
+  type?: Maybe<String>;
+  owner?: Maybe<ID_Input>;
+  createdBy?: Maybe<ID_Input>;
+  value?: Maybe<String>;
+}
+
+export interface UserUpdateInput {
+  type?: Maybe<UserType>;
+  email?: Maybe<String>;
+  timezone?: Maybe<String>;
+  challenge?: Maybe<String>;
+  passwordSalt?: Maybe<String>;
+  passwordHash?: Maybe<String>;
+  agents?: Maybe<AgentUpdateManyInput>;
+  sessions?: Maybe<SessionUpdateManyWithoutUserInput>;
+  personFirstName?: Maybe<String>;
+  personLastName?: Maybe<String>;
+  personPhone?: Maybe<String>;
+  personMobilePhone?: Maybe<String>;
+  organizationName?: Maybe<String>;
+}
+
 export interface TagUpsertWithWhereUniqueNestedInput {
   where: TagWhereUniqueInput;
   update: TagUpdateDataInput;
   create: TagCreateInput;
+}
+
+export interface SessionCreateManyWithoutUserInput {
+  create?: Maybe<
+    SessionCreateWithoutUserInput[] | SessionCreateWithoutUserInput
+  >;
+  connect?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
+}
+
+export interface TagScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  type?: Maybe<String>;
+  type_not?: Maybe<String>;
+  type_in?: Maybe<String[] | String>;
+  type_not_in?: Maybe<String[] | String>;
+  type_lt?: Maybe<String>;
+  type_lte?: Maybe<String>;
+  type_gt?: Maybe<String>;
+  type_gte?: Maybe<String>;
+  type_contains?: Maybe<String>;
+  type_not_contains?: Maybe<String>;
+  type_starts_with?: Maybe<String>;
+  type_not_starts_with?: Maybe<String>;
+  type_ends_with?: Maybe<String>;
+  type_not_ends_with?: Maybe<String>;
+  owner?: Maybe<ID_Input>;
+  owner_not?: Maybe<ID_Input>;
+  owner_in?: Maybe<ID_Input[] | ID_Input>;
+  owner_not_in?: Maybe<ID_Input[] | ID_Input>;
+  owner_lt?: Maybe<ID_Input>;
+  owner_lte?: Maybe<ID_Input>;
+  owner_gt?: Maybe<ID_Input>;
+  owner_gte?: Maybe<ID_Input>;
+  owner_contains?: Maybe<ID_Input>;
+  owner_not_contains?: Maybe<ID_Input>;
+  owner_starts_with?: Maybe<ID_Input>;
+  owner_not_starts_with?: Maybe<ID_Input>;
+  owner_ends_with?: Maybe<ID_Input>;
+  owner_not_ends_with?: Maybe<ID_Input>;
+  createdBy?: Maybe<ID_Input>;
+  createdBy_not?: Maybe<ID_Input>;
+  createdBy_in?: Maybe<ID_Input[] | ID_Input>;
+  createdBy_not_in?: Maybe<ID_Input[] | ID_Input>;
+  createdBy_lt?: Maybe<ID_Input>;
+  createdBy_lte?: Maybe<ID_Input>;
+  createdBy_gt?: Maybe<ID_Input>;
+  createdBy_gte?: Maybe<ID_Input>;
+  createdBy_contains?: Maybe<ID_Input>;
+  createdBy_not_contains?: Maybe<ID_Input>;
+  createdBy_starts_with?: Maybe<ID_Input>;
+  createdBy_not_starts_with?: Maybe<ID_Input>;
+  createdBy_ends_with?: Maybe<ID_Input>;
+  createdBy_not_ends_with?: Maybe<ID_Input>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  value?: Maybe<String>;
+  value_not?: Maybe<String>;
+  value_in?: Maybe<String[] | String>;
+  value_not_in?: Maybe<String[] | String>;
+  value_lt?: Maybe<String>;
+  value_lte?: Maybe<String>;
+  value_gt?: Maybe<String>;
+  value_gte?: Maybe<String>;
+  value_contains?: Maybe<String>;
+  value_not_contains?: Maybe<String>;
+  value_starts_with?: Maybe<String>;
+  value_not_starts_with?: Maybe<String>;
+  value_ends_with?: Maybe<String>;
+  value_not_ends_with?: Maybe<String>;
+  AND?: Maybe<TagScalarWhereInput[] | TagScalarWhereInput>;
+  OR?: Maybe<TagScalarWhereInput[] | TagScalarWhereInput>;
+  NOT?: Maybe<TagScalarWhereInput[] | TagScalarWhereInput>;
+}
+
+export interface TagWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  type?: Maybe<String>;
+  type_not?: Maybe<String>;
+  type_in?: Maybe<String[] | String>;
+  type_not_in?: Maybe<String[] | String>;
+  type_lt?: Maybe<String>;
+  type_lte?: Maybe<String>;
+  type_gt?: Maybe<String>;
+  type_gte?: Maybe<String>;
+  type_contains?: Maybe<String>;
+  type_not_contains?: Maybe<String>;
+  type_starts_with?: Maybe<String>;
+  type_not_starts_with?: Maybe<String>;
+  type_ends_with?: Maybe<String>;
+  type_not_ends_with?: Maybe<String>;
+  owner?: Maybe<ID_Input>;
+  owner_not?: Maybe<ID_Input>;
+  owner_in?: Maybe<ID_Input[] | ID_Input>;
+  owner_not_in?: Maybe<ID_Input[] | ID_Input>;
+  owner_lt?: Maybe<ID_Input>;
+  owner_lte?: Maybe<ID_Input>;
+  owner_gt?: Maybe<ID_Input>;
+  owner_gte?: Maybe<ID_Input>;
+  owner_contains?: Maybe<ID_Input>;
+  owner_not_contains?: Maybe<ID_Input>;
+  owner_starts_with?: Maybe<ID_Input>;
+  owner_not_starts_with?: Maybe<ID_Input>;
+  owner_ends_with?: Maybe<ID_Input>;
+  owner_not_ends_with?: Maybe<ID_Input>;
+  createdBy?: Maybe<ID_Input>;
+  createdBy_not?: Maybe<ID_Input>;
+  createdBy_in?: Maybe<ID_Input[] | ID_Input>;
+  createdBy_not_in?: Maybe<ID_Input[] | ID_Input>;
+  createdBy_lt?: Maybe<ID_Input>;
+  createdBy_lte?: Maybe<ID_Input>;
+  createdBy_gt?: Maybe<ID_Input>;
+  createdBy_gte?: Maybe<ID_Input>;
+  createdBy_contains?: Maybe<ID_Input>;
+  createdBy_not_contains?: Maybe<ID_Input>;
+  createdBy_starts_with?: Maybe<ID_Input>;
+  createdBy_not_starts_with?: Maybe<ID_Input>;
+  createdBy_ends_with?: Maybe<ID_Input>;
+  createdBy_not_ends_with?: Maybe<ID_Input>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  value?: Maybe<String>;
+  value_not?: Maybe<String>;
+  value_in?: Maybe<String[] | String>;
+  value_not_in?: Maybe<String[] | String>;
+  value_lt?: Maybe<String>;
+  value_lte?: Maybe<String>;
+  value_gt?: Maybe<String>;
+  value_gte?: Maybe<String>;
+  value_contains?: Maybe<String>;
+  value_not_contains?: Maybe<String>;
+  value_starts_with?: Maybe<String>;
+  value_not_starts_with?: Maybe<String>;
+  value_ends_with?: Maybe<String>;
+  value_not_ends_with?: Maybe<String>;
+  AND?: Maybe<TagWhereInput[] | TagWhereInput>;
+  OR?: Maybe<TagWhereInput[] | TagWhereInput>;
+  NOT?: Maybe<TagWhereInput[] | TagWhereInput>;
+}
+
+export interface TagUpdateManyWithWhereNestedInput {
+  where: TagScalarWhereInput;
+  data: TagUpdateManyDataInput;
+}
+
+export interface TagUpdateManyMutationInput {
+  type?: Maybe<String>;
+  owner?: Maybe<ID_Input>;
+  createdBy?: Maybe<ID_Input>;
+  value?: Maybe<String>;
+}
+
+export interface TagUpdateManyDataInput {
+  type?: Maybe<String>;
+  owner?: Maybe<ID_Input>;
+  createdBy?: Maybe<ID_Input>;
+  value?: Maybe<String>;
+}
+
+export type LocationWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface LocationUpsertNestedInput {
+  update: LocationUpdateDataInput;
+  create: LocationCreateInput;
+}
+
+export interface UserUpsertWithoutSessionsInput {
+  update: UserUpdateWithoutSessionsDataInput;
+  create: UserCreateWithoutSessionsInput;
+}
+
+export interface AgentUpdateManyMutationInput {
+  type?: Maybe<AgentType>;
+  owner?: Maybe<ID_Input>;
+  createdBy?: Maybe<ID_Input>;
+  updatedBy?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  status?: Maybe<AgentStatus>;
+  timezone?: Maybe<String>;
+  profileSlogan?: Maybe<String>;
+  profileAvatar?: Maybe<String>;
+  profileJobTitle?: Maybe<String>;
+  profileBanner?: Maybe<String>;
+  profileType?: Maybe<ProfileType>;
+  serviceDescription?: Maybe<String>;
+}
+
+export interface AgentUpdateManyWithWhereNestedInput {
+  where: AgentScalarWhereInput;
+  data: AgentUpdateManyDataInput;
+}
+
+export interface GroupUpdateWithoutInboxDataInput {
+  type?: Maybe<GroupType>;
+  owner?: Maybe<ID_Input>;
+  createdBy?: Maybe<ID_Input>;
+  updatedBy?: Maybe<ID_Input>;
+  isPublic?: Maybe<Boolean>;
+  memberships?: Maybe<MembershipUpdateManyInput>;
+  name?: Maybe<String>;
+  title?: Maybe<String>;
+  description?: Maybe<String>;
+  logo?: Maybe<String>;
+  banner?: Maybe<String>;
+  entries?: Maybe<EntryUpdateManyInput>;
+  tags?: Maybe<TagUpdateManyInput>;
+}
+
+export interface AgentScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  type?: Maybe<AgentType>;
+  type_not?: Maybe<AgentType>;
+  type_in?: Maybe<AgentType[] | AgentType>;
+  type_not_in?: Maybe<AgentType[] | AgentType>;
+  owner?: Maybe<ID_Input>;
+  owner_not?: Maybe<ID_Input>;
+  owner_in?: Maybe<ID_Input[] | ID_Input>;
+  owner_not_in?: Maybe<ID_Input[] | ID_Input>;
+  owner_lt?: Maybe<ID_Input>;
+  owner_lte?: Maybe<ID_Input>;
+  owner_gt?: Maybe<ID_Input>;
+  owner_gte?: Maybe<ID_Input>;
+  owner_contains?: Maybe<ID_Input>;
+  owner_not_contains?: Maybe<ID_Input>;
+  owner_starts_with?: Maybe<ID_Input>;
+  owner_not_starts_with?: Maybe<ID_Input>;
+  owner_ends_with?: Maybe<ID_Input>;
+  owner_not_ends_with?: Maybe<ID_Input>;
+  createdBy?: Maybe<ID_Input>;
+  createdBy_not?: Maybe<ID_Input>;
+  createdBy_in?: Maybe<ID_Input[] | ID_Input>;
+  createdBy_not_in?: Maybe<ID_Input[] | ID_Input>;
+  createdBy_lt?: Maybe<ID_Input>;
+  createdBy_lte?: Maybe<ID_Input>;
+  createdBy_gt?: Maybe<ID_Input>;
+  createdBy_gte?: Maybe<ID_Input>;
+  createdBy_contains?: Maybe<ID_Input>;
+  createdBy_not_contains?: Maybe<ID_Input>;
+  createdBy_starts_with?: Maybe<ID_Input>;
+  createdBy_not_starts_with?: Maybe<ID_Input>;
+  createdBy_ends_with?: Maybe<ID_Input>;
+  createdBy_not_ends_with?: Maybe<ID_Input>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedBy?: Maybe<ID_Input>;
+  updatedBy_not?: Maybe<ID_Input>;
+  updatedBy_in?: Maybe<ID_Input[] | ID_Input>;
+  updatedBy_not_in?: Maybe<ID_Input[] | ID_Input>;
+  updatedBy_lt?: Maybe<ID_Input>;
+  updatedBy_lte?: Maybe<ID_Input>;
+  updatedBy_gt?: Maybe<ID_Input>;
+  updatedBy_gte?: Maybe<ID_Input>;
+  updatedBy_contains?: Maybe<ID_Input>;
+  updatedBy_not_contains?: Maybe<ID_Input>;
+  updatedBy_starts_with?: Maybe<ID_Input>;
+  updatedBy_not_starts_with?: Maybe<ID_Input>;
+  updatedBy_ends_with?: Maybe<ID_Input>;
+  updatedBy_not_ends_with?: Maybe<ID_Input>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  status?: Maybe<AgentStatus>;
+  status_not?: Maybe<AgentStatus>;
+  status_in?: Maybe<AgentStatus[] | AgentStatus>;
+  status_not_in?: Maybe<AgentStatus[] | AgentStatus>;
+  timezone?: Maybe<String>;
+  timezone_not?: Maybe<String>;
+  timezone_in?: Maybe<String[] | String>;
+  timezone_not_in?: Maybe<String[] | String>;
+  timezone_lt?: Maybe<String>;
+  timezone_lte?: Maybe<String>;
+  timezone_gt?: Maybe<String>;
+  timezone_gte?: Maybe<String>;
+  timezone_contains?: Maybe<String>;
+  timezone_not_contains?: Maybe<String>;
+  timezone_starts_with?: Maybe<String>;
+  timezone_not_starts_with?: Maybe<String>;
+  timezone_ends_with?: Maybe<String>;
+  timezone_not_ends_with?: Maybe<String>;
+  profileSlogan?: Maybe<String>;
+  profileSlogan_not?: Maybe<String>;
+  profileSlogan_in?: Maybe<String[] | String>;
+  profileSlogan_not_in?: Maybe<String[] | String>;
+  profileSlogan_lt?: Maybe<String>;
+  profileSlogan_lte?: Maybe<String>;
+  profileSlogan_gt?: Maybe<String>;
+  profileSlogan_gte?: Maybe<String>;
+  profileSlogan_contains?: Maybe<String>;
+  profileSlogan_not_contains?: Maybe<String>;
+  profileSlogan_starts_with?: Maybe<String>;
+  profileSlogan_not_starts_with?: Maybe<String>;
+  profileSlogan_ends_with?: Maybe<String>;
+  profileSlogan_not_ends_with?: Maybe<String>;
+  profileAvatar?: Maybe<String>;
+  profileAvatar_not?: Maybe<String>;
+  profileAvatar_in?: Maybe<String[] | String>;
+  profileAvatar_not_in?: Maybe<String[] | String>;
+  profileAvatar_lt?: Maybe<String>;
+  profileAvatar_lte?: Maybe<String>;
+  profileAvatar_gt?: Maybe<String>;
+  profileAvatar_gte?: Maybe<String>;
+  profileAvatar_contains?: Maybe<String>;
+  profileAvatar_not_contains?: Maybe<String>;
+  profileAvatar_starts_with?: Maybe<String>;
+  profileAvatar_not_starts_with?: Maybe<String>;
+  profileAvatar_ends_with?: Maybe<String>;
+  profileAvatar_not_ends_with?: Maybe<String>;
+  profileJobTitle?: Maybe<String>;
+  profileJobTitle_not?: Maybe<String>;
+  profileJobTitle_in?: Maybe<String[] | String>;
+  profileJobTitle_not_in?: Maybe<String[] | String>;
+  profileJobTitle_lt?: Maybe<String>;
+  profileJobTitle_lte?: Maybe<String>;
+  profileJobTitle_gt?: Maybe<String>;
+  profileJobTitle_gte?: Maybe<String>;
+  profileJobTitle_contains?: Maybe<String>;
+  profileJobTitle_not_contains?: Maybe<String>;
+  profileJobTitle_starts_with?: Maybe<String>;
+  profileJobTitle_not_starts_with?: Maybe<String>;
+  profileJobTitle_ends_with?: Maybe<String>;
+  profileJobTitle_not_ends_with?: Maybe<String>;
+  profileBanner?: Maybe<String>;
+  profileBanner_not?: Maybe<String>;
+  profileBanner_in?: Maybe<String[] | String>;
+  profileBanner_not_in?: Maybe<String[] | String>;
+  profileBanner_lt?: Maybe<String>;
+  profileBanner_lte?: Maybe<String>;
+  profileBanner_gt?: Maybe<String>;
+  profileBanner_gte?: Maybe<String>;
+  profileBanner_contains?: Maybe<String>;
+  profileBanner_not_contains?: Maybe<String>;
+  profileBanner_starts_with?: Maybe<String>;
+  profileBanner_not_starts_with?: Maybe<String>;
+  profileBanner_ends_with?: Maybe<String>;
+  profileBanner_not_ends_with?: Maybe<String>;
+  profileType?: Maybe<ProfileType>;
+  profileType_not?: Maybe<ProfileType>;
+  profileType_in?: Maybe<ProfileType[] | ProfileType>;
+  profileType_not_in?: Maybe<ProfileType[] | ProfileType>;
+  serviceDescription?: Maybe<String>;
+  serviceDescription_not?: Maybe<String>;
+  serviceDescription_in?: Maybe<String[] | String>;
+  serviceDescription_not_in?: Maybe<String[] | String>;
+  serviceDescription_lt?: Maybe<String>;
+  serviceDescription_lte?: Maybe<String>;
+  serviceDescription_gt?: Maybe<String>;
+  serviceDescription_gte?: Maybe<String>;
+  serviceDescription_contains?: Maybe<String>;
+  serviceDescription_not_contains?: Maybe<String>;
+  serviceDescription_starts_with?: Maybe<String>;
+  serviceDescription_not_starts_with?: Maybe<String>;
+  serviceDescription_ends_with?: Maybe<String>;
+  serviceDescription_not_ends_with?: Maybe<String>;
+  AND?: Maybe<AgentScalarWhereInput[] | AgentScalarWhereInput>;
+  OR?: Maybe<AgentScalarWhereInput[] | AgentScalarWhereInput>;
+  NOT?: Maybe<AgentScalarWhereInput[] | AgentScalarWhereInput>;
+}
+
+export interface GroupUpdateOneRequiredWithoutInboxInput {
+  create?: Maybe<GroupCreateWithoutInboxInput>;
+  update?: Maybe<GroupUpdateWithoutInboxDataInput>;
+  upsert?: Maybe<GroupUpsertWithoutInboxInput>;
+  connect?: Maybe<GroupWhereUniqueInput>;
+}
+
+export interface AgentUpdateWithWhereUniqueNestedInput {
+  where: AgentWhereUniqueInput;
+  data: AgentUpdateDataInput;
+}
+
+export interface InboxUpdateInput {
+  owner?: Maybe<ID_Input>;
+  createdBy?: Maybe<ID_Input>;
+  updatedBy?: Maybe<ID_Input>;
+  represents?: Maybe<GroupUpdateOneRequiredWithoutInboxInput>;
+}
+
+export interface AgentUpdateManyInput {
+  create?: Maybe<AgentCreateInput[] | AgentCreateInput>;
+  update?: Maybe<
+    | AgentUpdateWithWhereUniqueNestedInput[]
+    | AgentUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    | AgentUpsertWithWhereUniqueNestedInput[]
+    | AgentUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<AgentWhereUniqueInput[] | AgentWhereUniqueInput>;
+  connect?: Maybe<AgentWhereUniqueInput[] | AgentWhereUniqueInput>;
+  set?: Maybe<AgentWhereUniqueInput[] | AgentWhereUniqueInput>;
+  disconnect?: Maybe<AgentWhereUniqueInput[] | AgentWhereUniqueInput>;
+  deleteMany?: Maybe<AgentScalarWhereInput[] | AgentScalarWhereInput>;
+  updateMany?: Maybe<
+    AgentUpdateManyWithWhereNestedInput[] | AgentUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface ContentEncodingUpdateInput {
+  type?: Maybe<EncodingType>;
+  maintainer?: Maybe<ID_Input>;
+  createdBy?: Maybe<ID_Input>;
+  updatedBy?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  charset?: Maybe<String>;
+}
+
+export interface UserUpdateOneRequiredWithoutSessionsInput {
+  create?: Maybe<UserCreateWithoutSessionsInput>;
+  update?: Maybe<UserUpdateWithoutSessionsDataInput>;
+  upsert?: Maybe<UserUpsertWithoutSessionsInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface ContentEncodingUpdateManyMutationInput {
+  type?: Maybe<EncodingType>;
+  maintainer?: Maybe<ID_Input>;
+  createdBy?: Maybe<ID_Input>;
+  updatedBy?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  charset?: Maybe<String>;
+}
+
+export interface UserWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  type?: Maybe<UserType>;
+  type_not?: Maybe<UserType>;
+  type_in?: Maybe<UserType[] | UserType>;
+  type_not_in?: Maybe<UserType[] | UserType>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  email?: Maybe<String>;
+  email_not?: Maybe<String>;
+  email_in?: Maybe<String[] | String>;
+  email_not_in?: Maybe<String[] | String>;
+  email_lt?: Maybe<String>;
+  email_lte?: Maybe<String>;
+  email_gt?: Maybe<String>;
+  email_gte?: Maybe<String>;
+  email_contains?: Maybe<String>;
+  email_not_contains?: Maybe<String>;
+  email_starts_with?: Maybe<String>;
+  email_not_starts_with?: Maybe<String>;
+  email_ends_with?: Maybe<String>;
+  email_not_ends_with?: Maybe<String>;
+  timezone?: Maybe<String>;
+  timezone_not?: Maybe<String>;
+  timezone_in?: Maybe<String[] | String>;
+  timezone_not_in?: Maybe<String[] | String>;
+  timezone_lt?: Maybe<String>;
+  timezone_lte?: Maybe<String>;
+  timezone_gt?: Maybe<String>;
+  timezone_gte?: Maybe<String>;
+  timezone_contains?: Maybe<String>;
+  timezone_not_contains?: Maybe<String>;
+  timezone_starts_with?: Maybe<String>;
+  timezone_not_starts_with?: Maybe<String>;
+  timezone_ends_with?: Maybe<String>;
+  timezone_not_ends_with?: Maybe<String>;
+  challenge?: Maybe<String>;
+  challenge_not?: Maybe<String>;
+  challenge_in?: Maybe<String[] | String>;
+  challenge_not_in?: Maybe<String[] | String>;
+  challenge_lt?: Maybe<String>;
+  challenge_lte?: Maybe<String>;
+  challenge_gt?: Maybe<String>;
+  challenge_gte?: Maybe<String>;
+  challenge_contains?: Maybe<String>;
+  challenge_not_contains?: Maybe<String>;
+  challenge_starts_with?: Maybe<String>;
+  challenge_not_starts_with?: Maybe<String>;
+  challenge_ends_with?: Maybe<String>;
+  challenge_not_ends_with?: Maybe<String>;
+  passwordSalt?: Maybe<String>;
+  passwordSalt_not?: Maybe<String>;
+  passwordSalt_in?: Maybe<String[] | String>;
+  passwordSalt_not_in?: Maybe<String[] | String>;
+  passwordSalt_lt?: Maybe<String>;
+  passwordSalt_lte?: Maybe<String>;
+  passwordSalt_gt?: Maybe<String>;
+  passwordSalt_gte?: Maybe<String>;
+  passwordSalt_contains?: Maybe<String>;
+  passwordSalt_not_contains?: Maybe<String>;
+  passwordSalt_starts_with?: Maybe<String>;
+  passwordSalt_not_starts_with?: Maybe<String>;
+  passwordSalt_ends_with?: Maybe<String>;
+  passwordSalt_not_ends_with?: Maybe<String>;
+  passwordHash?: Maybe<String>;
+  passwordHash_not?: Maybe<String>;
+  passwordHash_in?: Maybe<String[] | String>;
+  passwordHash_not_in?: Maybe<String[] | String>;
+  passwordHash_lt?: Maybe<String>;
+  passwordHash_lte?: Maybe<String>;
+  passwordHash_gt?: Maybe<String>;
+  passwordHash_gte?: Maybe<String>;
+  passwordHash_contains?: Maybe<String>;
+  passwordHash_not_contains?: Maybe<String>;
+  passwordHash_starts_with?: Maybe<String>;
+  passwordHash_not_starts_with?: Maybe<String>;
+  passwordHash_ends_with?: Maybe<String>;
+  passwordHash_not_ends_with?: Maybe<String>;
+  agents_every?: Maybe<AgentWhereInput>;
+  agents_some?: Maybe<AgentWhereInput>;
+  agents_none?: Maybe<AgentWhereInput>;
+  sessions_every?: Maybe<SessionWhereInput>;
+  sessions_some?: Maybe<SessionWhereInput>;
+  sessions_none?: Maybe<SessionWhereInput>;
+  personFirstName?: Maybe<String>;
+  personFirstName_not?: Maybe<String>;
+  personFirstName_in?: Maybe<String[] | String>;
+  personFirstName_not_in?: Maybe<String[] | String>;
+  personFirstName_lt?: Maybe<String>;
+  personFirstName_lte?: Maybe<String>;
+  personFirstName_gt?: Maybe<String>;
+  personFirstName_gte?: Maybe<String>;
+  personFirstName_contains?: Maybe<String>;
+  personFirstName_not_contains?: Maybe<String>;
+  personFirstName_starts_with?: Maybe<String>;
+  personFirstName_not_starts_with?: Maybe<String>;
+  personFirstName_ends_with?: Maybe<String>;
+  personFirstName_not_ends_with?: Maybe<String>;
+  personLastName?: Maybe<String>;
+  personLastName_not?: Maybe<String>;
+  personLastName_in?: Maybe<String[] | String>;
+  personLastName_not_in?: Maybe<String[] | String>;
+  personLastName_lt?: Maybe<String>;
+  personLastName_lte?: Maybe<String>;
+  personLastName_gt?: Maybe<String>;
+  personLastName_gte?: Maybe<String>;
+  personLastName_contains?: Maybe<String>;
+  personLastName_not_contains?: Maybe<String>;
+  personLastName_starts_with?: Maybe<String>;
+  personLastName_not_starts_with?: Maybe<String>;
+  personLastName_ends_with?: Maybe<String>;
+  personLastName_not_ends_with?: Maybe<String>;
+  personPhone?: Maybe<String>;
+  personPhone_not?: Maybe<String>;
+  personPhone_in?: Maybe<String[] | String>;
+  personPhone_not_in?: Maybe<String[] | String>;
+  personPhone_lt?: Maybe<String>;
+  personPhone_lte?: Maybe<String>;
+  personPhone_gt?: Maybe<String>;
+  personPhone_gte?: Maybe<String>;
+  personPhone_contains?: Maybe<String>;
+  personPhone_not_contains?: Maybe<String>;
+  personPhone_starts_with?: Maybe<String>;
+  personPhone_not_starts_with?: Maybe<String>;
+  personPhone_ends_with?: Maybe<String>;
+  personPhone_not_ends_with?: Maybe<String>;
+  personMobilePhone?: Maybe<String>;
+  personMobilePhone_not?: Maybe<String>;
+  personMobilePhone_in?: Maybe<String[] | String>;
+  personMobilePhone_not_in?: Maybe<String[] | String>;
+  personMobilePhone_lt?: Maybe<String>;
+  personMobilePhone_lte?: Maybe<String>;
+  personMobilePhone_gt?: Maybe<String>;
+  personMobilePhone_gte?: Maybe<String>;
+  personMobilePhone_contains?: Maybe<String>;
+  personMobilePhone_not_contains?: Maybe<String>;
+  personMobilePhone_starts_with?: Maybe<String>;
+  personMobilePhone_not_starts_with?: Maybe<String>;
+  personMobilePhone_ends_with?: Maybe<String>;
+  personMobilePhone_not_ends_with?: Maybe<String>;
+  organizationName?: Maybe<String>;
+  organizationName_not?: Maybe<String>;
+  organizationName_in?: Maybe<String[] | String>;
+  organizationName_not_in?: Maybe<String[] | String>;
+  organizationName_lt?: Maybe<String>;
+  organizationName_lte?: Maybe<String>;
+  organizationName_gt?: Maybe<String>;
+  organizationName_gte?: Maybe<String>;
+  organizationName_contains?: Maybe<String>;
+  organizationName_not_contains?: Maybe<String>;
+  organizationName_starts_with?: Maybe<String>;
+  organizationName_not_starts_with?: Maybe<String>;
+  organizationName_ends_with?: Maybe<String>;
+  organizationName_not_ends_with?: Maybe<String>;
+  AND?: Maybe<UserWhereInput[] | UserWhereInput>;
+  OR?: Maybe<UserWhereInput[] | UserWhereInput>;
+  NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
+}
+
+export interface EntryCreateInput {
+  id?: Maybe<ID_Input>;
+  type: EntryType;
+  owner: ID_Input;
+  createdBy: ID_Input;
+  updatedBy?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  content?: Maybe<Json>;
+  contentEncoding?: Maybe<ID_Input>;
+  tags?: Maybe<TagCreateManyInput>;
+}
+
+export interface AgentCreateManyInput {
+  create?: Maybe<AgentCreateInput[] | AgentCreateInput>;
+  connect?: Maybe<AgentWhereUniqueInput[] | AgentWhereUniqueInput>;
+}
+
+export interface EntryUpdateInput {
+  type?: Maybe<EntryType>;
+  owner?: Maybe<ID_Input>;
+  createdBy?: Maybe<ID_Input>;
+  updatedBy?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  content?: Maybe<Json>;
+  contentEncoding?: Maybe<ID_Input>;
+  tags?: Maybe<TagUpdateManyInput>;
+}
+
+export interface UserCreateOneWithoutSessionsInput {
+  create?: Maybe<UserCreateWithoutSessionsInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface EntryUpdateManyMutationInput {
+  type?: Maybe<EntryType>;
+  owner?: Maybe<ID_Input>;
+  createdBy?: Maybe<ID_Input>;
+  updatedBy?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  content?: Maybe<Json>;
+  contentEncoding?: Maybe<ID_Input>;
+}
+
+export interface SessionCreateInput {
+  id?: Maybe<ID_Input>;
+  csrfToken?: Maybe<String>;
+  bearerToken: String;
+  validTo: DateTimeInput;
+  timedOut?: Maybe<DateTimeInput>;
+  loggedOut?: Maybe<DateTimeInput>;
+  user: UserCreateOneWithoutSessionsInput;
+  agent: AgentCreateOneInput;
+  location?: Maybe<LocationCreateOneInput>;
+  ipAddress?: Maybe<String>;
+}
+
+export interface GroupCreateInput {
+  id?: Maybe<ID_Input>;
+  type: GroupType;
+  owner: ID_Input;
+  createdBy: ID_Input;
+  updatedBy?: Maybe<ID_Input>;
+  isPublic: Boolean;
+  memberships?: Maybe<MembershipCreateManyInput>;
+  name: String;
+  title?: Maybe<String>;
+  description?: Maybe<String>;
+  logo: String;
+  banner?: Maybe<String>;
+  entries?: Maybe<EntryCreateManyInput>;
+  inbox?: Maybe<InboxCreateOneWithoutRepresentsInput>;
+  tags?: Maybe<TagCreateManyInput>;
+}
+
+export interface MembershipUpdateInput {
+  type?: Maybe<MembershipType>;
+  createdBy?: Maybe<ID_Input>;
+  updatedBy?: Maybe<ID_Input>;
+  member?: Maybe<AgentUpdateOneRequiredInput>;
+  showHistory?: Maybe<Boolean>;
+}
+
+export interface MembershipCreateManyInput {
+  create?: Maybe<MembershipCreateInput[] | MembershipCreateInput>;
+  connect?: Maybe<MembershipWhereUniqueInput[] | MembershipWhereUniqueInput>;
+}
+
+export interface LocationUpdateManyMutationInput {
+  type?: Maybe<LocationType>;
+  owner?: Maybe<ID_Input>;
+  createdBy?: Maybe<ID_Input>;
+  updatedBy?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  osmNodeId?: Maybe<String>;
+  addressLine1?: Maybe<String>;
+  addressLine2?: Maybe<String>;
+  addressCity?: Maybe<String>;
+  addressZipCode?: Maybe<String>;
+  addressCountry?: Maybe<String>;
+  geoPointLatitude?: Maybe<Float>;
+  geoPointLongitude?: Maybe<Float>;
+  geoPointRadiusMeter?: Maybe<Float>;
+}
+
+export interface MembershipCreateInput {
+  id?: Maybe<ID_Input>;
+  type: MembershipType;
+  createdBy: ID_Input;
+  updatedBy?: Maybe<ID_Input>;
+  member: AgentCreateOneInput;
+  showHistory: Boolean;
+}
+
+export interface ContentEncodingWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  type?: Maybe<EncodingType>;
+  type_not?: Maybe<EncodingType>;
+  type_in?: Maybe<EncodingType[] | EncodingType>;
+  type_not_in?: Maybe<EncodingType[] | EncodingType>;
+  maintainer?: Maybe<ID_Input>;
+  maintainer_not?: Maybe<ID_Input>;
+  maintainer_in?: Maybe<ID_Input[] | ID_Input>;
+  maintainer_not_in?: Maybe<ID_Input[] | ID_Input>;
+  maintainer_lt?: Maybe<ID_Input>;
+  maintainer_lte?: Maybe<ID_Input>;
+  maintainer_gt?: Maybe<ID_Input>;
+  maintainer_gte?: Maybe<ID_Input>;
+  maintainer_contains?: Maybe<ID_Input>;
+  maintainer_not_contains?: Maybe<ID_Input>;
+  maintainer_starts_with?: Maybe<ID_Input>;
+  maintainer_not_starts_with?: Maybe<ID_Input>;
+  maintainer_ends_with?: Maybe<ID_Input>;
+  maintainer_not_ends_with?: Maybe<ID_Input>;
+  createdBy?: Maybe<ID_Input>;
+  createdBy_not?: Maybe<ID_Input>;
+  createdBy_in?: Maybe<ID_Input[] | ID_Input>;
+  createdBy_not_in?: Maybe<ID_Input[] | ID_Input>;
+  createdBy_lt?: Maybe<ID_Input>;
+  createdBy_lte?: Maybe<ID_Input>;
+  createdBy_gt?: Maybe<ID_Input>;
+  createdBy_gte?: Maybe<ID_Input>;
+  createdBy_contains?: Maybe<ID_Input>;
+  createdBy_not_contains?: Maybe<ID_Input>;
+  createdBy_starts_with?: Maybe<ID_Input>;
+  createdBy_not_starts_with?: Maybe<ID_Input>;
+  createdBy_ends_with?: Maybe<ID_Input>;
+  createdBy_not_ends_with?: Maybe<ID_Input>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedBy?: Maybe<ID_Input>;
+  updatedBy_not?: Maybe<ID_Input>;
+  updatedBy_in?: Maybe<ID_Input[] | ID_Input>;
+  updatedBy_not_in?: Maybe<ID_Input[] | ID_Input>;
+  updatedBy_lt?: Maybe<ID_Input>;
+  updatedBy_lte?: Maybe<ID_Input>;
+  updatedBy_gt?: Maybe<ID_Input>;
+  updatedBy_gte?: Maybe<ID_Input>;
+  updatedBy_contains?: Maybe<ID_Input>;
+  updatedBy_not_contains?: Maybe<ID_Input>;
+  updatedBy_starts_with?: Maybe<ID_Input>;
+  updatedBy_not_starts_with?: Maybe<ID_Input>;
+  updatedBy_ends_with?: Maybe<ID_Input>;
+  updatedBy_not_ends_with?: Maybe<ID_Input>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  charset?: Maybe<String>;
+  charset_not?: Maybe<String>;
+  charset_in?: Maybe<String[] | String>;
+  charset_not_in?: Maybe<String[] | String>;
+  charset_lt?: Maybe<String>;
+  charset_lte?: Maybe<String>;
+  charset_gt?: Maybe<String>;
+  charset_gte?: Maybe<String>;
+  charset_contains?: Maybe<String>;
+  charset_not_contains?: Maybe<String>;
+  charset_starts_with?: Maybe<String>;
+  charset_not_starts_with?: Maybe<String>;
+  charset_ends_with?: Maybe<String>;
+  charset_not_ends_with?: Maybe<String>;
+  AND?: Maybe<ContentEncodingWhereInput[] | ContentEncodingWhereInput>;
+  OR?: Maybe<ContentEncodingWhereInput[] | ContentEncodingWhereInput>;
+  NOT?: Maybe<ContentEncodingWhereInput[] | ContentEncodingWhereInput>;
+}
+
+export interface AgentCreateOneInput {
+  create?: Maybe<AgentCreateInput>;
+  connect?: Maybe<AgentWhereUniqueInput>;
+}
+
+export interface InboxSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<InboxWhereInput>;
+  AND?: Maybe<InboxSubscriptionWhereInput[] | InboxSubscriptionWhereInput>;
+  OR?: Maybe<InboxSubscriptionWhereInput[] | InboxSubscriptionWhereInput>;
+  NOT?: Maybe<InboxSubscriptionWhereInput[] | InboxSubscriptionWhereInput>;
+}
+
+export interface EntryCreateManyInput {
+  create?: Maybe<EntryCreateInput[] | EntryCreateInput>;
+  connect?: Maybe<EntryWhereUniqueInput[] | EntryWhereUniqueInput>;
+}
+
+export interface ContentEncodingSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ContentEncodingWhereInput>;
+  AND?: Maybe<
+    | ContentEncodingSubscriptionWhereInput[]
+    | ContentEncodingSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    | ContentEncodingSubscriptionWhereInput[]
+    | ContentEncodingSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    | ContentEncodingSubscriptionWhereInput[]
+    | ContentEncodingSubscriptionWhereInput
+  >;
+}
+
+export type ContentEncodingWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface SessionUpdateManyDataInput {
+  csrfToken?: Maybe<String>;
+  bearerToken?: Maybe<String>;
+  validTo?: Maybe<DateTimeInput>;
+  timedOut?: Maybe<DateTimeInput>;
+  loggedOut?: Maybe<DateTimeInput>;
+  ipAddress?: Maybe<String>;
+}
+
+export interface InboxCreateWithoutRepresentsInput {
+  id?: Maybe<ID_Input>;
+  owner: ID_Input;
+  createdBy: ID_Input;
+  updatedBy?: Maybe<ID_Input>;
 }
 
 export interface LocationWhereInput {
@@ -1013,7 +2387,20 @@ export interface LocationWhereInput {
   type_not?: Maybe<LocationType>;
   type_in?: Maybe<LocationType[] | LocationType>;
   type_not_in?: Maybe<LocationType[] | LocationType>;
-  owner?: Maybe<AgentWhereInput>;
+  owner?: Maybe<ID_Input>;
+  owner_not?: Maybe<ID_Input>;
+  owner_in?: Maybe<ID_Input[] | ID_Input>;
+  owner_not_in?: Maybe<ID_Input[] | ID_Input>;
+  owner_lt?: Maybe<ID_Input>;
+  owner_lte?: Maybe<ID_Input>;
+  owner_gt?: Maybe<ID_Input>;
+  owner_gte?: Maybe<ID_Input>;
+  owner_contains?: Maybe<ID_Input>;
+  owner_not_contains?: Maybe<ID_Input>;
+  owner_starts_with?: Maybe<ID_Input>;
+  owner_not_starts_with?: Maybe<ID_Input>;
+  owner_ends_with?: Maybe<ID_Input>;
+  owner_not_ends_with?: Maybe<ID_Input>;
   createdBy?: Maybe<ID_Input>;
   createdBy_not?: Maybe<ID_Input>;
   createdBy_in?: Maybe<ID_Input[] | ID_Input>;
@@ -1188,1080 +2575,9 @@ export interface LocationWhereInput {
   NOT?: Maybe<LocationWhereInput[] | LocationWhereInput>;
 }
 
-export interface TagScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  type?: Maybe<String>;
-  type_not?: Maybe<String>;
-  type_in?: Maybe<String[] | String>;
-  type_not_in?: Maybe<String[] | String>;
-  type_lt?: Maybe<String>;
-  type_lte?: Maybe<String>;
-  type_gt?: Maybe<String>;
-  type_gte?: Maybe<String>;
-  type_contains?: Maybe<String>;
-  type_not_contains?: Maybe<String>;
-  type_starts_with?: Maybe<String>;
-  type_not_starts_with?: Maybe<String>;
-  type_ends_with?: Maybe<String>;
-  type_not_ends_with?: Maybe<String>;
-  createdBy?: Maybe<ID_Input>;
-  createdBy_not?: Maybe<ID_Input>;
-  createdBy_in?: Maybe<ID_Input[] | ID_Input>;
-  createdBy_not_in?: Maybe<ID_Input[] | ID_Input>;
-  createdBy_lt?: Maybe<ID_Input>;
-  createdBy_lte?: Maybe<ID_Input>;
-  createdBy_gt?: Maybe<ID_Input>;
-  createdBy_gte?: Maybe<ID_Input>;
-  createdBy_contains?: Maybe<ID_Input>;
-  createdBy_not_contains?: Maybe<ID_Input>;
-  createdBy_starts_with?: Maybe<ID_Input>;
-  createdBy_not_starts_with?: Maybe<ID_Input>;
-  createdBy_ends_with?: Maybe<ID_Input>;
-  createdBy_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedBy?: Maybe<ID_Input>;
-  updatedBy_not?: Maybe<ID_Input>;
-  updatedBy_in?: Maybe<ID_Input[] | ID_Input>;
-  updatedBy_not_in?: Maybe<ID_Input[] | ID_Input>;
-  updatedBy_lt?: Maybe<ID_Input>;
-  updatedBy_lte?: Maybe<ID_Input>;
-  updatedBy_gt?: Maybe<ID_Input>;
-  updatedBy_gte?: Maybe<ID_Input>;
-  updatedBy_contains?: Maybe<ID_Input>;
-  updatedBy_not_contains?: Maybe<ID_Input>;
-  updatedBy_starts_with?: Maybe<ID_Input>;
-  updatedBy_not_starts_with?: Maybe<ID_Input>;
-  updatedBy_ends_with?: Maybe<ID_Input>;
-  updatedBy_not_ends_with?: Maybe<ID_Input>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  value?: Maybe<String>;
-  value_not?: Maybe<String>;
-  value_in?: Maybe<String[] | String>;
-  value_not_in?: Maybe<String[] | String>;
-  value_lt?: Maybe<String>;
-  value_lte?: Maybe<String>;
-  value_gt?: Maybe<String>;
-  value_gte?: Maybe<String>;
-  value_contains?: Maybe<String>;
-  value_not_contains?: Maybe<String>;
-  value_starts_with?: Maybe<String>;
-  value_not_starts_with?: Maybe<String>;
-  value_ends_with?: Maybe<String>;
-  value_not_ends_with?: Maybe<String>;
-  AND?: Maybe<TagScalarWhereInput[] | TagScalarWhereInput>;
-  OR?: Maybe<TagScalarWhereInput[] | TagScalarWhereInput>;
-  NOT?: Maybe<TagScalarWhereInput[] | TagScalarWhereInput>;
-}
-
-export interface SessionScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  csrfToken?: Maybe<String>;
-  csrfToken_not?: Maybe<String>;
-  csrfToken_in?: Maybe<String[] | String>;
-  csrfToken_not_in?: Maybe<String[] | String>;
-  csrfToken_lt?: Maybe<String>;
-  csrfToken_lte?: Maybe<String>;
-  csrfToken_gt?: Maybe<String>;
-  csrfToken_gte?: Maybe<String>;
-  csrfToken_contains?: Maybe<String>;
-  csrfToken_not_contains?: Maybe<String>;
-  csrfToken_starts_with?: Maybe<String>;
-  csrfToken_not_starts_with?: Maybe<String>;
-  csrfToken_ends_with?: Maybe<String>;
-  csrfToken_not_ends_with?: Maybe<String>;
-  bearerToken?: Maybe<String>;
-  bearerToken_not?: Maybe<String>;
-  bearerToken_in?: Maybe<String[] | String>;
-  bearerToken_not_in?: Maybe<String[] | String>;
-  bearerToken_lt?: Maybe<String>;
-  bearerToken_lte?: Maybe<String>;
-  bearerToken_gt?: Maybe<String>;
-  bearerToken_gte?: Maybe<String>;
-  bearerToken_contains?: Maybe<String>;
-  bearerToken_not_contains?: Maybe<String>;
-  bearerToken_starts_with?: Maybe<String>;
-  bearerToken_not_starts_with?: Maybe<String>;
-  bearerToken_ends_with?: Maybe<String>;
-  bearerToken_not_ends_with?: Maybe<String>;
-  validTo?: Maybe<DateTimeInput>;
-  validTo_not?: Maybe<DateTimeInput>;
-  validTo_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  validTo_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  validTo_lt?: Maybe<DateTimeInput>;
-  validTo_lte?: Maybe<DateTimeInput>;
-  validTo_gt?: Maybe<DateTimeInput>;
-  validTo_gte?: Maybe<DateTimeInput>;
-  timedOut?: Maybe<DateTimeInput>;
-  timedOut_not?: Maybe<DateTimeInput>;
-  timedOut_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  timedOut_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  timedOut_lt?: Maybe<DateTimeInput>;
-  timedOut_lte?: Maybe<DateTimeInput>;
-  timedOut_gt?: Maybe<DateTimeInput>;
-  timedOut_gte?: Maybe<DateTimeInput>;
-  loggedOut?: Maybe<DateTimeInput>;
-  loggedOut_not?: Maybe<DateTimeInput>;
-  loggedOut_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  loggedOut_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  loggedOut_lt?: Maybe<DateTimeInput>;
-  loggedOut_lte?: Maybe<DateTimeInput>;
-  loggedOut_gt?: Maybe<DateTimeInput>;
-  loggedOut_gte?: Maybe<DateTimeInput>;
-  ipAddress?: Maybe<String>;
-  ipAddress_not?: Maybe<String>;
-  ipAddress_in?: Maybe<String[] | String>;
-  ipAddress_not_in?: Maybe<String[] | String>;
-  ipAddress_lt?: Maybe<String>;
-  ipAddress_lte?: Maybe<String>;
-  ipAddress_gt?: Maybe<String>;
-  ipAddress_gte?: Maybe<String>;
-  ipAddress_contains?: Maybe<String>;
-  ipAddress_not_contains?: Maybe<String>;
-  ipAddress_starts_with?: Maybe<String>;
-  ipAddress_not_starts_with?: Maybe<String>;
-  ipAddress_ends_with?: Maybe<String>;
-  ipAddress_not_ends_with?: Maybe<String>;
-  AND?: Maybe<SessionScalarWhereInput[] | SessionScalarWhereInput>;
-  OR?: Maybe<SessionScalarWhereInput[] | SessionScalarWhereInput>;
-  NOT?: Maybe<SessionScalarWhereInput[] | SessionScalarWhereInput>;
-}
-
-export interface TagUpdateManyWithWhereNestedInput {
-  where: TagScalarWhereInput;
-  data: TagUpdateManyDataInput;
-}
-
-export interface InboxWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  owner?: Maybe<AgentWhereInput>;
-  createdBy?: Maybe<ID_Input>;
-  createdBy_not?: Maybe<ID_Input>;
-  createdBy_in?: Maybe<ID_Input[] | ID_Input>;
-  createdBy_not_in?: Maybe<ID_Input[] | ID_Input>;
-  createdBy_lt?: Maybe<ID_Input>;
-  createdBy_lte?: Maybe<ID_Input>;
-  createdBy_gt?: Maybe<ID_Input>;
-  createdBy_gte?: Maybe<ID_Input>;
-  createdBy_contains?: Maybe<ID_Input>;
-  createdBy_not_contains?: Maybe<ID_Input>;
-  createdBy_starts_with?: Maybe<ID_Input>;
-  createdBy_not_starts_with?: Maybe<ID_Input>;
-  createdBy_ends_with?: Maybe<ID_Input>;
-  createdBy_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedBy?: Maybe<ID_Input>;
-  updatedBy_not?: Maybe<ID_Input>;
-  updatedBy_in?: Maybe<ID_Input[] | ID_Input>;
-  updatedBy_not_in?: Maybe<ID_Input[] | ID_Input>;
-  updatedBy_lt?: Maybe<ID_Input>;
-  updatedBy_lte?: Maybe<ID_Input>;
-  updatedBy_gt?: Maybe<ID_Input>;
-  updatedBy_gte?: Maybe<ID_Input>;
-  updatedBy_contains?: Maybe<ID_Input>;
-  updatedBy_not_contains?: Maybe<ID_Input>;
-  updatedBy_starts_with?: Maybe<ID_Input>;
-  updatedBy_not_starts_with?: Maybe<ID_Input>;
-  updatedBy_ends_with?: Maybe<ID_Input>;
-  updatedBy_not_ends_with?: Maybe<ID_Input>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  represents?: Maybe<GroupWhereInput>;
-  AND?: Maybe<InboxWhereInput[] | InboxWhereInput>;
-  OR?: Maybe<InboxWhereInput[] | InboxWhereInput>;
-  NOT?: Maybe<InboxWhereInput[] | InboxWhereInput>;
-}
-
-export interface TagUpdateManyDataInput {
-  type?: Maybe<String>;
-  createdBy?: Maybe<ID_Input>;
-  updatedBy?: Maybe<ID_Input>;
-  value?: Maybe<String>;
-}
-
-export interface SessionUpsertWithWhereUniqueWithoutUserInput {
-  where: SessionWhereUniqueInput;
-  update: SessionUpdateWithoutUserDataInput;
-  create: SessionCreateWithoutUserInput;
-}
-
-export interface LocationUpsertWithoutOwnerInput {
-  update: LocationUpdateWithoutOwnerDataInput;
-  create: LocationCreateWithoutOwnerInput;
-}
-
-export interface SessionUpdateWithWhereUniqueWithoutUserInput {
-  where: SessionWhereUniqueInput;
-  data: SessionUpdateWithoutUserDataInput;
-}
-
-export interface TagUpdateManyWithoutOwnerInput {
-  create?: Maybe<TagCreateWithoutOwnerInput[] | TagCreateWithoutOwnerInput>;
-  delete?: Maybe<TagWhereUniqueInput[] | TagWhereUniqueInput>;
-  connect?: Maybe<TagWhereUniqueInput[] | TagWhereUniqueInput>;
-  set?: Maybe<TagWhereUniqueInput[] | TagWhereUniqueInput>;
-  disconnect?: Maybe<TagWhereUniqueInput[] | TagWhereUniqueInput>;
-  update?: Maybe<
-    | TagUpdateWithWhereUniqueWithoutOwnerInput[]
-    | TagUpdateWithWhereUniqueWithoutOwnerInput
-  >;
-  upsert?: Maybe<
-    | TagUpsertWithWhereUniqueWithoutOwnerInput[]
-    | TagUpsertWithWhereUniqueWithoutOwnerInput
-  >;
-  deleteMany?: Maybe<TagScalarWhereInput[] | TagScalarWhereInput>;
-  updateMany?: Maybe<
-    TagUpdateManyWithWhereNestedInput[] | TagUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface TagWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  type?: Maybe<String>;
-  type_not?: Maybe<String>;
-  type_in?: Maybe<String[] | String>;
-  type_not_in?: Maybe<String[] | String>;
-  type_lt?: Maybe<String>;
-  type_lte?: Maybe<String>;
-  type_gt?: Maybe<String>;
-  type_gte?: Maybe<String>;
-  type_contains?: Maybe<String>;
-  type_not_contains?: Maybe<String>;
-  type_starts_with?: Maybe<String>;
-  type_not_starts_with?: Maybe<String>;
-  type_ends_with?: Maybe<String>;
-  type_not_ends_with?: Maybe<String>;
-  owner?: Maybe<AgentWhereInput>;
-  createdBy?: Maybe<ID_Input>;
-  createdBy_not?: Maybe<ID_Input>;
-  createdBy_in?: Maybe<ID_Input[] | ID_Input>;
-  createdBy_not_in?: Maybe<ID_Input[] | ID_Input>;
-  createdBy_lt?: Maybe<ID_Input>;
-  createdBy_lte?: Maybe<ID_Input>;
-  createdBy_gt?: Maybe<ID_Input>;
-  createdBy_gte?: Maybe<ID_Input>;
-  createdBy_contains?: Maybe<ID_Input>;
-  createdBy_not_contains?: Maybe<ID_Input>;
-  createdBy_starts_with?: Maybe<ID_Input>;
-  createdBy_not_starts_with?: Maybe<ID_Input>;
-  createdBy_ends_with?: Maybe<ID_Input>;
-  createdBy_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedBy?: Maybe<ID_Input>;
-  updatedBy_not?: Maybe<ID_Input>;
-  updatedBy_in?: Maybe<ID_Input[] | ID_Input>;
-  updatedBy_not_in?: Maybe<ID_Input[] | ID_Input>;
-  updatedBy_lt?: Maybe<ID_Input>;
-  updatedBy_lte?: Maybe<ID_Input>;
-  updatedBy_gt?: Maybe<ID_Input>;
-  updatedBy_gte?: Maybe<ID_Input>;
-  updatedBy_contains?: Maybe<ID_Input>;
-  updatedBy_not_contains?: Maybe<ID_Input>;
-  updatedBy_starts_with?: Maybe<ID_Input>;
-  updatedBy_not_starts_with?: Maybe<ID_Input>;
-  updatedBy_ends_with?: Maybe<ID_Input>;
-  updatedBy_not_ends_with?: Maybe<ID_Input>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  value?: Maybe<String>;
-  value_not?: Maybe<String>;
-  value_in?: Maybe<String[] | String>;
-  value_not_in?: Maybe<String[] | String>;
-  value_lt?: Maybe<String>;
-  value_lte?: Maybe<String>;
-  value_gt?: Maybe<String>;
-  value_gte?: Maybe<String>;
-  value_contains?: Maybe<String>;
-  value_not_contains?: Maybe<String>;
-  value_starts_with?: Maybe<String>;
-  value_not_starts_with?: Maybe<String>;
-  value_ends_with?: Maybe<String>;
-  value_not_ends_with?: Maybe<String>;
-  AND?: Maybe<TagWhereInput[] | TagWhereInput>;
-  OR?: Maybe<TagWhereInput[] | TagWhereInput>;
-  NOT?: Maybe<TagWhereInput[] | TagWhereInput>;
-}
-
-export interface TagUpdateWithWhereUniqueWithoutOwnerInput {
-  where: TagWhereUniqueInput;
-  data: TagUpdateWithoutOwnerDataInput;
-}
-
-export interface UserUpdateInput {
-  type?: Maybe<UserType>;
-  email?: Maybe<String>;
-  timezone?: Maybe<String>;
-  challenge?: Maybe<String>;
-  passwordSalt?: Maybe<String>;
-  passwordHash?: Maybe<String>;
-  agents?: Maybe<AgentUpdateManyInput>;
-  sessions?: Maybe<SessionUpdateManyWithoutUserInput>;
-  personFirstName?: Maybe<String>;
-  personLastName?: Maybe<String>;
-  personPhone?: Maybe<String>;
-  personMobilePhone?: Maybe<String>;
-  institutionName?: Maybe<String>;
-}
-
-export interface TagUpdateWithoutOwnerDataInput {
-  type?: Maybe<String>;
-  createdBy?: Maybe<ID_Input>;
-  updatedBy?: Maybe<ID_Input>;
-  value?: Maybe<String>;
-}
-
-export type LocationWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface TagUpsertWithWhereUniqueWithoutOwnerInput {
-  where: TagWhereUniqueInput;
-  update: TagUpdateWithoutOwnerDataInput;
-  create: TagCreateWithoutOwnerInput;
-}
-
-export interface UserCreateInput {
-  id?: Maybe<ID_Input>;
-  type: UserType;
-  email: String;
-  timezone: String;
-  challenge?: Maybe<String>;
-  passwordSalt: String;
-  passwordHash: String;
-  agents?: Maybe<AgentCreateManyInput>;
-  sessions?: Maybe<SessionCreateManyWithoutUserInput>;
-  personFirstName?: Maybe<String>;
-  personLastName?: Maybe<String>;
-  personPhone?: Maybe<String>;
-  personMobilePhone?: Maybe<String>;
-  institutionName?: Maybe<String>;
-}
-
-export interface AgentUpdateManyMutationInput {
-  type?: Maybe<AgentType>;
-  owner?: Maybe<ID_Input>;
-  createdBy?: Maybe<ID_Input>;
-  updatedBy?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  status?: Maybe<AgentStatus>;
-  timezone?: Maybe<String>;
-  profileSlogan?: Maybe<String>;
-  profileAvatar?: Maybe<String>;
-  profileBanner?: Maybe<String>;
-  profileType?: Maybe<ProfileType>;
-}
-
-export interface TagUpdateInput {
-  type?: Maybe<String>;
-  owner?: Maybe<AgentUpdateOneRequiredWithoutTagsInput>;
-  createdBy?: Maybe<ID_Input>;
-  updatedBy?: Maybe<ID_Input>;
-  value?: Maybe<String>;
-}
-
-export interface UserCreateOneWithoutSessionsInput {
-  create?: Maybe<UserCreateWithoutSessionsInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface SessionUpdateManyMutationInput {
-  csrfToken?: Maybe<String>;
-  bearerToken?: Maybe<String>;
-  validTo?: Maybe<DateTimeInput>;
-  timedOut?: Maybe<DateTimeInput>;
-  loggedOut?: Maybe<DateTimeInput>;
-  ipAddress?: Maybe<String>;
-}
-
-export interface SessionCreateInput {
-  id?: Maybe<ID_Input>;
-  csrfToken?: Maybe<String>;
-  bearerToken: String;
-  validTo: DateTimeInput;
-  timedOut?: Maybe<DateTimeInput>;
-  loggedOut?: Maybe<DateTimeInput>;
-  user: UserCreateOneWithoutSessionsInput;
-  agent: AgentCreateOneInput;
-  location?: Maybe<LocationCreateOneInput>;
-  ipAddress?: Maybe<String>;
-}
-
-export interface LocationUpdateDataInput {
-  type?: Maybe<LocationType>;
-  owner?: Maybe<AgentUpdateOneRequiredWithoutLocationInput>;
-  createdBy?: Maybe<ID_Input>;
-  updatedBy?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  osmNodeId?: Maybe<String>;
-  addressLine1?: Maybe<String>;
-  addressLine2?: Maybe<String>;
-  addressCity?: Maybe<String>;
-  addressZipCode?: Maybe<String>;
-  addressCountry?: Maybe<String>;
-  geoPointLatitude?: Maybe<Float>;
-  geoPointLongitude?: Maybe<Float>;
-  geoPointRadiusMeter?: Maybe<Float>;
-  tags?: Maybe<TagUpdateManyInput>;
-}
-
-export interface MembershipUpdateManyMutationInput {
-  type?: Maybe<MembershipType>;
-  createdBy?: Maybe<ID_Input>;
-  updatedBy?: Maybe<ID_Input>;
-  showHistory?: Maybe<Boolean>;
-}
-
-export interface LocationUpdateOneInput {
-  create?: Maybe<LocationCreateInput>;
-  update?: Maybe<LocationUpdateDataInput>;
-  upsert?: Maybe<LocationUpsertNestedInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<LocationWhereUniqueInput>;
-}
-
-export interface AgentCreateOneInput {
-  create?: Maybe<AgentCreateInput>;
-  connect?: Maybe<AgentWhereUniqueInput>;
-}
-
-export interface AgentUpdateManyDataInput {
-  type?: Maybe<AgentType>;
-  owner?: Maybe<ID_Input>;
-  createdBy?: Maybe<ID_Input>;
-  updatedBy?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  status?: Maybe<AgentStatus>;
-  timezone?: Maybe<String>;
-  profileSlogan?: Maybe<String>;
-  profileAvatar?: Maybe<String>;
-  profileBanner?: Maybe<String>;
-  profileType?: Maybe<ProfileType>;
-}
-
-export interface EntryUpdateInput {
-  type?: Maybe<EntryType>;
-  owner?: Maybe<AgentUpdateOneRequiredInput>;
-  createdBy?: Maybe<ID_Input>;
-  updatedBy?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  content?: Maybe<Json>;
-  tags?: Maybe<TagUpdateManyInput>;
-}
-
-export interface UserWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  type?: Maybe<UserType>;
-  type_not?: Maybe<UserType>;
-  type_in?: Maybe<UserType[] | UserType>;
-  type_not_in?: Maybe<UserType[] | UserType>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  email?: Maybe<String>;
-  email_not?: Maybe<String>;
-  email_in?: Maybe<String[] | String>;
-  email_not_in?: Maybe<String[] | String>;
-  email_lt?: Maybe<String>;
-  email_lte?: Maybe<String>;
-  email_gt?: Maybe<String>;
-  email_gte?: Maybe<String>;
-  email_contains?: Maybe<String>;
-  email_not_contains?: Maybe<String>;
-  email_starts_with?: Maybe<String>;
-  email_not_starts_with?: Maybe<String>;
-  email_ends_with?: Maybe<String>;
-  email_not_ends_with?: Maybe<String>;
-  timezone?: Maybe<String>;
-  timezone_not?: Maybe<String>;
-  timezone_in?: Maybe<String[] | String>;
-  timezone_not_in?: Maybe<String[] | String>;
-  timezone_lt?: Maybe<String>;
-  timezone_lte?: Maybe<String>;
-  timezone_gt?: Maybe<String>;
-  timezone_gte?: Maybe<String>;
-  timezone_contains?: Maybe<String>;
-  timezone_not_contains?: Maybe<String>;
-  timezone_starts_with?: Maybe<String>;
-  timezone_not_starts_with?: Maybe<String>;
-  timezone_ends_with?: Maybe<String>;
-  timezone_not_ends_with?: Maybe<String>;
-  challenge?: Maybe<String>;
-  challenge_not?: Maybe<String>;
-  challenge_in?: Maybe<String[] | String>;
-  challenge_not_in?: Maybe<String[] | String>;
-  challenge_lt?: Maybe<String>;
-  challenge_lte?: Maybe<String>;
-  challenge_gt?: Maybe<String>;
-  challenge_gte?: Maybe<String>;
-  challenge_contains?: Maybe<String>;
-  challenge_not_contains?: Maybe<String>;
-  challenge_starts_with?: Maybe<String>;
-  challenge_not_starts_with?: Maybe<String>;
-  challenge_ends_with?: Maybe<String>;
-  challenge_not_ends_with?: Maybe<String>;
-  passwordSalt?: Maybe<String>;
-  passwordSalt_not?: Maybe<String>;
-  passwordSalt_in?: Maybe<String[] | String>;
-  passwordSalt_not_in?: Maybe<String[] | String>;
-  passwordSalt_lt?: Maybe<String>;
-  passwordSalt_lte?: Maybe<String>;
-  passwordSalt_gt?: Maybe<String>;
-  passwordSalt_gte?: Maybe<String>;
-  passwordSalt_contains?: Maybe<String>;
-  passwordSalt_not_contains?: Maybe<String>;
-  passwordSalt_starts_with?: Maybe<String>;
-  passwordSalt_not_starts_with?: Maybe<String>;
-  passwordSalt_ends_with?: Maybe<String>;
-  passwordSalt_not_ends_with?: Maybe<String>;
-  passwordHash?: Maybe<String>;
-  passwordHash_not?: Maybe<String>;
-  passwordHash_in?: Maybe<String[] | String>;
-  passwordHash_not_in?: Maybe<String[] | String>;
-  passwordHash_lt?: Maybe<String>;
-  passwordHash_lte?: Maybe<String>;
-  passwordHash_gt?: Maybe<String>;
-  passwordHash_gte?: Maybe<String>;
-  passwordHash_contains?: Maybe<String>;
-  passwordHash_not_contains?: Maybe<String>;
-  passwordHash_starts_with?: Maybe<String>;
-  passwordHash_not_starts_with?: Maybe<String>;
-  passwordHash_ends_with?: Maybe<String>;
-  passwordHash_not_ends_with?: Maybe<String>;
-  agents_every?: Maybe<AgentWhereInput>;
-  agents_some?: Maybe<AgentWhereInput>;
-  agents_none?: Maybe<AgentWhereInput>;
-  sessions_every?: Maybe<SessionWhereInput>;
-  sessions_some?: Maybe<SessionWhereInput>;
-  sessions_none?: Maybe<SessionWhereInput>;
-  personFirstName?: Maybe<String>;
-  personFirstName_not?: Maybe<String>;
-  personFirstName_in?: Maybe<String[] | String>;
-  personFirstName_not_in?: Maybe<String[] | String>;
-  personFirstName_lt?: Maybe<String>;
-  personFirstName_lte?: Maybe<String>;
-  personFirstName_gt?: Maybe<String>;
-  personFirstName_gte?: Maybe<String>;
-  personFirstName_contains?: Maybe<String>;
-  personFirstName_not_contains?: Maybe<String>;
-  personFirstName_starts_with?: Maybe<String>;
-  personFirstName_not_starts_with?: Maybe<String>;
-  personFirstName_ends_with?: Maybe<String>;
-  personFirstName_not_ends_with?: Maybe<String>;
-  personLastName?: Maybe<String>;
-  personLastName_not?: Maybe<String>;
-  personLastName_in?: Maybe<String[] | String>;
-  personLastName_not_in?: Maybe<String[] | String>;
-  personLastName_lt?: Maybe<String>;
-  personLastName_lte?: Maybe<String>;
-  personLastName_gt?: Maybe<String>;
-  personLastName_gte?: Maybe<String>;
-  personLastName_contains?: Maybe<String>;
-  personLastName_not_contains?: Maybe<String>;
-  personLastName_starts_with?: Maybe<String>;
-  personLastName_not_starts_with?: Maybe<String>;
-  personLastName_ends_with?: Maybe<String>;
-  personLastName_not_ends_with?: Maybe<String>;
-  personPhone?: Maybe<String>;
-  personPhone_not?: Maybe<String>;
-  personPhone_in?: Maybe<String[] | String>;
-  personPhone_not_in?: Maybe<String[] | String>;
-  personPhone_lt?: Maybe<String>;
-  personPhone_lte?: Maybe<String>;
-  personPhone_gt?: Maybe<String>;
-  personPhone_gte?: Maybe<String>;
-  personPhone_contains?: Maybe<String>;
-  personPhone_not_contains?: Maybe<String>;
-  personPhone_starts_with?: Maybe<String>;
-  personPhone_not_starts_with?: Maybe<String>;
-  personPhone_ends_with?: Maybe<String>;
-  personPhone_not_ends_with?: Maybe<String>;
-  personMobilePhone?: Maybe<String>;
-  personMobilePhone_not?: Maybe<String>;
-  personMobilePhone_in?: Maybe<String[] | String>;
-  personMobilePhone_not_in?: Maybe<String[] | String>;
-  personMobilePhone_lt?: Maybe<String>;
-  personMobilePhone_lte?: Maybe<String>;
-  personMobilePhone_gt?: Maybe<String>;
-  personMobilePhone_gte?: Maybe<String>;
-  personMobilePhone_contains?: Maybe<String>;
-  personMobilePhone_not_contains?: Maybe<String>;
-  personMobilePhone_starts_with?: Maybe<String>;
-  personMobilePhone_not_starts_with?: Maybe<String>;
-  personMobilePhone_ends_with?: Maybe<String>;
-  personMobilePhone_not_ends_with?: Maybe<String>;
-  institutionName?: Maybe<String>;
-  institutionName_not?: Maybe<String>;
-  institutionName_in?: Maybe<String[] | String>;
-  institutionName_not_in?: Maybe<String[] | String>;
-  institutionName_lt?: Maybe<String>;
-  institutionName_lte?: Maybe<String>;
-  institutionName_gt?: Maybe<String>;
-  institutionName_gte?: Maybe<String>;
-  institutionName_contains?: Maybe<String>;
-  institutionName_not_contains?: Maybe<String>;
-  institutionName_starts_with?: Maybe<String>;
-  institutionName_not_starts_with?: Maybe<String>;
-  institutionName_ends_with?: Maybe<String>;
-  institutionName_not_ends_with?: Maybe<String>;
-  AND?: Maybe<UserWhereInput[] | UserWhereInput>;
-  OR?: Maybe<UserWhereInput[] | UserWhereInput>;
-  NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
-}
-
-export interface AgentUpdateOneRequiredInput {
-  create?: Maybe<AgentCreateInput>;
-  update?: Maybe<AgentUpdateDataInput>;
-  upsert?: Maybe<AgentUpsertNestedInput>;
-  connect?: Maybe<AgentWhereUniqueInput>;
-}
-
-export interface AgentScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  type?: Maybe<AgentType>;
-  type_not?: Maybe<AgentType>;
-  type_in?: Maybe<AgentType[] | AgentType>;
-  type_not_in?: Maybe<AgentType[] | AgentType>;
-  owner?: Maybe<ID_Input>;
-  owner_not?: Maybe<ID_Input>;
-  owner_in?: Maybe<ID_Input[] | ID_Input>;
-  owner_not_in?: Maybe<ID_Input[] | ID_Input>;
-  owner_lt?: Maybe<ID_Input>;
-  owner_lte?: Maybe<ID_Input>;
-  owner_gt?: Maybe<ID_Input>;
-  owner_gte?: Maybe<ID_Input>;
-  owner_contains?: Maybe<ID_Input>;
-  owner_not_contains?: Maybe<ID_Input>;
-  owner_starts_with?: Maybe<ID_Input>;
-  owner_not_starts_with?: Maybe<ID_Input>;
-  owner_ends_with?: Maybe<ID_Input>;
-  owner_not_ends_with?: Maybe<ID_Input>;
-  createdBy?: Maybe<ID_Input>;
-  createdBy_not?: Maybe<ID_Input>;
-  createdBy_in?: Maybe<ID_Input[] | ID_Input>;
-  createdBy_not_in?: Maybe<ID_Input[] | ID_Input>;
-  createdBy_lt?: Maybe<ID_Input>;
-  createdBy_lte?: Maybe<ID_Input>;
-  createdBy_gt?: Maybe<ID_Input>;
-  createdBy_gte?: Maybe<ID_Input>;
-  createdBy_contains?: Maybe<ID_Input>;
-  createdBy_not_contains?: Maybe<ID_Input>;
-  createdBy_starts_with?: Maybe<ID_Input>;
-  createdBy_not_starts_with?: Maybe<ID_Input>;
-  createdBy_ends_with?: Maybe<ID_Input>;
-  createdBy_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedBy?: Maybe<ID_Input>;
-  updatedBy_not?: Maybe<ID_Input>;
-  updatedBy_in?: Maybe<ID_Input[] | ID_Input>;
-  updatedBy_not_in?: Maybe<ID_Input[] | ID_Input>;
-  updatedBy_lt?: Maybe<ID_Input>;
-  updatedBy_lte?: Maybe<ID_Input>;
-  updatedBy_gt?: Maybe<ID_Input>;
-  updatedBy_gte?: Maybe<ID_Input>;
-  updatedBy_contains?: Maybe<ID_Input>;
-  updatedBy_not_contains?: Maybe<ID_Input>;
-  updatedBy_starts_with?: Maybe<ID_Input>;
-  updatedBy_not_starts_with?: Maybe<ID_Input>;
-  updatedBy_ends_with?: Maybe<ID_Input>;
-  updatedBy_not_ends_with?: Maybe<ID_Input>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  status?: Maybe<AgentStatus>;
-  status_not?: Maybe<AgentStatus>;
-  status_in?: Maybe<AgentStatus[] | AgentStatus>;
-  status_not_in?: Maybe<AgentStatus[] | AgentStatus>;
-  timezone?: Maybe<String>;
-  timezone_not?: Maybe<String>;
-  timezone_in?: Maybe<String[] | String>;
-  timezone_not_in?: Maybe<String[] | String>;
-  timezone_lt?: Maybe<String>;
-  timezone_lte?: Maybe<String>;
-  timezone_gt?: Maybe<String>;
-  timezone_gte?: Maybe<String>;
-  timezone_contains?: Maybe<String>;
-  timezone_not_contains?: Maybe<String>;
-  timezone_starts_with?: Maybe<String>;
-  timezone_not_starts_with?: Maybe<String>;
-  timezone_ends_with?: Maybe<String>;
-  timezone_not_ends_with?: Maybe<String>;
-  profileSlogan?: Maybe<String>;
-  profileSlogan_not?: Maybe<String>;
-  profileSlogan_in?: Maybe<String[] | String>;
-  profileSlogan_not_in?: Maybe<String[] | String>;
-  profileSlogan_lt?: Maybe<String>;
-  profileSlogan_lte?: Maybe<String>;
-  profileSlogan_gt?: Maybe<String>;
-  profileSlogan_gte?: Maybe<String>;
-  profileSlogan_contains?: Maybe<String>;
-  profileSlogan_not_contains?: Maybe<String>;
-  profileSlogan_starts_with?: Maybe<String>;
-  profileSlogan_not_starts_with?: Maybe<String>;
-  profileSlogan_ends_with?: Maybe<String>;
-  profileSlogan_not_ends_with?: Maybe<String>;
-  profileAvatar?: Maybe<String>;
-  profileAvatar_not?: Maybe<String>;
-  profileAvatar_in?: Maybe<String[] | String>;
-  profileAvatar_not_in?: Maybe<String[] | String>;
-  profileAvatar_lt?: Maybe<String>;
-  profileAvatar_lte?: Maybe<String>;
-  profileAvatar_gt?: Maybe<String>;
-  profileAvatar_gte?: Maybe<String>;
-  profileAvatar_contains?: Maybe<String>;
-  profileAvatar_not_contains?: Maybe<String>;
-  profileAvatar_starts_with?: Maybe<String>;
-  profileAvatar_not_starts_with?: Maybe<String>;
-  profileAvatar_ends_with?: Maybe<String>;
-  profileAvatar_not_ends_with?: Maybe<String>;
-  profileBanner?: Maybe<String>;
-  profileBanner_not?: Maybe<String>;
-  profileBanner_in?: Maybe<String[] | String>;
-  profileBanner_not_in?: Maybe<String[] | String>;
-  profileBanner_lt?: Maybe<String>;
-  profileBanner_lte?: Maybe<String>;
-  profileBanner_gt?: Maybe<String>;
-  profileBanner_gte?: Maybe<String>;
-  profileBanner_contains?: Maybe<String>;
-  profileBanner_not_contains?: Maybe<String>;
-  profileBanner_starts_with?: Maybe<String>;
-  profileBanner_not_starts_with?: Maybe<String>;
-  profileBanner_ends_with?: Maybe<String>;
-  profileBanner_not_ends_with?: Maybe<String>;
-  profileType?: Maybe<ProfileType>;
-  profileType_not?: Maybe<ProfileType>;
-  profileType_in?: Maybe<ProfileType[] | ProfileType>;
-  profileType_not_in?: Maybe<ProfileType[] | ProfileType>;
-  AND?: Maybe<AgentScalarWhereInput[] | AgentScalarWhereInput>;
-  OR?: Maybe<AgentScalarWhereInput[] | AgentScalarWhereInput>;
-  NOT?: Maybe<AgentScalarWhereInput[] | AgentScalarWhereInput>;
-}
-
-export interface AgentUpdateDataInput {
-  type?: Maybe<AgentType>;
-  owner?: Maybe<ID_Input>;
-  createdBy?: Maybe<ID_Input>;
-  updatedBy?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  status?: Maybe<AgentStatus>;
-  timezone?: Maybe<String>;
-  location?: Maybe<LocationUpdateOneWithoutOwnerInput>;
-  profileSlogan?: Maybe<String>;
-  profileAvatar?: Maybe<String>;
-  profileBanner?: Maybe<String>;
-  profileType?: Maybe<ProfileType>;
-  tags?: Maybe<TagUpdateManyWithoutOwnerInput>;
-}
-
-export interface AgentUpdateWithWhereUniqueNestedInput {
-  where: AgentWhereUniqueInput;
-  data: AgentUpdateDataInput;
-}
-
-export interface AgentUpsertNestedInput {
-  update: AgentUpdateDataInput;
-  create: AgentCreateInput;
-}
-
-export interface AgentUpdateManyInput {
-  create?: Maybe<AgentCreateInput[] | AgentCreateInput>;
-  update?: Maybe<
-    | AgentUpdateWithWhereUniqueNestedInput[]
-    | AgentUpdateWithWhereUniqueNestedInput
-  >;
-  upsert?: Maybe<
-    | AgentUpsertWithWhereUniqueNestedInput[]
-    | AgentUpsertWithWhereUniqueNestedInput
-  >;
-  delete?: Maybe<AgentWhereUniqueInput[] | AgentWhereUniqueInput>;
-  connect?: Maybe<AgentWhereUniqueInput[] | AgentWhereUniqueInput>;
-  set?: Maybe<AgentWhereUniqueInput[] | AgentWhereUniqueInput>;
-  disconnect?: Maybe<AgentWhereUniqueInput[] | AgentWhereUniqueInput>;
-  deleteMany?: Maybe<AgentScalarWhereInput[] | AgentScalarWhereInput>;
-  updateMany?: Maybe<
-    AgentUpdateManyWithWhereNestedInput[] | AgentUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface EntryUpdateManyMutationInput {
-  type?: Maybe<EntryType>;
-  createdBy?: Maybe<ID_Input>;
-  updatedBy?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  content?: Maybe<Json>;
-}
-
-export interface UserUpdateOneRequiredWithoutSessionsInput {
-  create?: Maybe<UserCreateWithoutSessionsInput>;
-  update?: Maybe<UserUpdateWithoutSessionsDataInput>;
-  upsert?: Maybe<UserUpsertWithoutSessionsInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface GroupCreateInput {
-  id?: Maybe<ID_Input>;
-  type: GroupType;
-  owner: AgentCreateOneInput;
-  createdBy: ID_Input;
-  updatedBy?: Maybe<ID_Input>;
-  isPublic: Boolean;
-  memberships?: Maybe<MembershipCreateManyInput>;
-  name: String;
-  title?: Maybe<String>;
-  description?: Maybe<String>;
-  logo: String;
-  banner?: Maybe<String>;
-  entries?: Maybe<EntryCreateManyInput>;
-  inbox?: Maybe<InboxCreateOneWithoutRepresentsInput>;
-  tags?: Maybe<TagCreateManyInput>;
-}
-
-export interface SessionUpdateInput {
-  csrfToken?: Maybe<String>;
-  bearerToken?: Maybe<String>;
-  validTo?: Maybe<DateTimeInput>;
-  timedOut?: Maybe<DateTimeInput>;
-  loggedOut?: Maybe<DateTimeInput>;
-  user?: Maybe<UserUpdateOneRequiredWithoutSessionsInput>;
-  agent?: Maybe<AgentUpdateOneRequiredInput>;
-  location?: Maybe<LocationUpdateOneInput>;
-  ipAddress?: Maybe<String>;
-}
-
-export interface MembershipCreateManyInput {
-  create?: Maybe<MembershipCreateInput[] | MembershipCreateInput>;
-  connect?: Maybe<MembershipWhereUniqueInput[] | MembershipWhereUniqueInput>;
-}
-
-export interface AgentCreateManyInput {
-  create?: Maybe<AgentCreateInput[] | AgentCreateInput>;
-  connect?: Maybe<AgentWhereUniqueInput[] | AgentWhereUniqueInput>;
-}
-
-export interface MembershipCreateInput {
-  id?: Maybe<ID_Input>;
-  type: MembershipType;
-  createdBy: ID_Input;
-  updatedBy?: Maybe<ID_Input>;
-  member: AgentCreateOneInput;
-  showHistory: Boolean;
-}
-
-export interface LocationCreateOneWithoutOwnerInput {
-  create?: Maybe<LocationCreateWithoutOwnerInput>;
-  connect?: Maybe<LocationWhereUniqueInput>;
-}
-
-export interface MembershipUpdateInput {
-  type?: Maybe<MembershipType>;
-  createdBy?: Maybe<ID_Input>;
-  updatedBy?: Maybe<ID_Input>;
-  member?: Maybe<AgentUpdateOneRequiredInput>;
-  showHistory?: Maybe<Boolean>;
-}
-
-export interface TagCreateManyInput {
-  create?: Maybe<TagCreateInput[] | TagCreateInput>;
-  connect?: Maybe<TagWhereUniqueInput[] | TagWhereUniqueInput>;
-}
-
-export interface InboxCreateOneWithoutRepresentsInput {
-  create?: Maybe<InboxCreateWithoutRepresentsInput>;
-  connect?: Maybe<InboxWhereUniqueInput>;
-}
-
-export interface AgentCreateOneWithoutTagsInput {
-  create?: Maybe<AgentCreateWithoutTagsInput>;
-  connect?: Maybe<AgentWhereUniqueInput>;
-}
-
-export interface InboxCreateWithoutRepresentsInput {
-  id?: Maybe<ID_Input>;
-  owner: AgentCreateOneInput;
-  createdBy: ID_Input;
-  updatedBy?: Maybe<ID_Input>;
-}
-
-export interface TagCreateManyWithoutOwnerInput {
-  create?: Maybe<TagCreateWithoutOwnerInput[] | TagCreateWithoutOwnerInput>;
-  connect?: Maybe<TagWhereUniqueInput[] | TagWhereUniqueInput>;
-}
-
 export interface GroupUpdateInput {
   type?: Maybe<GroupType>;
-  owner?: Maybe<AgentUpdateOneRequiredInput>;
+  owner?: Maybe<ID_Input>;
   createdBy?: Maybe<ID_Input>;
   updatedBy?: Maybe<ID_Input>;
   isPublic?: Maybe<Boolean>;
@@ -2276,15 +2592,15 @@ export interface GroupUpdateInput {
   tags?: Maybe<TagUpdateManyInput>;
 }
 
-export interface UserSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<UserWhereInput>;
-  AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-  OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-  NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+export interface SessionUpdateWithoutUserDataInput {
+  csrfToken?: Maybe<String>;
+  bearerToken?: Maybe<String>;
+  validTo?: Maybe<DateTimeInput>;
+  timedOut?: Maybe<DateTimeInput>;
+  loggedOut?: Maybe<DateTimeInput>;
+  agent?: Maybe<AgentUpdateOneRequiredInput>;
+  location?: Maybe<LocationUpdateOneInput>;
+  ipAddress?: Maybe<String>;
 }
 
 export interface MembershipUpdateManyInput {
@@ -2308,20 +2624,26 @@ export interface MembershipUpdateManyInput {
   >;
 }
 
-export interface MembershipSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<MembershipWhereInput>;
-  AND?: Maybe<
-    MembershipSubscriptionWhereInput[] | MembershipSubscriptionWhereInput
+export interface SessionUpdateManyWithoutUserInput {
+  create?: Maybe<
+    SessionCreateWithoutUserInput[] | SessionCreateWithoutUserInput
   >;
-  OR?: Maybe<
-    MembershipSubscriptionWhereInput[] | MembershipSubscriptionWhereInput
+  delete?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
+  connect?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
+  set?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
+  disconnect?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
+  update?: Maybe<
+    | SessionUpdateWithWhereUniqueWithoutUserInput[]
+    | SessionUpdateWithWhereUniqueWithoutUserInput
   >;
-  NOT?: Maybe<
-    MembershipSubscriptionWhereInput[] | MembershipSubscriptionWhereInput
+  upsert?: Maybe<
+    | SessionUpsertWithWhereUniqueWithoutUserInput[]
+    | SessionUpsertWithWhereUniqueWithoutUserInput
+  >;
+  deleteMany?: Maybe<SessionScalarWhereInput[] | SessionScalarWhereInput>;
+  updateMany?: Maybe<
+    | SessionUpdateManyWithWhereNestedInput[]
+    | SessionUpdateManyWithWhereNestedInput
   >;
 }
 
@@ -2330,16 +2652,9 @@ export interface MembershipUpdateWithWhereUniqueNestedInput {
   data: MembershipUpdateDataInput;
 }
 
-export interface GroupSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<GroupWhereInput>;
-  AND?: Maybe<GroupSubscriptionWhereInput[] | GroupSubscriptionWhereInput>;
-  OR?: Maybe<GroupSubscriptionWhereInput[] | GroupSubscriptionWhereInput>;
-  NOT?: Maybe<GroupSubscriptionWhereInput[] | GroupSubscriptionWhereInput>;
-}
+export type InboxWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
 
 export interface MembershipUpdateDataInput {
   type?: Maybe<MembershipType>;
@@ -2349,18 +2664,77 @@ export interface MembershipUpdateDataInput {
   showHistory?: Maybe<Boolean>;
 }
 
-export interface UserUpdateManyMutationInput {
+export interface TagUpdateInput {
+  type?: Maybe<String>;
+  owner?: Maybe<ID_Input>;
+  createdBy?: Maybe<ID_Input>;
+  value?: Maybe<String>;
+}
+
+export interface AgentUpdateOneRequiredInput {
+  create?: Maybe<AgentCreateInput>;
+  update?: Maybe<AgentUpdateDataInput>;
+  upsert?: Maybe<AgentUpsertNestedInput>;
+  connect?: Maybe<AgentWhereUniqueInput>;
+}
+
+export interface AgentUpdateManyDataInput {
+  type?: Maybe<AgentType>;
+  owner?: Maybe<ID_Input>;
+  createdBy?: Maybe<ID_Input>;
+  updatedBy?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  status?: Maybe<AgentStatus>;
+  timezone?: Maybe<String>;
+  profileSlogan?: Maybe<String>;
+  profileAvatar?: Maybe<String>;
+  profileJobTitle?: Maybe<String>;
+  profileBanner?: Maybe<String>;
+  profileType?: Maybe<ProfileType>;
+  serviceDescription?: Maybe<String>;
+}
+
+export interface AgentUpdateDataInput {
+  type?: Maybe<AgentType>;
+  owner?: Maybe<ID_Input>;
+  createdBy?: Maybe<ID_Input>;
+  updatedBy?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  status?: Maybe<AgentStatus>;
+  timezone?: Maybe<String>;
+  location?: Maybe<LocationUpdateOneInput>;
+  profileSlogan?: Maybe<String>;
+  profileAvatar?: Maybe<String>;
+  profileJobTitle?: Maybe<String>;
+  profileBanner?: Maybe<String>;
+  profileType?: Maybe<ProfileType>;
+  serviceDescription?: Maybe<String>;
+}
+
+export interface AgentUpsertWithWhereUniqueNestedInput {
+  where: AgentWhereUniqueInput;
+  update: AgentUpdateDataInput;
+  create: AgentCreateInput;
+}
+
+export interface AgentUpsertNestedInput {
+  update: AgentUpdateDataInput;
+  create: AgentCreateInput;
+}
+
+export interface UserUpdateWithoutSessionsDataInput {
   type?: Maybe<UserType>;
   email?: Maybe<String>;
   timezone?: Maybe<String>;
   challenge?: Maybe<String>;
   passwordSalt?: Maybe<String>;
   passwordHash?: Maybe<String>;
+  agents?: Maybe<AgentUpdateManyInput>;
   personFirstName?: Maybe<String>;
   personLastName?: Maybe<String>;
   personPhone?: Maybe<String>;
   personMobilePhone?: Maybe<String>;
-  institutionName?: Maybe<String>;
+  organizationName?: Maybe<String>;
 }
 
 export interface MembershipUpsertWithWhereUniqueNestedInput {
@@ -2369,9 +2743,16 @@ export interface MembershipUpsertWithWhereUniqueNestedInput {
   create: MembershipCreateInput;
 }
 
-export interface SessionUpdateManyWithWhereNestedInput {
-  where: SessionScalarWhereInput;
-  data: SessionUpdateManyDataInput;
+export interface SessionUpdateInput {
+  csrfToken?: Maybe<String>;
+  bearerToken?: Maybe<String>;
+  validTo?: Maybe<DateTimeInput>;
+  timedOut?: Maybe<DateTimeInput>;
+  loggedOut?: Maybe<DateTimeInput>;
+  user?: Maybe<UserUpdateOneRequiredWithoutSessionsInput>;
+  agent?: Maybe<AgentUpdateOneRequiredInput>;
+  location?: Maybe<LocationUpdateOneInput>;
+  ipAddress?: Maybe<String>;
 }
 
 export interface MembershipScalarWhereInput {
@@ -2442,6 +2823,80 @@ export interface MembershipScalarWhereInput {
   AND?: Maybe<MembershipScalarWhereInput[] | MembershipScalarWhereInput>;
   OR?: Maybe<MembershipScalarWhereInput[] | MembershipScalarWhereInput>;
   NOT?: Maybe<MembershipScalarWhereInput[] | MembershipScalarWhereInput>;
+}
+
+export type TagWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface MembershipUpdateManyWithWhereNestedInput {
+  where: MembershipScalarWhereInput;
+  data: MembershipUpdateManyDataInput;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  email?: Maybe<String>;
+}>;
+
+export interface MembershipUpdateManyDataInput {
+  type?: Maybe<MembershipType>;
+  createdBy?: Maybe<ID_Input>;
+  updatedBy?: Maybe<ID_Input>;
+  showHistory?: Maybe<Boolean>;
+}
+
+export interface MembershipSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<MembershipWhereInput>;
+  AND?: Maybe<
+    MembershipSubscriptionWhereInput[] | MembershipSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    MembershipSubscriptionWhereInput[] | MembershipSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    MembershipSubscriptionWhereInput[] | MembershipSubscriptionWhereInput
+  >;
+}
+
+export interface EntryUpdateManyInput {
+  create?: Maybe<EntryCreateInput[] | EntryCreateInput>;
+  update?: Maybe<
+    | EntryUpdateWithWhereUniqueNestedInput[]
+    | EntryUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    | EntryUpsertWithWhereUniqueNestedInput[]
+    | EntryUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<EntryWhereUniqueInput[] | EntryWhereUniqueInput>;
+  connect?: Maybe<EntryWhereUniqueInput[] | EntryWhereUniqueInput>;
+  set?: Maybe<EntryWhereUniqueInput[] | EntryWhereUniqueInput>;
+  disconnect?: Maybe<EntryWhereUniqueInput[] | EntryWhereUniqueInput>;
+  deleteMany?: Maybe<EntryScalarWhereInput[] | EntryScalarWhereInput>;
+  updateMany?: Maybe<
+    EntryUpdateManyWithWhereNestedInput[] | EntryUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface AgentSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<AgentWhereInput>;
+  AND?: Maybe<AgentSubscriptionWhereInput[] | AgentSubscriptionWhereInput>;
+  OR?: Maybe<AgentSubscriptionWhereInput[] | AgentSubscriptionWhereInput>;
+  NOT?: Maybe<AgentSubscriptionWhereInput[] | AgentSubscriptionWhereInput>;
+}
+
+export interface EntryUpdateWithWhereUniqueNestedInput {
+  where: EntryWhereUniqueInput;
+  data: EntryUpdateDataInput;
 }
 
 export interface AgentWhereInput {
@@ -2582,6 +3037,20 @@ export interface AgentWhereInput {
   profileAvatar_not_starts_with?: Maybe<String>;
   profileAvatar_ends_with?: Maybe<String>;
   profileAvatar_not_ends_with?: Maybe<String>;
+  profileJobTitle?: Maybe<String>;
+  profileJobTitle_not?: Maybe<String>;
+  profileJobTitle_in?: Maybe<String[] | String>;
+  profileJobTitle_not_in?: Maybe<String[] | String>;
+  profileJobTitle_lt?: Maybe<String>;
+  profileJobTitle_lte?: Maybe<String>;
+  profileJobTitle_gt?: Maybe<String>;
+  profileJobTitle_gte?: Maybe<String>;
+  profileJobTitle_contains?: Maybe<String>;
+  profileJobTitle_not_contains?: Maybe<String>;
+  profileJobTitle_starts_with?: Maybe<String>;
+  profileJobTitle_not_starts_with?: Maybe<String>;
+  profileJobTitle_ends_with?: Maybe<String>;
+  profileJobTitle_not_ends_with?: Maybe<String>;
   profileBanner?: Maybe<String>;
   profileBanner_not?: Maybe<String>;
   profileBanner_in?: Maybe<String[] | String>;
@@ -2600,28 +3069,34 @@ export interface AgentWhereInput {
   profileType_not?: Maybe<ProfileType>;
   profileType_in?: Maybe<ProfileType[] | ProfileType>;
   profileType_not_in?: Maybe<ProfileType[] | ProfileType>;
-  tags_every?: Maybe<TagWhereInput>;
-  tags_some?: Maybe<TagWhereInput>;
-  tags_none?: Maybe<TagWhereInput>;
+  serviceDescription?: Maybe<String>;
+  serviceDescription_not?: Maybe<String>;
+  serviceDescription_in?: Maybe<String[] | String>;
+  serviceDescription_not_in?: Maybe<String[] | String>;
+  serviceDescription_lt?: Maybe<String>;
+  serviceDescription_lte?: Maybe<String>;
+  serviceDescription_gt?: Maybe<String>;
+  serviceDescription_gte?: Maybe<String>;
+  serviceDescription_contains?: Maybe<String>;
+  serviceDescription_not_contains?: Maybe<String>;
+  serviceDescription_starts_with?: Maybe<String>;
+  serviceDescription_not_starts_with?: Maybe<String>;
+  serviceDescription_ends_with?: Maybe<String>;
+  serviceDescription_not_ends_with?: Maybe<String>;
   AND?: Maybe<AgentWhereInput[] | AgentWhereInput>;
   OR?: Maybe<AgentWhereInput[] | AgentWhereInput>;
   NOT?: Maybe<AgentWhereInput[] | AgentWhereInput>;
 }
 
-export interface MembershipUpdateManyWithWhereNestedInput {
-  where: MembershipScalarWhereInput;
-  data: MembershipUpdateManyDataInput;
-}
-
-export type InboxWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface MembershipUpdateManyDataInput {
-  type?: Maybe<MembershipType>;
+export interface EntryUpdateDataInput {
+  type?: Maybe<EntryType>;
+  owner?: Maybe<ID_Input>;
   createdBy?: Maybe<ID_Input>;
   updatedBy?: Maybe<ID_Input>;
-  showHistory?: Maybe<Boolean>;
+  name?: Maybe<String>;
+  content?: Maybe<Json>;
+  contentEncoding?: Maybe<ID_Input>;
+  tags?: Maybe<TagUpdateManyInput>;
 }
 
 export interface SessionCreateWithoutUserInput {
@@ -2636,67 +3111,19 @@ export interface SessionCreateWithoutUserInput {
   ipAddress?: Maybe<String>;
 }
 
-export interface EntryUpdateManyInput {
-  create?: Maybe<EntryCreateInput[] | EntryCreateInput>;
-  update?: Maybe<
-    | EntryUpdateWithWhereUniqueNestedInput[]
-    | EntryUpdateWithWhereUniqueNestedInput
-  >;
-  upsert?: Maybe<
-    | EntryUpsertWithWhereUniqueNestedInput[]
-    | EntryUpsertWithWhereUniqueNestedInput
-  >;
-  delete?: Maybe<EntryWhereUniqueInput[] | EntryWhereUniqueInput>;
-  connect?: Maybe<EntryWhereUniqueInput[] | EntryWhereUniqueInput>;
-  set?: Maybe<EntryWhereUniqueInput[] | EntryWhereUniqueInput>;
-  disconnect?: Maybe<EntryWhereUniqueInput[] | EntryWhereUniqueInput>;
-  deleteMany?: Maybe<EntryScalarWhereInput[] | EntryScalarWhereInput>;
-  updateMany?: Maybe<
-    EntryUpdateManyWithWhereNestedInput[] | EntryUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface TagUpdateManyMutationInput {
-  type?: Maybe<String>;
-  createdBy?: Maybe<ID_Input>;
-  updatedBy?: Maybe<ID_Input>;
-  value?: Maybe<String>;
-}
-
-export interface EntryUpdateWithWhereUniqueNestedInput {
-  where: EntryWhereUniqueInput;
-  data: EntryUpdateDataInput;
-}
-
-export interface LocationUpsertNestedInput {
-  update: LocationUpdateDataInput;
-  create: LocationCreateInput;
-}
-
-export interface EntryUpdateDataInput {
-  type?: Maybe<EntryType>;
-  owner?: Maybe<AgentUpdateOneRequiredInput>;
-  createdBy?: Maybe<ID_Input>;
-  updatedBy?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  content?: Maybe<Json>;
-  tags?: Maybe<TagUpdateManyInput>;
-}
-
-export interface UserUpsertWithoutSessionsInput {
-  update: UserUpdateWithoutSessionsDataInput;
-  create: UserCreateWithoutSessionsInput;
-}
-
 export interface EntryUpsertWithWhereUniqueNestedInput {
   where: EntryWhereUniqueInput;
   update: EntryUpdateDataInput;
   create: EntryCreateInput;
 }
 
-export interface AgentUpdateManyWithWhereNestedInput {
-  where: AgentScalarWhereInput;
-  data: AgentUpdateManyDataInput;
+export interface SessionUpdateManyMutationInput {
+  csrfToken?: Maybe<String>;
+  bearerToken?: Maybe<String>;
+  validTo?: Maybe<DateTimeInput>;
+  timedOut?: Maybe<DateTimeInput>;
+  loggedOut?: Maybe<DateTimeInput>;
+  ipAddress?: Maybe<String>;
 }
 
 export interface EntryScalarWhereInput {
@@ -2718,6 +3145,20 @@ export interface EntryScalarWhereInput {
   type_not?: Maybe<EntryType>;
   type_in?: Maybe<EntryType[] | EntryType>;
   type_not_in?: Maybe<EntryType[] | EntryType>;
+  owner?: Maybe<ID_Input>;
+  owner_not?: Maybe<ID_Input>;
+  owner_in?: Maybe<ID_Input[] | ID_Input>;
+  owner_not_in?: Maybe<ID_Input[] | ID_Input>;
+  owner_lt?: Maybe<ID_Input>;
+  owner_lte?: Maybe<ID_Input>;
+  owner_gt?: Maybe<ID_Input>;
+  owner_gte?: Maybe<ID_Input>;
+  owner_contains?: Maybe<ID_Input>;
+  owner_not_contains?: Maybe<ID_Input>;
+  owner_starts_with?: Maybe<ID_Input>;
+  owner_not_starts_with?: Maybe<ID_Input>;
+  owner_ends_with?: Maybe<ID_Input>;
+  owner_not_ends_with?: Maybe<ID_Input>;
   createdBy?: Maybe<ID_Input>;
   createdBy_not?: Maybe<ID_Input>;
   createdBy_in?: Maybe<ID_Input[] | ID_Input>;
@@ -2776,31 +3217,33 @@ export interface EntryScalarWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
+  contentEncoding?: Maybe<ID_Input>;
+  contentEncoding_not?: Maybe<ID_Input>;
+  contentEncoding_in?: Maybe<ID_Input[] | ID_Input>;
+  contentEncoding_not_in?: Maybe<ID_Input[] | ID_Input>;
+  contentEncoding_lt?: Maybe<ID_Input>;
+  contentEncoding_lte?: Maybe<ID_Input>;
+  contentEncoding_gt?: Maybe<ID_Input>;
+  contentEncoding_gte?: Maybe<ID_Input>;
+  contentEncoding_contains?: Maybe<ID_Input>;
+  contentEncoding_not_contains?: Maybe<ID_Input>;
+  contentEncoding_starts_with?: Maybe<ID_Input>;
+  contentEncoding_not_starts_with?: Maybe<ID_Input>;
+  contentEncoding_ends_with?: Maybe<ID_Input>;
+  contentEncoding_not_ends_with?: Maybe<ID_Input>;
   AND?: Maybe<EntryScalarWhereInput[] | EntryScalarWhereInput>;
   OR?: Maybe<EntryScalarWhereInput[] | EntryScalarWhereInput>;
   NOT?: Maybe<EntryScalarWhereInput[] | EntryScalarWhereInput>;
 }
 
-export type TagWhereUniqueInput = AtLeastOne<{
+export type SessionWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
+  bearerToken?: Maybe<String>;
 }>;
 
 export interface EntryUpdateManyWithWhereNestedInput {
   where: EntryScalarWhereInput;
   data: EntryUpdateManyDataInput;
-}
-
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  email?: Maybe<String>;
-}>;
-
-export interface EntryUpdateManyDataInput {
-  type?: Maybe<EntryType>;
-  createdBy?: Maybe<ID_Input>;
-  updatedBy?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  content?: Maybe<Json>;
 }
 
 export interface UserCreateWithoutSessionsInput {
@@ -2816,7 +3259,28 @@ export interface UserCreateWithoutSessionsInput {
   personLastName?: Maybe<String>;
   personPhone?: Maybe<String>;
   personMobilePhone?: Maybe<String>;
-  institutionName?: Maybe<String>;
+  organizationName?: Maybe<String>;
+}
+
+export interface EntryUpdateManyDataInput {
+  type?: Maybe<EntryType>;
+  owner?: Maybe<ID_Input>;
+  createdBy?: Maybe<ID_Input>;
+  updatedBy?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  content?: Maybe<Json>;
+  contentEncoding?: Maybe<ID_Input>;
+}
+
+export interface UserSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<UserWhereInput>;
+  AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
 }
 
 export interface InboxUpdateOneWithoutRepresentsInput {
@@ -2828,64 +3292,49 @@ export interface InboxUpdateOneWithoutRepresentsInput {
   connect?: Maybe<InboxWhereUniqueInput>;
 }
 
-export interface LocationCreateWithoutOwnerInput {
-  id?: Maybe<ID_Input>;
-  type: LocationType;
-  createdBy: ID_Input;
-  updatedBy?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  osmNodeId?: Maybe<String>;
-  addressLine1?: Maybe<String>;
-  addressLine2?: Maybe<String>;
-  addressCity?: Maybe<String>;
-  addressZipCode?: Maybe<String>;
-  addressCountry?: Maybe<String>;
-  geoPointLatitude?: Maybe<Float>;
-  geoPointLongitude?: Maybe<Float>;
-  geoPointRadiusMeter?: Maybe<Float>;
-  tags?: Maybe<TagCreateManyInput>;
-}
+export type GroupWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
 
 export interface InboxUpdateWithoutRepresentsDataInput {
-  owner?: Maybe<AgentUpdateOneRequiredInput>;
+  owner?: Maybe<ID_Input>;
   createdBy?: Maybe<ID_Input>;
   updatedBy?: Maybe<ID_Input>;
 }
 
-export interface AgentCreateWithoutTagsInput {
+export interface UserCreateInput {
   id?: Maybe<ID_Input>;
-  type: AgentType;
+  type: UserType;
+  email: String;
+  timezone: String;
+  challenge?: Maybe<String>;
+  passwordSalt: String;
+  passwordHash: String;
+  agents?: Maybe<AgentCreateManyInput>;
+  sessions?: Maybe<SessionCreateManyWithoutUserInput>;
+  personFirstName?: Maybe<String>;
+  personLastName?: Maybe<String>;
+  personPhone?: Maybe<String>;
+  personMobilePhone?: Maybe<String>;
+  organizationName?: Maybe<String>;
+}
+
+export interface GroupCreateOneWithoutInboxInput {
+  create?: Maybe<GroupCreateWithoutInboxInput>;
+  connect?: Maybe<GroupWhereUniqueInput>;
+}
+
+export interface InboxCreateInput {
+  id?: Maybe<ID_Input>;
   owner: ID_Input;
   createdBy: ID_Input;
   updatedBy?: Maybe<ID_Input>;
-  name: String;
-  status: AgentStatus;
-  timezone?: Maybe<String>;
-  location?: Maybe<LocationCreateOneWithoutOwnerInput>;
-  profileSlogan?: Maybe<String>;
-  profileAvatar?: Maybe<String>;
-  profileBanner?: Maybe<String>;
-  profileType?: Maybe<ProfileType>;
-}
-
-export interface InboxUpsertWithoutRepresentsInput {
-  update: InboxUpdateWithoutRepresentsDataInput;
-  create: InboxCreateWithoutRepresentsInput;
-}
-
-export interface TagSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<TagWhereInput>;
-  AND?: Maybe<TagSubscriptionWhereInput[] | TagSubscriptionWhereInput>;
-  OR?: Maybe<TagSubscriptionWhereInput[] | TagSubscriptionWhereInput>;
-  NOT?: Maybe<TagSubscriptionWhereInput[] | TagSubscriptionWhereInput>;
+  represents: GroupCreateOneWithoutInboxInput;
 }
 
 export interface GroupUpdateManyMutationInput {
   type?: Maybe<GroupType>;
+  owner?: Maybe<ID_Input>;
   createdBy?: Maybe<ID_Input>;
   updatedBy?: Maybe<ID_Input>;
   isPublic?: Maybe<Boolean>;
@@ -2896,17 +3345,14 @@ export interface GroupUpdateManyMutationInput {
   banner?: Maybe<String>;
 }
 
-export type GroupWhereUniqueInput = AtLeastOne<{
+export interface InboxUpsertWithoutRepresentsInput {
+  update: InboxUpdateWithoutRepresentsDataInput;
+  create: InboxCreateWithoutRepresentsInput;
+}
+
+export type MembershipWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
-
-export interface InboxCreateInput {
-  id?: Maybe<ID_Input>;
-  owner: AgentCreateOneInput;
-  createdBy: ID_Input;
-  updatedBy?: Maybe<ID_Input>;
-  represents: GroupCreateOneWithoutInboxInput;
-}
 
 export interface GroupWhereInput {
   id?: Maybe<ID_Input>;
@@ -2927,7 +3373,20 @@ export interface GroupWhereInput {
   type_not?: Maybe<GroupType>;
   type_in?: Maybe<GroupType[] | GroupType>;
   type_not_in?: Maybe<GroupType[] | GroupType>;
-  owner?: Maybe<AgentWhereInput>;
+  owner?: Maybe<ID_Input>;
+  owner_not?: Maybe<ID_Input>;
+  owner_in?: Maybe<ID_Input[] | ID_Input>;
+  owner_not_in?: Maybe<ID_Input[] | ID_Input>;
+  owner_lt?: Maybe<ID_Input>;
+  owner_lte?: Maybe<ID_Input>;
+  owner_gt?: Maybe<ID_Input>;
+  owner_gte?: Maybe<ID_Input>;
+  owner_contains?: Maybe<ID_Input>;
+  owner_not_contains?: Maybe<ID_Input>;
+  owner_starts_with?: Maybe<ID_Input>;
+  owner_not_starts_with?: Maybe<ID_Input>;
+  owner_ends_with?: Maybe<ID_Input>;
+  owner_not_ends_with?: Maybe<ID_Input>;
   createdBy?: Maybe<ID_Input>;
   createdBy_not?: Maybe<ID_Input>;
   createdBy_in?: Maybe<ID_Input[] | ID_Input>;
@@ -3059,60 +3518,22 @@ export interface GroupWhereInput {
   NOT?: Maybe<GroupWhereInput[] | GroupWhereInput>;
 }
 
-export interface GroupCreateOneWithoutInboxInput {
-  create?: Maybe<GroupCreateWithoutInboxInput>;
-  connect?: Maybe<GroupWhereUniqueInput>;
+export interface GroupSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<GroupWhereInput>;
+  AND?: Maybe<GroupSubscriptionWhereInput[] | GroupSubscriptionWhereInput>;
+  OR?: Maybe<GroupSubscriptionWhereInput[] | GroupSubscriptionWhereInput>;
+  NOT?: Maybe<GroupSubscriptionWhereInput[] | GroupSubscriptionWhereInput>;
 }
 
-export interface SessionUpdateManyWithoutUserInput {
-  create?: Maybe<
-    SessionCreateWithoutUserInput[] | SessionCreateWithoutUserInput
-  >;
-  delete?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
-  connect?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
-  set?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
-  disconnect?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
-  update?: Maybe<
-    | SessionUpdateWithWhereUniqueWithoutUserInput[]
-    | SessionUpdateWithWhereUniqueWithoutUserInput
-  >;
-  upsert?: Maybe<
-    | SessionUpsertWithWhereUniqueWithoutUserInput[]
-    | SessionUpsertWithWhereUniqueWithoutUserInput
-  >;
-  deleteMany?: Maybe<SessionScalarWhereInput[] | SessionScalarWhereInput>;
-  updateMany?: Maybe<
-    | SessionUpdateManyWithWhereNestedInput[]
-    | SessionUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface GroupCreateWithoutInboxInput {
-  id?: Maybe<ID_Input>;
-  type: GroupType;
-  owner: AgentCreateOneInput;
-  createdBy: ID_Input;
-  updatedBy?: Maybe<ID_Input>;
-  isPublic: Boolean;
-  memberships?: Maybe<MembershipCreateManyInput>;
-  name: String;
-  title?: Maybe<String>;
-  description?: Maybe<String>;
-  logo: String;
-  banner?: Maybe<String>;
-  entries?: Maybe<EntryCreateManyInput>;
-  tags?: Maybe<TagCreateManyInput>;
-}
-
-export type MembershipWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface InboxUpdateInput {
-  owner?: Maybe<AgentUpdateOneRequiredInput>;
+export interface MembershipUpdateManyMutationInput {
+  type?: Maybe<MembershipType>;
   createdBy?: Maybe<ID_Input>;
   updatedBy?: Maybe<ID_Input>;
-  represents?: Maybe<GroupUpdateOneRequiredWithoutInboxInput>;
+  showHistory?: Maybe<Boolean>;
 }
 
 export interface SessionWhereInput {
@@ -3220,231 +3641,6 @@ export interface SessionWhereInput {
   NOT?: Maybe<SessionWhereInput[] | SessionWhereInput>;
 }
 
-export interface GroupUpdateOneRequiredWithoutInboxInput {
-  create?: Maybe<GroupCreateWithoutInboxInput>;
-  update?: Maybe<GroupUpdateWithoutInboxDataInput>;
-  upsert?: Maybe<GroupUpsertWithoutInboxInput>;
-  connect?: Maybe<GroupWhereUniqueInput>;
-}
-
-export interface UserUpdateWithoutSessionsDataInput {
-  type?: Maybe<UserType>;
-  email?: Maybe<String>;
-  timezone?: Maybe<String>;
-  challenge?: Maybe<String>;
-  passwordSalt?: Maybe<String>;
-  passwordHash?: Maybe<String>;
-  agents?: Maybe<AgentUpdateManyInput>;
-  personFirstName?: Maybe<String>;
-  personLastName?: Maybe<String>;
-  personPhone?: Maybe<String>;
-  personMobilePhone?: Maybe<String>;
-  institutionName?: Maybe<String>;
-}
-
-export interface GroupUpdateWithoutInboxDataInput {
-  type?: Maybe<GroupType>;
-  owner?: Maybe<AgentUpdateOneRequiredInput>;
-  createdBy?: Maybe<ID_Input>;
-  updatedBy?: Maybe<ID_Input>;
-  isPublic?: Maybe<Boolean>;
-  memberships?: Maybe<MembershipUpdateManyInput>;
-  name?: Maybe<String>;
-  title?: Maybe<String>;
-  description?: Maybe<String>;
-  logo?: Maybe<String>;
-  banner?: Maybe<String>;
-  entries?: Maybe<EntryUpdateManyInput>;
-  tags?: Maybe<TagUpdateManyInput>;
-}
-
-export interface AgentCreateInput {
-  id?: Maybe<ID_Input>;
-  type: AgentType;
-  owner: ID_Input;
-  createdBy: ID_Input;
-  updatedBy?: Maybe<ID_Input>;
-  name: String;
-  status: AgentStatus;
-  timezone?: Maybe<String>;
-  location?: Maybe<LocationCreateOneWithoutOwnerInput>;
-  profileSlogan?: Maybe<String>;
-  profileAvatar?: Maybe<String>;
-  profileBanner?: Maybe<String>;
-  profileType?: Maybe<ProfileType>;
-  tags?: Maybe<TagCreateManyWithoutOwnerInput>;
-}
-
-export interface GroupUpsertWithoutInboxInput {
-  update: GroupUpdateWithoutInboxDataInput;
-  create: GroupCreateWithoutInboxInput;
-}
-
-export interface TagCreateWithoutOwnerInput {
-  id?: Maybe<ID_Input>;
-  type: String;
-  createdBy: ID_Input;
-  updatedBy?: Maybe<ID_Input>;
-  value: String;
-}
-
-export interface InboxUpdateManyMutationInput {
-  createdBy?: Maybe<ID_Input>;
-  updatedBy?: Maybe<ID_Input>;
-}
-
-export interface SessionUpdateManyDataInput {
-  csrfToken?: Maybe<String>;
-  bearerToken?: Maybe<String>;
-  validTo?: Maybe<DateTimeInput>;
-  timedOut?: Maybe<DateTimeInput>;
-  loggedOut?: Maybe<DateTimeInput>;
-  ipAddress?: Maybe<String>;
-}
-
-export interface LocationCreateInput {
-  id?: Maybe<ID_Input>;
-  type: LocationType;
-  owner: AgentCreateOneWithoutLocationInput;
-  createdBy: ID_Input;
-  updatedBy?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  osmNodeId?: Maybe<String>;
-  addressLine1?: Maybe<String>;
-  addressLine2?: Maybe<String>;
-  addressCity?: Maybe<String>;
-  addressZipCode?: Maybe<String>;
-  addressCountry?: Maybe<String>;
-  geoPointLatitude?: Maybe<Float>;
-  geoPointLongitude?: Maybe<Float>;
-  geoPointRadiusMeter?: Maybe<Float>;
-  tags?: Maybe<TagCreateManyInput>;
-}
-
-export interface SessionCreateManyWithoutUserInput {
-  create?: Maybe<
-    SessionCreateWithoutUserInput[] | SessionCreateWithoutUserInput
-  >;
-  connect?: Maybe<SessionWhereUniqueInput[] | SessionWhereUniqueInput>;
-}
-
-export interface AgentCreateOneWithoutLocationInput {
-  create?: Maybe<AgentCreateWithoutLocationInput>;
-  connect?: Maybe<AgentWhereUniqueInput>;
-}
-
-export interface AgentUpsertWithWhereUniqueNestedInput {
-  where: AgentWhereUniqueInput;
-  update: AgentUpdateDataInput;
-  create: AgentCreateInput;
-}
-
-export interface AgentCreateWithoutLocationInput {
-  id?: Maybe<ID_Input>;
-  type: AgentType;
-  owner: ID_Input;
-  createdBy: ID_Input;
-  updatedBy?: Maybe<ID_Input>;
-  name: String;
-  status: AgentStatus;
-  timezone?: Maybe<String>;
-  profileSlogan?: Maybe<String>;
-  profileAvatar?: Maybe<String>;
-  profileBanner?: Maybe<String>;
-  profileType?: Maybe<ProfileType>;
-  tags?: Maybe<TagCreateManyWithoutOwnerInput>;
-}
-
-export interface TagCreateInput {
-  id?: Maybe<ID_Input>;
-  type: String;
-  owner: AgentCreateOneWithoutTagsInput;
-  createdBy: ID_Input;
-  updatedBy?: Maybe<ID_Input>;
-  value: String;
-}
-
-export interface AgentUpsertWithoutLocationInput {
-  update: AgentUpdateWithoutLocationDataInput;
-  create: AgentCreateWithoutLocationInput;
-}
-
-export interface AgentUpdateWithoutLocationDataInput {
-  type?: Maybe<AgentType>;
-  owner?: Maybe<ID_Input>;
-  createdBy?: Maybe<ID_Input>;
-  updatedBy?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  status?: Maybe<AgentStatus>;
-  timezone?: Maybe<String>;
-  profileSlogan?: Maybe<String>;
-  profileAvatar?: Maybe<String>;
-  profileBanner?: Maybe<String>;
-  profileType?: Maybe<ProfileType>;
-  tags?: Maybe<TagUpdateManyWithoutOwnerInput>;
-}
-
-export interface AgentUpdateOneRequiredWithoutLocationInput {
-  create?: Maybe<AgentCreateWithoutLocationInput>;
-  update?: Maybe<AgentUpdateWithoutLocationDataInput>;
-  upsert?: Maybe<AgentUpsertWithoutLocationInput>;
-  connect?: Maybe<AgentWhereUniqueInput>;
-}
-
-export interface LocationUpdateInput {
-  type?: Maybe<LocationType>;
-  owner?: Maybe<AgentUpdateOneRequiredWithoutLocationInput>;
-  createdBy?: Maybe<ID_Input>;
-  updatedBy?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  osmNodeId?: Maybe<String>;
-  addressLine1?: Maybe<String>;
-  addressLine2?: Maybe<String>;
-  addressCity?: Maybe<String>;
-  addressZipCode?: Maybe<String>;
-  addressCountry?: Maybe<String>;
-  geoPointLatitude?: Maybe<Float>;
-  geoPointLongitude?: Maybe<Float>;
-  geoPointRadiusMeter?: Maybe<Float>;
-  tags?: Maybe<TagUpdateManyInput>;
-}
-
-export interface LocationSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<LocationWhereInput>;
-  AND?: Maybe<
-    LocationSubscriptionWhereInput[] | LocationSubscriptionWhereInput
-  >;
-  OR?: Maybe<LocationSubscriptionWhereInput[] | LocationSubscriptionWhereInput>;
-  NOT?: Maybe<
-    LocationSubscriptionWhereInput[] | LocationSubscriptionWhereInput
-  >;
-}
-
-export interface LocationCreateOneInput {
-  create?: Maybe<LocationCreateInput>;
-  connect?: Maybe<LocationWhereUniqueInput>;
-}
-
-export type SessionWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  bearerToken?: Maybe<String>;
-}>;
-
-export interface SessionUpdateWithoutUserDataInput {
-  csrfToken?: Maybe<String>;
-  bearerToken?: Maybe<String>;
-  validTo?: Maybe<DateTimeInput>;
-  timedOut?: Maybe<DateTimeInput>;
-  loggedOut?: Maybe<DateTimeInput>;
-  agent?: Maybe<AgentUpdateOneRequiredInput>;
-  location?: Maybe<LocationUpdateOneInput>;
-  ipAddress?: Maybe<String>;
-}
-
 export interface NodeNode {
   id: ID_Output;
 }
@@ -3463,7 +3659,7 @@ export interface UserPreviousValues {
   personLastName?: String;
   personPhone?: String;
   personMobilePhone?: String;
-  institutionName?: String;
+  organizationName?: String;
 }
 
 export interface UserPreviousValuesPromise
@@ -3482,7 +3678,7 @@ export interface UserPreviousValuesPromise
   personLastName: () => Promise<String>;
   personPhone: () => Promise<String>;
   personMobilePhone: () => Promise<String>;
-  institutionName: () => Promise<String>;
+  organizationName: () => Promise<String>;
 }
 
 export interface UserPreviousValuesSubscription
@@ -3501,420 +3697,13 @@ export interface UserPreviousValuesSubscription
   personLastName: () => Promise<AsyncIterator<String>>;
   personPhone: () => Promise<AsyncIterator<String>>;
   personMobilePhone: () => Promise<AsyncIterator<String>>;
-  institutionName: () => Promise<AsyncIterator<String>>;
-}
-
-export interface Inbox {
-  id: ID_Output;
-  createdBy: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedBy?: ID_Output;
-  updatedAt?: DateTimeOutput;
-}
-
-export interface InboxPromise extends Promise<Inbox>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  owner: <T = AgentPromise>() => T;
-  createdBy: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedBy: () => Promise<ID_Output>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  represents: <T = GroupPromise>() => T;
-}
-
-export interface InboxSubscription
-  extends Promise<AsyncIterator<Inbox>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  owner: <T = AgentSubscription>() => T;
-  createdBy: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedBy: () => Promise<AsyncIterator<ID_Output>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  represents: <T = GroupSubscription>() => T;
-}
-
-export interface InboxNullablePromise
-  extends Promise<Inbox | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  owner: <T = AgentPromise>() => T;
-  createdBy: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedBy: () => Promise<ID_Output>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  represents: <T = GroupPromise>() => T;
-}
-
-export interface AgentEdge {
-  node: Agent;
-  cursor: String;
-}
-
-export interface AgentEdgePromise extends Promise<AgentEdge>, Fragmentable {
-  node: <T = AgentPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface AgentEdgeSubscription
-  extends Promise<AsyncIterator<AgentEdge>>,
-    Fragmentable {
-  node: <T = AgentSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface GroupEdge {
-  node: Group;
-  cursor: String;
-}
-
-export interface GroupEdgePromise extends Promise<GroupEdge>, Fragmentable {
-  node: <T = GroupPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface GroupEdgeSubscription
-  extends Promise<AsyncIterator<GroupEdge>>,
-    Fragmentable {
-  node: <T = GroupSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface SessionSubscriptionPayload {
-  mutation: MutationType;
-  node: Session;
-  updatedFields: String[];
-  previousValues: SessionPreviousValues;
-}
-
-export interface SessionSubscriptionPayloadPromise
-  extends Promise<SessionSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = SessionPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = SessionPreviousValuesPromise>() => T;
-}
-
-export interface SessionSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<SessionSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = SessionSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = SessionPreviousValuesSubscription>() => T;
-}
-
-export interface GroupConnection {
-  pageInfo: PageInfo;
-  edges: GroupEdge[];
-}
-
-export interface GroupConnectionPromise
-  extends Promise<GroupConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<GroupEdge>>() => T;
-  aggregate: <T = AggregateGroupPromise>() => T;
-}
-
-export interface GroupConnectionSubscription
-  extends Promise<AsyncIterator<GroupConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<GroupEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateGroupSubscription>() => T;
-}
-
-export interface Membership {
-  id: ID_Output;
-  type: MembershipType;
-  createdBy: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedBy?: ID_Output;
-  updatedAt?: DateTimeOutput;
-  showHistory: Boolean;
-}
-
-export interface MembershipPromise extends Promise<Membership>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  type: () => Promise<MembershipType>;
-  createdBy: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedBy: () => Promise<ID_Output>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  member: <T = AgentPromise>() => T;
-  showHistory: () => Promise<Boolean>;
-}
-
-export interface MembershipSubscription
-  extends Promise<AsyncIterator<Membership>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  type: () => Promise<AsyncIterator<MembershipType>>;
-  createdBy: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedBy: () => Promise<AsyncIterator<ID_Output>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  member: <T = AgentSubscription>() => T;
-  showHistory: () => Promise<AsyncIterator<Boolean>>;
-}
-
-export interface MembershipNullablePromise
-  extends Promise<Membership | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  type: () => Promise<MembershipType>;
-  createdBy: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedBy: () => Promise<ID_Output>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  member: <T = AgentPromise>() => T;
-  showHistory: () => Promise<Boolean>;
-}
-
-export interface TagSubscriptionPayload {
-  mutation: MutationType;
-  node: Tag;
-  updatedFields: String[];
-  previousValues: TagPreviousValues;
-}
-
-export interface TagSubscriptionPayloadPromise
-  extends Promise<TagSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = TagPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = TagPreviousValuesPromise>() => T;
-}
-
-export interface TagSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<TagSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = TagSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = TagPreviousValuesSubscription>() => T;
-}
-
-export interface UserEdge {
-  node: User;
-  cursor: String;
-}
-
-export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
-  node: <T = UserPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface UserEdgeSubscription
-  extends Promise<AsyncIterator<UserEdge>>,
-    Fragmentable {
-  node: <T = UserSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface BatchPayload {
-  count: Long;
-}
-
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
-    Fragmentable {
-  count: () => Promise<Long>;
-}
-
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
-}
-
-export interface UserSubscriptionPayload {
-  mutation: MutationType;
-  node: User;
-  updatedFields: String[];
-  previousValues: UserPreviousValues;
-}
-
-export interface UserSubscriptionPayloadPromise
-  extends Promise<UserSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = UserPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = UserPreviousValuesPromise>() => T;
-}
-
-export interface UserSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = UserSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = UserPreviousValuesSubscription>() => T;
-}
-
-export interface Entry {
-  id: ID_Output;
-  type: EntryType;
-  createdBy: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedBy?: ID_Output;
-  updatedAt?: DateTimeOutput;
-  name?: String;
-  content?: Json;
-}
-
-export interface EntryPromise extends Promise<Entry>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  type: () => Promise<EntryType>;
-  owner: <T = AgentPromise>() => T;
-  createdBy: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedBy: () => Promise<ID_Output>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  name: () => Promise<String>;
-  content: () => Promise<Json>;
-  tags: <T = FragmentableArray<Tag>>(args?: {
-    where?: TagWhereInput;
-    orderBy?: TagOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface EntrySubscription
-  extends Promise<AsyncIterator<Entry>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  type: () => Promise<AsyncIterator<EntryType>>;
-  owner: <T = AgentSubscription>() => T;
-  createdBy: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedBy: () => Promise<AsyncIterator<ID_Output>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  name: () => Promise<AsyncIterator<String>>;
-  content: () => Promise<AsyncIterator<Json>>;
-  tags: <T = Promise<AsyncIterator<TagSubscription>>>(args?: {
-    where?: TagWhereInput;
-    orderBy?: TagOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface EntryNullablePromise
-  extends Promise<Entry | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  type: () => Promise<EntryType>;
-  owner: <T = AgentPromise>() => T;
-  createdBy: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedBy: () => Promise<ID_Output>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  name: () => Promise<String>;
-  content: () => Promise<Json>;
-  tags: <T = FragmentableArray<Tag>>(args?: {
-    where?: TagWhereInput;
-    orderBy?: TagOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface TagEdge {
-  node: Tag;
-  cursor: String;
-}
-
-export interface TagEdgePromise extends Promise<TagEdge>, Fragmentable {
-  node: <T = TagPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface TagEdgeSubscription
-  extends Promise<AsyncIterator<TagEdge>>,
-    Fragmentable {
-  node: <T = TagSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface Tag {
-  id: ID_Output;
-  type: String;
-  createdBy: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedBy?: ID_Output;
-  updatedAt?: DateTimeOutput;
-  value: String;
-}
-
-export interface TagPromise extends Promise<Tag>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  type: () => Promise<String>;
-  owner: <T = AgentPromise>() => T;
-  createdBy: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedBy: () => Promise<ID_Output>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  value: () => Promise<String>;
-}
-
-export interface TagSubscription
-  extends Promise<AsyncIterator<Tag>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  type: () => Promise<AsyncIterator<String>>;
-  owner: <T = AgentSubscription>() => T;
-  createdBy: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedBy: () => Promise<AsyncIterator<ID_Output>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  value: () => Promise<AsyncIterator<String>>;
-}
-
-export interface TagNullablePromise extends Promise<Tag | null>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  type: () => Promise<String>;
-  owner: <T = AgentPromise>() => T;
-  createdBy: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedBy: () => Promise<ID_Output>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  value: () => Promise<String>;
-}
-
-export interface AggregateSession {
-  count: Int;
-}
-
-export interface AggregateSessionPromise
-  extends Promise<AggregateSession>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateSessionSubscription
-  extends Promise<AsyncIterator<AggregateSession>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  organizationName: () => Promise<AsyncIterator<String>>;
 }
 
 export interface Group {
   id: ID_Output;
   type: GroupType;
+  owner: ID_Output;
   createdBy: ID_Output;
   createdAt: DateTimeOutput;
   updatedBy?: ID_Output;
@@ -3930,7 +3719,7 @@ export interface Group {
 export interface GroupPromise extends Promise<Group>, Fragmentable {
   id: () => Promise<ID_Output>;
   type: () => Promise<GroupType>;
-  owner: <T = AgentPromise>() => T;
+  owner: () => Promise<ID_Output>;
   createdBy: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedBy: () => Promise<ID_Output>;
@@ -3976,7 +3765,7 @@ export interface GroupSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   type: () => Promise<AsyncIterator<GroupType>>;
-  owner: <T = AgentSubscription>() => T;
+  owner: () => Promise<AsyncIterator<ID_Output>>;
   createdBy: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedBy: () => Promise<AsyncIterator<ID_Output>>;
@@ -4022,7 +3811,7 @@ export interface GroupNullablePromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   type: () => Promise<GroupType>;
-  owner: <T = AgentPromise>() => T;
+  owner: () => Promise<ID_Output>;
   createdBy: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedBy: () => Promise<ID_Output>;
@@ -4063,25 +3852,294 @@ export interface GroupNullablePromise
   }) => T;
 }
 
-export interface SessionConnection {
-  pageInfo: PageInfo;
-  edges: SessionEdge[];
+export interface AggregateAgent {
+  count: Int;
 }
 
-export interface SessionConnectionPromise
-  extends Promise<SessionConnection>,
+export interface AggregateAgentPromise
+  extends Promise<AggregateAgent>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateAgentSubscription
+  extends Promise<AsyncIterator<AggregateAgent>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface AggregateEntry {
+  count: Int;
+}
+
+export interface AggregateEntryPromise
+  extends Promise<AggregateEntry>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateEntrySubscription
+  extends Promise<AsyncIterator<AggregateEntry>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface BatchPayload {
+  count: Long;
+}
+
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
+    Fragmentable {
+  count: () => Promise<Long>;
+}
+
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface EntryEdge {
+  node: Entry;
+  cursor: String;
+}
+
+export interface EntryEdgePromise extends Promise<EntryEdge>, Fragmentable {
+  node: <T = EntryPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface EntryEdgeSubscription
+  extends Promise<AsyncIterator<EntryEdge>>,
+    Fragmentable {
+  node: <T = EntrySubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface UserEdge {
+  node: User;
+  cursor: String;
+}
+
+export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
+  node: <T = UserPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
+    Fragmentable {
+  node: <T = UserSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface TagSubscriptionPayload {
+  mutation: MutationType;
+  node: Tag;
+  updatedFields: String[];
+  previousValues: TagPreviousValues;
+}
+
+export interface TagSubscriptionPayloadPromise
+  extends Promise<TagSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = TagPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = TagPreviousValuesPromise>() => T;
+}
+
+export interface TagSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<TagSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = TagSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = TagPreviousValuesSubscription>() => T;
+}
+
+export interface SessionSubscriptionPayload {
+  mutation: MutationType;
+  node: Session;
+  updatedFields: String[];
+  previousValues: SessionPreviousValues;
+}
+
+export interface SessionSubscriptionPayloadPromise
+  extends Promise<SessionSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = SessionPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = SessionPreviousValuesPromise>() => T;
+}
+
+export interface SessionSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<SessionSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = SessionSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = SessionPreviousValuesSubscription>() => T;
+}
+
+export interface AggregateUser {
+  count: Int;
+}
+
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface EntryConnection {
+  pageInfo: PageInfo;
+  edges: EntryEdge[];
+}
+
+export interface EntryConnectionPromise
+  extends Promise<EntryConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<SessionEdge>>() => T;
-  aggregate: <T = AggregateSessionPromise>() => T;
+  edges: <T = FragmentableArray<EntryEdge>>() => T;
+  aggregate: <T = AggregateEntryPromise>() => T;
 }
 
-export interface SessionConnectionSubscription
-  extends Promise<AsyncIterator<SessionConnection>>,
+export interface EntryConnectionSubscription
+  extends Promise<AsyncIterator<EntryConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<SessionEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateSessionSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<EntryEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateEntrySubscription>() => T;
+}
+
+export interface UserConnection {
+  pageInfo: PageInfo;
+  edges: UserEdge[];
+}
+
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
+}
+
+export interface TagConnection {
+  pageInfo: PageInfo;
+  edges: TagEdge[];
+}
+
+export interface TagConnectionPromise
+  extends Promise<TagConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<TagEdge>>() => T;
+  aggregate: <T = AggregateTagPromise>() => T;
+}
+
+export interface TagConnectionSubscription
+  extends Promise<AsyncIterator<TagConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<TagEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateTagSubscription>() => T;
+}
+
+export interface AggregateTag {
+  count: Int;
+}
+
+export interface AggregateTagPromise
+  extends Promise<AggregateTag>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateTagSubscription
+  extends Promise<AsyncIterator<AggregateTag>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface SessionEdge {
+  node: Session;
+  cursor: String;
+}
+
+export interface SessionEdgePromise extends Promise<SessionEdge>, Fragmentable {
+  node: <T = SessionPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface SessionEdgeSubscription
+  extends Promise<AsyncIterator<SessionEdge>>,
+    Fragmentable {
+  node: <T = SessionSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AgentConnection {
+  pageInfo: PageInfo;
+  edges: AgentEdge[];
+}
+
+export interface AgentConnectionPromise
+  extends Promise<AgentConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<AgentEdge>>() => T;
+  aggregate: <T = AggregateAgentPromise>() => T;
+}
+
+export interface AgentConnectionSubscription
+  extends Promise<AsyncIterator<AgentConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<AgentEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateAgentSubscription>() => T;
+}
+
+export interface UserSubscriptionPayload {
+  mutation: MutationType;
+  node: User;
+  updatedFields: String[];
+  previousValues: UserPreviousValues;
+}
+
+export interface UserSubscriptionPayloadPromise
+  extends Promise<UserSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = UserPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UserPreviousValuesPromise>() => T;
+}
+
+export interface UserSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UserSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UserPreviousValuesSubscription>() => T;
 }
 
 export interface Agent {
@@ -4097,8 +4155,10 @@ export interface Agent {
   timezone?: String;
   profileSlogan?: String;
   profileAvatar?: String;
+  profileJobTitle?: String;
   profileBanner?: String;
   profileType?: ProfileType;
+  serviceDescription?: String;
 }
 
 export interface AgentPromise extends Promise<Agent>, Fragmentable {
@@ -4115,17 +4175,10 @@ export interface AgentPromise extends Promise<Agent>, Fragmentable {
   location: <T = LocationPromise>() => T;
   profileSlogan: () => Promise<String>;
   profileAvatar: () => Promise<String>;
+  profileJobTitle: () => Promise<String>;
   profileBanner: () => Promise<String>;
   profileType: () => Promise<ProfileType>;
-  tags: <T = FragmentableArray<Tag>>(args?: {
-    where?: TagWhereInput;
-    orderBy?: TagOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  serviceDescription: () => Promise<String>;
 }
 
 export interface AgentSubscription
@@ -4144,17 +4197,10 @@ export interface AgentSubscription
   location: <T = LocationSubscription>() => T;
   profileSlogan: () => Promise<AsyncIterator<String>>;
   profileAvatar: () => Promise<AsyncIterator<String>>;
+  profileJobTitle: () => Promise<AsyncIterator<String>>;
   profileBanner: () => Promise<AsyncIterator<String>>;
   profileType: () => Promise<AsyncIterator<ProfileType>>;
-  tags: <T = Promise<AsyncIterator<TagSubscription>>>(args?: {
-    where?: TagWhereInput;
-    orderBy?: TagOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  serviceDescription: () => Promise<AsyncIterator<String>>;
 }
 
 export interface AgentNullablePromise
@@ -4173,8 +4219,628 @@ export interface AgentNullablePromise
   location: <T = LocationPromise>() => T;
   profileSlogan: () => Promise<String>;
   profileAvatar: () => Promise<String>;
+  profileJobTitle: () => Promise<String>;
   profileBanner: () => Promise<String>;
   profileType: () => Promise<ProfileType>;
+  serviceDescription: () => Promise<String>;
+}
+
+export interface User {
+  id: ID_Output;
+  type: UserType;
+  createdAt: DateTimeOutput;
+  updatedAt?: DateTimeOutput;
+  email: String;
+  timezone: String;
+  challenge?: String;
+  passwordSalt: String;
+  passwordHash: String;
+  personFirstName?: String;
+  personLastName?: String;
+  personPhone?: String;
+  personMobilePhone?: String;
+  organizationName?: String;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  type: () => Promise<UserType>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  email: () => Promise<String>;
+  timezone: () => Promise<String>;
+  challenge: () => Promise<String>;
+  passwordSalt: () => Promise<String>;
+  passwordHash: () => Promise<String>;
+  agents: <T = FragmentableArray<Agent>>(args?: {
+    where?: AgentWhereInput;
+    orderBy?: AgentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  sessions: <T = FragmentableArray<Session>>(args?: {
+    where?: SessionWhereInput;
+    orderBy?: SessionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  personFirstName: () => Promise<String>;
+  personLastName: () => Promise<String>;
+  personPhone: () => Promise<String>;
+  personMobilePhone: () => Promise<String>;
+  organizationName: () => Promise<String>;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  type: () => Promise<AsyncIterator<UserType>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  email: () => Promise<AsyncIterator<String>>;
+  timezone: () => Promise<AsyncIterator<String>>;
+  challenge: () => Promise<AsyncIterator<String>>;
+  passwordSalt: () => Promise<AsyncIterator<String>>;
+  passwordHash: () => Promise<AsyncIterator<String>>;
+  agents: <T = Promise<AsyncIterator<AgentSubscription>>>(args?: {
+    where?: AgentWhereInput;
+    orderBy?: AgentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  sessions: <T = Promise<AsyncIterator<SessionSubscription>>>(args?: {
+    where?: SessionWhereInput;
+    orderBy?: SessionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  personFirstName: () => Promise<AsyncIterator<String>>;
+  personLastName: () => Promise<AsyncIterator<String>>;
+  personPhone: () => Promise<AsyncIterator<String>>;
+  personMobilePhone: () => Promise<AsyncIterator<String>>;
+  organizationName: () => Promise<AsyncIterator<String>>;
+}
+
+export interface UserNullablePromise
+  extends Promise<User | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  type: () => Promise<UserType>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  email: () => Promise<String>;
+  timezone: () => Promise<String>;
+  challenge: () => Promise<String>;
+  passwordSalt: () => Promise<String>;
+  passwordHash: () => Promise<String>;
+  agents: <T = FragmentableArray<Agent>>(args?: {
+    where?: AgentWhereInput;
+    orderBy?: AgentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  sessions: <T = FragmentableArray<Session>>(args?: {
+    where?: SessionWhereInput;
+    orderBy?: SessionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  personFirstName: () => Promise<String>;
+  personLastName: () => Promise<String>;
+  personPhone: () => Promise<String>;
+  personMobilePhone: () => Promise<String>;
+  organizationName: () => Promise<String>;
+}
+
+export interface AgentSubscriptionPayload {
+  mutation: MutationType;
+  node: Agent;
+  updatedFields: String[];
+  previousValues: AgentPreviousValues;
+}
+
+export interface AgentSubscriptionPayloadPromise
+  extends Promise<AgentSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = AgentPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = AgentPreviousValuesPromise>() => T;
+}
+
+export interface AgentSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<AgentSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = AgentSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = AgentPreviousValuesSubscription>() => T;
+}
+
+export interface AggregateMembership {
+  count: Int;
+}
+
+export interface AggregateMembershipPromise
+  extends Promise<AggregateMembership>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateMembershipSubscription
+  extends Promise<AsyncIterator<AggregateMembership>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface AgentPreviousValues {
+  id: ID_Output;
+  type: AgentType;
+  owner: ID_Output;
+  createdBy: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedBy?: ID_Output;
+  updatedAt?: DateTimeOutput;
+  name: String;
+  status: AgentStatus;
+  timezone?: String;
+  profileSlogan?: String;
+  profileAvatar?: String;
+  profileJobTitle?: String;
+  profileBanner?: String;
+  profileType?: ProfileType;
+  serviceDescription?: String;
+}
+
+export interface AgentPreviousValuesPromise
+  extends Promise<AgentPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  type: () => Promise<AgentType>;
+  owner: () => Promise<ID_Output>;
+  createdBy: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedBy: () => Promise<ID_Output>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  name: () => Promise<String>;
+  status: () => Promise<AgentStatus>;
+  timezone: () => Promise<String>;
+  profileSlogan: () => Promise<String>;
+  profileAvatar: () => Promise<String>;
+  profileJobTitle: () => Promise<String>;
+  profileBanner: () => Promise<String>;
+  profileType: () => Promise<ProfileType>;
+  serviceDescription: () => Promise<String>;
+}
+
+export interface AgentPreviousValuesSubscription
+  extends Promise<AsyncIterator<AgentPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  type: () => Promise<AsyncIterator<AgentType>>;
+  owner: () => Promise<AsyncIterator<ID_Output>>;
+  createdBy: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedBy: () => Promise<AsyncIterator<ID_Output>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  name: () => Promise<AsyncIterator<String>>;
+  status: () => Promise<AsyncIterator<AgentStatus>>;
+  timezone: () => Promise<AsyncIterator<String>>;
+  profileSlogan: () => Promise<AsyncIterator<String>>;
+  profileAvatar: () => Promise<AsyncIterator<String>>;
+  profileJobTitle: () => Promise<AsyncIterator<String>>;
+  profileBanner: () => Promise<AsyncIterator<String>>;
+  profileType: () => Promise<AsyncIterator<ProfileType>>;
+  serviceDescription: () => Promise<AsyncIterator<String>>;
+}
+
+export interface MembershipConnection {
+  pageInfo: PageInfo;
+  edges: MembershipEdge[];
+}
+
+export interface MembershipConnectionPromise
+  extends Promise<MembershipConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<MembershipEdge>>() => T;
+  aggregate: <T = AggregateMembershipPromise>() => T;
+}
+
+export interface MembershipConnectionSubscription
+  extends Promise<AsyncIterator<MembershipConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<MembershipEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateMembershipSubscription>() => T;
+}
+
+export interface AgentEdge {
+  node: Agent;
+  cursor: String;
+}
+
+export interface AgentEdgePromise extends Promise<AgentEdge>, Fragmentable {
+  node: <T = AgentPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface AgentEdgeSubscription
+  extends Promise<AsyncIterator<AgentEdge>>,
+    Fragmentable {
+  node: <T = AgentSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface LocationEdge {
+  node: Location;
+  cursor: String;
+}
+
+export interface LocationEdgePromise
+  extends Promise<LocationEdge>,
+    Fragmentable {
+  node: <T = LocationPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface LocationEdgeSubscription
+  extends Promise<AsyncIterator<LocationEdge>>,
+    Fragmentable {
+  node: <T = LocationSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ContentEncodingSubscriptionPayload {
+  mutation: MutationType;
+  node: ContentEncoding;
+  updatedFields: String[];
+  previousValues: ContentEncodingPreviousValues;
+}
+
+export interface ContentEncodingSubscriptionPayloadPromise
+  extends Promise<ContentEncodingSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ContentEncodingPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ContentEncodingPreviousValuesPromise>() => T;
+}
+
+export interface ContentEncodingSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ContentEncodingSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ContentEncodingSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ContentEncodingPreviousValuesSubscription>() => T;
+}
+
+export interface ContentEncoding {
+  id: ID_Output;
+  type: EncodingType;
+  maintainer: ID_Output;
+  createdBy: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedBy?: ID_Output;
+  updatedAt?: DateTimeOutput;
+  name: String;
+  charset: String;
+}
+
+export interface ContentEncodingPromise
+  extends Promise<ContentEncoding>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  type: () => Promise<EncodingType>;
+  maintainer: () => Promise<ID_Output>;
+  createdBy: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedBy: () => Promise<ID_Output>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  name: () => Promise<String>;
+  charset: () => Promise<String>;
+}
+
+export interface ContentEncodingSubscription
+  extends Promise<AsyncIterator<ContentEncoding>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  type: () => Promise<AsyncIterator<EncodingType>>;
+  maintainer: () => Promise<AsyncIterator<ID_Output>>;
+  createdBy: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedBy: () => Promise<AsyncIterator<ID_Output>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  name: () => Promise<AsyncIterator<String>>;
+  charset: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ContentEncodingNullablePromise
+  extends Promise<ContentEncoding | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  type: () => Promise<EncodingType>;
+  maintainer: () => Promise<ID_Output>;
+  createdBy: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedBy: () => Promise<ID_Output>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  name: () => Promise<String>;
+  charset: () => Promise<String>;
+}
+
+export interface ContentEncodingPreviousValues {
+  id: ID_Output;
+  type: EncodingType;
+  maintainer: ID_Output;
+  createdBy: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedBy?: ID_Output;
+  updatedAt?: DateTimeOutput;
+  name: String;
+  charset: String;
+}
+
+export interface ContentEncodingPreviousValuesPromise
+  extends Promise<ContentEncodingPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  type: () => Promise<EncodingType>;
+  maintainer: () => Promise<ID_Output>;
+  createdBy: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedBy: () => Promise<ID_Output>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  name: () => Promise<String>;
+  charset: () => Promise<String>;
+}
+
+export interface ContentEncodingPreviousValuesSubscription
+  extends Promise<AsyncIterator<ContentEncodingPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  type: () => Promise<AsyncIterator<EncodingType>>;
+  maintainer: () => Promise<AsyncIterator<ID_Output>>;
+  createdBy: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedBy: () => Promise<AsyncIterator<ID_Output>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  name: () => Promise<AsyncIterator<String>>;
+  charset: () => Promise<AsyncIterator<String>>;
+}
+
+export interface InboxEdge {
+  node: Inbox;
+  cursor: String;
+}
+
+export interface InboxEdgePromise extends Promise<InboxEdge>, Fragmentable {
+  node: <T = InboxPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface InboxEdgeSubscription
+  extends Promise<AsyncIterator<InboxEdge>>,
+    Fragmentable {
+  node: <T = InboxSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface PageInfo {
+  hasNextPage: Boolean;
+  hasPreviousPage: Boolean;
+  startCursor?: String;
+  endCursor?: String;
+}
+
+export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
+  hasNextPage: () => Promise<Boolean>;
+  hasPreviousPage: () => Promise<Boolean>;
+  startCursor: () => Promise<String>;
+  endCursor: () => Promise<String>;
+}
+
+export interface PageInfoSubscription
+  extends Promise<AsyncIterator<PageInfo>>,
+    Fragmentable {
+  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
+  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
+  startCursor: () => Promise<AsyncIterator<String>>;
+  endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateGroup {
+  count: Int;
+}
+
+export interface AggregateGroupPromise
+  extends Promise<AggregateGroup>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateGroupSubscription
+  extends Promise<AsyncIterator<AggregateGroup>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface EntrySubscriptionPayload {
+  mutation: MutationType;
+  node: Entry;
+  updatedFields: String[];
+  previousValues: EntryPreviousValues;
+}
+
+export interface EntrySubscriptionPayloadPromise
+  extends Promise<EntrySubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = EntryPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = EntryPreviousValuesPromise>() => T;
+}
+
+export interface EntrySubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<EntrySubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = EntrySubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = EntryPreviousValuesSubscription>() => T;
+}
+
+export interface GroupConnection {
+  pageInfo: PageInfo;
+  edges: GroupEdge[];
+}
+
+export interface GroupConnectionPromise
+  extends Promise<GroupConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<GroupEdge>>() => T;
+  aggregate: <T = AggregateGroupPromise>() => T;
+}
+
+export interface GroupConnectionSubscription
+  extends Promise<AsyncIterator<GroupConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<GroupEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateGroupSubscription>() => T;
+}
+
+export interface EntryPreviousValues {
+  id: ID_Output;
+  type: EntryType;
+  owner: ID_Output;
+  createdBy: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedBy?: ID_Output;
+  updatedAt?: DateTimeOutput;
+  name?: String;
+  content?: Json;
+  contentEncoding?: ID_Output;
+}
+
+export interface EntryPreviousValuesPromise
+  extends Promise<EntryPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  type: () => Promise<EntryType>;
+  owner: () => Promise<ID_Output>;
+  createdBy: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedBy: () => Promise<ID_Output>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  name: () => Promise<String>;
+  content: () => Promise<Json>;
+  contentEncoding: () => Promise<ID_Output>;
+}
+
+export interface EntryPreviousValuesSubscription
+  extends Promise<AsyncIterator<EntryPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  type: () => Promise<AsyncIterator<EntryType>>;
+  owner: () => Promise<AsyncIterator<ID_Output>>;
+  createdBy: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedBy: () => Promise<AsyncIterator<ID_Output>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  name: () => Promise<AsyncIterator<String>>;
+  content: () => Promise<AsyncIterator<Json>>;
+  contentEncoding: () => Promise<AsyncIterator<ID_Output>>;
+}
+
+export interface Inbox {
+  id: ID_Output;
+  owner: ID_Output;
+  createdBy: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedBy?: ID_Output;
+  updatedAt?: DateTimeOutput;
+}
+
+export interface InboxPromise extends Promise<Inbox>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  owner: () => Promise<ID_Output>;
+  createdBy: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedBy: () => Promise<ID_Output>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  represents: <T = GroupPromise>() => T;
+}
+
+export interface InboxSubscription
+  extends Promise<AsyncIterator<Inbox>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  owner: () => Promise<AsyncIterator<ID_Output>>;
+  createdBy: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedBy: () => Promise<AsyncIterator<ID_Output>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  represents: <T = GroupSubscription>() => T;
+}
+
+export interface InboxNullablePromise
+  extends Promise<Inbox | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  owner: () => Promise<ID_Output>;
+  createdBy: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedBy: () => Promise<ID_Output>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  represents: <T = GroupPromise>() => T;
+}
+
+export interface Entry {
+  id: ID_Output;
+  type: EntryType;
+  owner: ID_Output;
+  createdBy: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedBy?: ID_Output;
+  updatedAt?: DateTimeOutput;
+  name?: String;
+  content?: Json;
+  contentEncoding?: ID_Output;
+}
+
+export interface EntryPromise extends Promise<Entry>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  type: () => Promise<EntryType>;
+  owner: () => Promise<ID_Output>;
+  createdBy: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedBy: () => Promise<ID_Output>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  name: () => Promise<String>;
+  content: () => Promise<Json>;
+  contentEncoding: () => Promise<ID_Output>;
   tags: <T = FragmentableArray<Tag>>(args?: {
     where?: TagWhereInput;
     orderBy?: TagOrderByInput;
@@ -4186,9 +4852,189 @@ export interface AgentNullablePromise
   }) => T;
 }
 
+export interface EntrySubscription
+  extends Promise<AsyncIterator<Entry>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  type: () => Promise<AsyncIterator<EntryType>>;
+  owner: () => Promise<AsyncIterator<ID_Output>>;
+  createdBy: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedBy: () => Promise<AsyncIterator<ID_Output>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  name: () => Promise<AsyncIterator<String>>;
+  content: () => Promise<AsyncIterator<Json>>;
+  contentEncoding: () => Promise<AsyncIterator<ID_Output>>;
+  tags: <T = Promise<AsyncIterator<TagSubscription>>>(args?: {
+    where?: TagWhereInput;
+    orderBy?: TagOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface EntryNullablePromise
+  extends Promise<Entry | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  type: () => Promise<EntryType>;
+  owner: () => Promise<ID_Output>;
+  createdBy: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedBy: () => Promise<ID_Output>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  name: () => Promise<String>;
+  content: () => Promise<Json>;
+  contentEncoding: () => Promise<ID_Output>;
+  tags: <T = FragmentableArray<Tag>>(args?: {
+    where?: TagWhereInput;
+    orderBy?: TagOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface Tag {
+  id: ID_Output;
+  type: String;
+  owner: ID_Output;
+  createdBy: ID_Output;
+  createdAt: DateTimeOutput;
+  value: String;
+}
+
+export interface TagPromise extends Promise<Tag>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  type: () => Promise<String>;
+  owner: () => Promise<ID_Output>;
+  createdBy: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  value: () => Promise<String>;
+}
+
+export interface TagSubscription
+  extends Promise<AsyncIterator<Tag>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  type: () => Promise<AsyncIterator<String>>;
+  owner: () => Promise<AsyncIterator<ID_Output>>;
+  createdBy: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  value: () => Promise<AsyncIterator<String>>;
+}
+
+export interface TagNullablePromise extends Promise<Tag | null>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  type: () => Promise<String>;
+  owner: () => Promise<ID_Output>;
+  createdBy: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  value: () => Promise<String>;
+}
+
+export interface GroupSubscriptionPayload {
+  mutation: MutationType;
+  node: Group;
+  updatedFields: String[];
+  previousValues: GroupPreviousValues;
+}
+
+export interface GroupSubscriptionPayloadPromise
+  extends Promise<GroupSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = GroupPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = GroupPreviousValuesPromise>() => T;
+}
+
+export interface GroupSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<GroupSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = GroupSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = GroupPreviousValuesSubscription>() => T;
+}
+
+export interface AggregateSession {
+  count: Int;
+}
+
+export interface AggregateSessionPromise
+  extends Promise<AggregateSession>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateSessionSubscription
+  extends Promise<AsyncIterator<AggregateSession>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface GroupPreviousValues {
+  id: ID_Output;
+  type: GroupType;
+  owner: ID_Output;
+  createdBy: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedBy?: ID_Output;
+  updatedAt?: DateTimeOutput;
+  isPublic: Boolean;
+  name: String;
+  title?: String;
+  description?: String;
+  logo: String;
+  banner?: String;
+}
+
+export interface GroupPreviousValuesPromise
+  extends Promise<GroupPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  type: () => Promise<GroupType>;
+  owner: () => Promise<ID_Output>;
+  createdBy: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedBy: () => Promise<ID_Output>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  isPublic: () => Promise<Boolean>;
+  name: () => Promise<String>;
+  title: () => Promise<String>;
+  description: () => Promise<String>;
+  logo: () => Promise<String>;
+  banner: () => Promise<String>;
+}
+
+export interface GroupPreviousValuesSubscription
+  extends Promise<AsyncIterator<GroupPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  type: () => Promise<AsyncIterator<GroupType>>;
+  owner: () => Promise<AsyncIterator<ID_Output>>;
+  createdBy: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedBy: () => Promise<AsyncIterator<ID_Output>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  isPublic: () => Promise<AsyncIterator<Boolean>>;
+  name: () => Promise<AsyncIterator<String>>;
+  title: () => Promise<AsyncIterator<String>>;
+  description: () => Promise<AsyncIterator<String>>;
+  logo: () => Promise<AsyncIterator<String>>;
+  banner: () => Promise<AsyncIterator<String>>;
+}
+
 export interface Location {
   id: ID_Output;
   type: LocationType;
+  owner: ID_Output;
   createdBy: ID_Output;
   createdAt: DateTimeOutput;
   updatedBy?: ID_Output;
@@ -4208,7 +5054,7 @@ export interface Location {
 export interface LocationPromise extends Promise<Location>, Fragmentable {
   id: () => Promise<ID_Output>;
   type: () => Promise<LocationType>;
-  owner: <T = AgentPromise>() => T;
+  owner: () => Promise<ID_Output>;
   createdBy: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedBy: () => Promise<ID_Output>;
@@ -4239,7 +5085,7 @@ export interface LocationSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   type: () => Promise<AsyncIterator<LocationType>>;
-  owner: <T = AgentSubscription>() => T;
+  owner: () => Promise<AsyncIterator<ID_Output>>;
   createdBy: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedBy: () => Promise<AsyncIterator<ID_Output>>;
@@ -4270,7 +5116,7 @@ export interface LocationNullablePromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   type: () => Promise<LocationType>;
-  owner: <T = AgentPromise>() => T;
+  owner: () => Promise<ID_Output>;
   createdBy: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedBy: () => Promise<ID_Output>;
@@ -4296,29 +5142,293 @@ export interface LocationNullablePromise
   }) => T;
 }
 
-export interface AgentSubscriptionPayload {
-  mutation: MutationType;
-  node: Agent;
-  updatedFields: String[];
-  previousValues: AgentPreviousValues;
+export interface AggregateContentEncoding {
+  count: Int;
 }
 
-export interface AgentSubscriptionPayloadPromise
-  extends Promise<AgentSubscriptionPayload>,
+export interface AggregateContentEncodingPromise
+  extends Promise<AggregateContentEncoding>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateContentEncodingSubscription
+  extends Promise<AsyncIterator<AggregateContentEncoding>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface MembershipEdge {
+  node: Membership;
+  cursor: String;
+}
+
+export interface MembershipEdgePromise
+  extends Promise<MembershipEdge>,
+    Fragmentable {
+  node: <T = MembershipPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface MembershipEdgeSubscription
+  extends Promise<AsyncIterator<MembershipEdge>>,
+    Fragmentable {
+  node: <T = MembershipSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface InboxSubscriptionPayload {
+  mutation: MutationType;
+  node: Inbox;
+  updatedFields: String[];
+  previousValues: InboxPreviousValues;
+}
+
+export interface InboxSubscriptionPayloadPromise
+  extends Promise<InboxSubscriptionPayload>,
     Fragmentable {
   mutation: () => Promise<MutationType>;
-  node: <T = AgentPromise>() => T;
+  node: <T = InboxPromise>() => T;
   updatedFields: () => Promise<String[]>;
-  previousValues: <T = AgentPreviousValuesPromise>() => T;
+  previousValues: <T = InboxPreviousValuesPromise>() => T;
 }
 
-export interface AgentSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<AgentSubscriptionPayload>>,
+export interface InboxSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<InboxSubscriptionPayload>>,
     Fragmentable {
   mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = AgentSubscription>() => T;
+  node: <T = InboxSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = AgentPreviousValuesSubscription>() => T;
+  previousValues: <T = InboxPreviousValuesSubscription>() => T;
+}
+
+export interface LocationConnection {
+  pageInfo: PageInfo;
+  edges: LocationEdge[];
+}
+
+export interface LocationConnectionPromise
+  extends Promise<LocationConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<LocationEdge>>() => T;
+  aggregate: <T = AggregateLocationPromise>() => T;
+}
+
+export interface LocationConnectionSubscription
+  extends Promise<AsyncIterator<LocationConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<LocationEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateLocationSubscription>() => T;
+}
+
+export interface InboxPreviousValues {
+  id: ID_Output;
+  owner: ID_Output;
+  createdBy: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedBy?: ID_Output;
+  updatedAt?: DateTimeOutput;
+}
+
+export interface InboxPreviousValuesPromise
+  extends Promise<InboxPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  owner: () => Promise<ID_Output>;
+  createdBy: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedBy: () => Promise<ID_Output>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface InboxPreviousValuesSubscription
+  extends Promise<AsyncIterator<InboxPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  owner: () => Promise<AsyncIterator<ID_Output>>;
+  createdBy: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedBy: () => Promise<AsyncIterator<ID_Output>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface InboxConnection {
+  pageInfo: PageInfo;
+  edges: InboxEdge[];
+}
+
+export interface InboxConnectionPromise
+  extends Promise<InboxConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<InboxEdge>>() => T;
+  aggregate: <T = AggregateInboxPromise>() => T;
+}
+
+export interface InboxConnectionSubscription
+  extends Promise<AsyncIterator<InboxConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<InboxEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateInboxSubscription>() => T;
+}
+
+export interface ContentEncodingEdge {
+  node: ContentEncoding;
+  cursor: String;
+}
+
+export interface ContentEncodingEdgePromise
+  extends Promise<ContentEncodingEdge>,
+    Fragmentable {
+  node: <T = ContentEncodingPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ContentEncodingEdgeSubscription
+  extends Promise<AsyncIterator<ContentEncodingEdge>>,
+    Fragmentable {
+  node: <T = ContentEncodingSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface TagPreviousValues {
+  id: ID_Output;
+  type: String;
+  owner: ID_Output;
+  createdBy: ID_Output;
+  createdAt: DateTimeOutput;
+  value: String;
+}
+
+export interface TagPreviousValuesPromise
+  extends Promise<TagPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  type: () => Promise<String>;
+  owner: () => Promise<ID_Output>;
+  createdBy: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  value: () => Promise<String>;
+}
+
+export interface TagPreviousValuesSubscription
+  extends Promise<AsyncIterator<TagPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  type: () => Promise<AsyncIterator<String>>;
+  owner: () => Promise<AsyncIterator<ID_Output>>;
+  createdBy: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  value: () => Promise<AsyncIterator<String>>;
+}
+
+export interface LocationSubscriptionPayload {
+  mutation: MutationType;
+  node: Location;
+  updatedFields: String[];
+  previousValues: LocationPreviousValues;
+}
+
+export interface LocationSubscriptionPayloadPromise
+  extends Promise<LocationSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = LocationPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = LocationPreviousValuesPromise>() => T;
+}
+
+export interface LocationSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<LocationSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = LocationSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = LocationPreviousValuesSubscription>() => T;
+}
+
+export interface TagEdge {
+  node: Tag;
+  cursor: String;
+}
+
+export interface TagEdgePromise extends Promise<TagEdge>, Fragmentable {
+  node: <T = TagPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface TagEdgeSubscription
+  extends Promise<AsyncIterator<TagEdge>>,
+    Fragmentable {
+  node: <T = TagSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface LocationPreviousValues {
+  id: ID_Output;
+  type: LocationType;
+  owner: ID_Output;
+  createdBy: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedBy?: ID_Output;
+  updatedAt?: DateTimeOutput;
+  name?: String;
+  osmNodeId?: String;
+  addressLine1?: String;
+  addressLine2?: String;
+  addressCity?: String;
+  addressZipCode?: String;
+  addressCountry?: String;
+  geoPointLatitude?: Float;
+  geoPointLongitude?: Float;
+  geoPointRadiusMeter?: Float;
+}
+
+export interface LocationPreviousValuesPromise
+  extends Promise<LocationPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  type: () => Promise<LocationType>;
+  owner: () => Promise<ID_Output>;
+  createdBy: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedBy: () => Promise<ID_Output>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  name: () => Promise<String>;
+  osmNodeId: () => Promise<String>;
+  addressLine1: () => Promise<String>;
+  addressLine2: () => Promise<String>;
+  addressCity: () => Promise<String>;
+  addressZipCode: () => Promise<String>;
+  addressCountry: () => Promise<String>;
+  geoPointLatitude: () => Promise<Float>;
+  geoPointLongitude: () => Promise<Float>;
+  geoPointRadiusMeter: () => Promise<Float>;
+}
+
+export interface LocationPreviousValuesSubscription
+  extends Promise<AsyncIterator<LocationPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  type: () => Promise<AsyncIterator<LocationType>>;
+  owner: () => Promise<AsyncIterator<ID_Output>>;
+  createdBy: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedBy: () => Promise<AsyncIterator<ID_Output>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  name: () => Promise<AsyncIterator<String>>;
+  osmNodeId: () => Promise<AsyncIterator<String>>;
+  addressLine1: () => Promise<AsyncIterator<String>>;
+  addressLine2: () => Promise<AsyncIterator<String>>;
+  addressCity: () => Promise<AsyncIterator<String>>;
+  addressZipCode: () => Promise<AsyncIterator<String>>;
+  addressCountry: () => Promise<AsyncIterator<String>>;
+  geoPointLatitude: () => Promise<AsyncIterator<Float>>;
+  geoPointLongitude: () => Promise<AsyncIterator<Float>>;
+  geoPointRadiusMeter: () => Promise<AsyncIterator<Float>>;
 }
 
 export interface Session {
@@ -4382,195 +5492,6 @@ export interface SessionNullablePromise
   ipAddress: () => Promise<String>;
 }
 
-export interface AgentPreviousValues {
-  id: ID_Output;
-  type: AgentType;
-  owner: ID_Output;
-  createdBy: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedBy?: ID_Output;
-  updatedAt?: DateTimeOutput;
-  name: String;
-  status: AgentStatus;
-  timezone?: String;
-  profileSlogan?: String;
-  profileAvatar?: String;
-  profileBanner?: String;
-  profileType?: ProfileType;
-}
-
-export interface AgentPreviousValuesPromise
-  extends Promise<AgentPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  type: () => Promise<AgentType>;
-  owner: () => Promise<ID_Output>;
-  createdBy: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedBy: () => Promise<ID_Output>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  name: () => Promise<String>;
-  status: () => Promise<AgentStatus>;
-  timezone: () => Promise<String>;
-  profileSlogan: () => Promise<String>;
-  profileAvatar: () => Promise<String>;
-  profileBanner: () => Promise<String>;
-  profileType: () => Promise<ProfileType>;
-}
-
-export interface AgentPreviousValuesSubscription
-  extends Promise<AsyncIterator<AgentPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  type: () => Promise<AsyncIterator<AgentType>>;
-  owner: () => Promise<AsyncIterator<ID_Output>>;
-  createdBy: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedBy: () => Promise<AsyncIterator<ID_Output>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  name: () => Promise<AsyncIterator<String>>;
-  status: () => Promise<AsyncIterator<AgentStatus>>;
-  timezone: () => Promise<AsyncIterator<String>>;
-  profileSlogan: () => Promise<AsyncIterator<String>>;
-  profileAvatar: () => Promise<AsyncIterator<String>>;
-  profileBanner: () => Promise<AsyncIterator<String>>;
-  profileType: () => Promise<AsyncIterator<ProfileType>>;
-}
-
-export interface MembershipEdge {
-  node: Membership;
-  cursor: String;
-}
-
-export interface MembershipEdgePromise
-  extends Promise<MembershipEdge>,
-    Fragmentable {
-  node: <T = MembershipPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface MembershipEdgeSubscription
-  extends Promise<AsyncIterator<MembershipEdge>>,
-    Fragmentable {
-  node: <T = MembershipSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateEntry {
-  count: Int;
-}
-
-export interface AggregateEntryPromise
-  extends Promise<AggregateEntry>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateEntrySubscription
-  extends Promise<AsyncIterator<AggregateEntry>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface AggregateLocation {
-  count: Int;
-}
-
-export interface AggregateLocationPromise
-  extends Promise<AggregateLocation>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateLocationSubscription
-  extends Promise<AsyncIterator<AggregateLocation>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface EntrySubscriptionPayload {
-  mutation: MutationType;
-  node: Entry;
-  updatedFields: String[];
-  previousValues: EntryPreviousValues;
-}
-
-export interface EntrySubscriptionPayloadPromise
-  extends Promise<EntrySubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = EntryPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = EntryPreviousValuesPromise>() => T;
-}
-
-export interface EntrySubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<EntrySubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = EntrySubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = EntryPreviousValuesSubscription>() => T;
-}
-
-export interface LocationConnection {
-  pageInfo: PageInfo;
-  edges: LocationEdge[];
-}
-
-export interface LocationConnectionPromise
-  extends Promise<LocationConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<LocationEdge>>() => T;
-  aggregate: <T = AggregateLocationPromise>() => T;
-}
-
-export interface LocationConnectionSubscription
-  extends Promise<AsyncIterator<LocationConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<LocationEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateLocationSubscription>() => T;
-}
-
-export interface EntryPreviousValues {
-  id: ID_Output;
-  type: EntryType;
-  createdBy: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedBy?: ID_Output;
-  updatedAt?: DateTimeOutput;
-  name?: String;
-  content?: Json;
-}
-
-export interface EntryPreviousValuesPromise
-  extends Promise<EntryPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  type: () => Promise<EntryType>;
-  createdBy: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedBy: () => Promise<ID_Output>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  name: () => Promise<String>;
-  content: () => Promise<Json>;
-}
-
-export interface EntryPreviousValuesSubscription
-  extends Promise<AsyncIterator<EntryPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  type: () => Promise<AsyncIterator<EntryType>>;
-  createdBy: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedBy: () => Promise<AsyncIterator<ID_Output>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  name: () => Promise<AsyncIterator<String>>;
-  content: () => Promise<AsyncIterator<Json>>;
-}
-
 export interface AggregateInbox {
   count: Int;
 }
@@ -4587,603 +5508,44 @@ export interface AggregateInboxSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface EntryEdge {
-  node: Entry;
-  cursor: String;
-}
-
-export interface EntryEdgePromise extends Promise<EntryEdge>, Fragmentable {
-  node: <T = EntryPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface EntryEdgeSubscription
-  extends Promise<AsyncIterator<EntryEdge>>,
-    Fragmentable {
-  node: <T = EntrySubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface InboxConnection {
-  pageInfo: PageInfo;
-  edges: InboxEdge[];
-}
-
-export interface InboxConnectionPromise
-  extends Promise<InboxConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<InboxEdge>>() => T;
-  aggregate: <T = AggregateInboxPromise>() => T;
-}
-
-export interface InboxConnectionSubscription
-  extends Promise<AsyncIterator<InboxConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<InboxEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateInboxSubscription>() => T;
-}
-
-export interface GroupSubscriptionPayload {
-  mutation: MutationType;
-  node: Group;
-  updatedFields: String[];
-  previousValues: GroupPreviousValues;
-}
-
-export interface GroupSubscriptionPayloadPromise
-  extends Promise<GroupSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = GroupPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = GroupPreviousValuesPromise>() => T;
-}
-
-export interface GroupSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<GroupSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = GroupSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = GroupPreviousValuesSubscription>() => T;
-}
-
-export interface AggregateUser {
-  count: Int;
-}
-
-export interface AggregateUserPromise
-  extends Promise<AggregateUser>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUser>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface GroupPreviousValues {
+export interface SessionPreviousValues {
   id: ID_Output;
-  type: GroupType;
-  createdBy: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedBy?: ID_Output;
-  updatedAt?: DateTimeOutput;
-  isPublic: Boolean;
-  name: String;
-  title?: String;
-  description?: String;
-  logo: String;
-  banner?: String;
-}
-
-export interface GroupPreviousValuesPromise
-  extends Promise<GroupPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  type: () => Promise<GroupType>;
-  createdBy: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedBy: () => Promise<ID_Output>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  isPublic: () => Promise<Boolean>;
-  name: () => Promise<String>;
-  title: () => Promise<String>;
-  description: () => Promise<String>;
-  logo: () => Promise<String>;
-  banner: () => Promise<String>;
-}
-
-export interface GroupPreviousValuesSubscription
-  extends Promise<AsyncIterator<GroupPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  type: () => Promise<AsyncIterator<GroupType>>;
-  createdBy: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedBy: () => Promise<AsyncIterator<ID_Output>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  isPublic: () => Promise<AsyncIterator<Boolean>>;
-  name: () => Promise<AsyncIterator<String>>;
-  title: () => Promise<AsyncIterator<String>>;
-  description: () => Promise<AsyncIterator<String>>;
-  logo: () => Promise<AsyncIterator<String>>;
-  banner: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateTag {
-  count: Int;
-}
-
-export interface AggregateTagPromise
-  extends Promise<AggregateTag>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateTagSubscription
-  extends Promise<AsyncIterator<AggregateTag>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface EntryConnection {
-  pageInfo: PageInfo;
-  edges: EntryEdge[];
-}
-
-export interface EntryConnectionPromise
-  extends Promise<EntryConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<EntryEdge>>() => T;
-  aggregate: <T = AggregateEntryPromise>() => T;
-}
-
-export interface EntryConnectionSubscription
-  extends Promise<AsyncIterator<EntryConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<EntryEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateEntrySubscription>() => T;
-}
-
-export interface SessionEdge {
-  node: Session;
-  cursor: String;
-}
-
-export interface SessionEdgePromise extends Promise<SessionEdge>, Fragmentable {
-  node: <T = SessionPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface SessionEdgeSubscription
-  extends Promise<AsyncIterator<SessionEdge>>,
-    Fragmentable {
-  node: <T = SessionSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface InboxSubscriptionPayload {
-  mutation: MutationType;
-  node: Inbox;
-  updatedFields: String[];
-  previousValues: InboxPreviousValues;
-}
-
-export interface InboxSubscriptionPayloadPromise
-  extends Promise<InboxSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = InboxPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = InboxPreviousValuesPromise>() => T;
-}
-
-export interface InboxSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<InboxSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = InboxSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = InboxPreviousValuesSubscription>() => T;
-}
-
-export interface User {
-  id: ID_Output;
-  type: UserType;
   createdAt: DateTimeOutput;
   updatedAt?: DateTimeOutput;
-  email: String;
-  timezone: String;
-  challenge?: String;
-  passwordSalt: String;
-  passwordHash: String;
-  personFirstName?: String;
-  personLastName?: String;
-  personPhone?: String;
-  personMobilePhone?: String;
-  institutionName?: String;
+  csrfToken?: String;
+  bearerToken: String;
+  validTo: DateTimeOutput;
+  timedOut?: DateTimeOutput;
+  loggedOut?: DateTimeOutput;
+  ipAddress?: String;
 }
 
-export interface UserPromise extends Promise<User>, Fragmentable {
+export interface SessionPreviousValuesPromise
+  extends Promise<SessionPreviousValues>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
-  type: () => Promise<UserType>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
-  email: () => Promise<String>;
-  timezone: () => Promise<String>;
-  challenge: () => Promise<String>;
-  passwordSalt: () => Promise<String>;
-  passwordHash: () => Promise<String>;
-  agents: <T = FragmentableArray<Agent>>(args?: {
-    where?: AgentWhereInput;
-    orderBy?: AgentOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  sessions: <T = FragmentableArray<Session>>(args?: {
-    where?: SessionWhereInput;
-    orderBy?: SessionOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  personFirstName: () => Promise<String>;
-  personLastName: () => Promise<String>;
-  personPhone: () => Promise<String>;
-  personMobilePhone: () => Promise<String>;
-  institutionName: () => Promise<String>;
+  csrfToken: () => Promise<String>;
+  bearerToken: () => Promise<String>;
+  validTo: () => Promise<DateTimeOutput>;
+  timedOut: () => Promise<DateTimeOutput>;
+  loggedOut: () => Promise<DateTimeOutput>;
+  ipAddress: () => Promise<String>;
 }
 
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
+export interface SessionPreviousValuesSubscription
+  extends Promise<AsyncIterator<SessionPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  type: () => Promise<AsyncIterator<UserType>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  email: () => Promise<AsyncIterator<String>>;
-  timezone: () => Promise<AsyncIterator<String>>;
-  challenge: () => Promise<AsyncIterator<String>>;
-  passwordSalt: () => Promise<AsyncIterator<String>>;
-  passwordHash: () => Promise<AsyncIterator<String>>;
-  agents: <T = Promise<AsyncIterator<AgentSubscription>>>(args?: {
-    where?: AgentWhereInput;
-    orderBy?: AgentOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  sessions: <T = Promise<AsyncIterator<SessionSubscription>>>(args?: {
-    where?: SessionWhereInput;
-    orderBy?: SessionOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  personFirstName: () => Promise<AsyncIterator<String>>;
-  personLastName: () => Promise<AsyncIterator<String>>;
-  personPhone: () => Promise<AsyncIterator<String>>;
-  personMobilePhone: () => Promise<AsyncIterator<String>>;
-  institutionName: () => Promise<AsyncIterator<String>>;
-}
-
-export interface UserNullablePromise
-  extends Promise<User | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  type: () => Promise<UserType>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  email: () => Promise<String>;
-  timezone: () => Promise<String>;
-  challenge: () => Promise<String>;
-  passwordSalt: () => Promise<String>;
-  passwordHash: () => Promise<String>;
-  agents: <T = FragmentableArray<Agent>>(args?: {
-    where?: AgentWhereInput;
-    orderBy?: AgentOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  sessions: <T = FragmentableArray<Session>>(args?: {
-    where?: SessionWhereInput;
-    orderBy?: SessionOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  personFirstName: () => Promise<String>;
-  personLastName: () => Promise<String>;
-  personPhone: () => Promise<String>;
-  personMobilePhone: () => Promise<String>;
-  institutionName: () => Promise<String>;
-}
-
-export interface InboxPreviousValues {
-  id: ID_Output;
-  createdBy: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedBy?: ID_Output;
-  updatedAt?: DateTimeOutput;
-}
-
-export interface InboxPreviousValuesPromise
-  extends Promise<InboxPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdBy: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedBy: () => Promise<ID_Output>;
-  updatedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface InboxPreviousValuesSubscription
-  extends Promise<AsyncIterator<InboxPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdBy: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedBy: () => Promise<AsyncIterator<ID_Output>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface MembershipConnection {
-  pageInfo: PageInfo;
-  edges: MembershipEdge[];
-}
-
-export interface MembershipConnectionPromise
-  extends Promise<MembershipConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<MembershipEdge>>() => T;
-  aggregate: <T = AggregateMembershipPromise>() => T;
-}
-
-export interface MembershipConnectionSubscription
-  extends Promise<AsyncIterator<MembershipConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<MembershipEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateMembershipSubscription>() => T;
-}
-
-export interface AgentConnection {
-  pageInfo: PageInfo;
-  edges: AgentEdge[];
-}
-
-export interface AgentConnectionPromise
-  extends Promise<AgentConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<AgentEdge>>() => T;
-  aggregate: <T = AggregateAgentPromise>() => T;
-}
-
-export interface AgentConnectionSubscription
-  extends Promise<AsyncIterator<AgentConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<AgentEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateAgentSubscription>() => T;
-}
-
-export interface TagPreviousValues {
-  id: ID_Output;
-  type: String;
-  createdBy: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedBy?: ID_Output;
-  updatedAt?: DateTimeOutput;
-  value: String;
-}
-
-export interface TagPreviousValuesPromise
-  extends Promise<TagPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  type: () => Promise<String>;
-  createdBy: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedBy: () => Promise<ID_Output>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  value: () => Promise<String>;
-}
-
-export interface TagPreviousValuesSubscription
-  extends Promise<AsyncIterator<TagPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  type: () => Promise<AsyncIterator<String>>;
-  createdBy: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedBy: () => Promise<AsyncIterator<ID_Output>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  value: () => Promise<AsyncIterator<String>>;
-}
-
-export interface LocationSubscriptionPayload {
-  mutation: MutationType;
-  node: Location;
-  updatedFields: String[];
-  previousValues: LocationPreviousValues;
-}
-
-export interface LocationSubscriptionPayloadPromise
-  extends Promise<LocationSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = LocationPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = LocationPreviousValuesPromise>() => T;
-}
-
-export interface LocationSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<LocationSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = LocationSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = LocationPreviousValuesSubscription>() => T;
-}
-
-export interface AggregateGroup {
-  count: Int;
-}
-
-export interface AggregateGroupPromise
-  extends Promise<AggregateGroup>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateGroupSubscription
-  extends Promise<AsyncIterator<AggregateGroup>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface LocationPreviousValues {
-  id: ID_Output;
-  type: LocationType;
-  createdBy: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedBy?: ID_Output;
-  updatedAt?: DateTimeOutput;
-  name?: String;
-  osmNodeId?: String;
-  addressLine1?: String;
-  addressLine2?: String;
-  addressCity?: String;
-  addressZipCode?: String;
-  addressCountry?: String;
-  geoPointLatitude?: Float;
-  geoPointLongitude?: Float;
-  geoPointRadiusMeter?: Float;
-}
-
-export interface LocationPreviousValuesPromise
-  extends Promise<LocationPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  type: () => Promise<LocationType>;
-  createdBy: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedBy: () => Promise<ID_Output>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  name: () => Promise<String>;
-  osmNodeId: () => Promise<String>;
-  addressLine1: () => Promise<String>;
-  addressLine2: () => Promise<String>;
-  addressCity: () => Promise<String>;
-  addressZipCode: () => Promise<String>;
-  addressCountry: () => Promise<String>;
-  geoPointLatitude: () => Promise<Float>;
-  geoPointLongitude: () => Promise<Float>;
-  geoPointRadiusMeter: () => Promise<Float>;
-}
-
-export interface LocationPreviousValuesSubscription
-  extends Promise<AsyncIterator<LocationPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  type: () => Promise<AsyncIterator<LocationType>>;
-  createdBy: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedBy: () => Promise<AsyncIterator<ID_Output>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  name: () => Promise<AsyncIterator<String>>;
-  osmNodeId: () => Promise<AsyncIterator<String>>;
-  addressLine1: () => Promise<AsyncIterator<String>>;
-  addressLine2: () => Promise<AsyncIterator<String>>;
-  addressCity: () => Promise<AsyncIterator<String>>;
-  addressZipCode: () => Promise<AsyncIterator<String>>;
-  addressCountry: () => Promise<AsyncIterator<String>>;
-  geoPointLatitude: () => Promise<AsyncIterator<Float>>;
-  geoPointLongitude: () => Promise<AsyncIterator<Float>>;
-  geoPointRadiusMeter: () => Promise<AsyncIterator<Float>>;
-}
-
-export interface TagConnection {
-  pageInfo: PageInfo;
-  edges: TagEdge[];
-}
-
-export interface TagConnectionPromise
-  extends Promise<TagConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<TagEdge>>() => T;
-  aggregate: <T = AggregateTagPromise>() => T;
-}
-
-export interface TagConnectionSubscription
-  extends Promise<AsyncIterator<TagConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<TagEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateTagSubscription>() => T;
-}
-
-export interface AggregateMembership {
-  count: Int;
-}
-
-export interface AggregateMembershipPromise
-  extends Promise<AggregateMembership>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateMembershipSubscription
-  extends Promise<AsyncIterator<AggregateMembership>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface PageInfo {
-  hasNextPage: Boolean;
-  hasPreviousPage: Boolean;
-  startCursor?: String;
-  endCursor?: String;
-}
-
-export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
-  hasNextPage: () => Promise<Boolean>;
-  hasPreviousPage: () => Promise<Boolean>;
-  startCursor: () => Promise<String>;
-  endCursor: () => Promise<String>;
-}
-
-export interface PageInfoSubscription
-  extends Promise<AsyncIterator<PageInfo>>,
-    Fragmentable {
-  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
-  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
-  startCursor: () => Promise<AsyncIterator<String>>;
-  endCursor: () => Promise<AsyncIterator<String>>;
+  csrfToken: () => Promise<AsyncIterator<String>>;
+  bearerToken: () => Promise<AsyncIterator<String>>;
+  validTo: () => Promise<AsyncIterator<DateTimeOutput>>;
+  timedOut: () => Promise<AsyncIterator<DateTimeOutput>>;
+  loggedOut: () => Promise<AsyncIterator<DateTimeOutput>>;
+  ipAddress: () => Promise<AsyncIterator<String>>;
 }
 
 export interface MembershipPreviousValues {
@@ -5245,125 +5607,133 @@ export interface MembershipSubscriptionPayloadSubscription
   previousValues: <T = MembershipPreviousValuesSubscription>() => T;
 }
 
-export interface SessionPreviousValues {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt?: DateTimeOutput;
-  csrfToken?: String;
-  bearerToken: String;
-  validTo: DateTimeOutput;
-  timedOut?: DateTimeOutput;
-  loggedOut?: DateTimeOutput;
-  ipAddress?: String;
+export interface ContentEncodingConnection {
+  pageInfo: PageInfo;
+  edges: ContentEncodingEdge[];
 }
 
-export interface SessionPreviousValuesPromise
-  extends Promise<SessionPreviousValues>,
+export interface ContentEncodingConnectionPromise
+  extends Promise<ContentEncodingConnection>,
     Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  csrfToken: () => Promise<String>;
-  bearerToken: () => Promise<String>;
-  validTo: () => Promise<DateTimeOutput>;
-  timedOut: () => Promise<DateTimeOutput>;
-  loggedOut: () => Promise<DateTimeOutput>;
-  ipAddress: () => Promise<String>;
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ContentEncodingEdge>>() => T;
+  aggregate: <T = AggregateContentEncodingPromise>() => T;
 }
 
-export interface SessionPreviousValuesSubscription
-  extends Promise<AsyncIterator<SessionPreviousValues>>,
+export interface ContentEncodingConnectionSubscription
+  extends Promise<AsyncIterator<ContentEncodingConnection>>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  csrfToken: () => Promise<AsyncIterator<String>>;
-  bearerToken: () => Promise<AsyncIterator<String>>;
-  validTo: () => Promise<AsyncIterator<DateTimeOutput>>;
-  timedOut: () => Promise<AsyncIterator<DateTimeOutput>>;
-  loggedOut: () => Promise<AsyncIterator<DateTimeOutput>>;
-  ipAddress: () => Promise<AsyncIterator<String>>;
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ContentEncodingEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateContentEncodingSubscription>() => T;
 }
 
-export interface LocationEdge {
-  node: Location;
+export interface GroupEdge {
+  node: Group;
   cursor: String;
 }
 
-export interface LocationEdgePromise
-  extends Promise<LocationEdge>,
-    Fragmentable {
-  node: <T = LocationPromise>() => T;
+export interface GroupEdgePromise extends Promise<GroupEdge>, Fragmentable {
+  node: <T = GroupPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface LocationEdgeSubscription
-  extends Promise<AsyncIterator<LocationEdge>>,
+export interface GroupEdgeSubscription
+  extends Promise<AsyncIterator<GroupEdge>>,
     Fragmentable {
-  node: <T = LocationSubscription>() => T;
+  node: <T = GroupSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateAgent {
+export interface AggregateLocation {
   count: Int;
 }
 
-export interface AggregateAgentPromise
-  extends Promise<AggregateAgent>,
+export interface AggregateLocationPromise
+  extends Promise<AggregateLocation>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateAgentSubscription
-  extends Promise<AsyncIterator<AggregateAgent>>,
+export interface AggregateLocationSubscription
+  extends Promise<AsyncIterator<AggregateLocation>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface UserConnection {
+export interface SessionConnection {
   pageInfo: PageInfo;
-  edges: UserEdge[];
+  edges: SessionEdge[];
 }
 
-export interface UserConnectionPromise
-  extends Promise<UserConnection>,
+export interface SessionConnectionPromise
+  extends Promise<SessionConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UserEdge>>() => T;
-  aggregate: <T = AggregateUserPromise>() => T;
+  edges: <T = FragmentableArray<SessionEdge>>() => T;
+  aggregate: <T = AggregateSessionPromise>() => T;
 }
 
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnection>>,
+export interface SessionConnectionSubscription
+  extends Promise<AsyncIterator<SessionConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<SessionEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateSessionSubscription>() => T;
 }
 
-export interface InboxEdge {
-  node: Inbox;
-  cursor: String;
+export interface Membership {
+  id: ID_Output;
+  type: MembershipType;
+  createdBy: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedBy?: ID_Output;
+  updatedAt?: DateTimeOutput;
+  showHistory: Boolean;
 }
 
-export interface InboxEdgePromise extends Promise<InboxEdge>, Fragmentable {
-  node: <T = InboxPromise>() => T;
-  cursor: () => Promise<String>;
+export interface MembershipPromise extends Promise<Membership>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  type: () => Promise<MembershipType>;
+  createdBy: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedBy: () => Promise<ID_Output>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  member: <T = AgentPromise>() => T;
+  showHistory: () => Promise<Boolean>;
 }
 
-export interface InboxEdgeSubscription
-  extends Promise<AsyncIterator<InboxEdge>>,
+export interface MembershipSubscription
+  extends Promise<AsyncIterator<Membership>>,
     Fragmentable {
-  node: <T = InboxSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  type: () => Promise<AsyncIterator<MembershipType>>;
+  createdBy: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedBy: () => Promise<AsyncIterator<ID_Output>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  member: <T = AgentSubscription>() => T;
+  showHistory: () => Promise<AsyncIterator<Boolean>>;
+}
+
+export interface MembershipNullablePromise
+  extends Promise<Membership | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  type: () => Promise<MembershipType>;
+  createdBy: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedBy: () => Promise<ID_Output>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  member: <T = AgentPromise>() => T;
+  showHistory: () => Promise<Boolean>;
 }
 
 /*
-The `Boolean` scalar type represents `true` or `false`.
+The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
 */
-export type Boolean = boolean;
-
-export type Long = string;
+export type ID_Input = string | number;
+export type ID_Output = string;
 
 /*
 DateTime scalar input type, allowing Date
@@ -5386,23 +5756,32 @@ The `Float` scalar type represents signed double-precision fractional values as 
 export type Float = number;
 
 /*
-The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
-*/
-export type ID_Input = string | number;
-export type ID_Output = string;
-
-/*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
 */
 export type Int = number;
 
+export type Long = string;
+
 export type Json = any;
+
+/*
+The `Boolean` scalar type represents `true` or `false`.
+*/
+export type Boolean = boolean;
 
 /**
  * Model Metadata
  */
 
 export const models: Model[] = [
+  {
+    name: "ContentEncoding",
+    embedded: false
+  },
+  {
+    name: "EncodingType",
+    embedded: false
+  },
   {
     name: "Entry",
     embedded: false
@@ -5480,6 +5859,7 @@ export const models: Model[] = [
 export const Prisma = makePrismaClientClass<ClientConstructor<Prisma>>({
   typeDefs,
   models,
-  endpoint: `http://local.abis-cloud.com:4466/AbisStarterkit/dev`
+  endpoint: `http://local.abis-cloud.com:4466/AbisStarterkit/dev`,
+  secret: `managementApiSecret`
 });
 export const prisma = new Prisma();
