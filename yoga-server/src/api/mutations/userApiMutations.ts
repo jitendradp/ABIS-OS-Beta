@@ -1,15 +1,15 @@
 import {
     prisma, User
-} from "../../../generated";
-import {Helper} from "../../../helper/Helper";
-import {Mailer} from "../../../helper/Mailer";
+} from "../../generated";
+import {Helper} from "../../helper/Helper";
+import {Mailer} from "../../helper/Mailer";
 import {Request} from "express";
-import {config} from "../../../config";
-import {CommonQueries} from "../../queries/commonQueries";
-import {ActionResponse} from "../actionResponse";
-import {UserQueries} from "../../../queries/user";
-import {SessionMutations} from "../../../mutations/session";
-import {UserMutations} from "../../../mutations/user";
+import {config} from "../../config";
+import {CommonQueries} from "../queries/commonQueries";
+import {ActionResponse} from "./actionResponse";
+import {UserQueries} from "../../queries/user";
+import {SessionMutations} from "../../mutations/session";
+import {UserMutations} from "../../mutations/user";
 
 export class UserApiMutations {
     private static readonly bcrypt = require('bcrypt');

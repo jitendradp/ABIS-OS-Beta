@@ -18,9 +18,9 @@ export type UiMemberhsip = {
     showHistory: boolean
 };
 
-export class MembershipsQueries {
+export class MembershipQueries {
     public static async findMemberships(agentId:string, roomId?:string, searchText?:string) : Promise<UiMemberhsip[]> {
-        if (!(await MembershipStatements.agentIsMemberOfRoom(agentId, roomId))) {
+        if (!(await MembershipStatements.agentCanAccessRoom(agentId, roomId))) {
             return [];
         }
 

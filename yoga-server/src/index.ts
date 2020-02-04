@@ -1,11 +1,14 @@
 import {GraphQLServer} from 'graphql-yoga'
 import {prisma, UserType} from './generated'
-import {UserApiMutations} from "./api/mutations/user/userApiMutations";
+import {UserApiMutations} from "./api/mutations/userApiMutations";
 import {ContextParameters} from "graphql-yoga/dist/types";
 import {config} from "./config";
 import {UserQueries} from "./api/queries/user/userQueries";
 import {AgentQueries} from "./api/queries/agent/agentQueries";
 import {GroupQueries2} from "./api/queries/groups/groupQueries2";
+import {ChannelApiMutations} from "./api/mutations/channelApiMutations";
+import {RoomApiMutations} from "./api/mutations/roomApiMutations";
+import {EntryApiMutations} from "./api/mutations/entryApiMutations";
 
 var cookie = require('cookie');
 
@@ -94,6 +97,90 @@ const resolvers = {
         },
         async verifySession(root, {csrfToken}, ctx) {
             return UserApiMutations.verifySession(csrfToken, ctx.bearerToken, ctx.request);
+        },
+
+        // Users can't create or delete profiles for now
+        async createProfile(root, {csrfToken}, ctx) {
+            throw new Error("Not implemented");
+        },
+        async deleteProfile(root, {csrfToken}, ctx) {
+            throw new Error("Not implemented");
+        },
+        async updateProfile(root, {csrfToken}, ctx) {
+
+        },
+
+        async createStash(root, {csrfToken}, ctx) {
+            throw new Error("Not implemented");
+        },
+        async updateStash(root, {csrfToken}, ctx) {
+            throw new Error("Not implemented");
+        },
+        async deleteStash(root, {csrfToken}, ctx) {
+            throw new Error("Not implemented");
+        },
+
+        async createChannel(root, {csrfToken, toAgentId}, ctx) {
+            return await ChannelApiMutations.createChannel(csrfToken, ctx.bearerToken, toAgentId);
+        },
+        async deleteChannel(root, {csrfToken, toAgentId}, ctx) {
+            return await ChannelApiMutations.deleteChannel(csrfToken, ctx.bearerToken, toAgentId);
+        },
+
+        async createRoom(root, {csrfToken, createRoomInput}, ctx) {
+            return await RoomApiMutations.createRoom(
+                  csrfToken
+                , ctx.bearerToken
+                , createRoomInput.isPublic
+                , createRoomInput.name
+                , createRoomInput.title
+                , createRoomInput.description
+                , createRoomInput.logo
+                , createRoomInput.banner);
+        },
+        async updateRoom(root, {csrfToken, updateRoomInput}, ctx) {
+            return await RoomApiMutations.updateRoom(
+                csrfToken
+                , ctx.bearerToken
+                , updateRoomInput.id
+                , updateRoomInput.isPublic
+                , updateRoomInput.name
+                , updateRoomInput.title
+                , updateRoomInput.description
+                , updateRoomInput.logo
+                , updateRoomInput.banner);
+        },
+        async deleteRoom(root, {csrfToken, roomId}, ctx) {
+            return await RoomApiMutations.deleteRoom(csrfToken, ctx.bearerToken, roomId)
+        },
+
+        async createEntry(root, {csrfToken, createEntryInput}, ctx) {
+            return EntryApiMutations.createEntry(
+                csrfToken
+                , ctx.bearerToken
+                , createEntryInput.roomId
+                , createEntryInput.type
+                , createEntryInput.name
+                , createEntryInput.content
+                , createEntryInput.contentEncoding)
+        },
+        async updateEntry(root, {csrfToken}, ctx) {
+            throw new Error("Not implemented");
+        },
+        async deleteEntry(root, {csrfToken, entryId}, ctx) {
+            return EntryApiMutations.deleteEntry(csrfToken, ctx.bearerToken, entryId);
+        },
+
+        async addTag(root, {csrfToken}, ctx) {
+        },
+        async removeTag(root, {csrfToken}, ctx) {
+        },
+
+        async createLocation(root, {csrfToken}, ctx) {
+        },
+        async updateLocation(root, {csrfToken}, ctx) {
+        },
+        async deleteLocation(root, {csrfToken}, ctx) {
         },
     },
 };

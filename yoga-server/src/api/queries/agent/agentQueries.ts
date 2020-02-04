@@ -136,7 +136,7 @@ export class AgentQueries {
 
             return myMemberships;
         } catch (e) {
-            const errorId = Helper.logId(`An error occurred during querying 'myRooms': ${JSON.stringify(e)}`);
+            const errorId = Helper.logId(`An error occurred during querying 'myMemberships': ${JSON.stringify(e)}`);
             return <ActionResponse>{
                 success: false,
                 code: errorId

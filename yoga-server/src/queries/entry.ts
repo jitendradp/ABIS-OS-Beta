@@ -3,7 +3,7 @@ import {MembershipStatements} from "../rules/membershipStatements";
 
 export class EntryQueries {
     public static async getEntries(agentId:string, groupId:string, from?:Date, to?:Date) : Promise<Entry[]> {
-        if (!(await MembershipStatements.agentIsMemberOfGroup(agentId, groupId))) {
+        if (!(await MembershipStatements.agentCanAccessGroup(agentId, groupId))) {
             return [];
         }
 
