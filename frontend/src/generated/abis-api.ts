@@ -1,13 +1,3 @@
-import gql from 'graphql-tag';
-import {Injectable} from '@angular/core';
-import * as Apollo from 'apollo-angular';
-import {
-  MutationOptionsAlone,
-  QueryOptionsAlone,
-  SubscriptionOptionsAlone,
-  WatchQueryOptionsAlone
-} from 'apollo-angular/types';
-
 export type Maybe<T> = T | null;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -16,108 +6,290 @@ export type Scalars = {
   Boolean: boolean,
   Int: number,
   Float: number,
+  DateTime: any,
+  Integer: any,
   Json: any,
 };
 
+export type Account = {
+   __typename?: 'Account',
+  id: Scalars['ID'],
+  type: UserType,
+  createdAt: Scalars['DateTime'],
+  updatedAt?: Maybe<Scalars['DateTime']>,
+  location?: Maybe<Location>,
+  timezone: Scalars['String'],
+  email: Scalars['String'],
+  personFirstName?: Maybe<Scalars['String']>,
+  personLastName?: Maybe<Scalars['String']>,
+  personPhone?: Maybe<Scalars['String']>,
+  personMobilePhone?: Maybe<Scalars['String']>,
+  organizationName?: Maybe<Scalars['String']>,
+};
 
-export type UserInformation = {
-  __typename?: 'UserInformation',
-  id: Scalars['String'],
-  createdAt: Scalars['String'],
-  firstName: Scalars['String'],
-  lastName: Scalars['String'],
+export type ActionResponse = {
+   __typename?: 'ActionResponse',
+  success: Scalars['Boolean'],
+  code?: Maybe<Scalars['String']>,
+  message?: Maybe<Scalars['String']>,
+  data?: Maybe<Scalars['String']>,
+};
+
+export type Address = Location & {
+   __typename?: 'Address',
+  id: Scalars['ID'],
+  owner: Scalars['ID'],
+  createdBy: Scalars['ID'],
+  createdAt: Scalars['DateTime'],
+  updatedBy?: Maybe<Scalars['ID']>,
+  updatedAt?: Maybe<Scalars['DateTime']>,
+  name?: Maybe<Scalars['String']>,
+  tags: Array<Tag>,
+  tagAggregate: Array<TagAggregate>,
+  line1: Scalars['String'],
+  line2?: Maybe<Scalars['String']>,
+  city: Scalars['String'],
+  zipCode: Scalars['String'],
+  country: Scalars['String'],
+};
+
+export type AddTagInput = {
+  type: Scalars['String'],
+  value: Scalars['String'],
+};
+
+export type Agent = {
+  id: Scalars['ID'],
+  createdAt: Scalars['DateTime'],
+  updatedAt?: Maybe<Scalars['DateTime']>,
+  name: Scalars['String'],
+  timezone: Scalars['String'],
+  location?: Maybe<Location>,
+};
+
+export type Channel = Group & {
+   __typename?: 'Channel',
+  id: Scalars['ID'],
+  owner: Scalars['ID'],
+  createdBy: Scalars['ID'],
+  createdAt: Scalars['DateTime'],
+  updatedBy?: Maybe<Scalars['ID']>,
+  updatedAt?: Maybe<Scalars['DateTime']>,
+  name: Scalars['String'],
+  entryCount?: Maybe<Scalars['Integer']>,
+  receiver: Agent,
+  reverse?: Maybe<Channel>,
+};
+
+export type ContentEncoding = {
+   __typename?: 'ContentEncoding',
+  id: Scalars['ID'],
+  type: EncodingType,
+  maintainer: Scalars['ID'],
+  createdBy: Scalars['ID'],
+  createdAt: Scalars['DateTime'],
+  updatedBy?: Maybe<Scalars['ID']>,
+  updatedAt?: Maybe<Scalars['DateTime']>,
+  name: Scalars['String'],
+  charset: Scalars['String'],
+};
+
+export type CreateEntryInput = {
+  roomId: Scalars['ID'],
+  type: EntryType,
+  name?: Maybe<Scalars['String']>,
+  content?: Maybe<Scalars['Json']>,
+  contentEncoding?: Maybe<Scalars['ID']>,
+};
+
+export type CreateLocationInput = {
+  id?: Maybe<Scalars['ID']>,
+  type: LocationType,
+  name?: Maybe<Scalars['String']>,
+  osmNodeId?: Maybe<Scalars['String']>,
+  addressLine1?: Maybe<Scalars['String']>,
+  addressLine2?: Maybe<Scalars['String']>,
+  addressCity?: Maybe<Scalars['String']>,
+  addressZipCode?: Maybe<Scalars['String']>,
+  addressCountry?: Maybe<Scalars['String']>,
+  geoPointLatitude?: Maybe<Scalars['Float']>,
+  geoPointLongitude?: Maybe<Scalars['Float']>,
+  geoPointRadiusMeter?: Maybe<Scalars['Float']>,
+  tags: Array<AddTagInput>,
+};
+
+export type CreateProfileInput = {
+  type: ProfileType,
+  name: Scalars['String'],
+  picture?: Maybe<Scalars['String']>,
+  timezone?: Maybe<Scalars['String']>,
+  location?: Maybe<CreateLocationInput>,
+};
+
+export type CreateRoomInput = {
+  name: Scalars['String'],
+  title?: Maybe<Scalars['String']>,
+  description?: Maybe<Scalars['String']>,
+  logo?: Maybe<Scalars['String']>,
+  banner?: Maybe<Scalars['String']>,
+};
+
+export type CreateStashInput = {
+  name: Scalars['String'],
+};
+
+
+export enum EncodingType {
+  Custom = 'Custom',
+  Base64 = 'Base64',
+  Microformat = 'Microformat',
+  TableSchema = 'TableSchema',
+  JsonSchema = 'JsonSchema',
+  XmlSchema = 'XmlSchema',
+  GqlSchema = 'GqlSchema',
+  RdfSchema = 'RdfSchema',
+  Owl = 'Owl'
+}
+
+export type Entry = {
+   __typename?: 'Entry',
+  id: Scalars['ID'],
+  type: EntryType,
+  owner: Scalars['ID'],
+  createdBy: Scalars['ID'],
+  createdAt: Scalars['DateTime'],
+  updatedBy?: Maybe<Scalars['ID']>,
+  updatedAt?: Maybe<Scalars['DateTime']>,
+  name?: Maybe<Scalars['String']>,
+  content?: Maybe<Scalars['Json']>,
+  contentEncoding?: Maybe<ContentEncoding>,
+  tags: Array<Tag>,
+  tagAggregate: Array<TagAggregate>,
+};
+
+export enum EntryType {
+  Empty = 'Empty',
+  Json = 'Json',
+  Table = 'Table',
+  Document = 'Document',
+  Picture = 'Picture',
+  File = 'File',
+  Thing = 'Thing'
+}
+
+export type GeoPoint = Location & {
+   __typename?: 'GeoPoint',
+  id: Scalars['ID'],
+  owner: Scalars['ID'],
+  createdBy: Scalars['ID'],
+  createdAt: Scalars['DateTime'],
+  updatedBy?: Maybe<Scalars['ID']>,
+  updatedAt?: Maybe<Scalars['DateTime']>,
+  name?: Maybe<Scalars['String']>,
+  tags: Array<Tag>,
+  tagAggregate: Array<TagAggregate>,
+  geoPointLatitude: Scalars['Float'],
+  geoPointLongitude: Scalars['Float'],
+  geoPointRadiusMeter: Scalars['Float'],
 };
 
 export type Group = {
-  __typename?: 'Group',
-  id: Scalars['String'],
-  createdAt: Scalars['String'],
-  updatedAt?: Maybe<Scalars['String']>,
-  name?: Maybe<Scalars['String']>,
-  title: Scalars['String'],
-  description?: Maybe<Scalars['String']>,
-  logo?: Maybe<Scalars['String']>,
-  type: GroupType,
-  tags?: Maybe<Array<Tag>>,
-  creator: Profile,
-  members?: Maybe<Array<Membership>>,
-  is_hidden?: Maybe<Scalars['Boolean']>,
-  is_public?: Maybe<Scalars['Boolean']>,
+  id: Scalars['ID'],
+  owner: Scalars['ID'],
+  createdBy: Scalars['ID'],
+  createdAt: Scalars['DateTime'],
+  updatedBy?: Maybe<Scalars['ID']>,
+  updatedAt?: Maybe<Scalars['DateTime']>,
+  name: Scalars['String'],
+  entryCount?: Maybe<Scalars['Integer']>,
 };
 
 export enum GroupType {
-  Room = 'ROOM',
-  Channel = 'CHANNEL',
-  Thread = 'THREAD',
-  Friends = 'FRIENDS'
+  Channel = 'Channel',
+  Room = 'Room'
 }
+
+export type Inbox = {
+   __typename?: 'Inbox',
+  id: Scalars['ID'],
+};
+
 
 
 export type Location = {
-  __typename?: 'Location',
-  id: Scalars['String'],
-  createdAt: Scalars['String'],
-  updatedAt?: Maybe<Scalars['String']>,
-  creator: Profile,
+  id: Scalars['ID'],
+  owner: Scalars['ID'],
+  createdBy: Scalars['ID'],
+  createdAt: Scalars['DateTime'],
+  updatedBy?: Maybe<Scalars['ID']>,
+  updatedAt?: Maybe<Scalars['DateTime']>,
   name?: Maybe<Scalars['String']>,
-  latitude: Scalars['Float'],
-  longitude: Scalars['Float'],
-  radius?: Maybe<Scalars['Float']>,
+  tags: Array<Tag>,
+  tagAggregate: Array<TagAggregate>,
 };
+
+export enum LocationType {
+  OpenStreetMap = 'OpenStreetMap',
+  Address = 'Address',
+  GeoPoint = 'GeoPoint'
+}
 
 export type Membership = {
-  __typename?: 'Membership',
-  id: Scalars['String'],
-  createdAt: Scalars['String'],
-  updatedAt?: Maybe<Scalars['String']>,
-  creator: Profile,
-  member: Profile,
-  group: Group,
+   __typename?: 'Membership',
+  id: Scalars['ID'],
+  type: MembershipType,
+  createdBy: Scalars['ID'],
+  createdAt: Scalars['DateTime'],
+  updatedBy?: Maybe<Scalars['ID']>,
+  updatedAt?: Maybe<Scalars['DateTime']>,
+  groupType?: Maybe<GroupType>,
+  group?: Maybe<Group>,
+  member: Agent,
+  showHistory: Scalars['Boolean'],
 };
 
-export type Message = {
-  __typename?: 'Message',
-  id: Scalars['String'],
-  type: MessageType,
-  createdAt: Scalars['String'],
-  updatedAt?: Maybe<Scalars['String']>,
-  creator: Profile,
-  subject?: Maybe<Scalars['String']>,
-  content?: Maybe<Scalars['Json']>,
-  tags?: Maybe<Array<Tag>>,
-  group: Group,
-};
-
-export enum MessageType {
-  Notification = 'NOTIFICATION',
-  DirectMessage = 'DIRECT_MESSAGE',
-  Comment = 'COMMENT',
-  Post = 'POST'
+export enum MembershipType {
+  Invite = 'Invite',
+  Single = 'Single',
+  Multi = 'Multi'
 }
 
 export type Mutation = {
-  __typename?: 'Mutation',
-  signup?: Maybe<Scalars['String']>,
-  verifyEmail?: Maybe<Scalars['String']>,
-  verifySession?: Maybe<Scalars['Boolean']>,
-  createProfile?: Maybe<Scalars['String']>,
-  updateProfile?: Maybe<Scalars['String']>,
-  createGroup?: Maybe<Scalars['String']>,
-  updateGroup?: Maybe<Scalars['String']>,
-  addMember?: Maybe<Scalars['String']>,
-  removeMember?: Maybe<Scalars['String']>,
-  postMessage?: Maybe<Scalars['String']>,
-  login?: Maybe<Scalars['String']>,
-  logout?: Maybe<Scalars['Boolean']>,
-  setSessionProfile?: Maybe<Scalars['String']>,
+   __typename?: 'Mutation',
+  signup: ActionResponse,
+  verifyEmail: ActionResponse,
+  resetPassword: ActionResponse,
+  login: ActionResponse,
+  logout: ActionResponse,
+  verifySession: ActionResponse,
+  createProfile?: Maybe<Profile>,
+  updateProfile?: Maybe<Profile>,
+  deleteProfile: ActionResponse,
+  createStash?: Maybe<Stash>,
+  updateStash?: Maybe<Stash>,
+  deleteStash: ActionResponse,
+  createChannel?: Maybe<Channel>,
+  deleteChannel: ActionResponse,
+  createRoom?: Maybe<Room>,
+  updateRoom?: Maybe<Room>,
+  deleteRoom: ActionResponse,
+  createEntry?: Maybe<Entry>,
+  updateEntry?: Maybe<Entry>,
+  deleteEntry: ActionResponse,
+  join?: Maybe<Membership>,
+  leave: ActionResponse,
+  invite: ActionResponse,
+  kick: ActionResponse,
+  addTag?: Maybe<Tag>,
+  removeTag: ActionResponse,
+  createLocation?: Maybe<Location>,
+  updateLocation?: Maybe<Location>,
+  deleteLocation: ActionResponse,
 };
 
 
 export type MutationSignupArgs = {
-  firstName: Scalars['String'],
-  lastName: Scalars['String'],
-  email: Scalars['String'],
-  password: Scalars['String']
+  signupInput: SignupInput
 };
 
 
@@ -126,76 +298,8 @@ export type MutationVerifyEmailArgs = {
 };
 
 
-export type MutationVerifySessionArgs = {
-  csrfToken: Scalars['String']
-};
-
-
-export type MutationCreateProfileArgs = {
-  csrfToken: Scalars['String'],
-  type: ProfileType,
-  name: Scalars['String'],
-  picture?: Maybe<Scalars['String']>,
-  timezone?: Maybe<Scalars['String']>
-};
-
-
-export type MutationUpdateProfileArgs = {
-  csrfToken: Scalars['String'],
-  profileId: Scalars['String'],
-  type: ProfileType,
-  name: Scalars['String'],
-  picture?: Maybe<Scalars['String']>,
-  timezone?: Maybe<Scalars['String']>,
-  status?: Maybe<Scalars['String']>
-};
-
-
-export type MutationCreateGroupArgs = {
-  csrfToken: Scalars['String'],
-  hostProfileId: Scalars['String'],
-  type: GroupType,
-  name: Scalars['String'],
-  title: Scalars['String'],
-  description?: Maybe<Scalars['String']>,
-  logo?: Maybe<Scalars['String']>,
-  tags?: Maybe<Scalars['String']>
-};
-
-
-export type MutationUpdateGroupArgs = {
-  csrfToken: Scalars['String'],
-  workspaceId: Scalars['String'],
-  type: GroupType,
-  name: Scalars['String'],
-  title: Scalars['String'],
-  description?: Maybe<Scalars['String']>,
-  logo?: Maybe<Scalars['String']>,
-  tags?: Maybe<Scalars['String']>,
-  isHidden?: Maybe<Scalars['Boolean']>,
-  isPublic?: Maybe<Scalars['Boolean']>
-};
-
-
-export type MutationAddMemberArgs = {
-  csrfToken: Scalars['String'],
-  groupId: Scalars['String'],
-  memberProfileId: Scalars['String']
-};
-
-
-export type MutationRemoveMemberArgs = {
-  csrfToken: Scalars['String'],
-  groupId: Scalars['String'],
-  memberProfileId: Scalars['String']
-};
-
-
-export type MutationPostMessageArgs = {
-  csrfToken: Scalars['String'],
-  groupId: Scalars['String'],
-  subject: Scalars['String'],
-  content: Scalars['String']
+export type MutationResetPasswordArgs = {
+  code: Scalars['String']
 };
 
 
@@ -210,982 +314,396 @@ export type MutationLogoutArgs = {
 };
 
 
-export type MutationSetSessionProfileArgs = {
-  csrfToken: Scalars['String'],
-  profileId: Scalars['String']
+export type MutationVerifySessionArgs = {
+  csrfToken: Scalars['String']
 };
 
-export type Profile = {
-  __typename?: 'Profile',
-  id: Scalars['String'],
-  createdAt: Scalars['String'],
-  updatedAt?: Maybe<Scalars['String']>,
-  type: ProfileType,
-  name: Scalars['String'],
-  timezone?: Maybe<Scalars['String']>,
-  status?: Maybe<Scalars['String']>,
-  picture: Scalars['String'],
-  memberships?: Maybe<Array<Membership>>,
-  location?: Maybe<Location>,
+
+export type MutationCreateProfileArgs = {
+  csrfToken: Scalars['String'],
+  createProfileInput: CreateProfileInput
 };
+
+
+export type MutationUpdateProfileArgs = {
+  csrfToken: Scalars['String'],
+  updateProfileInput: UpdateProfileInput
+};
+
+
+export type MutationDeleteProfileArgs = {
+  csrfToken: Scalars['String'],
+  id: Scalars['ID']
+};
+
+
+export type MutationCreateStashArgs = {
+  csrfToken: Scalars['String'],
+  createStashInput: CreateStashInput
+};
+
+
+export type MutationUpdateStashArgs = {
+  csrfToken: Scalars['String'],
+  updateStashInput: UpdateStashInput
+};
+
+
+export type MutationDeleteStashArgs = {
+  csrfToken: Scalars['String'],
+  id: Scalars['ID']
+};
+
+
+export type MutationCreateChannelArgs = {
+  csrfToken: Scalars['String'],
+  toAgentId: Scalars['ID']
+};
+
+
+export type MutationDeleteChannelArgs = {
+  csrfToken: Scalars['String'],
+  id: Scalars['ID']
+};
+
+
+export type MutationCreateRoomArgs = {
+  csrfToken: Scalars['String'],
+  createRoomInput: CreateRoomInput
+};
+
+
+export type MutationUpdateRoomArgs = {
+  csrfToken: Scalars['String'],
+  updateRoomInput: UpdateRoomInput
+};
+
+
+export type MutationDeleteRoomArgs = {
+  csrfToken: Scalars['String'],
+  id: Scalars['ID']
+};
+
+
+export type MutationCreateEntryArgs = {
+  csrfToken: Scalars['String'],
+  createEntryInput: CreateEntryInput
+};
+
+
+export type MutationUpdateEntryArgs = {
+  csrfToken: Scalars['String'],
+  updateEntryInput: UpdateEntryInput
+};
+
+
+export type MutationDeleteEntryArgs = {
+  csrfToken: Scalars['String'],
+  id: Scalars['ID']
+};
+
+
+export type MutationJoinArgs = {
+  csrfToken: Scalars['String'],
+  groupId: Scalars['ID']
+};
+
+
+export type MutationLeaveArgs = {
+  csrfToken: Scalars['String'],
+  groupId: Scalars['ID']
+};
+
+
+export type MutationInviteArgs = {
+  csrfToken: Scalars['String'],
+  agentId: Scalars['ID'],
+  toGroupId: Scalars['ID']
+};
+
+
+export type MutationKickArgs = {
+  csrfToken: Scalars['String'],
+  agentId: Scalars['ID'],
+  fromGroupId: Scalars['ID']
+};
+
+
+export type MutationAddTagArgs = {
+  csrfToken: Scalars['String'],
+  to: Scalars['ID'],
+  addTagInput: AddTagInput
+};
+
+
+export type MutationRemoveTagArgs = {
+  csrfToken: Scalars['String'],
+  tagId: Scalars['ID']
+};
+
+
+export type MutationCreateLocationArgs = {
+  csrfToken: Scalars['String'],
+  createLocationInput: CreateLocationInput
+};
+
+
+export type MutationUpdateLocationArgs = {
+  csrfToken: Scalars['String'],
+  updateLocationInput: UpdateLocationInput
+};
+
+
+export type MutationDeleteLocationArgs = {
+  csrfToken: Scalars['String'],
+  id: Scalars['ID']
+};
+
+export type OpenStreetMapNode = Location & {
+   __typename?: 'OpenStreetMapNode',
+  id: Scalars['ID'],
+  owner: Scalars['ID'],
+  createdBy: Scalars['ID'],
+  createdAt: Scalars['DateTime'],
+  updatedBy?: Maybe<Scalars['ID']>,
+  updatedAt?: Maybe<Scalars['DateTime']>,
+  name?: Maybe<Scalars['String']>,
+  tags: Array<Tag>,
+  tagAggregate: Array<TagAggregate>,
+  osmNodeId: Scalars['String'],
+};
+
+export type Profile = Agent & {
+   __typename?: 'Profile',
+  id: Scalars['ID'],
+  createdAt: Scalars['DateTime'],
+  updatedAt?: Maybe<Scalars['DateTime']>,
+  name: Scalars['String'],
+  timezone: Scalars['String'],
+  location?: Maybe<Location>,
+  profileType: ProfileType,
+  avatar: Scalars['String'],
+  status: ProfileStatus,
+  banner?: Maybe<Scalars['String']>,
+  slogan?: Maybe<Scalars['String']>,
+  jobTitle?: Maybe<Scalars['String']>,
+};
+
+export enum ProfileStatus {
+  Offline = 'Offline',
+  DoNotDisturb = 'DoNotDisturb',
+  Away = 'Away',
+  Available = 'Available'
+}
 
 export enum ProfileType {
-  Work = 'Work',
+  Business = 'Business',
   Private = 'Private'
 }
 
 export type Query = {
-  __typename?: 'Query',
-  myGroups: Array<Group>,
+   __typename?: 'Query',
+  myAccount: Account,
+  myProfiles: Array<Maybe<Profile>>,
+  myServices: Array<Maybe<Service>>,
+  myStashes: Array<Stash>,
+  myChannels: Array<Channel>,
+  myRooms: Array<Room>,
   myMemberships: Array<Membership>,
-  getSessionProfile?: Maybe<Profile>,
-  getUserInformation?: Maybe<UserInformation>,
-  listProfiles: Array<Profile>,
-  listGroups: Array<Group>,
-  listMemberships: Array<Membership>,
-  listMembers: Array<Membership>,
-  listMessages: Array<Message>,
-  getProfile?: Maybe<Profile>,
-  getGroup?: Maybe<Group>,
+  findRooms: Array<Room>,
+  findMemberships: Array<Membership>,
+  getEntries: Array<Entry>,
 };
 
 
-export type QueryMyGroupsArgs = {
+export type QueryMyAccountArgs = {
+  csrfToken: Scalars['String']
+};
+
+
+export type QueryMyProfilesArgs = {
+  csrfToken: Scalars['String']
+};
+
+
+export type QueryMyServicesArgs = {
+  csrfToken: Scalars['String']
+};
+
+
+export type QueryMyStashesArgs = {
+  csrfToken: Scalars['String']
+};
+
+
+export type QueryMyChannelsArgs = {
+  csrfToken: Scalars['String']
+};
+
+
+export type QueryMyRoomsArgs = {
   csrfToken: Scalars['String']
 };
 
 
 export type QueryMyMembershipsArgs = {
-  csrfToken: Scalars['String']
-};
-
-
-export type QueryGetSessionProfileArgs = {
-  csrfToken: Scalars['String']
-};
-
-
-export type QueryGetUserInformationArgs = {
-  csrfToken: Scalars['String']
-};
-
-
-export type QueryListProfilesArgs = {
-  csrfToken: Scalars['String']
-};
-
-
-export type QueryListGroupsArgs = {
   csrfToken: Scalars['String'],
-  profileId: Scalars['String']
+  groupType?: Maybe<GroupType>,
+  isPublic?: Maybe<Scalars['Boolean']>
 };
 
 
-export type QueryListMembershipsArgs = {
+export type QueryFindRoomsArgs = {
   csrfToken: Scalars['String'],
-  profileId: Scalars['String']
+  searchText?: Maybe<Scalars['String']>
 };
 
 
-export type QueryListMembersArgs = {
+export type QueryFindMembershipsArgs = {
   csrfToken: Scalars['String'],
-  groupId: Scalars['String']
+  roomId: Scalars['ID'],
+  searchText?: Maybe<Scalars['String']>
 };
 
 
-export type QueryListMessagesArgs = {
+export type QueryGetEntriesArgs = {
   csrfToken: Scalars['String'],
-  groupId: Scalars['String'],
-  profileId: Scalars['String'],
-  begin?: Maybe<Scalars['String']>,
-  end?: Maybe<Scalars['String']>
+  groupId: Scalars['ID'],
+  from?: Maybe<Scalars['DateTime']>,
+  to?: Maybe<Scalars['DateTime']>
 };
 
-
-export type QueryGetProfileArgs = {
-  csrfToken: Scalars['String'],
-  profileId: Scalars['String']
+export type Room = Group & {
+   __typename?: 'Room',
+  id: Scalars['ID'],
+  owner: Scalars['ID'],
+  createdBy: Scalars['ID'],
+  createdAt: Scalars['DateTime'],
+  updatedBy?: Maybe<Scalars['ID']>,
+  updatedAt?: Maybe<Scalars['DateTime']>,
+  name: Scalars['String'],
+  entryCount?: Maybe<Scalars['Integer']>,
+  isPrivate: Scalars['Boolean'],
+  title?: Maybe<Scalars['String']>,
+  description?: Maybe<Scalars['String']>,
+  logo?: Maybe<Scalars['String']>,
+  banner?: Maybe<Scalars['String']>,
+  inbox: Inbox,
+  memberCount?: Maybe<Scalars['Integer']>,
+  memberships: Array<Membership>,
+  tags: Array<Tag>,
+  tagAggregate: Array<TagAggregate>,
 };
 
+export type Service = Agent & {
+   __typename?: 'Service',
+  id: Scalars['ID'],
+  createdAt: Scalars['DateTime'],
+  updatedAt?: Maybe<Scalars['DateTime']>,
+  name: Scalars['String'],
+  timezone: Scalars['String'],
+  location?: Maybe<Location>,
+  status: ServiceStatus,
+  description?: Maybe<Scalars['String']>,
+};
 
-export type QueryGetGroupArgs = {
-  csrfToken: Scalars['String'],
-  groupId: Scalars['String']
+export enum ServiceStatus {
+  Running = 'Running',
+  Suspended = 'Suspended',
+  Failed = 'Failed',
+  Succeeded = 'Succeeded'
+}
+
+export type SignupInput = {
+  type: UserType,
+  timezone: Scalars['String'],
+  email: Scalars['String'],
+  password: Scalars['String'],
+  personFirstName?: Maybe<Scalars['String']>,
+  personLastName?: Maybe<Scalars['String']>,
+  personPhone?: Maybe<Scalars['String']>,
+  personMobilePhone?: Maybe<Scalars['String']>,
+  organizationName?: Maybe<Scalars['String']>,
+};
+
+export type Stash = Group & {
+   __typename?: 'Stash',
+  id: Scalars['ID'],
+  owner: Scalars['ID'],
+  createdBy: Scalars['ID'],
+  createdAt: Scalars['DateTime'],
+  updatedBy?: Maybe<Scalars['ID']>,
+  updatedAt?: Maybe<Scalars['DateTime']>,
+  name: Scalars['String'],
+  entryCount?: Maybe<Scalars['Integer']>,
+  tags: Array<Tag>,
 };
 
 export type Tag = {
-  __typename?: 'Tag',
+   __typename?: 'Tag',
   id: Scalars['ID'],
-  createdAt: Scalars['String'],
-  creator: Profile,
-  name: Scalars['String'],
-  parent?: Maybe<Tag>,
+  type: Scalars['String'],
+  owner: Scalars['ID'],
+  createdBy: Scalars['ID'],
+  createdAt: Scalars['DateTime'],
+  updatedBy?: Maybe<Scalars['ID']>,
+  updatedAt?: Maybe<Scalars['DateTime']>,
+  value: Scalars['String'],
 };
 
-export type SignupMutationVariables = {
-  firstName: Scalars['String'],
-  lastName: Scalars['String'],
-  email: Scalars['String'],
-  password: Scalars['String']
+export type TagAggregate = {
+   __typename?: 'TagAggregate',
+  type: Scalars['String'],
+  count: Scalars['Integer'],
 };
 
-
-export type SignupMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'signup'>
-  );
-
-export type VerifyEmailMutationVariables = {
-  code: Scalars['String']
+export type UpdateEntryInput = {
+  id: Scalars['ID'],
+  name?: Maybe<Scalars['String']>,
+  content?: Maybe<Scalars['Json']>,
+  contentEncoding?: Maybe<Scalars['ID']>,
 };
 
-
-export type VerifyEmailMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'verifyEmail'>
-  );
-
-export type LoginMutationVariables = {
-  email: Scalars['String'],
-  password: Scalars['String']
+export type UpdateLocationInput = {
+  id: Scalars['ID'],
+  type: LocationType,
+  name?: Maybe<Scalars['String']>,
+  osmNodeId?: Maybe<Scalars['String']>,
+  addressLine1?: Maybe<Scalars['String']>,
+  addressLine2?: Maybe<Scalars['String']>,
+  addressCity?: Maybe<Scalars['String']>,
+  addressZipCode?: Maybe<Scalars['String']>,
+  addressCountry?: Maybe<Scalars['String']>,
+  geoPointLatitude?: Maybe<Scalars['Float']>,
+  geoPointLongitude?: Maybe<Scalars['Float']>,
+  geoPointRadiusMeter?: Maybe<Scalars['Float']>,
 };
 
-
-export type LoginMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'login'>
-  );
-
-export type LogoutMutationVariables = {
-  csrfToken: Scalars['String']
-};
-
-
-export type LogoutMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'logout'>
-  );
-
-export type SetSessionProfileMutationVariables = {
-  csrfToken: Scalars['String'],
-  profileId: Scalars['String']
-};
-
-
-export type SetSessionProfileMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'setSessionProfile'>
-  );
-
-export type VerifySessionMutationVariables = {
-  csrfToken: Scalars['String']
-};
-
-
-export type VerifySessionMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'verifySession'>
-  );
-
-export type CreateGroupMutationVariables = {
-  csrfToken: Scalars['String'],
-  hostProfileId: Scalars['String'],
-  type: GroupType,
-  name: Scalars['String'],
-  title: Scalars['String'],
-  description: Scalars['String'],
-  logo: Scalars['String'],
-  tags: Scalars['String']
-};
-
-
-export type CreateGroupMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'createGroup'>
-  );
-
-export type UpdateGroupMutationVariables = {
-  csrfToken: Scalars['String'],
-  workspaceId: Scalars['String'],
-  type: GroupType,
-  name: Scalars['String'],
-  title: Scalars['String'],
-  description: Scalars['String'],
-  logo: Scalars['String'],
-  tags: Scalars['String'],
-  isHidden: Scalars['Boolean'],
-  isPublic: Scalars['Boolean']
-};
-
-
-export type UpdateGroupMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'updateGroup'>
-  );
-
-export type AddMemberMutationVariables = {
-  csrfToken: Scalars['String'],
-  groupId: Scalars['String'],
-  memberProfileId: Scalars['String']
-};
-
-
-export type AddMemberMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'addMember'>
-  );
-
-export type RemoveMemberMutationVariables = {
-  csrfToken: Scalars['String'],
-  groupId: Scalars['String'],
-  memberProfileId: Scalars['String']
-};
-
-
-export type RemoveMemberMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'removeMember'>
-  );
-
-export type PostMessageMutationVariables = {
-  csrfToken: Scalars['String'],
-  groupId: Scalars['String'],
-  subject: Scalars['String'],
-  content: Scalars['String']
-};
-
-
-export type PostMessageMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'postMessage'>
-  );
-
-export type CreateProfileMutationVariables = {
-  csrfToken: Scalars['String'],
+export type UpdateProfileInput = {
+  id: Scalars['ID'],
   type: ProfileType,
   name: Scalars['String'],
-  picture: Scalars['String'],
-  timezone: Scalars['String']
+  picture?: Maybe<Scalars['String']>,
+  timezone?: Maybe<Scalars['String']>,
+  location?: Maybe<CreateLocationInput>,
+  status: ProfileStatus,
 };
 
-
-export type CreateProfileMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'createProfile'>
-  );
-
-export type UpdateProfileMutationVariables = {
-  csrfToken: Scalars['String'],
-  profileId: Scalars['String'],
-  type: ProfileType,
+export type UpdateRoomInput = {
+  id: Scalars['ID'],
   name: Scalars['String'],
-  picture: Scalars['String'],
-  timezone: Scalars['String'],
-  status: Scalars['String']
+  title?: Maybe<Scalars['String']>,
+  description?: Maybe<Scalars['String']>,
+  logo?: Maybe<Scalars['String']>,
+  banner?: Maybe<Scalars['String']>,
 };
 
-
-export type UpdateProfileMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'updateProfile'>
-  );
-
-export type GetUserInformationQueryVariables = {
-  csrfToken: Scalars['String']
+export type UpdateStashInput = {
+  id: Scalars['ID'],
+  name: Scalars['String'],
 };
 
-
-export type GetUserInformationQuery = (
-  { __typename?: 'Query' }
-  & {
-  getUserInformation: Maybe<(
-    { __typename?: 'UserInformation' }
-    & Pick<UserInformation, 'id' | 'createdAt' | 'firstName' | 'lastName'>
-    )>
-}
-  );
-
-export type GetSessionProfileQueryVariables = {
-  csrfToken: Scalars['String']
-};
-
-
-export type GetSessionProfileQuery = (
-  { __typename?: 'Query' }
-  & {
-  getSessionProfile: Maybe<(
-    { __typename?: 'Profile' }
-    & Pick<Profile, 'id'>
-    )>
-}
-  );
-
-export type ListProfilesQueryVariables = {
-  csrfToken: Scalars['String']
-};
-
-
-export type ListProfilesQuery = (
-  { __typename?: 'Query' }
-  & {
-  listProfiles: Array<(
-    { __typename?: 'Profile' }
-    & Pick<Profile, 'id' | 'createdAt' | 'name' | 'timezone' | 'status' | 'picture'>
-    & {
-    location: Maybe<(
-      { __typename?: 'Location' }
-      & Pick<Location, 'id' | 'name' | 'latitude' | 'longitude' | 'radius'>
-      )>
-  }
-    )>
-}
-  );
-
-export type ListGroupsQueryVariables = {
-  csrfToken: Scalars['String'],
-  profileId: Scalars['String']
-};
-
-
-export type ListGroupsQuery = (
-  { __typename?: 'Query' }
-  & {
-  listGroups: Array<(
-    { __typename?: 'Group' }
-    & Pick<Group, 'id' | 'name' | 'title' | 'description' | 'logo' | 'type' | 'createdAt' | 'is_hidden' | 'is_public'>
-    & {
-    creator: (
-      { __typename?: 'Profile' }
-      & Pick<Profile, 'id' | 'name' | 'picture' | 'status'>
-      & {
-      location: Maybe<(
-        { __typename?: 'Location' }
-        & Pick<Location, 'id' | 'name' | 'latitude' | 'longitude' | 'radius'>
-        )>
-    }
-      )
-  }
-    )>
-}
-  );
-
-export type ListMembersQueryVariables = {
-  csrfToken: Scalars['String'],
-  groupId: Scalars['String']
-};
-
-
-export type ListMembersQuery = (
-  { __typename?: 'Query' }
-  & {
-  listMembers: Array<(
-    { __typename?: 'Membership' }
-    & Pick<Membership, 'id' | 'createdAt'>
-    & {
-    member: (
-      { __typename?: 'Profile' }
-      & Pick<Profile, 'id' | 'name' | 'timezone' | 'status' | 'picture'>
-      & {
-      location: Maybe<(
-        { __typename?: 'Location' }
-        & Pick<Location, 'id' | 'name' | 'latitude' | 'longitude' | 'radius'>
-        )>
-    }
-      )
-  }
-    )>
-}
-  );
-
-export type ListMessagesQueryVariables = {
-  csrfToken: Scalars['String'],
-  groupId: Scalars['String'],
-  profileId: Scalars['String'],
-  begin?: Maybe<Scalars['String']>,
-  end?: Maybe<Scalars['String']>
-};
-
-
-export type ListMessagesQuery = (
-  { __typename?: 'Query' }
-  & {
-  listMessages: Array<(
-    { __typename?: 'Message' }
-    & Pick<Message, 'id' | 'createdAt' | 'updatedAt' | 'subject' | 'content' | 'type'>
-    & {
-    creator: (
-      { __typename?: 'Profile' }
-      & Pick<Profile, 'id' | 'name' | 'picture'>
-      ), tags: Maybe<Array<(
-      { __typename?: 'Tag' }
-      & Pick<Tag, 'id' | 'name'>
-      )>>
-  }
-    )>
-}
-  );
-
-export type GetGroupQueryVariables = {
-  csrfToken: Scalars['String'],
-  groupId: Scalars['String']
-};
-
-
-export type GetGroupQuery = (
-  { __typename?: 'Query' }
-  & {
-  getGroup: Maybe<(
-    { __typename?: 'Group' }
-    & Pick<Group, 'id' | 'name' | 'title' | 'description' | 'logo' | 'type' | 'createdAt' | 'updatedAt' | 'is_public'>
-    & {
-    tags: Maybe<Array<(
-      { __typename?: 'Tag' }
-      & Pick<Tag, 'id' | 'name'>
-      )>>, creator: (
-      { __typename?: 'Profile' }
-      & Pick<Profile, 'id' | 'name' | 'status' | 'picture'>
-      & {
-      location: Maybe<(
-        { __typename?: 'Location' }
-        & Pick<Location, 'id' | 'name' | 'latitude' | 'longitude' | 'radius'>
-        )>
-    }
-      ), members: Maybe<Array<(
-      { __typename?: 'Membership' }
-      & Pick<Membership, 'id' | 'createdAt'>
-      & {
-      member: (
-        { __typename?: 'Profile' }
-        & Pick<Profile, 'id' | 'name' | 'status' | 'picture'>
-        & {
-        location: Maybe<(
-          { __typename?: 'Location' }
-          & Pick<Location, 'id' | 'name' | 'latitude' | 'longitude' | 'radius'>
-          )>
-      }
-        )
-    }
-      )>>
-  }
-    )>
-}
-  );
-
-export type GetProfileQueryVariables = {
-  csrfToken: Scalars['String'],
-  profileId: Scalars['String']
-};
-
-
-export type GetProfileQuery = (
-  { __typename?: 'Query' }
-  & {
-  getProfile: Maybe<(
-    { __typename?: 'Profile' }
-    & Pick<Profile, 'id' | 'createdAt' | 'updatedAt' | 'name' | 'timezone' | 'status' | 'picture'>
-    & {
-    memberships: Maybe<Array<(
-      { __typename?: 'Membership' }
-      & Pick<Membership, 'id' | 'createdAt'>
-      & {
-      group: (
-        { __typename?: 'Group' }
-        & Pick<Group, 'id' | 'name' | 'title' | 'description' | 'logo' | 'type' | 'createdAt'>
-        & {
-        tags: Maybe<Array<(
-          { __typename?: 'Tag' }
-          & Pick<Tag, 'id' | 'name'>
-          )>>, creator: (
-          { __typename?: 'Profile' }
-          & Pick<Profile, 'id' | 'name' | 'status' | 'picture'>
-          & {
-          location: Maybe<(
-            { __typename?: 'Location' }
-            & Pick<Location, 'id' | 'name' | 'latitude' | 'longitude' | 'radius'>
-            )>
-        }
-          )
-      }
-        )
-    }
-      )>>, location: Maybe<(
-      { __typename?: 'Location' }
-      & Pick<Location, 'id' | 'name' | 'latitude' | 'longitude' | 'radius'>
-      )>
-  }
-    )>
-}
-  );
-
-export const SignupDocument = gql`
-    mutation signup($firstName: String!, $lastName: String!, $email: String!, $password: String!) {
-  signup(firstName: $firstName, lastName: $lastName, email: $email, password: $password)
-}
-    `;
-
-@Injectable({
-  providedIn: 'root'
-})
-export class SignupGQL extends Apollo.Mutation<SignupMutation, SignupMutationVariables> {
-  document = SignupDocument;
-
-}
-
-export const VerifyEmailDocument = gql`
-    mutation verifyEmail($code: String!) {
-  verifyEmail(code: $code)
-}
-    `;
-
-@Injectable({
-  providedIn: 'root'
-})
-export class VerifyEmailGQL extends Apollo.Mutation<VerifyEmailMutation, VerifyEmailMutationVariables> {
-  document = VerifyEmailDocument;
-
-}
-
-export const LoginDocument = gql`
-    mutation login($email: String!, $password: String!) {
-  login(email: $email, password: $password)
-}
-    `;
-
-@Injectable({
-  providedIn: 'root'
-})
-export class LoginGQL extends Apollo.Mutation<LoginMutation, LoginMutationVariables> {
-  document = LoginDocument;
-
-}
-
-export const LogoutDocument = gql`
-    mutation logout($csrfToken: String!) {
-  logout(csrfToken: $csrfToken)
-}
-    `;
-
-@Injectable({
-  providedIn: 'root'
-})
-export class LogoutGQL extends Apollo.Mutation<LogoutMutation, LogoutMutationVariables> {
-  document = LogoutDocument;
-
-}
-
-export const SetSessionProfileDocument = gql`
-    mutation setSessionProfile($csrfToken: String!, $profileId: String!) {
-  setSessionProfile(csrfToken: $csrfToken, profileId: $profileId)
-}
-    `;
-
-@Injectable({
-  providedIn: 'root'
-})
-export class SetSessionProfileGQL extends Apollo.Mutation<SetSessionProfileMutation, SetSessionProfileMutationVariables> {
-  document = SetSessionProfileDocument;
-
-}
-
-export const VerifySessionDocument = gql`
-    mutation verifySession($csrfToken: String!) {
-  verifySession(csrfToken: $csrfToken)
-}
-    `;
-
-@Injectable({
-  providedIn: 'root'
-})
-export class VerifySessionGQL extends Apollo.Mutation<VerifySessionMutation, VerifySessionMutationVariables> {
-  document = VerifySessionDocument;
-
-}
-
-export const CreateGroupDocument = gql`
-    mutation createGroup($csrfToken: String!, $hostProfileId: String!, $type: GroupType!, $name: String!, $title: String!, $description: String!, $logo: String!, $tags: String!) {
-  createGroup(csrfToken: $csrfToken, hostProfileId: $hostProfileId, type: $type, name: $name, title: $title, description: $description, logo: $logo, tags: $tags)
-}
-    `;
-
-@Injectable({
-  providedIn: 'root'
-})
-export class CreateGroupGQL extends Apollo.Mutation<CreateGroupMutation, CreateGroupMutationVariables> {
-  document = CreateGroupDocument;
-
-}
-
-export const UpdateGroupDocument = gql`
-    mutation updateGroup($csrfToken: String!, $workspaceId: String!, $type: GroupType!, $name: String!, $title: String!, $description: String!, $logo: String!, $tags: String!, $isHidden: Boolean!, $isPublic: Boolean!) {
-  updateGroup(csrfToken: $csrfToken, workspaceId: $workspaceId, type: $type, name: $name, title: $title, description: $description, logo: $logo, tags: $tags, isHidden: $isHidden, isPublic: $isPublic)
-}
-    `;
-
-@Injectable({
-  providedIn: 'root'
-})
-export class UpdateGroupGQL extends Apollo.Mutation<UpdateGroupMutation, UpdateGroupMutationVariables> {
-  document = UpdateGroupDocument;
-
-}
-
-export const AddMemberDocument = gql`
-    mutation addMember($csrfToken: String!, $groupId: String!, $memberProfileId: String!) {
-  addMember(csrfToken: $csrfToken, groupId: $groupId, memberProfileId: $memberProfileId)
-}
-    `;
-
-@Injectable({
-  providedIn: 'root'
-})
-export class AddMemberGQL extends Apollo.Mutation<AddMemberMutation, AddMemberMutationVariables> {
-  document = AddMemberDocument;
-
-}
-
-export const RemoveMemberDocument = gql`
-    mutation removeMember($csrfToken: String!, $groupId: String!, $memberProfileId: String!) {
-  removeMember(csrfToken: $csrfToken, groupId: $groupId, memberProfileId: $memberProfileId)
-}
-    `;
-
-@Injectable({
-  providedIn: 'root'
-})
-export class RemoveMemberGQL extends Apollo.Mutation<RemoveMemberMutation, RemoveMemberMutationVariables> {
-  document = RemoveMemberDocument;
-
-}
-
-export const PostMessageDocument = gql`
-    mutation postMessage($csrfToken: String!, $groupId: String!, $subject: String!, $content: String!) {
-  postMessage(csrfToken: $csrfToken, groupId: $groupId, subject: $subject, content: $content)
-}
-    `;
-
-@Injectable({
-  providedIn: 'root'
-})
-export class PostMessageGQL extends Apollo.Mutation<PostMessageMutation, PostMessageMutationVariables> {
-  document = PostMessageDocument;
-
-}
-
-export const CreateProfileDocument = gql`
-    mutation createProfile($csrfToken: String!, $type: ProfileType!, $name: String!, $picture: String!, $timezone: String!) {
-  createProfile(csrfToken: $csrfToken, type: $type, name: $name, picture: $picture, timezone: $timezone)
-}
-    `;
-
-@Injectable({
-  providedIn: 'root'
-})
-export class CreateProfileGQL extends Apollo.Mutation<CreateProfileMutation, CreateProfileMutationVariables> {
-  document = CreateProfileDocument;
-
-}
-
-export const UpdateProfileDocument = gql`
-    mutation updateProfile($csrfToken: String!, $profileId: String!, $type: ProfileType!, $name: String!, $picture: String!, $timezone: String!, $status: String!) {
-  updateProfile(csrfToken: $csrfToken, profileId: $profileId, type: $type, name: $name, picture: $picture, timezone: $timezone, status: $status)
-}
-    `;
-
-@Injectable({
-  providedIn: 'root'
-})
-export class UpdateProfileGQL extends Apollo.Mutation<UpdateProfileMutation, UpdateProfileMutationVariables> {
-  document = UpdateProfileDocument;
-
-}
-
-export const GetUserInformationDocument = gql`
-    query getUserInformation($csrfToken: String!) {
-  getUserInformation(csrfToken: $csrfToken) {
-    id
-    createdAt
-    firstName
-    lastName
-  }
-}
-    `;
-
-@Injectable({
-  providedIn: 'root'
-})
-export class GetUserInformationGQL extends Apollo.Query<GetUserInformationQuery, GetUserInformationQueryVariables> {
-  document = GetUserInformationDocument;
-
-}
-
-export const GetSessionProfileDocument = gql`
-    query getSessionProfile($csrfToken: String!) {
-  getSessionProfile(csrfToken: $csrfToken) {
-    id
-  }
-}
-    `;
-
-@Injectable({
-  providedIn: 'root'
-})
-export class GetSessionProfileGQL extends Apollo.Query<GetSessionProfileQuery, GetSessionProfileQueryVariables> {
-  document = GetSessionProfileDocument;
-
-}
-
-export const ListProfilesDocument = gql`
-    query listProfiles($csrfToken: String!) {
-  listProfiles(csrfToken: $csrfToken) {
-    id
-    createdAt
-    name
-    timezone
-    status
-    picture
-    location {
-      id
-      name
-      latitude
-      longitude
-      radius
-    }
-  }
-}
-    `;
-
-@Injectable({
-  providedIn: 'root'
-})
-export class ListProfilesGQL extends Apollo.Query<ListProfilesQuery, ListProfilesQueryVariables> {
-  document = ListProfilesDocument;
-
-}
-
-export const ListGroupsDocument = gql`
-    query listGroups($csrfToken: String!, $profileId: String!) {
-  listGroups(csrfToken: $csrfToken, profileId: $profileId) {
-    id
-    name
-    creator {
-      id
-      name
-      picture
-      status
-      location {
-        id
-        name
-        latitude
-        longitude
-        radius
-      }
-    }
-    title
-    description
-    logo
-    type
-    createdAt
-    creator {
-      id
-      name
-      picture
-      status
-      location {
-        id
-        name
-        latitude
-        longitude
-        radius
-      }
-    }
-    is_hidden
-    is_public
-  }
-}
-    `;
-
-@Injectable({
-  providedIn: 'root'
-})
-export class ListGroupsGQL extends Apollo.Query<ListGroupsQuery, ListGroupsQueryVariables> {
-  document = ListGroupsDocument;
-
-}
-
-export const ListMembersDocument = gql`
-    query listMembers($csrfToken: String!, $groupId: String!) {
-  listMembers(csrfToken: $csrfToken, groupId: $groupId) {
-    id
-    createdAt
-    member {
-      id
-      name
-      timezone
-      status
-      picture
-      location {
-        id
-        name
-        latitude
-        longitude
-        radius
-      }
-    }
-  }
-}
-    `;
-
-@Injectable({
-  providedIn: 'root'
-})
-export class ListMembersGQL extends Apollo.Query<ListMembersQuery, ListMembersQueryVariables> {
-  document = ListMembersDocument;
-
-}
-
-export const ListMessagesDocument = gql`
-    query listMessages($csrfToken: String!, $groupId: String!, $profileId: String!, $begin: String, $end: String) {
-  listMessages(csrfToken: $csrfToken, groupId: $groupId, profileId: $profileId, begin: $begin, end: $end) {
-    id
-    createdAt
-    updatedAt
-    creator {
-      id
-      name
-      picture
-    }
-    subject
-    content
-    tags {
-      id
-      name
-    }
-    type
-  }
-}
-    `;
-
-@Injectable({
-  providedIn: 'root'
-})
-export class ListMessagesGQL extends Apollo.Query<ListMessagesQuery, ListMessagesQueryVariables> {
-  document = ListMessagesDocument;
-
-}
-
-export const GetGroupDocument = gql`
-    query getGroup($csrfToken: String!, $groupId: String!) {
-  getGroup(csrfToken: $csrfToken, groupId: $groupId) {
-    id
-    name
-    title
-    description
-    logo
-    type
-    tags {
-      id
-      name
-    }
-    createdAt
-    updatedAt
-    creator {
-      id
-      name
-      status
-      picture
-      location {
-        id
-        name
-        latitude
-        longitude
-        radius
-      }
-    }
-    members {
-      id
-      createdAt
-      member {
-        id
-        name
-        status
-        picture
-        location {
-          id
-          name
-          latitude
-          longitude
-          radius
-        }
-      }
-    }
-    is_public
-  }
-}
-    `;
-
-@Injectable({
-  providedIn: 'root'
-})
-export class GetGroupGQL extends Apollo.Query<GetGroupQuery, GetGroupQueryVariables> {
-  document = GetGroupDocument;
-
-}
-
-export const GetProfileDocument = gql`
-    query getProfile($csrfToken: String!, $profileId: String!) {
-  getProfile(csrfToken: $csrfToken, profileId: $profileId) {
-    id
-    createdAt
-    updatedAt
-    name
-    timezone
-    status
-    picture
-    memberships {
-      id
-      createdAt
-      group {
-        id
-        name
-        title
-        description
-        logo
-        type
-        tags {
-          id
-          name
-        }
-        createdAt
-        creator {
-          id
-          name
-          status
-          picture
-          location {
-            id
-            name
-            latitude
-            longitude
-            radius
-          }
-        }
-      }
-    }
-    location {
-      id
-      name
-      latitude
-      longitude
-      radius
-    }
-  }
-}
-    `;
-
-@Injectable({
-  providedIn: 'root'
-})
-export class GetProfileGQL extends Apollo.Query<GetProfileQuery, GetProfileQueryVariables> {
-  document = GetProfileDocument;
-
+export enum UserType {
+  Person = 'Person',
+  Organization = 'Organization'
 }
