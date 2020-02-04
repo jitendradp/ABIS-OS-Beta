@@ -18,7 +18,7 @@ type Tag {
     value: String!
 }
 
-type Taggregate {
+type TagAggregate {
     type: String!
     count: Integer!
 }
@@ -37,7 +37,7 @@ interface Location {
     name: String
 
     tags: [Tag!]!
-    taggregate:[Taggregate!]!       # Contains the tag-counts grouped by their type.
+    tagAggregate:[TagAggregate!]!       # Contains the tag-counts grouped by their type.
 }
 
 type OpenStreetMapNode implements Location {
@@ -54,7 +54,7 @@ type OpenStreetMapNode implements Location {
     name: String
 
     tags: [Tag!]!
-    taggregate:[Taggregate!]!       # Contains the tag-counts grouped by their type.
+    tagAggregate:[TagAggregate!]!       # Contains the tag-counts grouped by their type.
 
     osmNodeId:String!
 }
@@ -73,7 +73,7 @@ type Address implements Location {
     name: String
 
     tags: [Tag!]!
-    taggregate:[Taggregate!]!       # Contains the tag-counts grouped by their type.
+    tagAggregate:[TagAggregate!]!       # Contains the tag-counts grouped by their type.
 
     line1: String!
     line2: String
@@ -96,7 +96,7 @@ type GeoPoint implements Location {
     name: String
 
     tags: [Tag!]!
-    taggregate:[Taggregate!]!       # Contains the tag-counts grouped by their type.
+    tagAggregate:[TagAggregate!]!       # Contains the tag-counts grouped by their type.
 
     geoPointLatitude: Float!
     geoPointLongitude: Float!
@@ -230,7 +230,6 @@ type Channel implements Group {
 
     entryCount: Integer
 
-    sender: Agent!
     receiver: Agent!
 
     reverse: Channel        # When existing, contains the reverse channel.
@@ -285,10 +284,10 @@ type Room implements Group {
     inbox: Inbox!
 
     memberCount: Integer
-    memberships: [Membership!]!     # Empty when returned in searches.
+    memberships: [Membership!]!         # Empty when returned in searches.
 
     tags: [Tag!]!
-    taggregate:[Taggregate!]!       # Contains the tag-counts grouped by their type.
+    tagAggregate:[TagAggregate!]!       # Contains the tag-counts grouped by their type.
 }
 
 #
@@ -473,7 +472,7 @@ type Entry {
     contentEncoding: ContentEncoding
 
     tags: [Tag!]!
-    taggregate:[Taggregate!]!       # Contains the tag-counts grouped by their type.
+    tagAggregate:[TagAggregate!]!       # Contains the tag-counts grouped by their type.
 }
 
 enum EntryType {
@@ -557,7 +556,7 @@ type Query {
     # Finds all Members of the specified Room if the session's Agent has access to it.
     findMemberships(csrfToken:String! roomId:ID! searchText:String) : [Membership!]!
 
-    # Lists the Entries of a specified Group (any group: Stash, Channel or Room).
+    # Lists the Entries of a specified Group (any group: StashMutations, Channel or Room).
     # An optional from- and to-date filter can be specified for temporal pagination.
     getEntries(csrfToken:String! groupId:ID! from:DateTime to:DateTime) : [Entry!]!
 }
@@ -568,6 +567,7 @@ type Mutation {
     #
     signup(signupInput:SignupInput!) : ActionResponse!
     verifyEmail(code:String!) : ActionResponse!
+    resetPassword(code:String!) : ActionResponse!
 
     #
     # Login, Logout, VerifySession

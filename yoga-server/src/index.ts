@@ -1,6 +1,6 @@
 import {GraphQLServer} from 'graphql-yoga'
-import {GroupType, prisma, UserType} from './generated'
-import {UserMutations} from "./api/mutations/user/userMutations";
+import {prisma, UserType} from './generated'
+import {UserApiMutations} from "./api/mutations/user/userApiMutations";
 import {ContextParameters} from "graphql-yoga/dist/types";
 import {config} from "./config";
 import {UserQueries} from "./api/queries/user/userQueries";
@@ -63,7 +63,7 @@ const resolvers = {
     Mutation: {
         async signup(root, {signupInput}) {
             if (signupInput.type == <UserType>"Person") {
-                return UserMutations.createPerson(
+                return UserApiMutations.createPerson(
                     signupInput.type,
                     signupInput.email,
                     signupInput.password,
@@ -73,7 +73,7 @@ const resolvers = {
                     signupInput.personPhone,
                     signupInput.personMobilePhone);
             } else if (signupInput.type == <UserType>"Organization") {
-                return UserMutations.createOrganization(
+                return UserApiMutations.createOrganization(
                     signupInput.type,
                     signupInput.email,
                     signupInput.password,
@@ -84,16 +84,16 @@ const resolvers = {
             }
         },
         async verifyEmail(root, {code}, ctx) {
-            return UserMutations.verifyEmail(code, ctx.request);
+            return UserApiMutations.verifyEmail(code, ctx.request);
         },
         async login(root, {email, password}, ctx) {
-            return UserMutations.login(email, password, ctx.request);
+            return UserApiMutations.login(email, password, ctx.request);
         },
         async logout(root, {csrfToken}, ctx) {
-            return UserMutations.logout(csrfToken, ctx.bearerToken, ctx.request);
+            return UserApiMutations.logout(csrfToken, ctx.bearerToken, ctx.request);
         },
         async verifySession(root, {csrfToken}, ctx) {
-            return UserMutations.verifySession(csrfToken, ctx.bearerToken, ctx.request);
+            return UserApiMutations.verifySession(csrfToken, ctx.bearerToken, ctx.request);
         },
     },
 };
@@ -118,9 +118,9 @@ server.use(morgan('combined'));
 server.start({
     cors: {
         methods: ["OPTIONS", "POST"],
-        origin: "*",// "http://" + config.env.domain + ":4200",
+        origin: "http://" + config.env.domain + ":4200",
         allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept",
         optionsSuccessStatus: 200,
         credentials: true
     }
-}, () => console.log('Server is running on http://localhost:4000'));
+}, () => console.log('Server is running on ' + config.env.domain + ":4000"));

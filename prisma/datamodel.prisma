@@ -188,6 +188,9 @@ type Agent {
     profileJobTitle: String
     profileBanner: String
     profileType: ProfileType
+
+    # Only when "type == AgentType.Service":
+    serviceDescription: String
 }
 
 enum AgentType {
