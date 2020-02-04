@@ -133,6 +133,7 @@ export type CreateProfileInput = {
 
 export type CreateRoomInput = {
   name: Scalars['String'],
+  isPublic: Scalars['Boolean'],
   title?: Maybe<Scalars['String']>,
   description?: Maybe<Scalars['String']>,
   logo?: Maybe<Scalars['String']>,

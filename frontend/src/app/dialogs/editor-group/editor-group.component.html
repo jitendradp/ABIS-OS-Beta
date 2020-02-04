@@ -5,31 +5,32 @@
     <form [formGroup]="firstFormGroup">
       <ng-template matStepLabel>Create</ng-template>
       <mat-form-field class="fullWidth">
-        <input matInput type="text" placeholder="Group name" required formControlName="firstCtrl" maxlength="35">
+        <input matInput type="text" placeholder="Group name" required formControlName="name" maxlength="35">
       </mat-form-field>
       <mat-form-field class="fullWidth">
-        <input matInput type="text" placeholder="Description">
+        <input matInput type="text" placeholder="Description" formControlName="description">
         <mat-hint>Add a short description about your group.</mat-hint>
       </mat-form-field>
       <app-whitespace [height]="'32px'"></app-whitespace>
-      <mat-radio-group class="fullWidth" aria-label="Select an option" [required]="true">
-        <mat-radio-button [checked]="true" [value]="isPublic"
+      <mat-radio-group class="fullWidth" aria-label="Select an option" [required]="true" [(ngModel)]="isPublic">
+        <mat-radio-button [checked]="true" [value]="false"
                           matTooltip="Private rooms are only for invited members.">Private room
         </mat-radio-button>
-        <mat-radio-button class="radioSpacing" [value]="!isPublic"
+        <mat-radio-button class="radioSpacing" [value]="true"
                           matTooltip="Anybody can view and join public rooms.">Public room
         </mat-radio-button>
       </mat-radio-group>
       <app-whitespace></app-whitespace>
       <app-content>
-        <button mat-button matStepperNext class="maxButton">Next</button>
+        <button mat-button class="maxButton" (click)="createRoom()">Create</button>
       </app-content>
     </form>
   </mat-step>
+  <!--
   <mat-step [stepControl]="secondFormGroup">
     <form [formGroup]="secondFormGroup">
       <ng-template matStepLabel>Add details</ng-template>
-      <!-- todo add chips with autocomplete -->
+      !-- todo add chips with autocomplete --
       <app-list-chip [placeholder]="'Tags...'"></app-list-chip>
       <mat-form-field class="fullWidth">
         <input matInput type="text" placeholder="Address" required
@@ -43,5 +44,5 @@
         <button mat-button routerLink="/chat" class="maxButton">Complete</button>
       </app-content>
     </form>
-  </mat-step>
+  </mat-step>-->
 </mat-horizontal-stepper>

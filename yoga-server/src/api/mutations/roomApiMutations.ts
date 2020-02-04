@@ -26,7 +26,7 @@ export class RoomApiMutations {
                 name: name,
                 title: title,
                 description: description,
-                logo: logo,
+                logo: logo ?? "defaultRoom.png",
                 banner: banner,
                 inbox: {
                     create: {
