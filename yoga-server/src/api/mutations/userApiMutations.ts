@@ -201,10 +201,11 @@ export class UserApiMutations {
     public static async verifySession(csrfToken: string, bearerToken: string, request: Request): Promise<ActionResponse> {
         return Helper.delay(config.auth.normalizedResponseTime, async () => {
             try {
-                return <ActionResponse>{
+                const response = <ActionResponse>{
                     success: await SessionMutations.verifySession(csrfToken, bearerToken),
                     code: Helper.getRandomBase64String(8)
-                }
+                };
+                return response;
             } catch (e) {
                 const errorId = Helper.logId(`An error occurred during logout: ${JSON.stringify(e)}`);
                 return <ActionResponse>{

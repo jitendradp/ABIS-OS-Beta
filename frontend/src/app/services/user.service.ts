@@ -2,12 +2,12 @@ import {Injectable} from '@angular/core';
 import {ActionDispatcherService} from "./action-dispatcher.service";
 import {LoginState, LoginStateChanged} from "../actions/user/LoginStateChanged";
 import {
-  GetUserInformationGQL,
+  SignupGQL,
   LoginGQL,
+  MyAccountGQL,
   LogoutGQL,
-  SetSessionProfileGQL,
   VerifySessionGQL,
-  UserInformation
+  Account, UserType
 } from "../../generated/abis-api";
 import {ClientStateService} from "./client-state.service";
 import {Logger, LoggerService, LogSeverity} from "./logger.service";
@@ -32,14 +32,15 @@ export type UserInformation = {
 export class UserService {
   // TODO: Remove the cast to <any> and adopt the UI to the proper UserInformation type.
   // TODO: Remove the "name" field from the graphql schema and replace it with "firstname" and "lastname"
-  public userInformation: UserInformation = <any>{
-    id: 8989893943,
+  public accountInformation: Account = {
+    id: "8989893943",
+    type: <UserType>"Person",
+    timezone: "GMT",
     createdAt: new Date().toISOString(),
     email: "tomcook@gmail.com",
-    firstName: "Thomas",
-    lastName: "Cook",
-    name: "Thomas Cook",
-    mobilePhone: "01777 78787823"
+    personFirstName: "Thomas",
+    personLastName: "Cook",
+    personMobilePhone: "01777 78787823"
   };
 
   private readonly _log: Logger = this.loggerService.createLogger("UserService");
@@ -66,9 +67,9 @@ export class UserService {
     , private loggerService: LoggerService
     , private loginApi: LoginGQL
     , private logoutApi: LogoutGQL
-    , private setSessionProfileApi: SetSessionProfileGQL
     , private verifySessionApi: VerifySessionGQL
-    , private getUserInformationApi: GetUserInformationGQL
+    , private myAccountApi: MyAccountGQL
+    , private signupApi: SignupGQL
     , private clientState: ClientStateService
     , private apollo: Apollo) {
 
@@ -89,8 +90,7 @@ export class UserService {
           if (!this.profileId) {
             return;
           }
-          // noinspection JSIgnoredPromiseFromCall
-          this.setSessionProfile(this.profileId);
+
         });
     }
   }
@@ -117,7 +117,10 @@ export class UserService {
       email,
       password
     }).toPromise().then(result => {
-      return this.setToken(result.data.login)
+      if (!result.data.login.success) {
+        throw new Error("The login attempt was not successful.")
+      }
+      return this.setToken(result.data.login.data)
         .then(_ => true)
         .catch(_ => false);
     }).catch(error => {
@@ -133,7 +136,7 @@ export class UserService {
       csrfToken: csrfToken
     }).toPromise()
       .then(result => {
-        if (!result.data.verifySession) {
+        if (!result.data.verifySession.success) {
           this.clientState.delete(this.CsrfTokenKey);
           this.clientState.delete(this.ProfileKey);
           return false;
@@ -141,7 +144,7 @@ export class UserService {
         this.clientState.set(this.CsrfTokenKey, csrfToken);
         this.actionDispatcher.dispatch(new LoginStateChanged(LoginState.LoggedOff, LoginState.LoggedOn));
 
-        this.loadUserInformation()
+        this.loadMyAccount()
           .then(accInfo => true)
           .catch(error => {
             this._log(LogSeverity.UserNotification, "An error occurred while loading the user information. See the log for detailed error messages.");
@@ -158,34 +161,14 @@ export class UserService {
       });
   }
 
-  public async loadUserInformation(): Promise<UserInformation> {
-    const userInfo = await this.getUserInformationApi.fetch({
+  public async loadMyAccount(): Promise<Account> {
+    const userInfo = await this.myAccountApi.fetch({
       csrfToken: this.csrfToken
     }).toPromise();
-    const oldUserInfo = this.userInformation;
-    this.userInformation = {...userInfo.data.getUserInformation};
-    this.actionDispatcher.dispatch(new UserInformationChanged(oldUserInfo, this.userInformation));
-    return this.userInformation;
-  }
-
-  public setSessionProfile(profileId: string): Promise<boolean> {
-    return this.setSessionProfileApi.mutate({
-      csrfToken: this.csrfToken,
-      profileId: profileId
-    })
-      .toPromise()
-      .then(result => {
-        const oldProfileId = this.profileId;
-        this.clientState.set(this.ProfileKey, result.data.setSessionProfile);
-        this.actionDispatcher.dispatch(new SessionProfileChanged(oldProfileId, result.data.setSessionProfile));
-
-        return true;
-      })
-      .catch(error => {
-        this._log(LogSeverity.UserNotification, "Couldn't set the session profile. Please check your username and password and try again or use the password reset link. See the log for detailed error messages.");
-        this._log(LogSeverity.Error, error);
-        return false;
-      });
+    const oldUserInfo = this.accountInformation;
+    this.accountInformation = <Account>userInfo.data.myAccount;
+    this.actionDispatcher.dispatch(new UserInformationChanged(oldUserInfo, this.accountInformation));
+    return this.accountInformation;
   }
 
   public logout(): Promise<boolean> {

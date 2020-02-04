@@ -3,7 +3,6 @@ import {UserService} from "../../../services/user.service";
 import {Logger, LoggerService, LogSeverity} from "../../../services/logger.service";
 import {ActionDispatcherService} from "../../../services/action-dispatcher.service";
 import {SwitchProfile} from "../../../actions/routes/SwitchProfile";
-import {ProfileService} from "../../../services/profile.service";
 import {Home} from "../../../actions/routes/Home";
 
 @Component({
@@ -23,7 +22,6 @@ export class SigninComponent implements OnInit {
 
   constructor(private userService:UserService
     , private loggerService:LoggerService
-    , private profileService:ProfileService
     , private actionDispatcherr:ActionDispatcherService) {
   }
 
@@ -37,7 +35,9 @@ export class SigninComponent implements OnInit {
         return;
       }
 
-      const  userProfiles = await this.profileService.listProfiles();
+      this.actionDispatcherr.dispatch(new Home());
+
+      /*const  userProfiles = await this.profileService.listProfiles();
 
       if (userProfiles.length == 0) {
         this._log(LogSeverity.UserNotification, "You're successfully logged-in, but you don't yet have any profiles. Create a profile to proceed.");
@@ -54,8 +54,9 @@ export class SigninComponent implements OnInit {
         this.actionDispatcherr.dispatch(new Home());
         return;
       }
+       */
 
-      this.actionDispatcherr.dispatch(new SwitchProfile());
+      // this.actionDispatcherr.dispatch(new SwitchProfile());
     } catch (e) {
       this._log(LogSeverity.UserNotification, "An error occurred during log-on. See the log for detailed error messages.");
       this._log(LogSeverity.Error, e);

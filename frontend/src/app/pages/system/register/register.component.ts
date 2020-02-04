@@ -3,9 +3,8 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MatHorizontalStepper} from "@angular/material/stepper";
 import {ClientStateService} from "../../../services/client-state.service";
 import {StepperSelectionEvent} from "@angular/cdk/stepper";
-import {ProfileType, SignupGQL, VerifyEmailGQL} from "../../../../generated/abis-api";
+import {ProfileType, SignupGQL, UserType, VerifyEmailGQL} from "../../../../generated/abis-api";
 import {UserService} from "../../../services/user.service";
-import {ProfileService} from "../../../services/profile.service";
 import {Logger, LoggerService, LogSeverity} from "../../../services/logger.service";
 import {ActionDispatcherService} from "../../../services/action-dispatcher.service";
 import {Home} from "../../../actions/routes/Home";
@@ -28,7 +27,6 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     , private loggerService: LoggerService
     , private actionDispatcher: ActionDispatcherService
     , private clientState: ClientStateService
-    , private profileService: ProfileService
     , private userService: UserService
     , private signupApi: SignupGQL
     , private verifyEmailApi: VerifyEmailGQL) {
@@ -111,10 +109,14 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   private async submitStep1($event: StepperSelectionEvent) {
     // First step completed, create the user
     await this.signupApi.mutate({
-      email: this.step1Data.emailAddress,
-      firstName: this.step1Data.firstName,
-      lastName: this.step1Data.lastName,
-      password: this.step1Data.password
+      signupInput: {
+        timezone: "GMT",
+        email: this.step1Data.emailAddress,
+        personFirstName: this.step1Data.firstName,
+        personLastName: this.step1Data.lastName,
+        password: this.step1Data.password,
+        type: UserType.Person
+      }
     }).toPromise()
       .then(result => {
         this.clientState.set("RegisterComponent.stepper.selectedIndex", $event.selectedIndex);
@@ -136,7 +138,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
         // Disable the previous steps so that the user can't navigate to them again
         this.clientState.set("RegisterComponent.stepper.selectedIndex", $event.selectedIndex);
         this.disableCompletedSteps($event.selectedIndex);
-        this.userService.setToken(result.data.verifyEmail);
+        this.userService.setToken(result.data.verifyEmail.data);
       })
       .catch(e => {
         this.stepper.selectedIndex = this.clientState.get<number>("RegisterComponent.stepper.selectedIndex", 0).data;
@@ -149,6 +151,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     // Third step completed, create the profile
     // TODO: Pic and Timezone
     // TODO: Only private profiles for now
+    /*
     this.profileService.createProfile(ProfileType.Private, this.step3Data.name, "pic", "UTC")
       .then(result => {
         if (!result) {
@@ -171,6 +174,11 @@ export class RegisterComponent implements OnInit, AfterViewInit {
         this._log(LogSeverity.UserNotification, "An error occured during step 3 of the registration wizard (create profile). See the log for detailed error messages.");
         this._log(LogSeverity.Error, e);
       });
+     */
+
+    this.clientState.delete("RegisterComponent.stepper.selectedIndex");
+    this.disableCompletedSteps(2);
+    this.actionDispatcher.dispatch(new Home());
   }
 
   public async stepChanged($event: StepperSelectionEvent) {

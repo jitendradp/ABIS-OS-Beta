@@ -1,10 +1,10 @@
 import {ChangeAction} from "../ChangeAction";
-import {UserInformation} from "../../../generated/abis-api";
+import {Account} from "../../../generated/abis-api";
 
-export class UserInformationChanged extends ChangeAction<UserInformation> {
+export class UserInformationChanged extends ChangeAction<Account> {
   public static readonly Name: string = "Abis.User.UserInformationChanged";
 
-  constructor(oldValue: UserInformation, newValue: UserInformation) {
+  constructor(oldValue: Account, newValue: Account) {
     super(UserInformationChanged.Name, oldValue, newValue);
   }
 }

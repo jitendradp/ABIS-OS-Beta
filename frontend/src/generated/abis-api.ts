@@ -786,7 +786,7 @@ export type VerifySessionMutationVariables = {
 
 export type VerifySessionMutation = (
   { __typename?: 'Mutation' }
-  & { logout: (
+  & { verifySession: (
     { __typename?: 'ActionResponse' }
     & Pick<ActionResponse, 'success' | 'code' | 'message' | 'data'>
   ) }
@@ -1214,7 +1214,7 @@ export const LogoutDocument = gql`
   }
 export const VerifySessionDocument = gql`
     mutation verifySession($csrfToken: String!) {
-  logout(csrfToken: $csrfToken) {
+  verifySession(csrfToken: $csrfToken) {
     success
     code
     message

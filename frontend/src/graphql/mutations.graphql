@@ -44,7 +44,7 @@ mutation logout($csrfToken:String!) {
 }
 
 mutation verifySession($csrfToken:String!) {
-  logout(csrfToken: $csrfToken) {
+  verifySession(csrfToken: $csrfToken) {
     success
     code
     message

@@ -48,7 +48,7 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {NgxEchartsModule} from "ngx-echarts";
 import {StudioComponent} from './pages/studio/studio.component';
-import {ProfileService} from "./services/profile.service";
+//import {ProfileService} from "./services/profile.service";
 import {CockpitComponent} from './pages/cockpit/cockpit.component';
 import {MapComponent} from './pages/map/map.component';
 import {InviteComponent} from './pages/system/invite/invite.component';
@@ -113,6 +113,7 @@ import {CalendarDaysComponent} from "./widgets/calendar/calendar-days/calendar-d
 import {FileUploadComponent} from "./components/file-upload/file-upload.component";
 import {ListChatComponent} from "./lists/list-chat/list-chat.component";
 import {EditorProfileComponent} from "./dialogs/editor-profile/editor-profile.component";
+import {ProfileService} from "./services/profile.service";
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
