@@ -1,3 +1,6 @@
+import gql from 'graphql-tag';
+import { Injectable } from '@angular/core';
+import * as Apollo from 'apollo-angular';
 export type Maybe<T> = T | null;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -10,6 +13,8 @@ export type Scalars = {
   Integer: any,
   Json: any,
 };
+
+
 
 export type Account = {
    __typename?: 'Account',
@@ -707,3 +712,937 @@ export enum UserType {
   Person = 'Person',
   Organization = 'Organization'
 }
+
+export type SignupMutationVariables = {
+  signupInput: SignupInput
+};
+
+
+export type SignupMutation = (
+  { __typename?: 'Mutation' }
+  & { signup: (
+    { __typename?: 'ActionResponse' }
+    & Pick<ActionResponse, 'success' | 'code' | 'message' | 'data'>
+  ) }
+);
+
+export type VerifyEmailMutationVariables = {
+  code: Scalars['String']
+};
+
+
+export type VerifyEmailMutation = (
+  { __typename?: 'Mutation' }
+  & { verifyEmail: (
+    { __typename?: 'ActionResponse' }
+    & Pick<ActionResponse, 'success' | 'code' | 'message' | 'data'>
+  ) }
+);
+
+export type ResetPasswordMutationVariables = {
+  code: Scalars['String']
+};
+
+
+export type ResetPasswordMutation = (
+  { __typename?: 'Mutation' }
+  & { resetPassword: (
+    { __typename?: 'ActionResponse' }
+    & Pick<ActionResponse, 'success' | 'code' | 'message' | 'data'>
+  ) }
+);
+
+export type LoginMutationVariables = {
+  email: Scalars['String'],
+  password: Scalars['String']
+};
+
+
+export type LoginMutation = (
+  { __typename?: 'Mutation' }
+  & { login: (
+    { __typename?: 'ActionResponse' }
+    & Pick<ActionResponse, 'success' | 'code' | 'message' | 'data'>
+  ) }
+);
+
+export type LogoutMutationVariables = {
+  csrfToken: Scalars['String']
+};
+
+
+export type LogoutMutation = (
+  { __typename?: 'Mutation' }
+  & { logout: (
+    { __typename?: 'ActionResponse' }
+    & Pick<ActionResponse, 'success' | 'code' | 'message' | 'data'>
+  ) }
+);
+
+export type VerifySessionMutationVariables = {
+  csrfToken: Scalars['String']
+};
+
+
+export type VerifySessionMutation = (
+  { __typename?: 'Mutation' }
+  & { logout: (
+    { __typename?: 'ActionResponse' }
+    & Pick<ActionResponse, 'success' | 'code' | 'message' | 'data'>
+  ) }
+);
+
+export type CreateChannelMutationVariables = {
+  csrfToken: Scalars['String'],
+  toAgentId: Scalars['ID']
+};
+
+
+export type CreateChannelMutation = (
+  { __typename?: 'Mutation' }
+  & { createChannel: Maybe<(
+    { __typename?: 'Channel' }
+    & Pick<Channel, 'id' | 'name' | 'createdAt'>
+    & { receiver: (
+      { __typename?: 'Profile' }
+      & Pick<Profile, 'id' | 'name'>
+    ) | (
+      { __typename?: 'Service' }
+      & Pick<Service, 'id' | 'name'>
+    ), reverse: Maybe<(
+      { __typename?: 'Channel' }
+      & Pick<Channel, 'id'>
+    )> }
+  )> }
+);
+
+export type DeleteChannelMutationVariables = {
+  csrfToken: Scalars['String'],
+  id: Scalars['ID']
+};
+
+
+export type DeleteChannelMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteChannel: (
+    { __typename?: 'ActionResponse' }
+    & Pick<ActionResponse, 'success' | 'code' | 'message' | 'data'>
+  ) }
+);
+
+export type CreateRoomMutationVariables = {
+  csrfToken: Scalars['String'],
+  createRoomInput: CreateRoomInput
+};
+
+
+export type CreateRoomMutation = (
+  { __typename?: 'Mutation' }
+  & { createRoom: Maybe<(
+    { __typename?: 'Room' }
+    & Pick<Room, 'id' | 'owner' | 'createdBy' | 'createdAt' | 'name' | 'entryCount' | 'isPrivate' | 'title' | 'description' | 'logo' | 'banner'>
+    & { inbox: (
+      { __typename?: 'Inbox' }
+      & Pick<Inbox, 'id'>
+    ), memberships: Array<(
+      { __typename?: 'Membership' }
+      & Pick<Membership, 'id'>
+    )> }
+  )> }
+);
+
+export type DeleteRoomMutationVariables = {
+  csrfToken: Scalars['String'],
+  id: Scalars['ID']
+};
+
+
+export type DeleteRoomMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteRoom: (
+    { __typename?: 'ActionResponse' }
+    & Pick<ActionResponse, 'success' | 'code' | 'message' | 'data'>
+  ) }
+);
+
+export type CreateEntryMutationVariables = {
+  csrfToken: Scalars['String'],
+  createEntryInput: CreateEntryInput
+};
+
+
+export type CreateEntryMutation = (
+  { __typename?: 'Mutation' }
+  & { createEntry: Maybe<(
+    { __typename?: 'Entry' }
+    & Pick<Entry, 'type' | 'id' | 'createdAt' | 'createdBy' | 'owner' | 'name' | 'content'>
+    & { contentEncoding: Maybe<(
+      { __typename?: 'ContentEncoding' }
+      & Pick<ContentEncoding, 'id'>
+    )> }
+  )> }
+);
+
+export type DeleteEntryMutationVariables = {
+  csrfToken: Scalars['String'],
+  id: Scalars['ID']
+};
+
+
+export type DeleteEntryMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteEntry: (
+    { __typename?: 'ActionResponse' }
+    & Pick<ActionResponse, 'success' | 'code' | 'message' | 'data'>
+  ) }
+);
+
+export type MyAccountQueryVariables = {
+  csrfToken: Scalars['String']
+};
+
+
+export type MyAccountQuery = (
+  { __typename?: 'Query' }
+  & { myAccount: (
+    { __typename?: 'Account' }
+    & Pick<Account, 'id' | 'createdAt'>
+  ) }
+);
+
+export type MyProfilesQueryVariables = {
+  csrfToken: Scalars['String']
+};
+
+
+export type MyProfilesQuery = (
+  { __typename?: 'Query' }
+  & { myProfiles: Array<Maybe<(
+    { __typename?: 'Profile' }
+    & Pick<Profile, 'id' | 'profileType' | 'createdAt' | 'updatedAt' | 'name' | 'status' | 'timezone' | 'avatar' | 'banner' | 'slogan' | 'jobTitle'>
+    & { location: Maybe<(
+      { __typename?: 'OpenStreetMapNode' }
+      & Pick<OpenStreetMapNode, 'id' | 'name'>
+    ) | (
+      { __typename?: 'Address' }
+      & Pick<Address, 'id' | 'name'>
+    ) | (
+      { __typename?: 'GeoPoint' }
+      & Pick<GeoPoint, 'id' | 'name'>
+    )> }
+  )>> }
+);
+
+export type MyServicesQueryVariables = {
+  csrfToken: Scalars['String']
+};
+
+
+export type MyServicesQuery = (
+  { __typename?: 'Query' }
+  & { myServices: Array<Maybe<(
+    { __typename?: 'Service' }
+    & Pick<Service, 'id' | 'createdAt' | 'updatedAt' | 'name' | 'timezone' | 'status' | 'description'>
+    & { location: Maybe<(
+      { __typename?: 'OpenStreetMapNode' }
+      & Pick<OpenStreetMapNode, 'id' | 'name'>
+    ) | (
+      { __typename?: 'Address' }
+      & Pick<Address, 'id' | 'name'>
+    ) | (
+      { __typename?: 'GeoPoint' }
+      & Pick<GeoPoint, 'id' | 'name'>
+    )> }
+  )>> }
+);
+
+export type MyStashesQueryVariables = {
+  csrfToken: Scalars['String']
+};
+
+
+export type MyStashesQuery = (
+  { __typename?: 'Query' }
+  & { myStashes: Array<(
+    { __typename?: 'Stash' }
+    & Pick<Stash, 'id' | 'owner' | 'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt' | 'name' | 'entryCount'>
+  )> }
+);
+
+export type MyChannelsQueryVariables = {
+  csrfToken: Scalars['String']
+};
+
+
+export type MyChannelsQuery = (
+  { __typename?: 'Query' }
+  & { myChannels: Array<(
+    { __typename?: 'Channel' }
+    & Pick<Channel, 'id' | 'owner' | 'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt' | 'name' | 'entryCount'>
+    & { receiver: (
+      { __typename?: 'Profile' }
+      & Pick<Profile, 'id'>
+    ) | (
+      { __typename?: 'Service' }
+      & Pick<Service, 'id'>
+    ), reverse: Maybe<(
+      { __typename?: 'Channel' }
+      & Pick<Channel, 'id'>
+    )> }
+  )> }
+);
+
+export type MyRoomsQueryVariables = {
+  csrfToken: Scalars['String']
+};
+
+
+export type MyRoomsQuery = (
+  { __typename?: 'Query' }
+  & { myRooms: Array<(
+    { __typename?: 'Room' }
+    & Pick<Room, 'id' | 'owner' | 'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt' | 'name' | 'entryCount' | 'isPrivate' | 'title' | 'description' | 'logo' | 'banner'>
+    & { inbox: (
+      { __typename?: 'Inbox' }
+      & Pick<Inbox, 'id'>
+    ), memberships: Array<(
+      { __typename?: 'Membership' }
+      & Pick<Membership, 'createdAt' | 'createdBy'>
+      & { member: (
+        { __typename?: 'Profile' }
+        & Pick<Profile, 'id' | 'name'>
+      ) | (
+        { __typename?: 'Service' }
+        & Pick<Service, 'id' | 'name'>
+      ) }
+    )>, tagAggregate: Array<(
+      { __typename?: 'TagAggregate' }
+      & Pick<TagAggregate, 'type' | 'count'>
+    )> }
+  )> }
+);
+
+export type MyMembershipsQueryVariables = {
+  csrfToken: Scalars['String'],
+  groupType?: Maybe<GroupType>,
+  isPublic?: Maybe<Scalars['Boolean']>
+};
+
+
+export type MyMembershipsQuery = (
+  { __typename?: 'Query' }
+  & { myMemberships: Array<(
+    { __typename?: 'Membership' }
+    & Pick<Membership, 'id' | 'type' | 'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt' | 'groupType' | 'showHistory'>
+    & { group: Maybe<(
+      { __typename?: 'Stash' }
+      & Pick<Stash, 'id' | 'name'>
+    ) | (
+      { __typename?: 'Channel' }
+      & Pick<Channel, 'id' | 'name'>
+    ) | (
+      { __typename?: 'Room' }
+      & Pick<Room, 'id' | 'name'>
+    )> }
+  )> }
+);
+
+export type FindRoomsQueryVariables = {
+  csrfToken: Scalars['String'],
+  searchText?: Maybe<Scalars['String']>
+};
+
+
+export type FindRoomsQuery = (
+  { __typename?: 'Query' }
+  & { findRooms: Array<(
+    { __typename?: 'Room' }
+    & Pick<Room, 'id' | 'owner' | 'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt' | 'name' | 'entryCount' | 'isPrivate' | 'title' | 'description' | 'logo' | 'banner' | 'memberCount'>
+    & { inbox: (
+      { __typename?: 'Inbox' }
+      & Pick<Inbox, 'id'>
+    ), tagAggregate: Array<(
+      { __typename?: 'TagAggregate' }
+      & Pick<TagAggregate, 'type' | 'count'>
+    )> }
+  )> }
+);
+
+export type FindMembershipsQueryVariables = {
+  csrfToken: Scalars['String'],
+  roomId: Scalars['ID'],
+  searchText?: Maybe<Scalars['String']>
+};
+
+
+export type FindMembershipsQuery = (
+  { __typename?: 'Query' }
+  & { findMemberships: Array<(
+    { __typename?: 'Membership' }
+    & Pick<Membership, 'id' | 'type' | 'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt' | 'groupType' | 'showHistory'>
+    & { group: Maybe<(
+      { __typename?: 'Stash' }
+      & Pick<Stash, 'id' | 'name'>
+    ) | (
+      { __typename?: 'Channel' }
+      & Pick<Channel, 'id' | 'name'>
+    ) | (
+      { __typename?: 'Room' }
+      & Pick<Room, 'id' | 'name'>
+    )>, member: (
+      { __typename?: 'Profile' }
+      & Pick<Profile, 'id' | 'name'>
+    ) | (
+      { __typename?: 'Service' }
+      & Pick<Service, 'id' | 'name'>
+    ) }
+  )> }
+);
+
+export type GetEntriesQueryVariables = {
+  csrfToken: Scalars['String'],
+  groupId: Scalars['ID'],
+  from?: Maybe<Scalars['DateTime']>,
+  to?: Maybe<Scalars['DateTime']>
+};
+
+
+export type GetEntriesQuery = (
+  { __typename?: 'Query' }
+  & { getEntries: Array<(
+    { __typename?: 'Entry' }
+    & Pick<Entry, 'id' | 'type' | 'owner' | 'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt' | 'name' | 'content'>
+    & { contentEncoding: Maybe<(
+      { __typename?: 'ContentEncoding' }
+      & Pick<ContentEncoding, 'id'>
+    )>, tagAggregate: Array<(
+      { __typename?: 'TagAggregate' }
+      & Pick<TagAggregate, 'type' | 'count'>
+    )> }
+  )> }
+);
+
+export const SignupDocument = gql`
+    mutation signup($signupInput: SignupInput!) {
+  signup(signupInput: $signupInput) {
+    success
+    code
+    message
+    data
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class SignupGQL extends Apollo.Mutation<SignupMutation, SignupMutationVariables> {
+    document = SignupDocument;
+    
+  }
+export const VerifyEmailDocument = gql`
+    mutation verifyEmail($code: String!) {
+  verifyEmail(code: $code) {
+    success
+    code
+    message
+    data
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class VerifyEmailGQL extends Apollo.Mutation<VerifyEmailMutation, VerifyEmailMutationVariables> {
+    document = VerifyEmailDocument;
+    
+  }
+export const ResetPasswordDocument = gql`
+    mutation resetPassword($code: String!) {
+  resetPassword(code: $code) {
+    success
+    code
+    message
+    data
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class ResetPasswordGQL extends Apollo.Mutation<ResetPasswordMutation, ResetPasswordMutationVariables> {
+    document = ResetPasswordDocument;
+    
+  }
+export const LoginDocument = gql`
+    mutation login($email: String!, $password: String!) {
+  login(email: $email, password: $password) {
+    success
+    code
+    message
+    data
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class LoginGQL extends Apollo.Mutation<LoginMutation, LoginMutationVariables> {
+    document = LoginDocument;
+    
+  }
+export const LogoutDocument = gql`
+    mutation logout($csrfToken: String!) {
+  logout(csrfToken: $csrfToken) {
+    success
+    code
+    message
+    data
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class LogoutGQL extends Apollo.Mutation<LogoutMutation, LogoutMutationVariables> {
+    document = LogoutDocument;
+    
+  }
+export const VerifySessionDocument = gql`
+    mutation verifySession($csrfToken: String!) {
+  logout(csrfToken: $csrfToken) {
+    success
+    code
+    message
+    data
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class VerifySessionGQL extends Apollo.Mutation<VerifySessionMutation, VerifySessionMutationVariables> {
+    document = VerifySessionDocument;
+    
+  }
+export const CreateChannelDocument = gql`
+    mutation createChannel($csrfToken: String!, $toAgentId: ID!) {
+  createChannel(csrfToken: $csrfToken, toAgentId: $toAgentId) {
+    id
+    name
+    createdAt
+    receiver {
+      id
+      name
+    }
+    reverse {
+      id
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class CreateChannelGQL extends Apollo.Mutation<CreateChannelMutation, CreateChannelMutationVariables> {
+    document = CreateChannelDocument;
+    
+  }
+export const DeleteChannelDocument = gql`
+    mutation deleteChannel($csrfToken: String!, $id: ID!) {
+  deleteChannel(csrfToken: $csrfToken, id: $id) {
+    success
+    code
+    message
+    data
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeleteChannelGQL extends Apollo.Mutation<DeleteChannelMutation, DeleteChannelMutationVariables> {
+    document = DeleteChannelDocument;
+    
+  }
+export const CreateRoomDocument = gql`
+    mutation createRoom($csrfToken: String!, $createRoomInput: CreateRoomInput!) {
+  createRoom(csrfToken: $csrfToken, createRoomInput: $createRoomInput) {
+    id
+    owner
+    createdBy
+    createdAt
+    name
+    entryCount
+    isPrivate
+    title
+    description
+    logo
+    banner
+    inbox {
+      id
+    }
+    memberships {
+      id
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class CreateRoomGQL extends Apollo.Mutation<CreateRoomMutation, CreateRoomMutationVariables> {
+    document = CreateRoomDocument;
+    
+  }
+export const DeleteRoomDocument = gql`
+    mutation deleteRoom($csrfToken: String!, $id: ID!) {
+  deleteRoom(csrfToken: $csrfToken, id: $id) {
+    success
+    code
+    message
+    data
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeleteRoomGQL extends Apollo.Mutation<DeleteRoomMutation, DeleteRoomMutationVariables> {
+    document = DeleteRoomDocument;
+    
+  }
+export const CreateEntryDocument = gql`
+    mutation createEntry($csrfToken: String!, $createEntryInput: CreateEntryInput!) {
+  createEntry(csrfToken: $csrfToken, createEntryInput: $createEntryInput) {
+    type
+    id
+    createdAt
+    createdBy
+    owner
+    name
+    contentEncoding {
+      id
+    }
+    content
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class CreateEntryGQL extends Apollo.Mutation<CreateEntryMutation, CreateEntryMutationVariables> {
+    document = CreateEntryDocument;
+    
+  }
+export const DeleteEntryDocument = gql`
+    mutation deleteEntry($csrfToken: String!, $id: ID!) {
+  deleteEntry(csrfToken: $csrfToken, id: $id) {
+    success
+    code
+    message
+    data
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeleteEntryGQL extends Apollo.Mutation<DeleteEntryMutation, DeleteEntryMutationVariables> {
+    document = DeleteEntryDocument;
+    
+  }
+export const MyAccountDocument = gql`
+    query myAccount($csrfToken: String!) {
+  myAccount(csrfToken: $csrfToken) {
+    id
+    createdAt
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class MyAccountGQL extends Apollo.Query<MyAccountQuery, MyAccountQueryVariables> {
+    document = MyAccountDocument;
+    
+  }
+export const MyProfilesDocument = gql`
+    query myProfiles($csrfToken: String!) {
+  myProfiles(csrfToken: $csrfToken) {
+    id
+    profileType
+    createdAt
+    updatedAt
+    name
+    status
+    timezone
+    location {
+      id
+      name
+    }
+    avatar
+    banner
+    slogan
+    jobTitle
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class MyProfilesGQL extends Apollo.Query<MyProfilesQuery, MyProfilesQueryVariables> {
+    document = MyProfilesDocument;
+    
+  }
+export const MyServicesDocument = gql`
+    query myServices($csrfToken: String!) {
+  myServices(csrfToken: $csrfToken) {
+    id
+    createdAt
+    updatedAt
+    name
+    timezone
+    location {
+      id
+      name
+    }
+    status
+    description
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class MyServicesGQL extends Apollo.Query<MyServicesQuery, MyServicesQueryVariables> {
+    document = MyServicesDocument;
+    
+  }
+export const MyStashesDocument = gql`
+    query myStashes($csrfToken: String!) {
+  myStashes(csrfToken: $csrfToken) {
+    id
+    owner
+    createdBy
+    createdAt
+    updatedBy
+    updatedAt
+    name
+    entryCount
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class MyStashesGQL extends Apollo.Query<MyStashesQuery, MyStashesQueryVariables> {
+    document = MyStashesDocument;
+    
+  }
+export const MyChannelsDocument = gql`
+    query myChannels($csrfToken: String!) {
+  myChannels(csrfToken: $csrfToken) {
+    id
+    owner
+    createdBy
+    createdAt
+    updatedBy
+    updatedAt
+    name
+    entryCount
+    receiver {
+      id
+    }
+    reverse {
+      id
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class MyChannelsGQL extends Apollo.Query<MyChannelsQuery, MyChannelsQueryVariables> {
+    document = MyChannelsDocument;
+    
+  }
+export const MyRoomsDocument = gql`
+    query myRooms($csrfToken: String!) {
+  myRooms(csrfToken: $csrfToken) {
+    id
+    owner
+    createdBy
+    createdAt
+    updatedBy
+    updatedAt
+    name
+    entryCount
+    isPrivate
+    title
+    description
+    logo
+    banner
+    inbox {
+      id
+    }
+    memberships {
+      createdAt
+      createdBy
+      member {
+        id
+        name
+      }
+    }
+    tagAggregate {
+      type
+      count
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class MyRoomsGQL extends Apollo.Query<MyRoomsQuery, MyRoomsQueryVariables> {
+    document = MyRoomsDocument;
+    
+  }
+export const MyMembershipsDocument = gql`
+    query myMemberships($csrfToken: String!, $groupType: GroupType, $isPublic: Boolean) {
+  myMemberships(csrfToken: $csrfToken, groupType: $groupType, isPublic: $isPublic) {
+    id
+    type
+    createdBy
+    createdAt
+    updatedBy
+    updatedAt
+    groupType
+    group {
+      id
+      name
+    }
+    showHistory
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class MyMembershipsGQL extends Apollo.Query<MyMembershipsQuery, MyMembershipsQueryVariables> {
+    document = MyMembershipsDocument;
+    
+  }
+export const FindRoomsDocument = gql`
+    query findRooms($csrfToken: String!, $searchText: String) {
+  findRooms(csrfToken: $csrfToken, searchText: $searchText) {
+    id
+    owner
+    createdBy
+    createdAt
+    updatedBy
+    updatedAt
+    name
+    entryCount
+    isPrivate
+    title
+    description
+    logo
+    banner
+    inbox {
+      id
+    }
+    memberCount
+    tagAggregate {
+      type
+      count
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class FindRoomsGQL extends Apollo.Query<FindRoomsQuery, FindRoomsQueryVariables> {
+    document = FindRoomsDocument;
+    
+  }
+export const FindMembershipsDocument = gql`
+    query findMemberships($csrfToken: String!, $roomId: ID!, $searchText: String) {
+  findMemberships(csrfToken: $csrfToken, roomId: $roomId, searchText: $searchText) {
+    id
+    type
+    createdBy
+    createdAt
+    updatedBy
+    updatedAt
+    groupType
+    group {
+      id
+      name
+    }
+    member {
+      id
+      name
+    }
+    showHistory
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class FindMembershipsGQL extends Apollo.Query<FindMembershipsQuery, FindMembershipsQueryVariables> {
+    document = FindMembershipsDocument;
+    
+  }
+export const GetEntriesDocument = gql`
+    query getEntries($csrfToken: String!, $groupId: ID!, $from: DateTime, $to: DateTime) {
+  getEntries(csrfToken: $csrfToken, groupId: $groupId, from: $from, to: $to) {
+    id
+    type
+    owner
+    createdBy
+    createdAt
+    updatedBy
+    updatedAt
+    name
+    content
+    contentEncoding {
+      id
+    }
+    tagAggregate {
+      type
+      count
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetEntriesGQL extends Apollo.Query<GetEntriesQuery, GetEntriesQueryVariables> {
+    document = GetEntriesDocument;
+    
+  }
