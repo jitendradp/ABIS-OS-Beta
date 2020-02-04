@@ -1,6 +1,0 @@
-mutation createProfile($csrfToken:String! $type:ProfileType!  $name:String! $picture:String! $timezone:String!) {
-  createProfile(csrfToken:$csrfToken type:$type name:$name picture:$picture timezone:$timezone)
-}
-mutation updateProfile($csrfToken:String! $profileId:String! $type:ProfileType! $name:String! $picture:String! $timezone:String! $status:String!) {
-  updateProfile(csrfToken:$csrfToken profileId:$profileId type:$type name:$name picture:$picture timezone:$timezone status:$status)
-}

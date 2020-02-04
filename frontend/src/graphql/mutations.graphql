@@ -1,0 +1,159 @@
+mutation signup($signupInput:SignupInput!) {
+  signup(signupInput: $signupInput) {
+    success
+    code
+    message
+    data
+  }
+}
+
+mutation verifyEmail($code:String!) {
+  verifyEmail(code: $code) {
+    success
+    code
+    message
+    data
+  }
+}
+
+mutation resetPassword($code:String!) {
+  resetPassword(code: $code) {
+    success
+    code
+    message
+    data
+  }
+}
+
+mutation login($email:String! $password:String!) {
+  login(email: $email password: $password) {
+    success
+    code
+    message
+    data
+  }
+}
+
+mutation logout($csrfToken:String!) {
+  logout(csrfToken: $csrfToken) {
+    success
+    code
+    message
+    data
+  }
+}
+
+mutation verifySession($csrfToken:String!) {
+  logout(csrfToken: $csrfToken) {
+    success
+    code
+    message
+    data
+  }
+}
+
+mutation createChannel($csrfToken:String! $toAgentId:ID!) {
+  createChannel(csrfToken: $csrfToken toAgentId:$toAgentId) {
+    id
+    name
+    createdAt
+    receiver {
+      id
+      name
+    }
+    reverse {
+      id
+    }
+  }
+}
+
+mutation deleteChannel($csrfToken:String! $id:ID!) {
+  deleteChannel(csrfToken: $csrfToken id:$id) {
+    success
+    code
+    message
+    data
+  }
+}
+
+mutation createRoom($csrfToken:String! $createRoomInput:CreateRoomInput!) {
+  createRoom(csrfToken: $csrfToken createRoomInput:$createRoomInput) {
+    id
+    owner
+    createdBy
+    createdAt
+    name
+    entryCount
+    isPrivate
+    title
+    description
+    logo
+    banner
+    inbox {
+      id
+    }
+    memberships {
+      id
+    }
+  }
+}
+
+mutation deleteRoom($csrfToken:String! $id:ID!) {
+  deleteRoom(csrfToken: $csrfToken id:$id) {
+    success
+    code
+    message
+    data
+  }
+}
+
+mutation createEntry($csrfToken:String! $createEntryInput:CreateEntryInput!) {
+  createEntry(csrfToken: $csrfToken createEntryInput:$createEntryInput) {
+    type
+    id
+    createdAt
+    createdBy
+    owner
+    name
+    contentEncoding {
+      id
+    }
+    content
+  }
+}
+
+mutation deleteEntry($csrfToken:String! $id:ID!) {
+  deleteEntry(csrfToken: $csrfToken id:$id) {
+    success
+    code
+    message
+    data
+  }
+}
+
+
+# Not yet:
+#mutation createProfile($csrfToken:String! $createProfileInput:CreateProfileInput!) {
+#  createProfile(csrfToken: $csrfToken createProfileInput: $createProfileInput) {
+#    id
+#    createdAt
+#    name
+#    avatar
+#    location {
+#      id
+#      name
+#    }
+#    slogan
+#    status
+#    timezone
+#  }
+#}
+# mutation updateProfile
+# mutation deleteProfile
+# mutation createStash
+# mutation updateStash
+# mutation deleteStash
+
+
+
+

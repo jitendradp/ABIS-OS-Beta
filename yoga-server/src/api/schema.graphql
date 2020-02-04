@@ -115,10 +115,7 @@ enum GroupType {
 interface Agent {
     id: ID!
 
-    createdBy: ID!
     createdAt: DateTime!
-
-    updatedBy: ID
     updatedAt: DateTime
 
     name: String!
@@ -137,10 +134,7 @@ enum ProfileStatus {
 type Profile implements Agent {
     id: ID!
 
-    createdBy: ID!
     createdAt: DateTime!
-
-    updatedBy: ID
     updatedAt: DateTime
 
     name: String!
@@ -166,10 +160,7 @@ enum ServiceStatus {
 type Service implements Agent {
     id: ID!
 
-    createdBy: ID!
     createdAt: DateTime!
-
-    updatedBy: ID
     updatedAt: DateTime
 
     name: String!
@@ -585,22 +576,22 @@ type Mutation {
     #
     # Groups
     #
-    createStash(csrfToken:String! createStashInput:CreateStashInput) : Stash
-    updateStash(csrfToken:String! updateStashInput:UpdateStashInput) : Stash
+    createStash(csrfToken:String! createStashInput:CreateStashInput!) : Stash
+    updateStash(csrfToken:String! updateStashInput:UpdateStashInput!) : Stash
     deleteStash(csrfToken:String! id:ID!) : ActionResponse!
 
-    createChannel(csrfToken:String! tpAgentId:ID!) : Channel
+    createChannel(csrfToken:String! toAgentId:ID!) : Channel
     deleteChannel(csrfToken:String! id:ID!) : ActionResponse!
 
-    createRoom(csrfToken:String! createRoomInput:CreateRoomInput) : Room
-    updateRoom(csrfToken:String! updateRoomInput:UpdateRoomInput) : Room
+    createRoom(csrfToken:String! createRoomInput:CreateRoomInput!) : Room
+    updateRoom(csrfToken:String! updateRoomInput:UpdateRoomInput!) : Room
     deleteRoom(csrfToken:String! id:ID!) : ActionResponse!
 
     #
     # Entries
     #
-    createEntry(csrfToken:String! createEntryInput:CreateEntryInput) : Entry
-    updateEntry(csrfToken:String! updateEntryInput:UpdateEntryInput) : Entry
+    createEntry(csrfToken:String! createEntryInput:CreateEntryInput!) : Entry
+    updateEntry(csrfToken:String! updateEntryInput:UpdateEntryInput!) : Entry
     deleteEntry(csrfToken:String! id:ID!) : ActionResponse!
 
     #
@@ -614,14 +605,14 @@ type Mutation {
     #
     # Tags
     #
-    addTag(csrfToken:String! to:ID! addTagInput:AddTagInput) : Tag  # Adds a tag to an object and returns it. Locations, Groups and Entries can be tagged.
+    addTag(csrfToken:String! to:ID! addTagInput:AddTagInput!) : Tag  # Adds a tag to an object and returns it. Locations, Groups and Entries can be tagged.
     removeTag(csrfToken:String! tagId:ID!) : ActionResponse!        # Removes a specific tag.
 
     #
     # Locations
     #
-    createLocation(csrfToken:String! createLocationInput:CreateLocationInput) : Location
-    updateLocation(csrfToken:String! updateLocationInput:UpdateLocationInput) : Location
+    createLocation(csrfToken:String! createLocationInput:CreateLocationInput!) : Location
+    updateLocation(csrfToken:String! updateLocationInput:UpdateLocationInput!) : Location
     deleteLocation(csrfToken:String! id:ID!) : ActionResponse!
 
     #

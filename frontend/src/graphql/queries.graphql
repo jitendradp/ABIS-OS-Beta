@@ -1,0 +1,193 @@
+query myAccount($csrfToken:String! ) {
+  myAccount(csrfToken:$csrfToken) {
+    id
+    createdAt
+  }
+}
+
+query myProfiles($csrfToken:String! ) {
+  myProfiles(csrfToken:$csrfToken) {
+    id
+    profileType
+    createdAt
+    updatedAt
+    name
+    status
+    timezone
+    location {
+      id
+      name
+    }
+    avatar
+    banner
+    slogan
+    jobTitle
+  }
+}
+
+query myServices($csrfToken:String! ) {
+  myServices(csrfToken:$csrfToken) {
+    id
+    createdAt
+    updatedAt
+    name
+    timezone
+    location {
+      id
+      name
+    }
+    status
+    description
+  }
+}
+
+query myStashes($csrfToken:String! ) {
+  myStashes(csrfToken:$csrfToken) {
+    id
+    owner
+    createdBy
+    createdAt
+    updatedBy
+    updatedAt
+    name
+    entryCount
+  }
+}
+
+query myChannels($csrfToken:String! ) {
+  myChannels(csrfToken:$csrfToken) {
+    id
+    owner
+    createdBy
+    createdAt
+    updatedBy
+    updatedAt
+    name
+    entryCount
+    receiver {
+      id
+    }
+    reverse {
+      id
+    }
+  }
+}
+
+query myRooms($csrfToken:String! ) {
+  myRooms(csrfToken:$csrfToken) {
+    id
+    owner
+    createdBy
+    createdAt
+    updatedBy
+    updatedAt
+    name
+    entryCount
+    isPrivate
+    title
+    description
+    logo
+    banner
+    inbox {
+      id
+    }
+    memberships {
+      createdAt
+      createdBy
+      member {
+        id
+        name
+      }
+    }
+    tagAggregate {
+      type
+      count
+    }
+  }
+}
+
+query myMemberships($csrfToken:String! $groupType:GroupType $isPublic:Boolean) {
+  myMemberships(csrfToken:$csrfToken groupType: $groupType isPublic: $isPublic) {
+    id
+    type
+    createdBy
+    createdAt
+    updatedBy
+    updatedAt
+    groupType
+    group {
+      id
+      name
+    }
+    showHistory
+  }
+}
+
+query findRooms($csrfToken:String! $searchText:String) {
+  findRooms(csrfToken:$csrfToken searchText: $searchText) {
+    id
+    owner
+    createdBy
+    createdAt
+    updatedBy
+    updatedAt
+    name
+    entryCount
+    isPrivate
+    title
+    description
+    logo
+    banner
+    inbox{
+      id
+    }
+    memberCount
+    tagAggregate {
+      type
+      count
+    }
+  }
+}
+
+query findMemberships($csrfToken:String! $roomId:ID! $searchText:String) {
+  findMemberships(csrfToken:$csrfToken roomId: $roomId searchText: $searchText) {
+    id
+    type
+    createdBy
+    createdAt
+    updatedBy
+    updatedAt
+    groupType
+    group {
+      id
+      name
+    }
+    member {
+      id
+      name
+    }
+    showHistory
+  }
+}
+
+
+query getEntries($csrfToken:String! $groupId:ID! $from:DateTime $to:DateTime) {
+  getEntries(csrfToken:$csrfToken groupId:$groupId from: $from to: $to) {
+    id
+    type
+    owner
+    createdBy
+    createdAt
+    updatedBy
+    updatedAt
+    name
+    content
+    contentEncoding {
+      id
+    }
+    tagAggregate {
+      type
+      count
+    }
+  }
+}
