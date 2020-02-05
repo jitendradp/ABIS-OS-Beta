@@ -3,7 +3,7 @@
   <mat-card-header class="profileHeader">
     <app-avatar mat-card-avatar [url]="profileService.profileInformation.pictureAvatar"></app-avatar>
     <mat-card-title>
-      {{userService.userInformation.firstName}}&nbsp;{{userService.userInformation.lastName}}
+      {{userService.accountInformation.firstName}}&nbsp;{{userService.accountInformation.lastName}}
     </mat-card-title>
     <mat-card-subtitle style="color: whitesmoke">
       @{{profileService.profileInformation.name}}
@@ -62,7 +62,7 @@
         <button mat-menu-item>instant message</button>
       </mat-menu>
       <mat-card-title style="color: white">
-        {{userService.userInformation.firstName}}&nbsp;{{userService.userInformation.lastName}}
+        {{userService.accountInformation.firstName}}&nbsp;{{userService.accountInformation.lastName}}
       </mat-card-title>
       <mat-card-subtitle style="color: white">
         @{{profileService.profileInformation.name}}

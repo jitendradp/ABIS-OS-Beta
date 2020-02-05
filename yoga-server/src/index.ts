@@ -1,11 +1,14 @@
 import {GraphQLServer} from 'graphql-yoga'
-import {GroupType, prisma, UserType} from './generated'
-import {UserMutations} from "./api/mutations/user/userMutations";
+import {prisma, UserType} from './generated'
+import {UserApiMutations} from "./api/mutations/userApiMutations";
 import {ContextParameters} from "graphql-yoga/dist/types";
 import {config} from "./config";
 import {UserQueries} from "./api/queries/user/userQueries";
 import {AgentQueries} from "./api/queries/agent/agentQueries";
 import {GroupQueries2} from "./api/queries/groups/groupQueries2";
+import {ChannelApiMutations} from "./api/mutations/channelApiMutations";
+import {RoomApiMutations} from "./api/mutations/roomApiMutations";
+import {EntryApiMutations} from "./api/mutations/entryApiMutations";
 
 var cookie = require('cookie');
 
@@ -63,7 +66,7 @@ const resolvers = {
     Mutation: {
         async signup(root, {signupInput}) {
             if (signupInput.type == <UserType>"Person") {
-                return UserMutations.createPerson(
+                return UserApiMutations.createPerson(
                     signupInput.type,
                     signupInput.email,
                     signupInput.password,
@@ -73,7 +76,7 @@ const resolvers = {
                     signupInput.personPhone,
                     signupInput.personMobilePhone);
             } else if (signupInput.type == <UserType>"Organization") {
-                return UserMutations.createOrganization(
+                return UserApiMutations.createOrganization(
                     signupInput.type,
                     signupInput.email,
                     signupInput.password,
@@ -84,16 +87,100 @@ const resolvers = {
             }
         },
         async verifyEmail(root, {code}, ctx) {
-            return UserMutations.verifyEmail(code, ctx.request);
+            return UserApiMutations.verifyEmail(code, ctx.request);
         },
         async login(root, {email, password}, ctx) {
-            return UserMutations.login(email, password, ctx.request);
+            return UserApiMutations.login(email, password, ctx.request);
         },
         async logout(root, {csrfToken}, ctx) {
-            return UserMutations.logout(csrfToken, ctx.bearerToken, ctx.request);
+            return UserApiMutations.logout(csrfToken, ctx.bearerToken, ctx.request);
         },
         async verifySession(root, {csrfToken}, ctx) {
-            return UserMutations.verifySession(csrfToken, ctx.bearerToken, ctx.request);
+            return UserApiMutations.verifySession(csrfToken, ctx.bearerToken, ctx.request);
+        },
+
+        // Users can't create or delete profiles for now
+        async createProfile(root, {csrfToken}, ctx) {
+            throw new Error("Not implemented");
+        },
+        async deleteProfile(root, {csrfToken}, ctx) {
+            throw new Error("Not implemented");
+        },
+        async updateProfile(root, {csrfToken}, ctx) {
+
+        },
+
+        async createStash(root, {csrfToken}, ctx) {
+            throw new Error("Not implemented");
+        },
+        async updateStash(root, {csrfToken}, ctx) {
+            throw new Error("Not implemented");
+        },
+        async deleteStash(root, {csrfToken}, ctx) {
+            throw new Error("Not implemented");
+        },
+
+        async createChannel(root, {csrfToken, toAgentId}, ctx) {
+            return await ChannelApiMutations.createChannel(csrfToken, ctx.bearerToken, toAgentId);
+        },
+        async deleteChannel(root, {csrfToken, toAgentId}, ctx) {
+            return await ChannelApiMutations.deleteChannel(csrfToken, ctx.bearerToken, toAgentId);
+        },
+
+        async createRoom(root, {csrfToken, createRoomInput}, ctx) {
+            return await RoomApiMutations.createRoom(
+                  csrfToken
+                , ctx.bearerToken
+                , createRoomInput.isPublic
+                , createRoomInput.name
+                , createRoomInput.title
+                , createRoomInput.description
+                , createRoomInput.logo
+                , createRoomInput.banner);
+        },
+        async updateRoom(root, {csrfToken, updateRoomInput}, ctx) {
+            return await RoomApiMutations.updateRoom(
+                csrfToken
+                , ctx.bearerToken
+                , updateRoomInput.id
+                , updateRoomInput.isPublic
+                , updateRoomInput.name
+                , updateRoomInput.title
+                , updateRoomInput.description
+                , updateRoomInput.logo
+                , updateRoomInput.banner);
+        },
+        async deleteRoom(root, {csrfToken, roomId}, ctx) {
+            return await RoomApiMutations.deleteRoom(csrfToken, ctx.bearerToken, roomId)
+        },
+
+        async createEntry(root, {csrfToken, createEntryInput}, ctx) {
+            return EntryApiMutations.createEntry(
+                csrfToken
+                , ctx.bearerToken
+                , createEntryInput.roomId
+                , createEntryInput.type
+                , createEntryInput.name
+                , createEntryInput.content
+                , createEntryInput.contentEncoding)
+        },
+        async updateEntry(root, {csrfToken}, ctx) {
+            throw new Error("Not implemented");
+        },
+        async deleteEntry(root, {csrfToken, entryId}, ctx) {
+            return EntryApiMutations.deleteEntry(csrfToken, ctx.bearerToken, entryId);
+        },
+
+        async addTag(root, {csrfToken}, ctx) {
+        },
+        async removeTag(root, {csrfToken}, ctx) {
+        },
+
+        async createLocation(root, {csrfToken}, ctx) {
+        },
+        async updateLocation(root, {csrfToken}, ctx) {
+        },
+        async deleteLocation(root, {csrfToken}, ctx) {
         },
     },
 };
@@ -118,9 +205,9 @@ server.use(morgan('combined'));
 server.start({
     cors: {
         methods: ["OPTIONS", "POST"],
-        origin: "*",// "http://" + config.env.domain + ":4200",
+        origin: "http://" + config.env.domain + ":4200",
         allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept",
         optionsSuccessStatus: 200,
         credentials: true
     }
-}, () => console.log('Server is running on http://localhost:4000'));
+}, () => console.log('Server is running on ' + config.env.domain + ":4000"));

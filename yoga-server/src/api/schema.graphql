@@ -18,7 +18,7 @@ type Tag {
     value: String!
 }
 
-type Taggregate {
+type TagAggregate {
     type: String!
     count: Integer!
 }
@@ -37,7 +37,7 @@ interface Location {
     name: String
 
     tags: [Tag!]!
-    taggregate:[Taggregate!]!       # Contains the tag-counts grouped by their type.
+    tagAggregate:[TagAggregate!]!       # Contains the tag-counts grouped by their type.
 }
 
 type OpenStreetMapNode implements Location {
@@ -54,7 +54,7 @@ type OpenStreetMapNode implements Location {
     name: String
 
     tags: [Tag!]!
-    taggregate:[Taggregate!]!       # Contains the tag-counts grouped by their type.
+    tagAggregate:[TagAggregate!]!       # Contains the tag-counts grouped by their type.
 
     osmNodeId:String!
 }
@@ -73,7 +73,7 @@ type Address implements Location {
     name: String
 
     tags: [Tag!]!
-    taggregate:[Taggregate!]!       # Contains the tag-counts grouped by their type.
+    tagAggregate:[TagAggregate!]!       # Contains the tag-counts grouped by their type.
 
     line1: String!
     line2: String
@@ -96,7 +96,7 @@ type GeoPoint implements Location {
     name: String
 
     tags: [Tag!]!
-    taggregate:[Taggregate!]!       # Contains the tag-counts grouped by their type.
+    tagAggregate:[TagAggregate!]!       # Contains the tag-counts grouped by their type.
 
     geoPointLatitude: Float!
     geoPointLongitude: Float!
@@ -115,10 +115,7 @@ enum GroupType {
 interface Agent {
     id: ID!
 
-    createdBy: ID!
     createdAt: DateTime!
-
-    updatedBy: ID
     updatedAt: DateTime
 
     name: String!
@@ -137,10 +134,7 @@ enum ProfileStatus {
 type Profile implements Agent {
     id: ID!
 
-    createdBy: ID!
     createdAt: DateTime!
-
-    updatedBy: ID
     updatedAt: DateTime
 
     name: String!
@@ -166,10 +160,7 @@ enum ServiceStatus {
 type Service implements Agent {
     id: ID!
 
-    createdBy: ID!
     createdAt: DateTime!
-
-    updatedBy: ID
     updatedAt: DateTime
 
     name: String!
@@ -230,7 +221,6 @@ type Channel implements Group {
 
     entryCount: Integer
 
-    sender: Agent!
     receiver: Agent!
 
     reverse: Channel        # When existing, contains the reverse channel.
@@ -285,10 +275,10 @@ type Room implements Group {
     inbox: Inbox!
 
     memberCount: Integer
-    memberships: [Membership!]!     # Empty when returned in searches.
+    memberships: [Membership!]!         # Empty when returned in searches.
 
     tags: [Tag!]!
-    taggregate:[Taggregate!]!       # Contains the tag-counts grouped by their type.
+    tagAggregate:[TagAggregate!]!       # Contains the tag-counts grouped by their type.
 }
 
 #
@@ -356,17 +346,13 @@ input UpdateStashInput {
     name: String!
 }
 
-input CreateChannelInput {
-    receiver: ID! # The id of the receiving agent
-}
-
 input CreateRoomInput {
     name: String!
     title: String
     description: String
     logo: String
     banner: String
-    tags: [AddTagInput!]!
+    # tags: [AddTagInput!]!
 }
 
 input UpdateRoomInput {
@@ -379,6 +365,8 @@ input UpdateRoomInput {
 }
 
 input CreateEntryInput {
+    roomId: ID!
+
     type: EntryType!
 
     name: String
@@ -386,7 +374,7 @@ input CreateEntryInput {
     content: Json
     contentEncoding: ID
 
-    tags: [AddTagInput!]!
+    # tags: [AddTagInput!]!
 }
 
 input UpdateEntryInput {
@@ -473,7 +461,7 @@ type Entry {
     contentEncoding: ContentEncoding
 
     tags: [Tag!]!
-    taggregate:[Taggregate!]!       # Contains the tag-counts grouped by their type.
+    tagAggregate:[TagAggregate!]!       # Contains the tag-counts grouped by their type.
 }
 
 enum EntryType {
@@ -557,7 +545,7 @@ type Query {
     # Finds all Members of the specified Room if the session's Agent has access to it.
     findMemberships(csrfToken:String! roomId:ID! searchText:String) : [Membership!]!
 
-    # Lists the Entries of a specified Group (any group: Stash, Channel or Room).
+    # Lists the Entries of a specified Group (any group: StashMutations, Channel or Room).
     # An optional from- and to-date filter can be specified for temporal pagination.
     getEntries(csrfToken:String! groupId:ID! from:DateTime to:DateTime) : [Entry!]!
 }
@@ -568,6 +556,7 @@ type Mutation {
     #
     signup(signupInput:SignupInput!) : ActionResponse!
     verifyEmail(code:String!) : ActionResponse!
+    resetPassword(code:String!) : ActionResponse!
 
     #
     # Login, Logout, VerifySession
@@ -587,22 +576,22 @@ type Mutation {
     #
     # Groups
     #
-    createStash(csrfToken:String! createStashInput:CreateStashInput) : Stash
-    updateStash(csrfToken:String! updateStashInput:UpdateStashInput) : Stash
+    createStash(csrfToken:String! createStashInput:CreateStashInput!) : Stash
+    updateStash(csrfToken:String! updateStashInput:UpdateStashInput!) : Stash
     deleteStash(csrfToken:String! id:ID!) : ActionResponse!
 
-    createChannel(csrfToken:String! createChannelInput:CreateChannelInput) : Channel
+    createChannel(csrfToken:String! toAgentId:ID!) : Channel
     deleteChannel(csrfToken:String! id:ID!) : ActionResponse!
 
-    createRoom(csrfToken:String! createRoomInput:CreateRoomInput) : Room
-    updateRoom(csrfToken:String! updateRoomInput:UpdateRoomInput) : Room
+    createRoom(csrfToken:String! createRoomInput:CreateRoomInput!) : Room
+    updateRoom(csrfToken:String! updateRoomInput:UpdateRoomInput!) : Room
     deleteRoom(csrfToken:String! id:ID!) : ActionResponse!
 
     #
     # Entries
     #
-    createEntry(csrfToken:String! createEntryInput:CreateEntryInput) : Entry
-    updateEntry(csrfToken:String! updateEntryInput:UpdateEntryInput) : Entry
+    createEntry(csrfToken:String! createEntryInput:CreateEntryInput!) : Entry
+    updateEntry(csrfToken:String! updateEntryInput:UpdateEntryInput!) : Entry
     deleteEntry(csrfToken:String! id:ID!) : ActionResponse!
 
     #
@@ -616,14 +605,14 @@ type Mutation {
     #
     # Tags
     #
-    addTag(csrfToken:String! to:ID! addTagInput:AddTagInput) : Tag  # Adds a tag to an object and returns it. Locations, Groups and Entries can be tagged.
+    addTag(csrfToken:String! to:ID! addTagInput:AddTagInput!) : Tag  # Adds a tag to an object and returns it. Locations, Groups and Entries can be tagged.
     removeTag(csrfToken:String! tagId:ID!) : ActionResponse!        # Removes a specific tag.
 
     #
     # Locations
     #
-    createLocation(csrfToken:String! createLocationInput:CreateLocationInput) : Location
-    updateLocation(csrfToken:String! updateLocationInput:UpdateLocationInput) : Location
+    createLocation(csrfToken:String! createLocationInput:CreateLocationInput!) : Location
+    updateLocation(csrfToken:String! updateLocationInput:UpdateLocationInput!) : Location
     deleteLocation(csrfToken:String! id:ID!) : ActionResponse!
 
     #

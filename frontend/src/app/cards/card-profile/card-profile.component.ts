@@ -1,8 +1,8 @@
 import {Component, Input} from '@angular/core';
-import {ProfileService} from "../../services/profile.service";
 import {UserService} from "../../services/user.service";
 import {SetVisibility} from "../../actions/ui/sidebar/SetVisibility";
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
+import {ProfileService} from "../../services/profile.service";
 
 @Component({
   selector: 'app-card-profile',
@@ -12,8 +12,8 @@ import {ActionDispatcherService} from "../../services/action-dispatcher.service"
 export class CardProfileComponent {
 
   constructor(
-    public userService: UserService,
     public profileService: ProfileService,
+    public userService: UserService,
     private actionDispatcher: ActionDispatcherService,) {
   }
 

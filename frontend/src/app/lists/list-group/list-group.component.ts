@@ -1,8 +1,9 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
 import {MatTreeFlatDataSource, MatTreeFlattener} from "@angular/material";
 import {FlatTreeControl} from "@angular/cdk/tree";
-
+import {FindRoomsGQL} from "../../../generated/abis-api";
+import {UserService} from "../../services/user.service";
 
 interface GroupNode {
   name: string;
@@ -11,7 +12,7 @@ interface GroupNode {
   channels?: GroupNode[];
 }
 
-const TREE_DATA: GroupNode[] = [
+let TREE_DATA: GroupNode[] = [
   {
     name: 'My Company',
     logo: 'https://marketingplatform.google.com/about/partners/img/company/6027496168357888/assets/5686306919153664',
@@ -89,7 +90,7 @@ export interface groupItem {
   templateUrl: './list-group.component.html',
   styleUrls: ['./list-group.component.css']
 })
-export class ListGroupComponent {
+export class ListGroupComponent implements OnInit {
 
   @Input()
   collapsed: boolean;
@@ -125,7 +126,9 @@ export class ListGroupComponent {
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
   constructor(
-    public actionDispatcher: ActionDispatcherService) {
+    public actionDispatcher: ActionDispatcherService,
+    private findRoomsApi:FindRoomsGQL,
+    private userService:UserService) {
     this.dataSource.data = TREE_DATA;
   }
 
@@ -212,5 +215,26 @@ export class ListGroupComponent {
       description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
     },
   ];
+
+  ngOnInit(): void {
+    this.findRoomsApi.fetch({csrfToken: this.userService.csrfToken}).toPromise()
+      .then(rooms => {
+        for (let room in rooms.data.findRooms) {
+          TREE_DATA.push({
+            name: room,
+            logo: 'https://www.freelogodesign.org/Content/img/logo-samples/flooop.png',
+            channels: [
+              {name: 'Chaos', icon: 'lock'},
+              {name: 'General', icon: 'lock'},
+              {name: 'Customer Support', icon: 'lock_open'},
+              {name: 'Chaos', icon: 'lock_open'},
+              {name: 'General', icon: 'lock_open'},
+              {name: 'Customer Support', icon: 'lock_open'},
+            ]
+          });
+        }
+        this.dataSource.data = TREE_DATA;
+      });
+  }
 
 }
