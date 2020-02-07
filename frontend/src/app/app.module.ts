@@ -51,7 +51,7 @@ import {StudioComponent} from './pages/studio/studio.component';
 //import {ProfileService} from "./services/profile.service";
 import {CockpitComponent} from './pages/cockpit/cockpit.component';
 import {MapComponent} from './pages/map/map.component';
-import {InviteComponent} from './pages/system/invite/invite.component';
+import {InviteComponent} from './widgets/chat/invite/invite.component';
 import {LogoComponent} from './components/logo/logo.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HeaderComponent} from './components/header/header.component';
@@ -73,12 +73,10 @@ import {CardStoreComponent} from "./cards/card-store/card-store.component";
 import {SearchComponent} from "./search/search.component";
 import {NgxMapboxGLModule} from "ngx-mapbox-gl";
 import {CardComponent} from "./cards/card/card.component";
-import {EditorCommandComponent} from "./dialogs/editor-command/editor-command.component";
 import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
 import {DeviceDetectorModule} from "ngx-device-detector";
 import {ClusterPopupComponent} from "./pages/map/cluster-popup/cluster-popup.component";
 import {AgGridModule} from "ag-grid-angular";
-import {EditorPortfolioComponent} from "./dialogs/editor-portfolio/editor-portfolio.component";
 import {SmartCryptoAppComponent} from "./smartapps/smart-crypto-app/smart-crypto-app.component";
 import {CardPortfolioComponent} from "./cards/card-portfolio/card-portfolio.component";
 import {CardProfileComponent} from "./cards/card-profile/card-profile.component";
@@ -97,7 +95,7 @@ import {ListContactComponent} from "./lists/list-contact/list-contact.component"
 import {AvatarComponent} from "./components/avatar/avatar.component";
 import {ListChipComponent} from "./lists/list-chip/list-chip.component";
 import {ChatComponent} from "./widgets/chat/chat.component";
-import {ResetPasswordComponent} from "./pages/system/reset-password/reset-password.component";
+import {ResetPasswordComponent} from "./dialogs/reset-password/reset-password.component";
 import {ListMemberComponent} from "./lists/list-member/list-member.component";
 import {FeedNotificationComponent} from "./feeds/feed-notification/feed-notification.component";
 import {ListDataspaceComponent} from "./lists/list-dataspace/list-dataspace.component";
@@ -114,6 +112,9 @@ import {FileUploadComponent} from "./components/file-upload/file-upload.componen
 import {ListChatComponent} from "./lists/list-chat/list-chat.component";
 import {EditorProfileComponent} from "./dialogs/editor-profile/editor-profile.component";
 import {ProfileService} from "./services/profile.service";
+import {EditorAccountComponent} from "./dialogs/editor-account/editor-account.component";
+import {InputPasscodeComponent} from "./dialogs/input-passcode/input-passcode.component";
+import {EditorPasswordComponent} from "./dialogs/editor-password/editor-password.component";
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -214,12 +215,6 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'command', component: EditorCommandComponent, data: {
-      "title": "New command",
-      "actions": defaultActions
-    }
-  },
-  {
     path: 'smart-crypto-app', component: SmartCryptoAppComponent, data: {
       "title": "Smart Crypto App",
       "actions": defaultActions
@@ -270,9 +265,7 @@ const appRoutes: Routes = [
     CardStoreComponent,
     SearchComponent,
     CardComponent,
-    EditorCommandComponent,
     ClusterPopupComponent,
-    EditorPortfolioComponent,
     SmartCryptoAppComponent,
     CardPortfolioComponent,
     CardProfileComponent,
@@ -304,6 +297,9 @@ const appRoutes: Routes = [
     FileUploadComponent,
     ListChatComponent,
     EditorProfileComponent,
+    EditorAccountComponent,
+    InputPasscodeComponent,
+    EditorPasswordComponent,
   ],
   imports: [
     RouterModule.forRoot(

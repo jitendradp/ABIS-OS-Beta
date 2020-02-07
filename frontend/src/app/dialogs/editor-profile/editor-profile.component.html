@@ -1,46 +1,22 @@
+<app-whitespace></app-whitespace>
+<mat-form-field class="halfWidth">
+  <input matInput type="text" placeholder="Display name" required maxlength="35">
+</mat-form-field>
+<mat-form-field class="halfWidth">
+  <input matInput type="tel" placeholder="Phone number" maxlength="15">
+</mat-form-field>
+<mat-form-field class="halfWidth">
+  <input matInput type="text" placeholder="Slogan" maxlength="35">
+</mat-form-field>
+<mat-form-field class="halfWidth">
+  <input matInput type="text" placeholder="Job title" maxlength="35">
+</mat-form-field>
 <app-content>
-  <app-card-form [title]="'Edit user'">
-    <app-input
-      [type]="'text'"
-      [placeholder]="'First name'"
-      [inputValue]="">
-    </app-input>
-    <app-whitespace></app-whitespace>
-    <app-input
-      [type]="'text'"
-      [placeholder]="'Last name'"
-      [inputValue]="">
-    </app-input>
-  </app-card-form>
+  <app-file-upload></app-file-upload>
 </app-content>
 <app-content>
-  <app-card-form [title]="'Edit profile'">
-    <app-input
-      [type]="'text'"
-      [placeholder]="'Display name'"
-      [inputValue]=""
-      [showHint]="true"
-      [hint]="'How your name will show up in groups.'">
-    </app-input>
-    <app-whitespace></app-whitespace>
-    <app-input
-      [type]="'text'"
-      [placeholder]="'What I do'"
-      [inputValue]=""
-      [showHint]="true"
-      [hint]="'Let people know what you do.'">
-    </app-input>
-    <app-whitespace></app-whitespace>
-    <app-input
-      [type]="'text'"
-      [placeholder]="'Your slogan'"
-      [inputValue]="">
-    </app-input>
-    <app-whitespace></app-whitespace>
-    <app-input
-      [type]="'tel'"
-      [placeholder]="'Phone'"
-      [inputValue]="">
-    </app-input>
-  </app-card-form>
+  <button mat-button class="maxButton">Complete
+  </button>
+  <app-whitespace></app-whitespace>
+  <mat-hint align="start">Make your profile easy to recognize for your colleagues and friends.</mat-hint>
 </app-content>

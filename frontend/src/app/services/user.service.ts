@@ -15,20 +15,9 @@ import {SessionProfileChanged} from "../actions/user/SessionProfileChanged";
 import {Apollo} from "apollo-angular";
 import {UserInformationChanged} from "../actions/user/UserInformationChanged";
 
-export type UserInformation = {
-  id: number,
-  createdAt: string,
-  email: string,
-  firstName: string,
-  lastName: string,
-  mobilePhone: string,
-};
-
-
 @Injectable({
   providedIn: 'root'
 })
-
 export class UserService {
   // TODO: Remove the cast to <any> and adopt the UI to the proper UserInformation type.
   // TODO: Remove the "name" field from the graphql schema and replace it with "firstname" and "lastname"

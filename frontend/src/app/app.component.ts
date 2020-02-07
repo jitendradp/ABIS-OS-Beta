@@ -22,12 +22,12 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {LogEntry} from "./services/logger.service";
 import {Back} from "./actions/routes/Back";
 import {EditorGroupComponent} from "./dialogs/editor-group/editor-group.component";
-import {EditorCommandComponent} from "./dialogs/editor-command/editor-command.component";
 import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {RouteChanged} from "./actions/routes/RouteChanged";
 import {ListGroupComponent} from "./lists/list-group/list-group.component";
-import {InviteComponent} from "./pages/system/invite/invite.component";
+import {InviteComponent} from "./widgets/chat/invite/invite.component";
+import {Logout} from "./actions/routes/Logout";
 
 @Component({
   selector: 'app-root',
@@ -107,9 +107,6 @@ export class AppComponent {
       case "Abis.Chat.Group.Explore":
         this.openGroupExploreDialog();
         break;
-      case "Abis.Cockpit.Command.Create":
-        this.openCockpitCommandDialog();
-        break;
       case ShowNotification.Name:
         if (action instanceof ShowNotification) {
           if (action.entry instanceof LogEntry) {
@@ -136,6 +133,9 @@ export class AppComponent {
       case SwitchProfile.Name:
         this._router.navigate(["/switch-profile"]);
         break;
+      case Logout.Name:
+        this._router.navigate(["/logout"]);
+        break;
     }
   }
 
@@ -149,17 +149,6 @@ export class AppComponent {
   public openChannelCreateDialog(): void {
     const dialogRef = this._dialog.open(EditorChannelComponent, {
       width: '250px'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-  }
-
-  public openCockpitCommandDialog(): void {
-    const dialogRef = this._dialog.open(EditorCommandComponent, {
-      width: '50%',
-      minWidth: '300px'
     });
 
     dialogRef.afterClosed().subscribe(result => {

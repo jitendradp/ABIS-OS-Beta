@@ -3,6 +3,7 @@ import {MatBottomSheet} from "@angular/material";
 import {SearchComponent} from "../../search/search.component";
 import {SetVisibility} from "../../actions/ui/sidebar/SetVisibility";
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
+import {Logout} from "../../actions/routes/Logout";
 
 export interface IconList {
   name: string;
@@ -74,4 +75,7 @@ export class IconbarComponent {
     this.actionDispatcher.dispatch(new SetVisibility("left", "invisible"));
   }
 
+  logout() {
+    this.actionDispatcher.dispatch(new Logout());
+  }
 }

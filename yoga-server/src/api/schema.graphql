@@ -348,6 +348,7 @@ input UpdateStashInput {
 
 input CreateRoomInput {
     name: String!
+    isPublic: Boolean!
     title: String
     description: String
     logo: String
