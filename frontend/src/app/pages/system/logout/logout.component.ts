@@ -17,19 +17,21 @@ export class LogoutComponent implements OnInit {
 
   message:string = "Please wait while we log you out of ABIS ..";
 
+  /*
   private logout() {
     this.userService.logout().then(o => this.actionDispatcher.dispatch(new Home()));
-  }
+  }*/
 
   ngOnInit() {
     console.log(document.referrer);
+    /*
     if(document.referrer != "") {
       this.logout();
     } else {
       setTimeout(() => {
         this.logout();
       }, 1000);
-    }
+    }*/
   }
 
 }

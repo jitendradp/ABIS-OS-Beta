@@ -7,7 +7,8 @@ import {ActionResponse} from "../../mutations/actionResponse";
 export class UserQueries {
     static async myAccount(csrfToken: string, bearerToken: string) {
         try {
-            return CommonQueries.findUserBySession(csrfToken, bearerToken);
+            let user = await CommonQueries.findUserBySession(csrfToken, bearerToken);
+            return user.user;
         } catch (e) {
             const errorId = Helper.logId(`An error occurred during an account query: ${JSON.stringify(e)}`);
             return <ActionResponse>{

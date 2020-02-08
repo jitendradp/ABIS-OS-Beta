@@ -3,7 +3,7 @@
 //
 // export class GroupQueries {
 //     public static async myGroups(csrfToken: string, bearerToken:string) {
-//         const agent = await CommonQueries.findAgentBySession(csrfToken, bearerToken);
+//         const agent = await CommonQueries.findAgentByBearerToken(csrfToken, bearerToken);
 //         if (!agent) {
 //             throw new Error("Invalid csrfToken or the session has no associated profile.")
 //         }
@@ -11,7 +11,7 @@
 //     }
 //
 //     public static async myMemberships(csrfToken: string, bearerToken:string) {
-//         const agent = await CommonQueries.findAgentBySession(csrfToken, bearerToken);
+//         const agent = await CommonQueries.findAgentByBearerToken(csrfToken, bearerToken);
 //         if (!agent) {
 //             throw new Error("Invalid csrfToken or the session has no associated profile.")
 //         }

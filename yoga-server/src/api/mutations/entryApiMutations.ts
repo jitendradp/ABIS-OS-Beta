@@ -8,6 +8,7 @@ import {OwnershipStatements} from "../../rules/ownershipStatements";
 export class EntryApiMutations {
     static async createEntry(
         csrfToken: string
+        , sessionToken: string
         , bearerToken: string
         , groupId: string
         , type: EntryType
@@ -15,7 +16,7 @@ export class EntryApiMutations {
         , content?:string
         , contentEncoding?:string) {
         try {
-            const myAgent = await CommonQueries.findAgentBySession(csrfToken, bearerToken);
+            const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
             if (!(await MembershipStatements.agentCanAccessGroup(myAgent.id, groupId))) {
                 throw new Error(`Agent ${myAgent.id} cannot access group ${groupId}, in which the new entry should be created.`);
             }
@@ -61,9 +62,9 @@ export class EntryApiMutations {
         }
     }
 
-    public static async deleteEntry(csrfToken: string, bearerToken: string, entryId: string) {
+    public static async deleteEntry(csrfToken: string, sessionToken: string, bearerToken: string, entryId: string) {
         try {
-            const myAgent = await CommonQueries.findAgentBySession(csrfToken, bearerToken);
+            const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
 
             // The owner of a group can always delete items from that group.
             // In all other circumstances, only the owner can delete items.

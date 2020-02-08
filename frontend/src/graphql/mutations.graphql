@@ -1,50 +1,5 @@
-mutation signup($signupInput:SignupInput!) {
-  signup(signupInput: $signupInput) {
-    success
-    code
-    message
-    data
-  }
-}
-
-mutation verifyEmail($code:String!) {
-  verifyEmail(code: $code) {
-    success
-    code
-    message
-    data
-  }
-}
-
-mutation resetPassword($code:String!) {
-  resetPassword(code: $code) {
-    success
-    code
-    message
-    data
-  }
-}
-
-mutation login($email:String! $password:String!) {
-  login(email: $email password: $password) {
-    success
-    code
-    message
-    data
-  }
-}
-
-mutation logout($csrfToken:String!) {
-  logout(csrfToken: $csrfToken) {
-    success
-    code
-    message
-    data
-  }
-}
-
-mutation verifySession($csrfToken:String!) {
-  verifySession(csrfToken: $csrfToken) {
+mutation createeSession($clientTime:String!) {
+  createSession(clientTime: $clientTime) {
     success
     code
     message

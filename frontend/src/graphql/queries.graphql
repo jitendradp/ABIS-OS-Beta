@@ -1,7 +1,30 @@
+query getSystemServices($csrfToken:String!) {
+  getSystemServices(csrfToken: $csrfToken) {
+    id
+    name
+  }
+}
+
 query myAccount($csrfToken:String! ) {
   myAccount(csrfToken:$csrfToken) {
     id
     createdAt
+
+    location {
+      id
+    }
+    timezone
+
+    email
+
+    # Only if "type == UserType.Person":
+    personFirstName
+    personLastName
+    personPhone
+    personMobilePhone
+
+    # Only if "type == UserType.Organization":
+    organizationName
   }
 }
 

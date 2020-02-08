@@ -3,6 +3,7 @@ import {CommonQueries} from "../commonQueries";
 import {Helper} from "../../../helper/Helper";
 import {ActionResponse} from "../../mutations/actionResponse";
 import {GroupQueries} from "../../../queries/group";
+import {config} from "../../../config";
 
 export type MembershipType =
     "Invite" |
@@ -28,9 +29,31 @@ export type Membership = {
 }
 
 export class AgentQueries {
-    public static async myStashes(csrfToken: string, bearerToken: string) {
+    public static async getSystemServices(csrfToken: string, sessionToken: string) {
         try {
-            const myAgent = await CommonQueries.findAgentBySession(csrfToken, bearerToken);
+            const session = await prisma.session({sessionToken: sessionToken});
+            if (!session) {
+                throw new Error(`Couldn't find a session for sessionToken '${sessionToken}'.`)
+            }
+
+            const systemUserAgents = await prisma.user({email: config.env.systemUser}).agents();
+            if (!systemUserAgents) {
+                throw new Error(`Couldn't find any system user agents. User: '${config.env.systemUser}'.`)
+            }
+
+            return systemUserAgents;
+        } catch (e) {
+            const errorId = Helper.logId(`An error occurred during an account query: ${JSON.stringify(e)}`);
+            return <ActionResponse>{
+                success: false,
+                code: errorId
+            };
+        }
+    }
+
+    public static async myStashes(csrfToken: string, sessionToken: string, bearerToken?: string) {
+        try {
+            const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
             if (!myAgent) {
                 throw new Error(`Invalid bearer- and/or csrf-token.`);
             }
@@ -44,9 +67,9 @@ export class AgentQueries {
         }
     }
 
-    public static async myChannels(csrfToken: string, bearerToken: string) {
+    public static async myChannels(csrfToken: string, sessionToken: string, bearerToken: string) {
         try {
-            const myAgent = await CommonQueries.findAgentBySession(csrfToken, bearerToken);
+            const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
             if (!myAgent) {
                 throw new Error(`Invalid bearer- and/or csrf-token.`);
             }
@@ -60,9 +83,9 @@ export class AgentQueries {
         }
     }
 
-    public static async myRooms(csrfToken: string, bearerToken: string) {
+    public static async myRooms(csrfToken: string, sessionToken: string, bearerToken: string) {
         try {
-            const myAgent = await CommonQueries.findAgentBySession(csrfToken, bearerToken);
+            const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
             if (!myAgent) {
                 throw new Error(`Invalid bearer- and/or csrf-token.`);
             }
@@ -76,9 +99,9 @@ export class AgentQueries {
         }
     }
 
-    public static async myMemberships(csrfToken: string, bearerToken: string, groupType?: GroupType, isPublic?: boolean) {
+    public static async myMemberships(csrfToken: string, sessionToken: string, bearerToken: string, groupType?: GroupType, isPublic?: boolean) {
         try {
-            const myAgent = await CommonQueries.findAgentBySession(csrfToken, bearerToken);
+            const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
             if (!myAgent) {
                 throw new Error(`Invalid bearer- and/or csrf-token.`);
             }

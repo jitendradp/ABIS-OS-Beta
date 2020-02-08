@@ -12,6 +12,13 @@ import {EntryApiMutations} from "./api/mutations/entryApiMutations";
 
 var cookie = require('cookie');
 
+
+/*
+Ensure that there are always two system users:
+* Abis: Owns all system service agents
+* Anonymous: Owns all anonymous sessions and agents
+*/
+
 const resolvers = {
     // Resolvers for interface types
     Location: {
@@ -31,6 +38,9 @@ const resolvers = {
     },
     // Query resolvers
     Query: {
+        async getSystemServices(root, {csrfToken}, ctx) {
+            return AgentQueries.getSystemServices(csrfToken, ctx.sessionToken);
+        },
         async myAccount(root, {csrfToken}, ctx) {
             return UserQueries.myAccount(csrfToken, ctx.bearerToken);
         },
@@ -44,10 +54,10 @@ const resolvers = {
             return AgentQueries.myStashes(csrfToken, ctx.bearerToken);
         },
         async myChannels(root, {csrfToken}, ctx) {
-            return AgentQueries.myChannels(csrfToken, ctx.bearerToken);
+            return AgentQueries.myChannels(csrfToken, ctx.sessionToken, ctx.bearerToken);
         },
         async myRooms(root, {csrfToken}, ctx) {
-            return AgentQueries.myRooms(csrfToken, ctx.bearerToken);
+            return AgentQueries.myRooms(csrfToken, ctx.sessionToken, ctx.bearerToken);
         },
         async myMemberships(root, {csrfToken, groupType, isPublic}, ctx) {
             return AgentQueries.myMemberships(csrfToken, ctx.bearerToken, groupType, isPublic);
@@ -64,6 +74,10 @@ const resolvers = {
     },
     // Mutation resolvers
     Mutation: {
+        async createSession(root, {clientTime}, ctx) {
+            return UserApiMutations.createSession(clientTime, ctx.sessionToken, ctx.request);
+        },
+        /*
         async signup(root, {signupInput}) {
             if (signupInput.type == <UserType>"Person") {
                 return UserApiMutations.createPerson(
@@ -75,13 +89,6 @@ const resolvers = {
                     signupInput.timezone,
                     signupInput.personPhone,
                     signupInput.personMobilePhone);
-            } else if (signupInput.type == <UserType>"Organization") {
-                return UserApiMutations.createOrganization(
-                    signupInput.type,
-                    signupInput.email,
-                    signupInput.password,
-                    signupInput.timezone,
-                    signupInput.organizationName);
             } else {
                 throw new Error("Invalid signup UserType: '" + signupInput.type + "'")
             }
@@ -98,6 +105,7 @@ const resolvers = {
         async verifySession(root, {csrfToken}, ctx) {
             return UserApiMutations.verifySession(csrfToken, ctx.bearerToken, ctx.request);
         },
+         */
 
         // Users can't create or delete profiles for now
         async createProfile(root, {csrfToken}, ctx) {
@@ -121,10 +129,10 @@ const resolvers = {
         },
 
         async createChannel(root, {csrfToken, toAgentId}, ctx) {
-            return await ChannelApiMutations.createChannel(csrfToken, ctx.bearerToken, toAgentId);
+            return await ChannelApiMutations.createChannel(csrfToken, ctx.sessionToken, ctx.bearerToken, toAgentId);
         },
         async deleteChannel(root, {csrfToken, toAgentId}, ctx) {
-            return await ChannelApiMutations.deleteChannel(csrfToken, ctx.bearerToken, toAgentId);
+            return await ChannelApiMutations.deleteChannel(csrfToken, ctx.sessionToken, ctx.bearerToken, toAgentId);
         },
 
         async createRoom(root, {csrfToken, createRoomInput}, ctx) {
@@ -141,6 +149,7 @@ const resolvers = {
         async updateRoom(root, {csrfToken, updateRoomInput}, ctx) {
             return await RoomApiMutations.updateRoom(
                 csrfToken
+                , ctx.sessionToken
                 , ctx.bearerToken
                 , updateRoomInput.id
                 , updateRoomInput.isPublic
@@ -151,7 +160,7 @@ const resolvers = {
                 , updateRoomInput.banner);
         },
         async deleteRoom(root, {csrfToken, roomId}, ctx) {
-            return await RoomApiMutations.deleteRoom(csrfToken, ctx.bearerToken, roomId)
+            return await RoomApiMutations.deleteRoom(csrfToken, ctx.sessionToken, ctx.bearerToken, roomId)
         },
 
         async createEntry(root, {csrfToken, createEntryInput}, ctx) {
@@ -168,7 +177,7 @@ const resolvers = {
             throw new Error("Not implemented");
         },
         async deleteEntry(root, {csrfToken, entryId}, ctx) {
-            return EntryApiMutations.deleteEntry(csrfToken, ctx.bearerToken, entryId);
+            return EntryApiMutations.deleteEntry(csrfToken, ctx.sessionToken, ctx.bearerToken, entryId);
         },
 
         async addTag(root, {csrfToken}, ctx) {
@@ -194,7 +203,8 @@ const server = new GraphQLServer({
             request: req.request,
             response: req.response,
             connection: req.connection,
-            bearerToken: req.request.headers.cookie ? cookie.parse(req.request.headers.cookie).bearerToken : null
+            bearerToken: req.request.headers.cookie ? cookie.parse(req.request.headers.cookie).bearerToken : null,
+            sessionToken: req.request.headers.cookie ? cookie.parse(req.request.headers.cookie).sessionToken : null
         };
     }
 });
@@ -210,4 +220,51 @@ server.start({
         optionsSuccessStatus: 200,
         credentials: true
     }
-}, () => console.log('Server is running on ' + config.env.domain + ":4000"));
+},  async () => {
+    console.log('Server is running on ' + config.env.domain + ":4000");
+
+    console.log('Ensuring system users ...');
+
+    let systemUser = await prisma.user({email: config.env.systemUser});
+    if (!systemUser) {
+        systemUser = await prisma.createUser({
+            type: "System",
+            email: config.env.systemUser,
+            timezone: "GMT"
+        });
+        console.log('Created ' + config.env.systemUser);
+
+        let signupAgent = [await prisma.createAgent({
+            owner: systemUser.id,
+            createdBy: systemUser.id,
+            name: "SignupService",
+            status: "Running",
+            type: "Service",
+            serviceDescription: "Handles the signup requests of anonymous profiles",
+            profileAvatar: "nologo.png"
+        })];
+        await prisma.updateUser({
+            where:{
+                id:systemUser.id
+            },
+            data:{
+                agents:{
+                    connect:{
+                        id: signupAgent[0].id
+                    }
+                }
+            }
+        });
+        console.log('Created ' + config.env.signupAgentName);
+    }
+    let anonymousUser = await  prisma.user({email: config.env.anonymousUser});
+    if (!anonymousUser) {
+        anonymousUser = await prisma.createUser({
+            type: "System",
+            email: config.env.anonymousUser,
+            timezone: "GMT"
+        });
+        console.log('Created ' + config.env.anonymousUser);
+    }
+    console.log('System users O.K.');
+});

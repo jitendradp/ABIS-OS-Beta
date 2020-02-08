@@ -262,12 +262,7 @@ export enum MembershipType {
 
 export type Mutation = {
    __typename?: 'Mutation',
-  signup: ActionResponse,
-  verifyEmail: ActionResponse,
-  resetPassword: ActionResponse,
-  login: ActionResponse,
-  logout: ActionResponse,
-  verifySession: ActionResponse,
+  createSession: ActionResponse,
   createProfile?: Maybe<Profile>,
   updateProfile?: Maybe<Profile>,
   deleteProfile: ActionResponse,
@@ -294,34 +289,8 @@ export type Mutation = {
 };
 
 
-export type MutationSignupArgs = {
-  signupInput: SignupInput
-};
-
-
-export type MutationVerifyEmailArgs = {
-  code: Scalars['String']
-};
-
-
-export type MutationResetPasswordArgs = {
-  code: Scalars['String']
-};
-
-
-export type MutationLoginArgs = {
-  email: Scalars['String'],
-  password: Scalars['String']
-};
-
-
-export type MutationLogoutArgs = {
-  csrfToken: Scalars['String']
-};
-
-
-export type MutationVerifySessionArgs = {
-  csrfToken: Scalars['String']
+export type MutationCreateSessionArgs = {
+  clientTime: Scalars['String']
 };
 
 
@@ -509,6 +478,7 @@ export enum ProfileType {
 
 export type Query = {
    __typename?: 'Query',
+  getSystemServices: Array<Service>,
   myAccount: Account,
   myProfiles: Array<Maybe<Profile>>,
   myServices: Array<Maybe<Service>>,
@@ -519,6 +489,11 @@ export type Query = {
   findRooms: Array<Room>,
   findMemberships: Array<Membership>,
   getEntries: Array<Entry>,
+};
+
+
+export type QueryGetSystemServicesArgs = {
+  csrfToken: Scalars['String']
 };
 
 
@@ -714,80 +689,14 @@ export enum UserType {
   Organization = 'Organization'
 }
 
-export type SignupMutationVariables = {
-  signupInput: SignupInput
+export type CreateeSessionMutationVariables = {
+  clientTime: Scalars['String']
 };
 
 
-export type SignupMutation = (
+export type CreateeSessionMutation = (
   { __typename?: 'Mutation' }
-  & { signup: (
-    { __typename?: 'ActionResponse' }
-    & Pick<ActionResponse, 'success' | 'code' | 'message' | 'data'>
-  ) }
-);
-
-export type VerifyEmailMutationVariables = {
-  code: Scalars['String']
-};
-
-
-export type VerifyEmailMutation = (
-  { __typename?: 'Mutation' }
-  & { verifyEmail: (
-    { __typename?: 'ActionResponse' }
-    & Pick<ActionResponse, 'success' | 'code' | 'message' | 'data'>
-  ) }
-);
-
-export type ResetPasswordMutationVariables = {
-  code: Scalars['String']
-};
-
-
-export type ResetPasswordMutation = (
-  { __typename?: 'Mutation' }
-  & { resetPassword: (
-    { __typename?: 'ActionResponse' }
-    & Pick<ActionResponse, 'success' | 'code' | 'message' | 'data'>
-  ) }
-);
-
-export type LoginMutationVariables = {
-  email: Scalars['String'],
-  password: Scalars['String']
-};
-
-
-export type LoginMutation = (
-  { __typename?: 'Mutation' }
-  & { login: (
-    { __typename?: 'ActionResponse' }
-    & Pick<ActionResponse, 'success' | 'code' | 'message' | 'data'>
-  ) }
-);
-
-export type LogoutMutationVariables = {
-  csrfToken: Scalars['String']
-};
-
-
-export type LogoutMutation = (
-  { __typename?: 'Mutation' }
-  & { logout: (
-    { __typename?: 'ActionResponse' }
-    & Pick<ActionResponse, 'success' | 'code' | 'message' | 'data'>
-  ) }
-);
-
-export type VerifySessionMutationVariables = {
-  csrfToken: Scalars['String']
-};
-
-
-export type VerifySessionMutation = (
-  { __typename?: 'Mutation' }
-  & { verifySession: (
+  & { createSession: (
     { __typename?: 'ActionResponse' }
     & Pick<ActionResponse, 'success' | 'code' | 'message' | 'data'>
   ) }
@@ -805,11 +714,11 @@ export type CreateChannelMutation = (
     { __typename?: 'Channel' }
     & Pick<Channel, 'id' | 'name' | 'createdAt'>
     & { receiver: (
-      { __typename?: 'Profile' }
-      & Pick<Profile, 'id' | 'name'>
-    ) | (
       { __typename?: 'Service' }
       & Pick<Service, 'id' | 'name'>
+    ) | (
+      { __typename?: 'Profile' }
+      & Pick<Profile, 'id' | 'name'>
     ), reverse: Maybe<(
       { __typename?: 'Channel' }
       & Pick<Channel, 'id'>
@@ -898,6 +807,19 @@ export type DeleteEntryMutation = (
   ) }
 );
 
+export type GetSystemServicesQueryVariables = {
+  csrfToken: Scalars['String']
+};
+
+
+export type GetSystemServicesQuery = (
+  { __typename?: 'Query' }
+  & { getSystemServices: Array<(
+    { __typename?: 'Service' }
+    & Pick<Service, 'id' | 'name'>
+  )> }
+);
+
 export type MyAccountQueryVariables = {
   csrfToken: Scalars['String']
 };
@@ -907,7 +829,17 @@ export type MyAccountQuery = (
   { __typename?: 'Query' }
   & { myAccount: (
     { __typename?: 'Account' }
-    & Pick<Account, 'id' | 'createdAt'>
+    & Pick<Account, 'id' | 'createdAt' | 'timezone' | 'email' | 'personFirstName' | 'personLastName' | 'personPhone' | 'personMobilePhone' | 'organizationName'>
+    & { location: Maybe<(
+      { __typename?: 'OpenStreetMapNode' }
+      & Pick<OpenStreetMapNode, 'id'>
+    ) | (
+      { __typename?: 'Address' }
+      & Pick<Address, 'id'>
+    ) | (
+      { __typename?: 'GeoPoint' }
+      & Pick<GeoPoint, 'id'>
+    )> }
   ) }
 );
 
@@ -981,11 +913,11 @@ export type MyChannelsQuery = (
     { __typename?: 'Channel' }
     & Pick<Channel, 'id' | 'owner' | 'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt' | 'name' | 'entryCount'>
     & { receiver: (
-      { __typename?: 'Profile' }
-      & Pick<Profile, 'id'>
-    ) | (
       { __typename?: 'Service' }
       & Pick<Service, 'id'>
+    ) | (
+      { __typename?: 'Profile' }
+      & Pick<Profile, 'id'>
     ), reverse: Maybe<(
       { __typename?: 'Channel' }
       & Pick<Channel, 'id'>
@@ -1010,11 +942,11 @@ export type MyRoomsQuery = (
       { __typename?: 'Membership' }
       & Pick<Membership, 'createdAt' | 'createdBy'>
       & { member: (
-        { __typename?: 'Profile' }
-        & Pick<Profile, 'id' | 'name'>
-      ) | (
         { __typename?: 'Service' }
         & Pick<Service, 'id' | 'name'>
+      ) | (
+        { __typename?: 'Profile' }
+        & Pick<Profile, 'id' | 'name'>
       ) }
     )>, tagAggregate: Array<(
       { __typename?: 'TagAggregate' }
@@ -1091,11 +1023,11 @@ export type FindMembershipsQuery = (
       { __typename?: 'Room' }
       & Pick<Room, 'id' | 'name'>
     )>, member: (
-      { __typename?: 'Profile' }
-      & Pick<Profile, 'id' | 'name'>
-    ) | (
       { __typename?: 'Service' }
       & Pick<Service, 'id' | 'name'>
+    ) | (
+      { __typename?: 'Profile' }
+      & Pick<Profile, 'id' | 'name'>
     ) }
   )> }
 );
@@ -1123,9 +1055,9 @@ export type GetEntriesQuery = (
   )> }
 );
 
-export const SignupDocument = gql`
-    mutation signup($signupInput: SignupInput!) {
-  signup(signupInput: $signupInput) {
+export const CreateeSessionDocument = gql`
+    mutation createeSession($clientTime: String!) {
+  createSession(clientTime: $clientTime) {
     success
     code
     message
@@ -1137,98 +1069,8 @@ export const SignupDocument = gql`
   @Injectable({
     providedIn: 'root'
   })
-  export class SignupGQL extends Apollo.Mutation<SignupMutation, SignupMutationVariables> {
-    document = SignupDocument;
-    
-  }
-export const VerifyEmailDocument = gql`
-    mutation verifyEmail($code: String!) {
-  verifyEmail(code: $code) {
-    success
-    code
-    message
-    data
-  }
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class VerifyEmailGQL extends Apollo.Mutation<VerifyEmailMutation, VerifyEmailMutationVariables> {
-    document = VerifyEmailDocument;
-    
-  }
-export const ResetPasswordDocument = gql`
-    mutation resetPassword($code: String!) {
-  resetPassword(code: $code) {
-    success
-    code
-    message
-    data
-  }
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class ResetPasswordGQL extends Apollo.Mutation<ResetPasswordMutation, ResetPasswordMutationVariables> {
-    document = ResetPasswordDocument;
-    
-  }
-export const LoginDocument = gql`
-    mutation login($email: String!, $password: String!) {
-  login(email: $email, password: $password) {
-    success
-    code
-    message
-    data
-  }
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class LoginGQL extends Apollo.Mutation<LoginMutation, LoginMutationVariables> {
-    document = LoginDocument;
-    
-  }
-export const LogoutDocument = gql`
-    mutation logout($csrfToken: String!) {
-  logout(csrfToken: $csrfToken) {
-    success
-    code
-    message
-    data
-  }
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class LogoutGQL extends Apollo.Mutation<LogoutMutation, LogoutMutationVariables> {
-    document = LogoutDocument;
-    
-  }
-export const VerifySessionDocument = gql`
-    mutation verifySession($csrfToken: String!) {
-  verifySession(csrfToken: $csrfToken) {
-    success
-    code
-    message
-    data
-  }
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class VerifySessionGQL extends Apollo.Mutation<VerifySessionMutation, VerifySessionMutationVariables> {
-    document = VerifySessionDocument;
+  export class CreateeSessionGQL extends Apollo.Mutation<CreateeSessionMutation, CreateeSessionMutationVariables> {
+    document = CreateeSessionDocument;
     
   }
 export const CreateChannelDocument = gql`
@@ -1364,11 +1206,37 @@ export const DeleteEntryDocument = gql`
     document = DeleteEntryDocument;
     
   }
+export const GetSystemServicesDocument = gql`
+    query getSystemServices($csrfToken: String!) {
+  getSystemServices(csrfToken: $csrfToken) {
+    id
+    name
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetSystemServicesGQL extends Apollo.Query<GetSystemServicesQuery, GetSystemServicesQueryVariables> {
+    document = GetSystemServicesDocument;
+    
+  }
 export const MyAccountDocument = gql`
     query myAccount($csrfToken: String!) {
   myAccount(csrfToken: $csrfToken) {
     id
     createdAt
+    location {
+      id
+    }
+    timezone
+    email
+    personFirstName
+    personLastName
+    personPhone
+    personMobilePhone
+    organizationName
   }
 }
     `;

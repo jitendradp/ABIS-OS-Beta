@@ -59,21 +59,6 @@ enum EntryType {
     Thing
 }
 
-type Inbox {
-    # NOTE: The "owner" of an Inbox must be the same as the "owner" of the Group it "represents".
-    id: ID! @id @unique
-
-    owner: ID!
-
-    createdBy: ID!
-    createdAt: DateTime! @createdAt
-
-    updatedBy: ID
-    updatedAt: DateTime @updatedAt
-
-    represents: Group! @relation(link: INLINE)
-}
-
 type Group {
     # NOTE: The "owner" of a Group cannot be member of that Group.
     # NOTE: No Group has Memberships which haven't been created either by the group owner or a member of the group.
@@ -105,7 +90,7 @@ type Group {
     banner: String
 
     entries: [Entry!]!
-    inbox: Inbox # Only "Room"s have a inbox
+    inbox: ID # Only "Room"s have Agents of type 'Inbox'
 
     tags: [Tag!]!
 }
@@ -191,6 +176,9 @@ type Agent {
 
     # Only when "type == AgentType.Service":
     serviceDescription: String
+
+    # Only when "type == AgentType.Inbox":
+    inboxDescription: String
 }
 
 enum AgentType {
@@ -204,6 +192,7 @@ enum AgentType {
     # NOTE: There can be no service without exactly one Membership.
     # NOTE: There can be no service which Membership wasn't created by a Profile.
     Service
+    Inbox
 }
 
 enum AgentStatus {
@@ -218,11 +207,16 @@ enum AgentStatus {
     Suspended
     Failed
     Succeeded
+
+    # Only if "Agent.type == AgentType.Inbox"
+    Open
+    Closed
 }
 
 enum ProfileType {
-    Business,
+    Business
     Private
+    Anonymous
 }
 
 type User {
@@ -239,25 +233,22 @@ type User {
 
     challenge: String
     # "isVerified" was removed. The user is always verified when there is no "challenge".
-    passwordSalt: String!
-    passwordHash: String!
+    passwordSalt: String
+    passwordHash: String
 
     agents: [Agent!]!
     sessions: [Session!]!
 
-    # Only if "type == UserType.Person":
-    personFirstName: String
-    personLastName: String
-    personPhone: String
-    personMobilePhone: String
-
-    # Only if "type == UserType.Organization":
+    firstName: String
+    lastName: String
+    phone: String
+    mobilePhone: String
     organizationName: String
 }
 
 enum UserType {
-    Person,
-    Organization
+    Person
+    System
 }
 
 type Session {
@@ -266,8 +257,10 @@ type Session {
  	createdAt: DateTime! @createdAt
  	updatedAt: DateTime @updatedAt
 
+ 	sessionToken: String! @unique
  	csrfToken: String
- 	bearerToken: String! @unique
+ 	bearerToken: String
+ 	clientTime:String
 
  	validTo: DateTime!
 

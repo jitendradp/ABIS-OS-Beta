@@ -41,6 +41,13 @@
   </mat-card-content>
   <mat-card-content *ngIf="collapsed">
     <mat-divider></mat-divider>
+    <app-content>
+      <mat-card-title>Account</mat-card-title>
+    </app-content>
+    <app-editor-account></app-editor-account>
+    <app-content>
+      <mat-card-title>Profile</mat-card-title>
+    </app-content>
     <app-editor-profile></app-editor-profile>
   </mat-card-content>
 </mat-card>

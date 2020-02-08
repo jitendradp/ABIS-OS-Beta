@@ -3,7 +3,6 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MatHorizontalStepper} from "@angular/material/stepper";
 import {ClientStateService} from "../../../services/client-state.service";
 import {StepperSelectionEvent} from "@angular/cdk/stepper";
-import {ProfileType, SignupGQL, UserType, VerifyEmailGQL} from "../../../../generated/abis-api";
 import {UserService} from "../../../services/user.service";
 import {Logger, LoggerService, LogSeverity} from "../../../services/logger.service";
 import {ActionDispatcherService} from "../../../services/action-dispatcher.service";
@@ -27,9 +26,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     , private loggerService: LoggerService
     , private actionDispatcher: ActionDispatcherService
     , private clientState: ClientStateService
-    , private userService: UserService
-    , private signupApi: SignupGQL
-    , private verifyEmailApi: VerifyEmailGQL) {
+    , private userService: UserService) {
   }
 
   public step1FormGroup: FormGroup;
@@ -107,77 +104,19 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   }
 
   private async submitStep1($event: StepperSelectionEvent) {
-    // First step completed, create the user
-    await this.signupApi.mutate({
-      signupInput: {
-        timezone: "GMT",
-        email: this.step1Data.emailAddress,
-        personFirstName: this.step1Data.firstName,
-        personLastName: this.step1Data.lastName,
-        password: this.step1Data.password,
-        type: UserType.Person
-      }
-    }).toPromise()
-      .then(result => {
-        this.clientState.set("RegisterComponent.stepper.selectedIndex", $event.selectedIndex);
-        this.disableCompletedSteps($event.selectedIndex);
-      })
-      .catch(e => {
-        this.stepper.selectedIndex = this.clientState.get<number>("RegisterComponent.stepper.selectedIndex", 0).data;
-        this._log(LogSeverity.UserNotification, "An error occured during step 1 of the registration wizard (basic sign-up). See the log for detailed error messages.");
-        this._log(LogSeverity.Error, e);
-      });
+    this.clientState.set("RegisterComponent.stepper.selectedIndex", $event.selectedIndex);
   }
 
   private submitStep2($event: StepperSelectionEvent) {
-    // Second step completed, verify the email address
-    this.verifyEmailApi.mutate({
-      code: this.step2Data.code
-    }).toPromise()
-      .then(result => {
-        // Disable the previous steps so that the user can't navigate to them again
-        this.clientState.set("RegisterComponent.stepper.selectedIndex", $event.selectedIndex);
-        this.disableCompletedSteps($event.selectedIndex);
-        this.userService.setToken(result.data.verifyEmail.data);
-      })
-      .catch(e => {
-        this.stepper.selectedIndex = this.clientState.get<number>("RegisterComponent.stepper.selectedIndex", 0).data;
-        this._log(LogSeverity.UserNotification, "An error occured during step 2 of the registration wizard (verify email address). See the log for detailed error messages.");
-        this._log(LogSeverity.Error, e);
-      });
+    this.clientState.set("RegisterComponent.stepper.selectedIndex", $event.selectedIndex);
+    this.disableCompletedSteps(1);
   }
 
   public submitStep3($event: MouseEvent) {
-    // Third step completed, create the profile
-    // TODO: Pic and Timezone
-    // TODO: Only private profiles for now
-    /*
-    this.profileService.createProfile(ProfileType.Private, this.step3Data.name, "pic", "UTC")
-      .then(result => {
-        if (!result) {
-          throw new Error("The profile creation failed unexpectedly.");
-        }
-        this.userService.setSessionProfile(result)
-          .then(r => {
-            if (!r) {
-              throw new Error("An unexpected error occurred while binding the new profile " + result + " to the session.");
-            }
-            // Disable the previous steps so that the user can't navigate to them again
-            this.clientState.delete("RegisterComponent.stepper.selectedIndex");
-            this.disableCompletedSteps(2);
-
-            this.actionDispatcher.dispatch(new Home());
-          })
-      })
-      .catch(e => {
-        this.stepper.selectedIndex = this.clientState.get<number>("RegisterComponent.stepper.selectedIndex", 1).data;
-        this._log(LogSeverity.UserNotification, "An error occured during step 3 of the registration wizard (create profile). See the log for detailed error messages.");
-        this._log(LogSeverity.Error, e);
-      });
-     */
+    //this.clientState.set("RegisterComponent.stepper.selectedIndex", 2);
+    //this.disableCompletedSteps(2);
 
     this.clientState.delete("RegisterComponent.stepper.selectedIndex");
-    this.disableCompletedSteps(2);
     this.actionDispatcher.dispatch(new Home());
   }
 

@@ -6,8 +6,8 @@ export class CommonQueries {
         return await prisma.sessions({where:{user:{id:userId}, validTo_gt: new Date(), timedOut:null, loggedOut:null}});
     }
 
-    public static async findSession(csrfToken: string, bearerToken: string) : Promise<Session> {
-        const sessions = await prisma.sessions({where:{csrfToken, bearerToken, validTo_gt: new Date(), timedOut:null, loggedOut:null}});
+    public static async findSession(csrfToken: string, sessionToken:string, bearerToken?: string) : Promise<Session> {
+        const sessions = await prisma.sessions({where:{csrfToken, sessionToken, bearerToken, validTo_gt: new Date(), timedOut:null, loggedOut:null}});
         if (sessions.length == 1) {
             return sessions[0];
         } else if (sessions.length > 1) {
@@ -17,8 +17,16 @@ export class CommonQueries {
         return null;
     }
 
-    public static async findAgentBySession(csrfToken: string, bearerToken: string) : Promise<Agent> {
-        const session = await this.findSession(csrfToken, bearerToken);
+    public static async findAgentBySession(csrfToken: string, sessionToken: string, bearerToken?: string) : Promise<Agent> {
+        const session = await this.findSession(csrfToken, sessionToken, bearerToken);
+        if (!session){
+            return null;
+        }
+        return prisma.session({id:session.id}).agent();
+    }
+
+    public static async findAgentBySessionToken(csrfToken: string, sessionToken:string, bearerToken: string) : Promise<Agent> {
+        const session = await this.findSession(csrfToken, sessionToken, bearerToken);
         if (!session){
             return null;
         }

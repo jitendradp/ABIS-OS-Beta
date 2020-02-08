@@ -526,6 +526,8 @@ type Account {
 }
 
 type Query {
+    getSystemServices(csrfToken: String!) : [Service!]!
+
     myAccount(csrfToken: String!) : Account!
 
     myProfiles(csrfToken: String!) : [Profile]!
@@ -552,20 +554,22 @@ type Query {
 }
 
 type Mutation {
+    createSession(clientTime:String!) : ActionResponse!
+
     #
     # Signup
     #
-    signup(signupInput:SignupInput!) : ActionResponse!
-    verifyEmail(code:String!) : ActionResponse!
-    resetPassword(code:String!) : ActionResponse!
+    #signup(signupInput:SignupInput!) : ActionResponse!
+    #verifyEmail(code:String!) : ActionResponse!
+    #resetPassword(code:String!) : ActionResponse!
 
     #
     # Login, Logout, VerifySession
     #
-    login(email:String! password:String!) : ActionResponse!
-    logout(csrfToken:String!) : ActionResponse!
+    #login(email:String! password:String!) : ActionResponse!
+    #logout(csrfToken:String!) : ActionResponse!
 
-    verifySession(csrfToken:String!) : ActionResponse!
+    #verifySession(csrfToken:String!) : ActionResponse!
 
     #
     # Agents

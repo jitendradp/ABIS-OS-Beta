@@ -217,24 +217,6 @@ export class ListGroupComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.findRoomsApi.fetch({csrfToken: this.userService.csrfToken}).toPromise()
-      .then(rooms => {
-        for (let room in rooms.data.findRooms) {
-          TREE_DATA.push({
-            name: room,
-            logo: 'https://www.freelogodesign.org/Content/img/logo-samples/flooop.png',
-            channels: [
-              {name: 'Chaos', icon: 'lock'},
-              {name: 'General', icon: 'lock'},
-              {name: 'Customer Support', icon: 'lock_open'},
-              {name: 'Chaos', icon: 'lock_open'},
-              {name: 'General', icon: 'lock_open'},
-              {name: 'Customer Support', icon: 'lock_open'},
-            ]
-          });
-        }
-        this.dataSource.data = TREE_DATA;
-      });
   }
 
 }

@@ -7,9 +7,9 @@ import {Helper} from "../../../helper/Helper";
 import {ActionResponse} from "../../mutations/actionResponse";
 
 export class GroupQueries2 {
-    public static async findRooms(csrfToken: string, bearerToken: string, searchText?: string) {
+    public static async findRooms(csrfToken: string, sessionToken: string, bearerToken: string, searchText?: string) {
         try {
-            const myAgent = await CommonQueries.findAgentBySession(csrfToken, bearerToken);
+            const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
             const foundRooms = GroupQueries.findRooms(myAgent.id, searchText);
             return foundRooms;
         } catch (e) {
@@ -21,9 +21,9 @@ export class GroupQueries2 {
         }
     }
 
-    public static async findMemberships(csrfToken: string, bearerToken: string, roomId: string, searchText?: string) {
+    public static async findMemberships(csrfToken: string, sessionToken: string, bearerToken: string, roomId: string, searchText?: string) {
         try {
-            const myAgent = await CommonQueries.findAgentBySession(csrfToken, bearerToken);
+            const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
             const foundMemberships = await MembershipQueries.findMemberships(myAgent.id, roomId, searchText);
             return foundMemberships;
         } catch (e) {
@@ -35,9 +35,9 @@ export class GroupQueries2 {
         }
     }
 
-    public static async getEntries(csrfToken: string, bearerToken: string, groupId: string, from?: Date, to?: Date) {
+    public static async getEntries(csrfToken: string, sessionToken: string, bearerToken: string, groupId: string, from?: Date, to?: Date) {
         try {
-            const myAgent = await CommonQueries.findAgentBySession(csrfToken, bearerToken);
+            const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
             if (!await MembershipStatements.agentCanAccessGroup(myAgent.id, groupId)) {
                 return [];
             }

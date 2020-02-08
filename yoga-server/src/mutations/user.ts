@@ -70,7 +70,7 @@ export class UserMutations {
         }
 
         return ProfileMutations.createProfile(user.id
-            , user.personFirstName
+            , user.firstName
             , "/assets/logos/abis-logo.png");
     }
 }

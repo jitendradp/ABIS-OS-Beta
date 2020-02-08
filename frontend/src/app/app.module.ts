@@ -48,7 +48,6 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {NgxEchartsModule} from "ngx-echarts";
 import {StudioComponent} from './pages/studio/studio.component';
-//import {ProfileService} from "./services/profile.service";
 import {CockpitComponent} from './pages/cockpit/cockpit.component';
 import {MapComponent} from './pages/map/map.component';
 import {InviteComponent} from './widgets/chat/invite/invite.component';
@@ -115,10 +114,11 @@ import {ProfileService} from "./services/profile.service";
 import {EditorAccountComponent} from "./dialogs/editor-account/editor-account.component";
 import {InputPasscodeComponent} from "./dialogs/input-passcode/input-passcode.component";
 import {EditorPasswordComponent} from "./dialogs/editor-password/editor-password.component";
+import {CanActivateRoute} from "./services/RouteGuards";
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
-};
+}
 
 const defaultActions: IAction[] =
   [
@@ -153,6 +153,7 @@ const appRoutes: Routes = [
       "title": "Login",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'register', component: RegisterComponent, data: {
@@ -355,7 +356,7 @@ const appRoutes: Routes = [
     }),
     CalendarModule.forRoot({provide: DateAdapter, useFactory: momentAdapterFactory})
   ],
-  providers: [ProfileService],
+  providers: [ProfileService,CanActivateRoute],
   entryComponents: [SearchComponent],
   bootstrap: [AppComponent]
 })
