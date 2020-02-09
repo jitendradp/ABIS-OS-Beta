@@ -73,7 +73,8 @@ export class AgentQueries {
             if (!myAgent) {
                 throw new Error(`Invalid bearer- and/or csrf-token.`);
             }
-            return GroupQueries.findChannelsOfAgent(myAgent.id);
+            const myChannels = await GroupQueries.findChannelsOfAgent(myAgent.id);
+            return myChannels;
         } catch (e) {
             const errorId = Helper.logId(`An error occurred during querying 'myChannels': ${JSON.stringify(e)}`);
             return <ActionResponse>{

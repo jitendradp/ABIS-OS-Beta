@@ -5,27 +5,13 @@
      fxLayoutAlign="center"
      fxLayoutGap="0px"
      fxLayoutGap.xs="0">
-  <div fxFlex='auto' fxFlex.gt-md='25' fxFlex.gt-sm='50'>
+  <div fxFlex='auto' fxFlex.gt-md='25' fxFlex.gt-sm='50' style="background:white; padding:15px;">
     <app-whitespace></app-whitespace>
-    <mat-horizontal-stepper [linear]="!isLinear" #stepper (selectionChange)="stepChanged($event)">
-      <mat-step [stepControl]="step1FormGroup">
-        <form [formGroup]="step1FormGroup">
-          <ng-template matStepLabel>Register</ng-template>
-          <app-editor-account></app-editor-account>
-        </form>
-      </mat-step>
-      <mat-step [stepControl]="step2FormGroup">
-        <form [formGroup]="step2FormGroup">
-          <ng-template matStepLabel>Verify</ng-template>
-          <app-input-passcode></app-input-passcode>
-        </form>
-      </mat-step>
-      <mat-step [stepControl]="step3FormGroup">
-        <form [formGroup]="step3FormGroup">
-          <ng-template matStepLabel>Profile</ng-template>
-          <app-editor-profile></app-editor-profile>
-        </form>
-      </mat-step>
-    </mat-horizontal-stepper>
+    <json-schema-form
+      loadExternalAssets="false"
+      [schema]="formSchema"
+      framework="material-design"
+      (onSubmit)="formSubmit($event)">
+    </json-schema-form>
   </div>
 </div>

@@ -726,6 +726,7 @@ type ContentEncoding {
   updatedAt: DateTime
   name: String!
   charset: String!
+  data: String
 }
 
 type ContentEncodingConnection {
@@ -742,6 +743,7 @@ input ContentEncodingCreateInput {
   updatedBy: ID
   name: String!
   charset: String!
+  data: String
 }
 
 type ContentEncodingEdge {
@@ -768,6 +770,8 @@ enum ContentEncodingOrderByInput {
   name_DESC
   charset_ASC
   charset_DESC
+  data_ASC
+  data_DESC
 }
 
 type ContentEncodingPreviousValues {
@@ -780,6 +784,7 @@ type ContentEncodingPreviousValues {
   updatedAt: DateTime
   name: String!
   charset: String!
+  data: String
 }
 
 type ContentEncodingSubscriptionPayload {
@@ -807,6 +812,7 @@ input ContentEncodingUpdateInput {
   updatedBy: ID
   name: String
   charset: String
+  data: String
 }
 
 input ContentEncodingUpdateManyMutationInput {
@@ -816,6 +822,7 @@ input ContentEncodingUpdateManyMutationInput {
   updatedBy: ID
   name: String
   charset: String
+  data: String
 }
 
 input ContentEncodingWhereInput {
@@ -923,6 +930,20 @@ input ContentEncodingWhereInput {
   charset_not_starts_with: String
   charset_ends_with: String
   charset_not_ends_with: String
+  data: String
+  data_not: String
+  data_in: [String!]
+  data_not_in: [String!]
+  data_lt: String
+  data_lte: String
+  data_gt: String
+  data_gte: String
+  data_contains: String
+  data_not_contains: String
+  data_starts_with: String
+  data_not_starts_with: String
+  data_ends_with: String
+  data_not_ends_with: String
   AND: [ContentEncodingWhereInput!]
   OR: [ContentEncodingWhereInput!]
   NOT: [ContentEncodingWhereInput!]

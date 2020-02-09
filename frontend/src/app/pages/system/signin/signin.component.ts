@@ -20,35 +20,10 @@ export class SigninComponent implements OnInit {
   private readonly _log:Logger = this.loggerService.createLogger("SigninComponent");
 
   constructor(private userService:UserService
-    , private loggerService:LoggerService
-    , private createChannelGQL: CreateChannelGQL
-    , private getSystemAgentsApi: GetSystemServicesGQL
-    , private actionDispatcher:ActionDispatcherService) {
-  }
-
-  private async findSignupAgentId() : Promise<string> {
-    const systemAgents = await this.getSystemAgentsApi.fetch({csrfToken: this.userService.csrfToken}).toPromise();
-    return systemAgents.data.getSystemServices.find(o => o.name == "SignupService").id;
-  }
-
-  /**
-   * Creates a new Channel to the SignupService-Agent and returns its ID.
-   */
-  private async createSignupChannel() : Promise<String> {
-    const signupAgentId = await this.findSignupAgentId();
-    const channel = await this.createChannelGQL.mutate({
-      csrfToken: this.userService.csrfToken,
-      toAgentId: signupAgentId
-    }).toPromise();
-
-    return channel.data.createChannel.id;
+    , private loggerService:LoggerService) {
   }
 
   ngOnInit() {
-    // Create a channel
-    this.createSignupChannel().then(o => {
-      console.log(o);
-    });
   }
 
   /*

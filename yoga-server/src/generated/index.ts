@@ -550,7 +550,9 @@ export type ContentEncodingOrderByInput =
   | "name_ASC"
   | "name_DESC"
   | "charset_ASC"
-  | "charset_DESC";
+  | "charset_DESC"
+  | "data_ASC"
+  | "data_DESC";
 
 export type EntryType =
   | "Empty"
@@ -877,6 +879,20 @@ export interface ContentEncodingWhereInput {
   charset_not_starts_with?: Maybe<String>;
   charset_ends_with?: Maybe<String>;
   charset_not_ends_with?: Maybe<String>;
+  data?: Maybe<String>;
+  data_not?: Maybe<String>;
+  data_in?: Maybe<String[] | String>;
+  data_not_in?: Maybe<String[] | String>;
+  data_lt?: Maybe<String>;
+  data_lte?: Maybe<String>;
+  data_gt?: Maybe<String>;
+  data_gte?: Maybe<String>;
+  data_contains?: Maybe<String>;
+  data_not_contains?: Maybe<String>;
+  data_starts_with?: Maybe<String>;
+  data_not_starts_with?: Maybe<String>;
+  data_ends_with?: Maybe<String>;
+  data_not_ends_with?: Maybe<String>;
   AND?: Maybe<ContentEncodingWhereInput[] | ContentEncodingWhereInput>;
   OR?: Maybe<ContentEncodingWhereInput[] | ContentEncodingWhereInput>;
   NOT?: Maybe<ContentEncodingWhereInput[] | ContentEncodingWhereInput>;
@@ -2061,6 +2077,7 @@ export interface ContentEncodingCreateInput {
   updatedBy?: Maybe<ID_Input>;
   name: String;
   charset: String;
+  data?: Maybe<String>;
 }
 
 export interface SessionUpdateInput {
@@ -2084,6 +2101,7 @@ export interface ContentEncodingUpdateInput {
   updatedBy?: Maybe<ID_Input>;
   name?: Maybe<String>;
   charset?: Maybe<String>;
+  data?: Maybe<String>;
 }
 
 export interface UserCreateWithoutSessionsInput {
@@ -2109,6 +2127,7 @@ export interface ContentEncodingUpdateManyMutationInput {
   updatedBy?: Maybe<ID_Input>;
   name?: Maybe<String>;
   charset?: Maybe<String>;
+  data?: Maybe<String>;
 }
 
 export interface TagSubscriptionWhereInput {
@@ -4469,6 +4488,7 @@ export interface ContentEncodingPreviousValues {
   updatedAt?: DateTimeOutput;
   name: String;
   charset: String;
+  data?: String;
 }
 
 export interface ContentEncodingPreviousValuesPromise
@@ -4483,6 +4503,7 @@ export interface ContentEncodingPreviousValuesPromise
   updatedAt: () => Promise<DateTimeOutput>;
   name: () => Promise<String>;
   charset: () => Promise<String>;
+  data: () => Promise<String>;
 }
 
 export interface ContentEncodingPreviousValuesSubscription
@@ -4497,6 +4518,7 @@ export interface ContentEncodingPreviousValuesSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   name: () => Promise<AsyncIterator<String>>;
   charset: () => Promise<AsyncIterator<String>>;
+  data: () => Promise<AsyncIterator<String>>;
 }
 
 export interface AggregateGroup {
@@ -4654,6 +4676,7 @@ export interface ContentEncoding {
   updatedAt?: DateTimeOutput;
   name: String;
   charset: String;
+  data?: String;
 }
 
 export interface ContentEncodingPromise
@@ -4668,6 +4691,7 @@ export interface ContentEncodingPromise
   updatedAt: () => Promise<DateTimeOutput>;
   name: () => Promise<String>;
   charset: () => Promise<String>;
+  data: () => Promise<String>;
 }
 
 export interface ContentEncodingSubscription
@@ -4682,6 +4706,7 @@ export interface ContentEncodingSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   name: () => Promise<AsyncIterator<String>>;
   charset: () => Promise<AsyncIterator<String>>;
+  data: () => Promise<AsyncIterator<String>>;
 }
 
 export interface ContentEncodingNullablePromise
@@ -4696,6 +4721,7 @@ export interface ContentEncodingNullablePromise
   updatedAt: () => Promise<DateTimeOutput>;
   name: () => Promise<String>;
   charset: () => Promise<String>;
+  data: () => Promise<String>;
 }
 
 export interface EntryPreviousValues {

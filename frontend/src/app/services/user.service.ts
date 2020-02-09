@@ -66,6 +66,7 @@ export class UserService {
   }
 
   public createSession() : Observable<SessionCreated> {
+    console.log("Creating session");
       return this.createSessionApi.mutate({clientTime:new Date().toISOString()}).pipe(
         map(result => {
           console.log(result);
@@ -76,15 +77,5 @@ export class UserService {
             throw new Error("An error occurred during the session creation.")
           }
         }));
-  }
-
-  public async loadMyAccount(): Promise<Account> {
-    const userInfo = await this.myAccountApi.fetch({
-      csrfToken: this.csrfToken
-    }).toPromise();
-    const oldUserInfo = this.accountInformation;
-    this.accountInformation = <Account>userInfo.data.myAccount;
-    this.actionDispatcher.dispatch(new UserInformationChanged(oldUserInfo, this.accountInformation));
-    return this.accountInformation;
   }
 }

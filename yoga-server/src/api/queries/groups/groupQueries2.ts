@@ -5,6 +5,7 @@ import {EntryWhereInput, prisma} from "../../../generated";
 import {MembershipStatements} from "../../../rules/membershipStatements";
 import {Helper} from "../../../helper/Helper";
 import {ActionResponse} from "../../mutations/actionResponse";
+import {getTypesAndWhere} from "prisma-client-lib/dist/utils";
 
 export class GroupQueries2 {
     public static async findRooms(csrfToken: string, sessionToken: string, bearerToken: string, searchText?: string) {
@@ -69,7 +70,11 @@ export class GroupQueries2 {
                                       where: entriesWhereInput
                                   });
 
-            return entries;
+            return entries.map(async o => {
+                (<any>o).tagAggregate = [];
+                (<any>o).contentEncoding = await prisma.contentEncoding({id:o.contentEncoding}) ?? ""
+                return o;
+            });
         } catch (e) {
             const errorId = Helper.logId(`An error occurred during an entries-query: ${JSON.stringify(e)}`);
             return <ActionResponse>{

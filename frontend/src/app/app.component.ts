@@ -30,7 +30,7 @@ import {InviteComponent} from "./widgets/chat/invite/invite.component";
 import {Logout} from "./actions/routes/Logout";
 import {UserService} from "./services/user.service";
 import {SessionCreated} from "./actions/user/SessionCreated";
-import {CreateeSessionGQL} from "../generated/abis-api";
+import {CreateChannelGQL, CreateEntryGQL, CreateeSessionGQL, EntryType} from "../generated/abis-api";
 
 @Component({
   selector: 'app-root',
@@ -56,6 +56,7 @@ export class AppComponent implements AfterViewInit {
     private _router: Router,
     private actionDispatcher: ActionDispatcherService,
     public _dialog: MatDialog,
+    private createEntryApi: CreateEntryGQL,
     private deviceService: DeviceDetectorService,
     private _snackBar: MatSnackBar
   ) {

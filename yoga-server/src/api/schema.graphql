@@ -40,7 +40,7 @@ interface Location {
     tagAggregate:[TagAggregate!]!       # Contains the tag-counts grouped by their type.
 }
 
-type OpenStreetMapNode implements Location {
+type OpenStreetMap implements Location {
     id: ID!
 
     owner: ID!
@@ -489,6 +489,7 @@ type ContentEncoding {
 
     name: String!
     charset: String!
+    data:String
 }
 
 enum EncodingType {
@@ -501,6 +502,11 @@ enum EncodingType {
     GqlSchema
     RdfSchema
     Owl
+}
+
+type NewEntrySubscription {
+    id: ID!
+    name: String
 }
 
 type Account {
@@ -624,4 +630,8 @@ type Mutation {
     # Ownership
     #
     # giveOwnership(csrfToken:String! ofObjectId:ID! toAgentId:ID!) : ActionResponse!
+}
+
+type Subscription {
+    newEntry: NewEntrySubscription!
 }

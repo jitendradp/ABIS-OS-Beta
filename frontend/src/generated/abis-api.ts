@@ -97,6 +97,7 @@ export type ContentEncoding = {
   updatedAt?: Maybe<Scalars['DateTime']>,
   name: Scalars['String'],
   charset: Scalars['String'],
+  data?: Maybe<Scalars['String']>,
 };
 
 export type CreateEntryInput = {
@@ -434,8 +435,14 @@ export type MutationDeleteLocationArgs = {
   id: Scalars['ID']
 };
 
-export type OpenStreetMapNode = Location & {
-   __typename?: 'OpenStreetMapNode',
+export type NewEntrySubscription = {
+   __typename?: 'NewEntrySubscription',
+  id: Scalars['ID'],
+  name?: Maybe<Scalars['String']>,
+};
+
+export type OpenStreetMap = Location & {
+   __typename?: 'OpenStreetMap',
   id: Scalars['ID'],
   owner: Scalars['ID'],
   createdBy: Scalars['ID'],
@@ -618,6 +625,11 @@ export type Stash = Group & {
   name: Scalars['String'],
   entryCount?: Maybe<Scalars['Integer']>,
   tags: Array<Tag>,
+};
+
+export type Subscription = {
+   __typename?: 'Subscription',
+  newEntry: NewEntrySubscription,
 };
 
 export type Tag = {
@@ -831,8 +843,8 @@ export type MyAccountQuery = (
     { __typename?: 'Account' }
     & Pick<Account, 'id' | 'createdAt' | 'timezone' | 'email' | 'personFirstName' | 'personLastName' | 'personPhone' | 'personMobilePhone' | 'organizationName'>
     & { location: Maybe<(
-      { __typename?: 'OpenStreetMapNode' }
-      & Pick<OpenStreetMapNode, 'id'>
+      { __typename?: 'OpenStreetMap' }
+      & Pick<OpenStreetMap, 'id'>
     ) | (
       { __typename?: 'Address' }
       & Pick<Address, 'id'>
@@ -854,8 +866,8 @@ export type MyProfilesQuery = (
     { __typename?: 'Profile' }
     & Pick<Profile, 'id' | 'profileType' | 'createdAt' | 'updatedAt' | 'name' | 'status' | 'timezone' | 'avatar' | 'banner' | 'slogan' | 'jobTitle'>
     & { location: Maybe<(
-      { __typename?: 'OpenStreetMapNode' }
-      & Pick<OpenStreetMapNode, 'id' | 'name'>
+      { __typename?: 'OpenStreetMap' }
+      & Pick<OpenStreetMap, 'id' | 'name'>
     ) | (
       { __typename?: 'Address' }
       & Pick<Address, 'id' | 'name'>
@@ -877,8 +889,8 @@ export type MyServicesQuery = (
     { __typename?: 'Service' }
     & Pick<Service, 'id' | 'createdAt' | 'updatedAt' | 'name' | 'timezone' | 'status' | 'description'>
     & { location: Maybe<(
-      { __typename?: 'OpenStreetMapNode' }
-      & Pick<OpenStreetMapNode, 'id' | 'name'>
+      { __typename?: 'OpenStreetMap' }
+      & Pick<OpenStreetMap, 'id' | 'name'>
     ) | (
       { __typename?: 'Address' }
       & Pick<Address, 'id' | 'name'>
@@ -1047,7 +1059,7 @@ export type GetEntriesQuery = (
     & Pick<Entry, 'id' | 'type' | 'owner' | 'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt' | 'name' | 'content'>
     & { contentEncoding: Maybe<(
       { __typename?: 'ContentEncoding' }
-      & Pick<ContentEncoding, 'id'>
+      & Pick<ContentEncoding, 'id' | 'name' | 'charset' | 'data'>
     )>, tagAggregate: Array<(
       { __typename?: 'TagAggregate' }
       & Pick<TagAggregate, 'type' | 'count'>
@@ -1499,6 +1511,9 @@ export const GetEntriesDocument = gql`
     content
     contentEncoding {
       id
+      name
+      charset
+      data
     }
     tagAggregate {
       type

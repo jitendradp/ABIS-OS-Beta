@@ -5,6 +5,7 @@ import {prisma} from "../../generated";
 import {config} from "../../config";
 
 export class ChannelApiMutations {
+
     static async createChannel(csrfToken: string, sessionToken: string, bearerToken: string, toAgentId: string) {
         // fact "C.M.1 Ein Channel hat immer genau ein Mitglied"
         // fact "C.M.2 Es gibt keine Channels mit Mitgliedschaften, die nicht vom Channel-Owner erstellt wurden"
@@ -19,8 +20,7 @@ export class ChannelApiMutations {
                 }
             });
 
-            if (existingChannel.length > 0) {
-                throw new Error(`There can be only one channel from agent ${myAgent.id} to ${otherAgent.id}.`);
+            if (existingChannel.length > 0) {throw new Error(`There can be only one channel from agent ${myAgent.id} to ${otherAgent.id}.`);
             }
 
             if (!myAgent || !otherAgent) {
@@ -48,6 +48,8 @@ export class ChannelApiMutations {
                     }
                 }
             });
+
+            (<any>newChannelWithMember).receiver = otherAgent;
 
             return newChannelWithMember;
         } catch (e) {

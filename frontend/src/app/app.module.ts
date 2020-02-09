@@ -115,6 +115,8 @@ import {EditorAccountComponent} from "./dialogs/editor-account/editor-account.co
 import {InputPasscodeComponent} from "./dialogs/input-passcode/input-passcode.component";
 import {EditorPasswordComponent} from "./dialogs/editor-password/editor-password.component";
 import {CanActivateRoute} from "./services/RouteGuards";
+import {JsonSchemaFormModule} from "angular6-json-schema-form/lib/json-schema-form.module";
+import {MaterialDesignFrameworkModule} from "angular6-json-schema-form";
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -147,6 +149,7 @@ const appRoutes: Routes = [
       "title": "Welcome",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'signin', component: SigninComponent, data: {
@@ -160,78 +163,91 @@ const appRoutes: Routes = [
       "title": "Sign up",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'cockpit', component: CockpitComponent, data: {
       "title": "Cockpit",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'store', component: StoreComponent, data: {
       "title": "Store",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'studio', component: StudioComponent, data: {
       "title": "Studio",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'map', component: MapComponent, data: {
       "title": "Map",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'reset-password', component: ResetPasswordComponent, data: {
       "title": "Reset password",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'editor-channel', component: EditorChannelComponent, data: {
       "title": "Create new channel",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'switch-profile', component: SwitchProfileComponent, data: {
       "title": "Switch profile",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'logout', component: LogoutComponent, data: {
       "title": "Logout",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'editor-team', component: EditorGroupComponent, data: {
       "title": "Create new team",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'smart-crypto-app', component: SmartCryptoAppComponent, data: {
       "title": "Smart Crypto App",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'group-list', component: ListGroupComponent, data: {
       "title": "Groups",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'calendar', component: CalendarComponent, data: {
       "title": "Calendar",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
 ];
 
@@ -350,11 +366,12 @@ const appRoutes: Routes = [
     AgGridModule.withComponents([]),
     MatTooltipModule,
     MatPaginatorModule,
+    MaterialDesignFrameworkModule,
     NgxMapboxGLModule.withConfig({
       accessToken: 'pk.eyJ1IjoiZGF2ZXdhdmVhYmlzY2xvdWQiLCJhIjoiY2s0eXYycjhzMDRhczNkbXF6dzNkMzlzayJ9.nyAc-uTfNfDTF0lxmZ3a3Q', // Optionnal, can also be set per map (accessToken input of mgl-map)
       geocoderAccessToken: 'pk.eyJ1IjoiZGF2ZXdhdmVhYmlzY2xvdWQiLCJhIjoiY2s0eXYycjhzMDRhczNkbXF6dzNkMzlzayJ9.nyAc-uTfNfDTF0lxmZ3a3Q' // Optionnal, specify if different from the map access token, can also be set per mgl-geocoder (accessToken input of mgl-geocoder)
     }),
-    CalendarModule.forRoot({provide: DateAdapter, useFactory: momentAdapterFactory})
+    CalendarModule.forRoot({provide: DateAdapter, useFactory: momentAdapterFactory}),
   ],
   providers: [ProfileService,CanActivateRoute],
   entryComponents: [SearchComponent],

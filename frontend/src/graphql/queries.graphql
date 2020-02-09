@@ -207,6 +207,9 @@ query getEntries($csrfToken:String! $groupId:ID! $from:DateTime $to:DateTime) {
     content
     contentEncoding {
       id
+      name
+      charset
+      data
     }
     tagAggregate {
       type
