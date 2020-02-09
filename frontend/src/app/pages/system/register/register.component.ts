@@ -7,6 +7,7 @@ import {ActionDispatcherService} from "../../../services/action-dispatcher.servi
 import {ShowNotification} from "../../../actions/ui/ShowNotification";
 import {Back} from "../../../actions/routes/Back";
 import {
+  ContentEncoding,
   CreateChannelGQL,
   CreateEntryGQL, GetEntriesGQL,
   GetSystemServicesGQL,
@@ -35,6 +36,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   }
 
   channelId:string;
+  contentEncoding:ContentEncoding;
 
   ngOnInit() {
     // Create a channel
@@ -50,6 +52,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       if (!entry) {
         throw new Error("Requested entries with contentEncoding.name == 'Signup' but found nothing in the channel.");
       }
+      this.contentEncoding = entry.contentEncoding;
       this.formSchema = JSON.parse(entry.contentEncoding.data);
     });
   }
@@ -70,7 +73,18 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   }
 
   async formSubmit($event: any) {
-    console.log($event);
+    console.log("Submitting...");
+    const result = this.createEntryApi.mutate({
+      csrfToken: this.userService.csrfToken,
+      createEntryInput: {
+        roomId: this.channelId,
+        type:"Json",
+        contentEncoding:this.contentEncoding.id,
+        content: $event
+      }
+    }).subscribe(o => {
+      console.log("Submitted:", o);
+    });
   }
 
   private async findSignupAgentId(): Promise<string> {

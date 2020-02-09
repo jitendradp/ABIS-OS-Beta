@@ -66,6 +66,9 @@ const resolvers = {
     },
     // Query resolvers
     Query: {
+        async contentEncodings(root, {csrfToken}, ctx) {
+            return prisma.contentEncodings();
+        },
         async getSystemServices(root, {csrfToken}, ctx) {
             return AgentQueries.getSystemServices(csrfToken, ctx.sessionToken);
         },
@@ -182,6 +185,8 @@ const resolvers = {
             if (hooks) {
                 hooks.forEach(o => o(createEntryInput.roomId, <any>entry));
             }
+
+            (<any>entry).contentEncoding = {id:createEntryInput.contentEncoding};
 
             pubsub.publish("createEntry", {
                 id: (<any>entry).id,

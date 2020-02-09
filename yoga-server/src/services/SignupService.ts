@@ -22,20 +22,13 @@ export class SignupService extends Service {
             channelId: channelId
         });
 
-        let contentEncoding = (await prisma.contentEncodings({where:{name:"Signup"}}))[0];
-
         // Whenever a new channel to this service was created, post an entry with all options, the service provides.
+        let contentEncoding = (await prisma.contentEncodings({where:{name:"Signup"}}))[0];
         const entry = await EntryMutations.createEntryInGroup(channelId, {
             owner: this.serviceId,
             createdBy: this.serviceId,
-            type: "Json",
-            name: "Your options",
-            content: {
-                "steps": [
-                    {Deine: "Mudda"},
-                    {Deine: "Mudda oida!"},
-                ]
-            },
+            type: "Empty",
+            name: "Welcome message",
             contentEncoding:contentEncoding.id
         });
 

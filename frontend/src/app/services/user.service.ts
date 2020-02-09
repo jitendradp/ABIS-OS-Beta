@@ -3,7 +3,7 @@ import {ActionDispatcherService} from "./action-dispatcher.service";
 import {LoginStateChanged} from "../actions/user/LoginStateChanged";
 import {
   MyAccountGQL,
-  Account, UserType, CreateeSessionGQL
+  Account, UserType, CreateeSessionGQL, ContentEncoding, ContentEncodingsGQL
 } from "../../generated/abis-api";
 import {ClientStateService} from "./client-state.service";
 import {Logger, LoggerService, LogSeverity} from "./logger.service";
@@ -42,6 +42,12 @@ export class UserService {
     return this.clientState.get<string>(this.ProfileKey, null).data;
   }
 
+  private readonly ContentEncodingsKey = "UserService.contentEncodings";
+
+  public get contentEncodings(): ContentEncoding[] {
+    return this.clientState.get<ContentEncoding[]>(this.ContentEncodingsKey, null).data;
+  }
+
   private readonly ProfileKey = "UserService.profileId";
 
   public get isLoggedOn(): boolean {
@@ -54,6 +60,7 @@ export class UserService {
     , private createSessionApi: CreateeSessionGQL
     , private loggerService: LoggerService
     , private myAccountApi: MyAccountGQL
+    , private contentEncodingsApi: ContentEncodingsGQL
     , private clientState: ClientStateService
     , private apollo: Apollo) {
 
@@ -72,6 +79,14 @@ export class UserService {
           console.log(result);
           if (result.data.createSession.success) {
             this.clientState.set(this.CsrfTokenKey, result.data.createSession.code);
+
+            if (!this.contentEncodings) {
+              this.contentEncodingsApi.fetch({csrfToken:result.data.createSession.code})
+                .subscribe(contentEncoddings => {
+                  this.clientState.set(this.ContentEncodingsKey, contentEncoddings.data.contentEncodings);
+                });
+            }
+
             return new SessionCreated();
           } else {
             throw new Error("An error occurred during the session creation.")

@@ -20,7 +20,8 @@ export class ChannelApiMutations {
                 }
             });
 
-            if (existingChannel.length > 0) {throw new Error(`There can be only one channel from agent ${myAgent.id} to ${otherAgent.id}.`);
+            if (existingChannel.length > 0) {
+                throw new Error(`There can be only one channel from agent ${myAgent.id} to ${otherAgent.id}.`);
             }
 
             if (!myAgent || !otherAgent) {

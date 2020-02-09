@@ -532,6 +532,8 @@ type Account {
 }
 
 type Query {
+    contentEncodings(csrfToken: String!) : [ContentEncoding!]!
+
     getSystemServices(csrfToken: String!) : [Service!]!
 
     myAccount(csrfToken: String!) : Account!

@@ -1,3 +1,14 @@
+query contentEncodings($csrfToken:String!) {
+  contentEncodings(csrfToken: $csrfToken) {
+    id
+    type
+    name
+    maintainer
+    charset
+    data
+  }
+}
+
 query getSystemServices($csrfToken:String!) {
   getSystemServices(csrfToken: $csrfToken) {
     id

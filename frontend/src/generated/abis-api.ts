@@ -485,6 +485,7 @@ export enum ProfileType {
 
 export type Query = {
    __typename?: 'Query',
+  contentEncodings: Array<ContentEncoding>,
   getSystemServices: Array<Service>,
   myAccount: Account,
   myProfiles: Array<Maybe<Profile>>,
@@ -496,6 +497,11 @@ export type Query = {
   findRooms: Array<Room>,
   findMemberships: Array<Membership>,
   getEntries: Array<Entry>,
+};
+
+
+export type QueryContentEncodingsArgs = {
+  csrfToken: Scalars['String']
 };
 
 
@@ -817,6 +823,19 @@ export type DeleteEntryMutation = (
     { __typename?: 'ActionResponse' }
     & Pick<ActionResponse, 'success' | 'code' | 'message' | 'data'>
   ) }
+);
+
+export type ContentEncodingsQueryVariables = {
+  csrfToken: Scalars['String']
+};
+
+
+export type ContentEncodingsQuery = (
+  { __typename?: 'Query' }
+  & { contentEncodings: Array<(
+    { __typename?: 'ContentEncoding' }
+    & Pick<ContentEncoding, 'id' | 'type' | 'name' | 'maintainer' | 'charset' | 'data'>
+  )> }
 );
 
 export type GetSystemServicesQueryVariables = {
@@ -1216,6 +1235,26 @@ export const DeleteEntryDocument = gql`
   })
   export class DeleteEntryGQL extends Apollo.Mutation<DeleteEntryMutation, DeleteEntryMutationVariables> {
     document = DeleteEntryDocument;
+    
+  }
+export const ContentEncodingsDocument = gql`
+    query contentEncodings($csrfToken: String!) {
+  contentEncodings(csrfToken: $csrfToken) {
+    id
+    type
+    name
+    maintainer
+    charset
+    data
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class ContentEncodingsGQL extends Apollo.Query<ContentEncodingsQuery, ContentEncodingsQueryVariables> {
+    document = ContentEncodingsDocument;
     
   }
 export const GetSystemServicesDocument = gql`
