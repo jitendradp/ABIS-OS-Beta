@@ -1,0 +1,15 @@
+<mat-form-field class="halfWidth">
+  <input matInput type="text" [ngModel]="account.personFirstName" placeholder="First name" required maxlength="35">
+</mat-form-field>
+<mat-form-field class="halfWidth">
+  <input matInput type="text" [ngModel]="account.personLastName" placeholder="Last name" required maxlength="35">
+</mat-form-field>
+<mat-form-field class="fullWidth">
+  <input matInput type="email" [ngModel]="account.email" placeholder="Your email address" required maxlength="64">
+</mat-form-field>
+<mat-form-field class="halfWidth">
+  <input matInput type="password" [ngModel]="password" placeholder="Password" required maxlength="128">
+</mat-form-field>
+<mat-form-field class="halfWidth">
+  <input matInput type="password" [ngModel]="passwordConfirmation" placeholder="Confirm" required>
+</mat-form-field>

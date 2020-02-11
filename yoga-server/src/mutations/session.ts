@@ -7,18 +7,22 @@ import {config} from "../config";
 export class SessionMutations {
     /**
      * Creates a new session.
+     * @param sessionToken
      * @param csrfToken
      * @param bearerToken
      * @param validTo
      * @param userId
      * @param agentId
+     * @param clientTime
      */
-    public static async createSession(csrfToken:string, bearerToken:string, validTo:Date, userId:string, agentId:string) {
+    public static async createSession(csrfToken:string, bearerToken:string, sessionToken:string, validTo:Date, userId:string, agentId:string, clientTime?:string) {
         const session = await prisma.createSession({
             timedOut: null,
+            sessionToken: sessionToken,
             csrfToken: csrfToken,
             bearerToken: bearerToken,
             validTo: validTo,
+            clientTime: clientTime,
             user: {
                 connect: {
                     id: userId
@@ -60,12 +64,51 @@ export class SessionMutations {
         const validTo = new Date(new Date().getTime() + config.auth.sessionTimeout);
         const csrfToken = Helper.getRandomBase64String(config.auth.tokenLength);
         const bearerToken = Helper.getRandomBase64String(config.auth.tokenLength);
+        const sessionToken = Helper.getRandomBase64String(config.auth.tokenLength);
 
-        return await SessionMutations.createSession(csrfToken, bearerToken, validTo, userId, agentId);
+        return await SessionMutations.createSession(csrfToken, bearerToken, sessionToken, validTo, userId, agentId);
     }
 
-    public static async verifySession(csrfToken: string, bearerToken: string): Promise<boolean> {
-        const sessions = await prisma.sessions({where:{csrfToken:csrfToken, bearerToken: bearerToken}});
+    /**
+     * Generates a new csrf- and session-token for an anonymous profile.
+     */
+    public static async createAnonymousSession(clientTime:string): Promise<Session> {
+        const anonUser = await prisma.user({email:config.env.anonymousUser});
+        if (!anonUser) {
+            throw new Error("Couldn't find the anonymous system user: " + config.env.anonymousUser);
+        }
+
+        // Create an anonymous profile
+        const anonProfile = await prisma.createAgent({
+            owner: anonUser.id,
+            createdBy: anonUser.id,
+            name: "Anon_" +   Helper.getRandomBase64String(12),
+            type: "Profile",
+            status: "Available",
+            profileType: "Anonymous"
+        });
+
+        const validTo = new Date(new Date().getTime() + config.auth.sessionTimeout);
+        const csrfToken = Helper.getRandomBase64String(config.auth.tokenLength);
+        const sessionToken = Helper.getRandomBase64String(config.auth.tokenLength);
+
+        return await SessionMutations.createSession(
+            csrfToken,
+            null,
+            sessionToken,
+            validTo,
+            anonUser.id,
+            anonProfile.id);
+    }
+
+    public static async verifySession(csrfToken: string, sessionToken:string, bearerToken?: string): Promise<boolean> {
+        const sessions = await prisma.sessions({
+            where:{
+                csrfToken:csrfToken,
+                sessionToken:sessionToken,
+                bearerToken: bearerToken
+            }
+        });
         if (sessions.length != 1) {
             return  false;
         }

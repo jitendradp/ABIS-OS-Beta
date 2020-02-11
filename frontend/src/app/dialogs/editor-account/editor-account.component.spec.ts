@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditorCommandComponent } from './editor-command.component';
+import { EditorAccountComponent } from './editor-account.component';
 
-describe('CommandComponent', () => {
-  let component: EditorCommandComponent;
-  let fixture: ComponentFixture<EditorCommandComponent>;
+describe('EditorAccountComponent', () => {
+  let component: EditorAccountComponent;
+  let fixture: ComponentFixture<EditorAccountComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditorCommandComponent ]
+      declarations: [ EditorAccountComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditorCommandComponent);
+    fixture = TestBed.createComponent(EditorAccountComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

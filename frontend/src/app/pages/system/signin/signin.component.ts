@@ -2,8 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {UserService} from "../../../services/user.service";
 import {Logger, LoggerService, LogSeverity} from "../../../services/logger.service";
 import {ActionDispatcherService} from "../../../services/action-dispatcher.service";
-import {SwitchProfile} from "../../../actions/routes/SwitchProfile";
-import {Home} from "../../../actions/routes/Home";
+import {Agent, CreateChannelGQL, GetSystemServicesGQL} from "../../../../generated/abis-api";
 
 @Component({
   selector: 'app-signin',
@@ -21,13 +20,13 @@ export class SigninComponent implements OnInit {
   private readonly _log:Logger = this.loggerService.createLogger("SigninComponent");
 
   constructor(private userService:UserService
-    , private loggerService:LoggerService
-    , private actionDispatcherr:ActionDispatcherService) {
+    , private loggerService:LoggerService) {
   }
 
   ngOnInit() {
   }
 
+  /*
   async login() : Promise<void> {
     try {
       const loginResult = await this.userService.login(this.email.nativeElement.value, this.password.nativeElement.value);
@@ -37,24 +36,23 @@ export class SigninComponent implements OnInit {
 
       this.actionDispatcherr.dispatch(new Home());
 
-      /*const  userProfiles = await this.profileService.listProfiles();
-
-      if (userProfiles.length == 0) {
-        this._log(LogSeverity.UserNotification, "You're successfully logged-in, but you don't yet have any profiles. Create a profile to proceed.");
-        // TODO: redirect the user to a page where he can add a profile
-        return;
-      }
-
-      if (userProfiles.length == 1) {
-        const  result = await this.userService.setSessionProfile(userProfiles[0].id);
-        if (!result) {
-          // noinspection ExceptionCaughtLocallyJS
-          throw new Error("Unexpected error while setting the session profile.")
-        }
-        this.actionDispatcherr.dispatch(new Home());
-        return;
-      }
-       */
+      // const  userProfiles = await this.profileService.listProfiles();
+      //
+      // if (userProfiles.length == 0) {
+      //   this._log(LogSeverity.UserNotification, "You're successfully logged-in, but you don't yet have any profiles. Create a profile to proceed.");
+      //   // TODO: redirect the user to a page where he can add a profile
+      //   return;
+      // }
+      //
+      // if (userProfiles.length == 1) {
+      //   const  result = await this.userService.setSessionProfile(userProfiles[0].id);
+      //   if (!result) {
+      //     // noinspection ExceptionCaughtLocallyJS
+      //     throw new Error("Unexpected error while setting the session profile.")
+      //   }
+      //   this.actionDispatcherr.dispatch(new Home());
+      //   return;
+      // }
 
       // this.actionDispatcherr.dispatch(new SwitchProfile());
     } catch (e) {
@@ -63,4 +61,5 @@ export class SigninComponent implements OnInit {
       throw e;
     }
   }
+  */
 }

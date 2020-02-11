@@ -1,15 +1,18 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MatHorizontalStepper} from "@angular/material/stepper";
+import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {FormBuilder} from "@angular/forms";
 import {ClientStateService} from "../../../services/client-state.service";
-import {StepperSelectionEvent} from "@angular/cdk/stepper";
-import {ProfileType, SignupGQL, UserType, VerifyEmailGQL} from "../../../../generated/abis-api";
 import {UserService} from "../../../services/user.service";
-import {Logger, LoggerService, LogSeverity} from "../../../services/logger.service";
+import {Logger, LoggerService} from "../../../services/logger.service";
 import {ActionDispatcherService} from "../../../services/action-dispatcher.service";
-import {Home} from "../../../actions/routes/Home";
 import {ShowNotification} from "../../../actions/ui/ShowNotification";
 import {Back} from "../../../actions/routes/Back";
+import {
+  ContentEncoding,
+  CreateChannelGQL,
+  CreateEntryGQL, GetEntriesGQL,
+  GetSystemServicesGQL,
+  MyChannelsGQL
+} from "../../../../generated/abis-api";
 
 @Component({
   selector: 'app-register',
@@ -18,65 +21,40 @@ import {Back} from "../../../actions/routes/Back";
 })
 export class RegisterComponent implements OnInit, AfterViewInit {
 
-  @ViewChild("stepper", {static: true})
-  public stepper: MatHorizontalStepper;
-  public isLinear = true;
   private readonly _log: Logger = this.loggerService.createLogger("RegisterComponent");
 
   constructor(private _formBuilder: FormBuilder
     , private loggerService: LoggerService
-    , private actionDispatcher: ActionDispatcherService
     , private clientState: ClientStateService
     , private userService: UserService
-    , private signupApi: SignupGQL
-    , private verifyEmailApi: VerifyEmailGQL) {
+    , private createChannelApi: CreateChannelGQL
+    , private createEntryApi: CreateEntryGQL
+    , private getEntries: GetEntriesGQL
+    , private myChannelsApi: MyChannelsGQL
+    , private getSystemAgentsApi: GetSystemServicesGQL
+    , private actionDispatcher: ActionDispatcherService) {
   }
 
-  public step1FormGroup: FormGroup;
-  public step1Data: { firstName: string, lastName: string, emailAddress: string, password: string, passwordConfirmation: string };
-
-  public step2FormGroup: FormGroup;
-  public step2Data: { code: string };
-
-  public step3FormGroup: FormGroup;
-  public step3Data: { name: string, phone: string, slogan: string };
-
-  private _stepperIndex: number;
+  channelId:string;
+  contentEncoding:ContentEncoding;
 
   ngOnInit() {
-    this.step1FormGroup = this._formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      emailAddress: ['', Validators.required],
-      password: ['', Validators.required],
-      passwordConfirmation: ['', Validators.required]
-    });
+    // Create a channel
+    console.log("Looking for signup channel");
+    this.findOrCreateSignupChannel().then(async o => {
+      this.channelId = o;
 
-    this.step1FormGroup.valueChanges.subscribe(change => {
-      this.step1Data = change;
-    });
+      // Look for forms
+      let entries = await this.getEntries.fetch({csrfToken:this.userService.csrfToken, groupId: this.channelId})
+        .toPromise();
 
-    this.step2FormGroup = this._formBuilder.group({
-      code: ['', Validators.required]
+      let entry = entries.data.getEntries.find(o => o.contentEncoding && o.contentEncoding.name == "Signup");
+      if (!entry) {
+        throw new Error("Requested entries with contentEncoding.name == 'Signup' but found nothing in the channel.");
+      }
+      this.contentEncoding = entry.contentEncoding;
+      this.formSchema = JSON.parse(entry.contentEncoding.data);
     });
-
-    this.step2FormGroup.valueChanges.subscribe(change => {
-      this.step2Data = change;
-    });
-
-    this.step3FormGroup = this._formBuilder.group({
-      name: ['', Validators.required],
-      phone: ['', Validators.required],
-      slogan: ['', Validators.required]
-    });
-
-    this.step3FormGroup.valueChanges.subscribe(change => {
-      this.step3Data = change;
-    });
-
-    // Restore the previously opened page in the stepper or open page '0' as default
-    this._stepperIndex = this.clientState.get<number>("RegisterComponent.stepper.selectedIndex", 0).data;
-    this.stepper.selectedIndex = this._stepperIndex;
   }
 
   ngAfterViewInit(): void {
@@ -92,103 +70,56 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     } else {
       f();
     }
-
-    // Disable the previous steps (loaded from clientState) so that the user can't navigate to them again
-    this.disableCompletedSteps();
   }
 
-  private disableCompletedSteps(upTp?: number) {
-    const steps = this.stepper.steps.toArray();
-    for (let i = 0; i < (upTp ? upTp : this.stepper.selectedIndex); i++) {
-      const step = steps[i];
-      steps[i].completed = true;
-      steps[i].editable = false;
-    }
-  }
-
-  private async submitStep1($event: StepperSelectionEvent) {
-    // First step completed, create the user
-    await this.signupApi.mutate({
-      signupInput: {
-        timezone: "GMT",
-        email: this.step1Data.emailAddress,
-        personFirstName: this.step1Data.firstName,
-        personLastName: this.step1Data.lastName,
-        password: this.step1Data.password,
-        type: UserType.Person
+  async formSubmit($event: any) {
+    console.log("Submitting...");
+    const result = this.createEntryApi.mutate({
+      csrfToken: this.userService.csrfToken,
+      createEntryInput: {
+        roomId: this.channelId,
+        type:"Json",
+        contentEncoding:this.contentEncoding.id,
+        content: $event
       }
-    }).toPromise()
-      .then(result => {
-        this.clientState.set("RegisterComponent.stepper.selectedIndex", $event.selectedIndex);
-        this.disableCompletedSteps($event.selectedIndex);
-      })
-      .catch(e => {
-        this.stepper.selectedIndex = this.clientState.get<number>("RegisterComponent.stepper.selectedIndex", 0).data;
-        this._log(LogSeverity.UserNotification, "An error occured during step 1 of the registration wizard (basic sign-up). See the log for detailed error messages.");
-        this._log(LogSeverity.Error, e);
-      });
+    }).subscribe(o => {
+      console.log("Submitted:", o);
+    });
   }
 
-  private submitStep2($event: StepperSelectionEvent) {
-    // Second step completed, verify the email address
-    this.verifyEmailApi.mutate({
-      code: this.step2Data.code
-    }).toPromise()
-      .then(result => {
-        // Disable the previous steps so that the user can't navigate to them again
-        this.clientState.set("RegisterComponent.stepper.selectedIndex", $event.selectedIndex);
-        this.disableCompletedSteps($event.selectedIndex);
-        this.userService.setToken(result.data.verifyEmail.data);
-      })
-      .catch(e => {
-        this.stepper.selectedIndex = this.clientState.get<number>("RegisterComponent.stepper.selectedIndex", 0).data;
-        this._log(LogSeverity.UserNotification, "An error occured during step 2 of the registration wizard (verify email address). See the log for detailed error messages.");
-        this._log(LogSeverity.Error, e);
-      });
+  private async findSignupAgentId(): Promise<string> {
+    const systemAgents = await this.getSystemAgentsApi.fetch({csrfToken: this.userService.csrfToken}).toPromise();
+    return systemAgents.data.getSystemServices.find(o => o.name == "SignupService").id;
   }
 
-  public submitStep3($event: MouseEvent) {
-    // Third step completed, create the profile
-    // TODO: Pic and Timezone
-    // TODO: Only private profiles for now
-    /*
-    this.profileService.createProfile(ProfileType.Private, this.step3Data.name, "pic", "UTC")
-      .then(result => {
-        if (!result) {
-          throw new Error("The profile creation failed unexpectedly.");
-        }
-        this.userService.setSessionProfile(result)
-          .then(r => {
-            if (!r) {
-              throw new Error("An unexpected error occurred while binding the new profile " + result + " to the session.");
-            }
-            // Disable the previous steps so that the user can't navigate to them again
-            this.clientState.delete("RegisterComponent.stepper.selectedIndex");
-            this.disableCompletedSteps(2);
-
-            this.actionDispatcher.dispatch(new Home());
-          })
-      })
-      .catch(e => {
-        this.stepper.selectedIndex = this.clientState.get<number>("RegisterComponent.stepper.selectedIndex", 1).data;
-        this._log(LogSeverity.UserNotification, "An error occured during step 3 of the registration wizard (create profile). See the log for detailed error messages.");
-        this._log(LogSeverity.Error, e);
-      });
-     */
-
-    this.clientState.delete("RegisterComponent.stepper.selectedIndex");
-    this.disableCompletedSteps(2);
-    this.actionDispatcher.dispatch(new Home());
-  }
-
-  public async stepChanged($event: StepperSelectionEvent) {
-    if ($event.selectedIndex <= this._stepperIndex) {
-      return;
+  /**
+   * Creates a new Channel to the SignupService-Agent and returns its ID.
+   */
+  private async findOrCreateSignupChannel(): Promise<string> {
+    const signupAgentId = await this.findSignupAgentId();
+    const myChannels = await this.myChannelsApi.fetch({csrfToken:this.userService.csrfToken}).toPromise();
+    const existingChannel = myChannels.data.myChannels.find(o => o.receiver.id == signupAgentId);
+    if (existingChannel) {
+      console.log("Found existing signup channel: " + existingChannel.id);
+      return existingChannel.id;
     }
-    if ($event.selectedIndex == 1) {
-      this.submitStep1($event);
-    } else if ($event.selectedIndex == 2) {
-      this.submitStep2($event);
-    }
+
+    const channel = await this.createChannelApi.mutate({
+      csrfToken: this.userService.csrfToken,
+      toAgentId: signupAgentId
+    }).toPromise();
+
+    console.log("Created a new signup channel: " + channel.data.createChannel.id);
+
+    return channel.data.createChannel.id;
   }
+
+  formSchema: any = {
+    "Signup": {
+      "type": "object",
+      "properties": {
+      },
+      "required": []
+    }
+  };
 }

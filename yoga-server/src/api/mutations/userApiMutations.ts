@@ -10,27 +10,10 @@ import {ActionResponse} from "./actionResponse";
 import {UserQueries} from "../../queries/user";
 import {SessionMutations} from "../../mutations/session";
 import {UserMutations} from "../../mutations/user";
+import {ProfileQueries} from "../../queries/profile";
 
 export class UserApiMutations {
     private static readonly bcrypt = require('bcrypt');
-
-    /**
-     * Creates a new User of type "Organization".
-     */
-    public static async createOrganization(
-        type: string
-        , email: string
-        , password: string
-        , timezone: string
-        , organizationName: string) {
-        return UserMutations.createUser(password, <User>{
-            type: "Organization",
-            timezone: "GMT", // TODO: Get proper user-timezone
-            email: email.trim(),
-            organizationName: organizationName,
-            challenge: Helper.getRandomBase64String(8),
-        });
-    }
 
     /**
      * Creates a new User of type "Person".
@@ -48,10 +31,10 @@ export class UserApiMutations {
             type: "Person",
             timezone: "GMT", // TODO: Get proper user-timezone
             email: email.trim(),
-            personFirstName: firstName.trim(),
-            personLastName: lastName.trim(),
-            personPhone: phone,
-            personMobilePhone: mobilePhone,
+            firstName: firstName.trim(),
+            lastName: lastName.trim(),
+            phone: phone,
+            mobilePhone: mobilePhone,
             challenge: Helper.getRandomBase64String(8),
         });
     }
@@ -157,14 +140,14 @@ export class UserApiMutations {
     public static async logout(csrfToken: string, bearerToken: string, request: Request): Promise<ActionResponse> {
         return Helper.delay(config.auth.normalizedResponseTime, async () => {
             try {
-                const sessionAndUser = await CommonQueries.findUserBySession(csrfToken, bearerToken);
+                const sessionAndUser = (await CommonQueries.findUserBySession(csrfToken, bearerToken)).user;
                 if (!sessionAndUser) {
                     return <ActionResponse>{
                         success: false
                     };
                 }
 
-                const validSessions = await CommonQueries.findUserSessions(sessionAndUser.user.id);
+                const validSessions = await CommonQueries.findUserSessions(sessionAndUser.id);
                 await Promise.all(
                     validSessions.map(async o =>
                         await prisma.updateSession({
@@ -196,13 +179,14 @@ export class UserApiMutations {
      * Verifies if the supplied tokens represent a valid session.
      * @param csrfToken
      * @param bearerToken
+     * @param sessionToken
      * @param request
      */
-    public static async verifySession(csrfToken: string, bearerToken: string, request: Request): Promise<ActionResponse> {
+    public static async verifySession(csrfToken: string, bearerToken: string, sessionToken:string, request: Request): Promise<ActionResponse> {
         return Helper.delay(config.auth.normalizedResponseTime, async () => {
             try {
                 const response = <ActionResponse>{
-                    success: await SessionMutations.verifySession(csrfToken, bearerToken),
+                    success: await SessionMutations.verifySession(csrfToken, bearerToken, sessionToken),
                     code: Helper.getRandomBase64String(8)
                 };
                 return response;
@@ -214,5 +198,33 @@ export class UserApiMutations {
                 };
             }
         });
+    }
+
+    public static async createSession(clientTime: string, sessionToken:string, request: Request) : Promise<ActionResponse> {
+        try {
+            // Create an anonymous agent along with a session (this session doesn't contain a bearer token)
+            let anonSession = null;
+            if (sessionToken) {
+                anonSession = await prisma.session({sessionToken: sessionToken});
+            }
+            if (!anonSession) {
+                anonSession = await SessionMutations.createAnonymousSession(clientTime);
+
+                // When the session was created, set the session cookie
+                Helper.log(`New anonymous session: ${anonSession.id}.`);
+                Helper.setSessionTokenCookie(anonSession.sessionToken, request);
+            }
+
+            return <ActionResponse>{
+                success: true,
+                code: anonSession.csrfToken
+            };
+        } catch (e) {
+            const errorId = Helper.logId(`An error occurred during session creation: ${JSON.stringify(e)}`);
+            return <ActionResponse>{
+                success: false,
+                code: errorId
+            };
+        }
     }
 }

@@ -5,11 +5,12 @@ import {EntryWhereInput, prisma} from "../../../generated";
 import {MembershipStatements} from "../../../rules/membershipStatements";
 import {Helper} from "../../../helper/Helper";
 import {ActionResponse} from "../../mutations/actionResponse";
+import {getTypesAndWhere} from "prisma-client-lib/dist/utils";
 
 export class GroupQueries2 {
-    public static async findRooms(csrfToken: string, bearerToken: string, searchText?: string) {
+    public static async findRooms(csrfToken: string, sessionToken: string, bearerToken: string, searchText?: string) {
         try {
-            const myAgent = await CommonQueries.findAgentBySession(csrfToken, bearerToken);
+            const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
             const foundRooms = GroupQueries.findRooms(myAgent.id, searchText);
             return foundRooms;
         } catch (e) {
@@ -21,9 +22,9 @@ export class GroupQueries2 {
         }
     }
 
-    public static async findMemberships(csrfToken: string, bearerToken: string, roomId: string, searchText?: string) {
+    public static async findMemberships(csrfToken: string, sessionToken: string, bearerToken: string, roomId: string, searchText?: string) {
         try {
-            const myAgent = await CommonQueries.findAgentBySession(csrfToken, bearerToken);
+            const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
             const foundMemberships = await MembershipQueries.findMemberships(myAgent.id, roomId, searchText);
             return foundMemberships;
         } catch (e) {
@@ -35,9 +36,9 @@ export class GroupQueries2 {
         }
     }
 
-    public static async getEntries(csrfToken: string, bearerToken: string, groupId: string, from?: Date, to?: Date) {
+    public static async getEntries(csrfToken: string, sessionToken: string, bearerToken: string, groupId: string, from?: Date, to?: Date) {
         try {
-            const myAgent = await CommonQueries.findAgentBySession(csrfToken, bearerToken);
+            const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
             if (!await MembershipStatements.agentCanAccessGroup(myAgent.id, groupId)) {
                 return [];
             }
@@ -69,7 +70,11 @@ export class GroupQueries2 {
                                       where: entriesWhereInput
                                   });
 
-            return entries;
+            return entries.map(async o => {
+                (<any>o).tagAggregate = [];
+                (<any>o).contentEncoding = await prisma.contentEncoding({id:o.contentEncoding}) ?? ""
+                return o;
+            });
         } catch (e) {
             const errorId = Helper.logId(`An error occurred during an entries-query: ${JSON.stringify(e)}`);
             return <ActionResponse>{

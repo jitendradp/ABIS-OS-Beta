@@ -7,6 +7,7 @@ import {OwnershipStatements} from "../../rules/ownershipStatements";
 export class RoomApiMutations {
     static async createRoom(
         csrfToken: string
+        , sessionToken: string
         , bearerToken: string
         , isPublic: boolean
         , name: string
@@ -16,7 +17,29 @@ export class RoomApiMutations {
         , banner?: string) {
         try {
             // fact "R.I.1 Jeder Raum hat eine Inbox"
-            const myAgent = await CommonQueries.findAgentBySession(csrfToken, bearerToken);
+            // TODO: Change alloy model
+            const myUser = await CommonQueries.findUserBySession(csrfToken, bearerToken);
+            const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
+
+            const roomInbox = await prisma.createAgent({
+               owner: myUser.user.id,
+               createdBy: myUser.user.id,
+               type: "Inbox",
+               status: "Open",
+               name: name,
+               inboxDescription: description
+            });
+
+            const inboxAgentMembership = await prisma.createMembership({
+                showHistory: true,
+                member: {
+                    connect: {
+                        id: roomInbox.id
+                    }
+                },
+                createdBy: myAgent.id,
+                type: "Single"
+            });
 
             const room = await prisma.createGroup({
                 type: "Room",
@@ -28,10 +51,10 @@ export class RoomApiMutations {
                 description: description,
                 logo: logo ?? "defaultRoom.png",
                 banner: banner,
-                inbox: {
-                    create: {
-                        createdBy: myAgent.id,
-                        owner: myAgent.id
+                inbox: roomInbox.id,
+                memberships: {
+                    connect: {
+                        id: inboxAgentMembership.id
                     }
                 }
             });
@@ -48,6 +71,7 @@ export class RoomApiMutations {
 
     static async updateRoom(
         csrfToken: string
+        , sessionToken: string
         , bearerToken: string
         , id: string
         , isPublic: boolean
@@ -57,7 +81,7 @@ export class RoomApiMutations {
         , logo: string
         , banner: string) {
         try {
-            const myAgent = await CommonQueries.findAgentBySession(csrfToken, bearerToken);
+            const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
             if (!await OwnershipStatements.agentOwnsRoom(myAgent.id, id)) {
                 throw new Error(`Agent ${myAgent.id} doesn't own room ${id} which it tries to modify.`)
             }
@@ -80,9 +104,9 @@ export class RoomApiMutations {
         }
     }
 
-    static async deleteRoom(csrfToken: string, bearerToken: string, roomId: string) {
+    static async deleteRoom(csrfToken: string, sessionToken: string, bearerToken: string, roomId: string) {
         try {
-            const myAgent = await CommonQueries.findAgentBySession(csrfToken, bearerToken);
+            const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
             if (!await OwnershipStatements.agentOwnsRoom(myAgent.id, roomId)) {
                 throw new Error(`Agent ${myAgent.id} doesn't own room ${roomId} which it tries to delete.`)
             }

@@ -20,6 +20,7 @@ export const typeDefs = /* GraphQL */ `type Agent {
   profileBanner: String
   profileType: ProfileType
   serviceDescription: String
+  inboxDescription: String
 }
 
 type AgentConnection {
@@ -44,6 +45,7 @@ input AgentCreateInput {
   profileBanner: String
   profileType: ProfileType
   serviceDescription: String
+  inboxDescription: String
 }
 
 input AgentCreateManyInput {
@@ -94,6 +96,8 @@ enum AgentOrderByInput {
   profileType_DESC
   serviceDescription_ASC
   serviceDescription_DESC
+  inboxDescription_ASC
+  inboxDescription_DESC
 }
 
 type AgentPreviousValues {
@@ -113,6 +117,7 @@ type AgentPreviousValues {
   profileBanner: String
   profileType: ProfileType
   serviceDescription: String
+  inboxDescription: String
 }
 
 input AgentScalarWhereInput {
@@ -298,6 +303,20 @@ input AgentScalarWhereInput {
   serviceDescription_not_starts_with: String
   serviceDescription_ends_with: String
   serviceDescription_not_ends_with: String
+  inboxDescription: String
+  inboxDescription_not: String
+  inboxDescription_in: [String!]
+  inboxDescription_not_in: [String!]
+  inboxDescription_lt: String
+  inboxDescription_lte: String
+  inboxDescription_gt: String
+  inboxDescription_gte: String
+  inboxDescription_contains: String
+  inboxDescription_not_contains: String
+  inboxDescription_starts_with: String
+  inboxDescription_not_starts_with: String
+  inboxDescription_ends_with: String
+  inboxDescription_not_ends_with: String
   AND: [AgentScalarWhereInput!]
   OR: [AgentScalarWhereInput!]
   NOT: [AgentScalarWhereInput!]
@@ -312,6 +331,8 @@ enum AgentStatus {
   Suspended
   Failed
   Succeeded
+  Open
+  Closed
 }
 
 type AgentSubscriptionPayload {
@@ -335,6 +356,7 @@ input AgentSubscriptionWhereInput {
 enum AgentType {
   Profile
   Service
+  Inbox
 }
 
 input AgentUpdateDataInput {
@@ -352,6 +374,7 @@ input AgentUpdateDataInput {
   profileBanner: String
   profileType: ProfileType
   serviceDescription: String
+  inboxDescription: String
 }
 
 input AgentUpdateInput {
@@ -369,6 +392,7 @@ input AgentUpdateInput {
   profileBanner: String
   profileType: ProfileType
   serviceDescription: String
+  inboxDescription: String
 }
 
 input AgentUpdateManyDataInput {
@@ -385,6 +409,7 @@ input AgentUpdateManyDataInput {
   profileBanner: String
   profileType: ProfileType
   serviceDescription: String
+  inboxDescription: String
 }
 
 input AgentUpdateManyInput {
@@ -413,6 +438,7 @@ input AgentUpdateManyMutationInput {
   profileBanner: String
   profileType: ProfileType
   serviceDescription: String
+  inboxDescription: String
 }
 
 input AgentUpdateManyWithWhereNestedInput {
@@ -627,6 +653,20 @@ input AgentWhereInput {
   serviceDescription_not_starts_with: String
   serviceDescription_ends_with: String
   serviceDescription_not_ends_with: String
+  inboxDescription: String
+  inboxDescription_not: String
+  inboxDescription_in: [String!]
+  inboxDescription_not_in: [String!]
+  inboxDescription_lt: String
+  inboxDescription_lte: String
+  inboxDescription_gt: String
+  inboxDescription_gte: String
+  inboxDescription_contains: String
+  inboxDescription_not_contains: String
+  inboxDescription_starts_with: String
+  inboxDescription_not_starts_with: String
+  inboxDescription_ends_with: String
+  inboxDescription_not_ends_with: String
   AND: [AgentWhereInput!]
   OR: [AgentWhereInput!]
   NOT: [AgentWhereInput!]
@@ -649,10 +689,6 @@ type AggregateEntry {
 }
 
 type AggregateGroup {
-  count: Int!
-}
-
-type AggregateInbox {
   count: Int!
 }
 
@@ -690,6 +726,7 @@ type ContentEncoding {
   updatedAt: DateTime
   name: String!
   charset: String!
+  data: String
 }
 
 type ContentEncodingConnection {
@@ -706,6 +743,7 @@ input ContentEncodingCreateInput {
   updatedBy: ID
   name: String!
   charset: String!
+  data: String
 }
 
 type ContentEncodingEdge {
@@ -732,6 +770,8 @@ enum ContentEncodingOrderByInput {
   name_DESC
   charset_ASC
   charset_DESC
+  data_ASC
+  data_DESC
 }
 
 type ContentEncodingPreviousValues {
@@ -744,6 +784,7 @@ type ContentEncodingPreviousValues {
   updatedAt: DateTime
   name: String!
   charset: String!
+  data: String
 }
 
 type ContentEncodingSubscriptionPayload {
@@ -771,6 +812,7 @@ input ContentEncodingUpdateInput {
   updatedBy: ID
   name: String
   charset: String
+  data: String
 }
 
 input ContentEncodingUpdateManyMutationInput {
@@ -780,6 +822,7 @@ input ContentEncodingUpdateManyMutationInput {
   updatedBy: ID
   name: String
   charset: String
+  data: String
 }
 
 input ContentEncodingWhereInput {
@@ -887,6 +930,20 @@ input ContentEncodingWhereInput {
   charset_not_starts_with: String
   charset_ends_with: String
   charset_not_ends_with: String
+  data: String
+  data_not: String
+  data_in: [String!]
+  data_not_in: [String!]
+  data_lt: String
+  data_lte: String
+  data_gt: String
+  data_gte: String
+  data_contains: String
+  data_not_contains: String
+  data_starts_with: String
+  data_not_starts_with: String
+  data_ends_with: String
+  data_not_ends_with: String
   AND: [ContentEncodingWhereInput!]
   OR: [ContentEncodingWhereInput!]
   NOT: [ContentEncodingWhereInput!]
@@ -1329,7 +1386,7 @@ type Group {
   logo: String!
   banner: String
   entries(where: EntryWhereInput, orderBy: EntryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Entry!]
-  inbox: Inbox
+  inbox: ID
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
 }
 
@@ -1353,29 +1410,7 @@ input GroupCreateInput {
   logo: String!
   banner: String
   entries: EntryCreateManyInput
-  inbox: InboxCreateOneWithoutRepresentsInput
-  tags: TagCreateManyInput
-}
-
-input GroupCreateOneWithoutInboxInput {
-  create: GroupCreateWithoutInboxInput
-  connect: GroupWhereUniqueInput
-}
-
-input GroupCreateWithoutInboxInput {
-  id: ID
-  type: GroupType!
-  owner: ID!
-  createdBy: ID!
-  updatedBy: ID
-  isPublic: Boolean!
-  memberships: MembershipCreateManyInput
-  name: String!
-  title: String
-  description: String
-  logo: String!
-  banner: String
-  entries: EntryCreateManyInput
+  inbox: ID
   tags: TagCreateManyInput
 }
 
@@ -1411,6 +1446,8 @@ enum GroupOrderByInput {
   logo_DESC
   banner_ASC
   banner_DESC
+  inbox_ASC
+  inbox_DESC
 }
 
 type GroupPreviousValues {
@@ -1427,6 +1464,7 @@ type GroupPreviousValues {
   description: String
   logo: String!
   banner: String
+  inbox: ID
 }
 
 type GroupSubscriptionPayload {
@@ -1466,7 +1504,7 @@ input GroupUpdateInput {
   logo: String
   banner: String
   entries: EntryUpdateManyInput
-  inbox: InboxUpdateOneWithoutRepresentsInput
+  inbox: ID
   tags: TagUpdateManyInput
 }
 
@@ -1481,34 +1519,7 @@ input GroupUpdateManyMutationInput {
   description: String
   logo: String
   banner: String
-}
-
-input GroupUpdateOneRequiredWithoutInboxInput {
-  create: GroupCreateWithoutInboxInput
-  update: GroupUpdateWithoutInboxDataInput
-  upsert: GroupUpsertWithoutInboxInput
-  connect: GroupWhereUniqueInput
-}
-
-input GroupUpdateWithoutInboxDataInput {
-  type: GroupType
-  owner: ID
-  createdBy: ID
-  updatedBy: ID
-  isPublic: Boolean
-  memberships: MembershipUpdateManyInput
-  name: String
-  title: String
-  description: String
-  logo: String
-  banner: String
-  entries: EntryUpdateManyInput
-  tags: TagUpdateManyInput
-}
-
-input GroupUpsertWithoutInboxInput {
-  update: GroupUpdateWithoutInboxDataInput!
-  create: GroupCreateWithoutInboxInput!
+  inbox: ID
 }
 
 input GroupWhereInput {
@@ -1666,7 +1677,20 @@ input GroupWhereInput {
   entries_every: EntryWhereInput
   entries_some: EntryWhereInput
   entries_none: EntryWhereInput
-  inbox: InboxWhereInput
+  inbox: ID
+  inbox_not: ID
+  inbox_in: [ID!]
+  inbox_not_in: [ID!]
+  inbox_lt: ID
+  inbox_lte: ID
+  inbox_gt: ID
+  inbox_gte: ID
+  inbox_contains: ID
+  inbox_not_contains: ID
+  inbox_starts_with: ID
+  inbox_not_starts_with: ID
+  inbox_ends_with: ID
+  inbox_not_ends_with: ID
   tags_every: TagWhereInput
   tags_some: TagWhereInput
   tags_none: TagWhereInput
@@ -1676,205 +1700,6 @@ input GroupWhereInput {
 }
 
 input GroupWhereUniqueInput {
-  id: ID
-}
-
-type Inbox {
-  id: ID!
-  owner: ID!
-  createdBy: ID!
-  createdAt: DateTime!
-  updatedBy: ID
-  updatedAt: DateTime
-  represents: Group!
-}
-
-type InboxConnection {
-  pageInfo: PageInfo!
-  edges: [InboxEdge]!
-  aggregate: AggregateInbox!
-}
-
-input InboxCreateInput {
-  id: ID
-  owner: ID!
-  createdBy: ID!
-  updatedBy: ID
-  represents: GroupCreateOneWithoutInboxInput!
-}
-
-input InboxCreateOneWithoutRepresentsInput {
-  create: InboxCreateWithoutRepresentsInput
-  connect: InboxWhereUniqueInput
-}
-
-input InboxCreateWithoutRepresentsInput {
-  id: ID
-  owner: ID!
-  createdBy: ID!
-  updatedBy: ID
-}
-
-type InboxEdge {
-  node: Inbox!
-  cursor: String!
-}
-
-enum InboxOrderByInput {
-  id_ASC
-  id_DESC
-  owner_ASC
-  owner_DESC
-  createdBy_ASC
-  createdBy_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedBy_ASC
-  updatedBy_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-}
-
-type InboxPreviousValues {
-  id: ID!
-  owner: ID!
-  createdBy: ID!
-  createdAt: DateTime!
-  updatedBy: ID
-  updatedAt: DateTime
-}
-
-type InboxSubscriptionPayload {
-  mutation: MutationType!
-  node: Inbox
-  updatedFields: [String!]
-  previousValues: InboxPreviousValues
-}
-
-input InboxSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: InboxWhereInput
-  AND: [InboxSubscriptionWhereInput!]
-  OR: [InboxSubscriptionWhereInput!]
-  NOT: [InboxSubscriptionWhereInput!]
-}
-
-input InboxUpdateInput {
-  owner: ID
-  createdBy: ID
-  updatedBy: ID
-  represents: GroupUpdateOneRequiredWithoutInboxInput
-}
-
-input InboxUpdateManyMutationInput {
-  owner: ID
-  createdBy: ID
-  updatedBy: ID
-}
-
-input InboxUpdateOneWithoutRepresentsInput {
-  create: InboxCreateWithoutRepresentsInput
-  update: InboxUpdateWithoutRepresentsDataInput
-  upsert: InboxUpsertWithoutRepresentsInput
-  delete: Boolean
-  disconnect: Boolean
-  connect: InboxWhereUniqueInput
-}
-
-input InboxUpdateWithoutRepresentsDataInput {
-  owner: ID
-  createdBy: ID
-  updatedBy: ID
-}
-
-input InboxUpsertWithoutRepresentsInput {
-  update: InboxUpdateWithoutRepresentsDataInput!
-  create: InboxCreateWithoutRepresentsInput!
-}
-
-input InboxWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  owner: ID
-  owner_not: ID
-  owner_in: [ID!]
-  owner_not_in: [ID!]
-  owner_lt: ID
-  owner_lte: ID
-  owner_gt: ID
-  owner_gte: ID
-  owner_contains: ID
-  owner_not_contains: ID
-  owner_starts_with: ID
-  owner_not_starts_with: ID
-  owner_ends_with: ID
-  owner_not_ends_with: ID
-  createdBy: ID
-  createdBy_not: ID
-  createdBy_in: [ID!]
-  createdBy_not_in: [ID!]
-  createdBy_lt: ID
-  createdBy_lte: ID
-  createdBy_gt: ID
-  createdBy_gte: ID
-  createdBy_contains: ID
-  createdBy_not_contains: ID
-  createdBy_starts_with: ID
-  createdBy_not_starts_with: ID
-  createdBy_ends_with: ID
-  createdBy_not_ends_with: ID
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  updatedBy: ID
-  updatedBy_not: ID
-  updatedBy_in: [ID!]
-  updatedBy_not_in: [ID!]
-  updatedBy_lt: ID
-  updatedBy_lte: ID
-  updatedBy_gt: ID
-  updatedBy_gte: ID
-  updatedBy_contains: ID
-  updatedBy_not_contains: ID
-  updatedBy_starts_with: ID
-  updatedBy_not_starts_with: ID
-  updatedBy_ends_with: ID
-  updatedBy_not_ends_with: ID
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
-  represents: GroupWhereInput
-  AND: [InboxWhereInput!]
-  OR: [InboxWhereInput!]
-  NOT: [InboxWhereInput!]
-}
-
-input InboxWhereUniqueInput {
   id: ID
 }
 
@@ -2612,12 +2437,6 @@ type Mutation {
   upsertGroup(where: GroupWhereUniqueInput!, create: GroupCreateInput!, update: GroupUpdateInput!): Group!
   deleteGroup(where: GroupWhereUniqueInput!): Group
   deleteManyGroups(where: GroupWhereInput): BatchPayload!
-  createInbox(data: InboxCreateInput!): Inbox!
-  updateInbox(data: InboxUpdateInput!, where: InboxWhereUniqueInput!): Inbox
-  updateManyInboxes(data: InboxUpdateManyMutationInput!, where: InboxWhereInput): BatchPayload!
-  upsertInbox(where: InboxWhereUniqueInput!, create: InboxCreateInput!, update: InboxUpdateInput!): Inbox!
-  deleteInbox(where: InboxWhereUniqueInput!): Inbox
-  deleteManyInboxes(where: InboxWhereInput): BatchPayload!
   createLocation(data: LocationCreateInput!): Location!
   updateLocation(data: LocationUpdateInput!, where: LocationWhereUniqueInput!): Location
   updateManyLocations(data: LocationUpdateManyMutationInput!, where: LocationWhereInput): BatchPayload!
@@ -2670,6 +2489,7 @@ type PageInfo {
 enum ProfileType {
   Business
   Private
+  Anonymous
 }
 
 type Query {
@@ -2685,9 +2505,6 @@ type Query {
   group(where: GroupWhereUniqueInput!): Group
   groups(where: GroupWhereInput, orderBy: GroupOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Group]!
   groupsConnection(where: GroupWhereInput, orderBy: GroupOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GroupConnection!
-  inbox(where: InboxWhereUniqueInput!): Inbox
-  inboxes(where: InboxWhereInput, orderBy: InboxOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Inbox]!
-  inboxesConnection(where: InboxWhereInput, orderBy: InboxOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): InboxConnection!
   location(where: LocationWhereUniqueInput!): Location
   locations(where: LocationWhereInput, orderBy: LocationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Location]!
   locationsConnection(where: LocationWhereInput, orderBy: LocationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LocationConnection!
@@ -2710,8 +2527,10 @@ type Session {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime
+  sessionToken: String!
   csrfToken: String
-  bearerToken: String!
+  bearerToken: String
+  clientTime: String
   validTo: DateTime!
   timedOut: DateTime
   loggedOut: DateTime
@@ -2729,8 +2548,10 @@ type SessionConnection {
 
 input SessionCreateInput {
   id: ID
+  sessionToken: String!
   csrfToken: String
-  bearerToken: String!
+  bearerToken: String
+  clientTime: String
   validTo: DateTime!
   timedOut: DateTime
   loggedOut: DateTime
@@ -2747,8 +2568,10 @@ input SessionCreateManyWithoutUserInput {
 
 input SessionCreateWithoutUserInput {
   id: ID
+  sessionToken: String!
   csrfToken: String
-  bearerToken: String!
+  bearerToken: String
+  clientTime: String
   validTo: DateTime!
   timedOut: DateTime
   loggedOut: DateTime
@@ -2769,10 +2592,14 @@ enum SessionOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
+  sessionToken_ASC
+  sessionToken_DESC
   csrfToken_ASC
   csrfToken_DESC
   bearerToken_ASC
   bearerToken_DESC
+  clientTime_ASC
+  clientTime_DESC
   validTo_ASC
   validTo_DESC
   timedOut_ASC
@@ -2787,8 +2614,10 @@ type SessionPreviousValues {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime
+  sessionToken: String!
   csrfToken: String
-  bearerToken: String!
+  bearerToken: String
+  clientTime: String
   validTo: DateTime!
   timedOut: DateTime
   loggedOut: DateTime
@@ -2826,6 +2655,20 @@ input SessionScalarWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
+  sessionToken: String
+  sessionToken_not: String
+  sessionToken_in: [String!]
+  sessionToken_not_in: [String!]
+  sessionToken_lt: String
+  sessionToken_lte: String
+  sessionToken_gt: String
+  sessionToken_gte: String
+  sessionToken_contains: String
+  sessionToken_not_contains: String
+  sessionToken_starts_with: String
+  sessionToken_not_starts_with: String
+  sessionToken_ends_with: String
+  sessionToken_not_ends_with: String
   csrfToken: String
   csrfToken_not: String
   csrfToken_in: [String!]
@@ -2854,6 +2697,20 @@ input SessionScalarWhereInput {
   bearerToken_not_starts_with: String
   bearerToken_ends_with: String
   bearerToken_not_ends_with: String
+  clientTime: String
+  clientTime_not: String
+  clientTime_in: [String!]
+  clientTime_not_in: [String!]
+  clientTime_lt: String
+  clientTime_lte: String
+  clientTime_gt: String
+  clientTime_gte: String
+  clientTime_contains: String
+  clientTime_not_contains: String
+  clientTime_starts_with: String
+  clientTime_not_starts_with: String
+  clientTime_ends_with: String
+  clientTime_not_ends_with: String
   validTo: DateTime
   validTo_not: DateTime
   validTo_in: [DateTime!]
@@ -2916,8 +2773,10 @@ input SessionSubscriptionWhereInput {
 }
 
 input SessionUpdateInput {
+  sessionToken: String
   csrfToken: String
   bearerToken: String
+  clientTime: String
   validTo: DateTime
   timedOut: DateTime
   loggedOut: DateTime
@@ -2928,8 +2787,10 @@ input SessionUpdateInput {
 }
 
 input SessionUpdateManyDataInput {
+  sessionToken: String
   csrfToken: String
   bearerToken: String
+  clientTime: String
   validTo: DateTime
   timedOut: DateTime
   loggedOut: DateTime
@@ -2937,8 +2798,10 @@ input SessionUpdateManyDataInput {
 }
 
 input SessionUpdateManyMutationInput {
+  sessionToken: String
   csrfToken: String
   bearerToken: String
+  clientTime: String
   validTo: DateTime
   timedOut: DateTime
   loggedOut: DateTime
@@ -2963,8 +2826,10 @@ input SessionUpdateManyWithWhereNestedInput {
 }
 
 input SessionUpdateWithoutUserDataInput {
+  sessionToken: String
   csrfToken: String
   bearerToken: String
+  clientTime: String
   validTo: DateTime
   timedOut: DateTime
   loggedOut: DateTime
@@ -3015,6 +2880,20 @@ input SessionWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
+  sessionToken: String
+  sessionToken_not: String
+  sessionToken_in: [String!]
+  sessionToken_not_in: [String!]
+  sessionToken_lt: String
+  sessionToken_lte: String
+  sessionToken_gt: String
+  sessionToken_gte: String
+  sessionToken_contains: String
+  sessionToken_not_contains: String
+  sessionToken_starts_with: String
+  sessionToken_not_starts_with: String
+  sessionToken_ends_with: String
+  sessionToken_not_ends_with: String
   csrfToken: String
   csrfToken_not: String
   csrfToken_in: [String!]
@@ -3043,6 +2922,20 @@ input SessionWhereInput {
   bearerToken_not_starts_with: String
   bearerToken_ends_with: String
   bearerToken_not_ends_with: String
+  clientTime: String
+  clientTime_not: String
+  clientTime_in: [String!]
+  clientTime_not_in: [String!]
+  clientTime_lt: String
+  clientTime_lte: String
+  clientTime_gt: String
+  clientTime_gte: String
+  clientTime_contains: String
+  clientTime_not_contains: String
+  clientTime_starts_with: String
+  clientTime_not_starts_with: String
+  clientTime_ends_with: String
+  clientTime_not_ends_with: String
   validTo: DateTime
   validTo_not: DateTime
   validTo_in: [DateTime!]
@@ -3091,7 +2984,7 @@ input SessionWhereInput {
 
 input SessionWhereUniqueInput {
   id: ID
-  bearerToken: String
+  sessionToken: String
 }
 
 type Subscription {
@@ -3099,7 +2992,6 @@ type Subscription {
   contentEncoding(where: ContentEncodingSubscriptionWhereInput): ContentEncodingSubscriptionPayload
   entry(where: EntrySubscriptionWhereInput): EntrySubscriptionPayload
   group(where: GroupSubscriptionWhereInput): GroupSubscriptionPayload
-  inbox(where: InboxSubscriptionWhereInput): InboxSubscriptionPayload
   location(where: LocationSubscriptionWhereInput): LocationSubscriptionPayload
   membership(where: MembershipSubscriptionWhereInput): MembershipSubscriptionPayload
   session(where: SessionSubscriptionWhereInput): SessionSubscriptionPayload
@@ -3418,14 +3310,14 @@ type User {
   email: String!
   timezone: String!
   challenge: String
-  passwordSalt: String!
-  passwordHash: String!
+  passwordSalt: String
+  passwordHash: String
   agents(where: AgentWhereInput, orderBy: AgentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Agent!]
   sessions(where: SessionWhereInput, orderBy: SessionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Session!]
-  personFirstName: String
-  personLastName: String
-  personPhone: String
-  personMobilePhone: String
+  firstName: String
+  lastName: String
+  phone: String
+  mobilePhone: String
   organizationName: String
 }
 
@@ -3441,14 +3333,14 @@ input UserCreateInput {
   email: String!
   timezone: String!
   challenge: String
-  passwordSalt: String!
-  passwordHash: String!
+  passwordSalt: String
+  passwordHash: String
   agents: AgentCreateManyInput
   sessions: SessionCreateManyWithoutUserInput
-  personFirstName: String
-  personLastName: String
-  personPhone: String
-  personMobilePhone: String
+  firstName: String
+  lastName: String
+  phone: String
+  mobilePhone: String
   organizationName: String
 }
 
@@ -3463,13 +3355,13 @@ input UserCreateWithoutSessionsInput {
   email: String!
   timezone: String!
   challenge: String
-  passwordSalt: String!
-  passwordHash: String!
+  passwordSalt: String
+  passwordHash: String
   agents: AgentCreateManyInput
-  personFirstName: String
-  personLastName: String
-  personPhone: String
-  personMobilePhone: String
+  firstName: String
+  lastName: String
+  phone: String
+  mobilePhone: String
   organizationName: String
 }
 
@@ -3497,14 +3389,14 @@ enum UserOrderByInput {
   passwordSalt_DESC
   passwordHash_ASC
   passwordHash_DESC
-  personFirstName_ASC
-  personFirstName_DESC
-  personLastName_ASC
-  personLastName_DESC
-  personPhone_ASC
-  personPhone_DESC
-  personMobilePhone_ASC
-  personMobilePhone_DESC
+  firstName_ASC
+  firstName_DESC
+  lastName_ASC
+  lastName_DESC
+  phone_ASC
+  phone_DESC
+  mobilePhone_ASC
+  mobilePhone_DESC
   organizationName_ASC
   organizationName_DESC
 }
@@ -3517,12 +3409,12 @@ type UserPreviousValues {
   email: String!
   timezone: String!
   challenge: String
-  passwordSalt: String!
-  passwordHash: String!
-  personFirstName: String
-  personLastName: String
-  personPhone: String
-  personMobilePhone: String
+  passwordSalt: String
+  passwordHash: String
+  firstName: String
+  lastName: String
+  phone: String
+  mobilePhone: String
   organizationName: String
 }
 
@@ -3546,7 +3438,7 @@ input UserSubscriptionWhereInput {
 
 enum UserType {
   Person
-  Organization
+  System
 }
 
 input UserUpdateInput {
@@ -3558,10 +3450,10 @@ input UserUpdateInput {
   passwordHash: String
   agents: AgentUpdateManyInput
   sessions: SessionUpdateManyWithoutUserInput
-  personFirstName: String
-  personLastName: String
-  personPhone: String
-  personMobilePhone: String
+  firstName: String
+  lastName: String
+  phone: String
+  mobilePhone: String
   organizationName: String
 }
 
@@ -3572,10 +3464,10 @@ input UserUpdateManyMutationInput {
   challenge: String
   passwordSalt: String
   passwordHash: String
-  personFirstName: String
-  personLastName: String
-  personPhone: String
-  personMobilePhone: String
+  firstName: String
+  lastName: String
+  phone: String
+  mobilePhone: String
   organizationName: String
 }
 
@@ -3594,10 +3486,10 @@ input UserUpdateWithoutSessionsDataInput {
   passwordSalt: String
   passwordHash: String
   agents: AgentUpdateManyInput
-  personFirstName: String
-  personLastName: String
-  personPhone: String
-  personMobilePhone: String
+  firstName: String
+  lastName: String
+  phone: String
+  mobilePhone: String
   organizationName: String
 }
 
@@ -3717,62 +3609,62 @@ input UserWhereInput {
   sessions_every: SessionWhereInput
   sessions_some: SessionWhereInput
   sessions_none: SessionWhereInput
-  personFirstName: String
-  personFirstName_not: String
-  personFirstName_in: [String!]
-  personFirstName_not_in: [String!]
-  personFirstName_lt: String
-  personFirstName_lte: String
-  personFirstName_gt: String
-  personFirstName_gte: String
-  personFirstName_contains: String
-  personFirstName_not_contains: String
-  personFirstName_starts_with: String
-  personFirstName_not_starts_with: String
-  personFirstName_ends_with: String
-  personFirstName_not_ends_with: String
-  personLastName: String
-  personLastName_not: String
-  personLastName_in: [String!]
-  personLastName_not_in: [String!]
-  personLastName_lt: String
-  personLastName_lte: String
-  personLastName_gt: String
-  personLastName_gte: String
-  personLastName_contains: String
-  personLastName_not_contains: String
-  personLastName_starts_with: String
-  personLastName_not_starts_with: String
-  personLastName_ends_with: String
-  personLastName_not_ends_with: String
-  personPhone: String
-  personPhone_not: String
-  personPhone_in: [String!]
-  personPhone_not_in: [String!]
-  personPhone_lt: String
-  personPhone_lte: String
-  personPhone_gt: String
-  personPhone_gte: String
-  personPhone_contains: String
-  personPhone_not_contains: String
-  personPhone_starts_with: String
-  personPhone_not_starts_with: String
-  personPhone_ends_with: String
-  personPhone_not_ends_with: String
-  personMobilePhone: String
-  personMobilePhone_not: String
-  personMobilePhone_in: [String!]
-  personMobilePhone_not_in: [String!]
-  personMobilePhone_lt: String
-  personMobilePhone_lte: String
-  personMobilePhone_gt: String
-  personMobilePhone_gte: String
-  personMobilePhone_contains: String
-  personMobilePhone_not_contains: String
-  personMobilePhone_starts_with: String
-  personMobilePhone_not_starts_with: String
-  personMobilePhone_ends_with: String
-  personMobilePhone_not_ends_with: String
+  firstName: String
+  firstName_not: String
+  firstName_in: [String!]
+  firstName_not_in: [String!]
+  firstName_lt: String
+  firstName_lte: String
+  firstName_gt: String
+  firstName_gte: String
+  firstName_contains: String
+  firstName_not_contains: String
+  firstName_starts_with: String
+  firstName_not_starts_with: String
+  firstName_ends_with: String
+  firstName_not_ends_with: String
+  lastName: String
+  lastName_not: String
+  lastName_in: [String!]
+  lastName_not_in: [String!]
+  lastName_lt: String
+  lastName_lte: String
+  lastName_gt: String
+  lastName_gte: String
+  lastName_contains: String
+  lastName_not_contains: String
+  lastName_starts_with: String
+  lastName_not_starts_with: String
+  lastName_ends_with: String
+  lastName_not_ends_with: String
+  phone: String
+  phone_not: String
+  phone_in: [String!]
+  phone_not_in: [String!]
+  phone_lt: String
+  phone_lte: String
+  phone_gt: String
+  phone_gte: String
+  phone_contains: String
+  phone_not_contains: String
+  phone_starts_with: String
+  phone_not_starts_with: String
+  phone_ends_with: String
+  phone_not_ends_with: String
+  mobilePhone: String
+  mobilePhone_not: String
+  mobilePhone_in: [String!]
+  mobilePhone_not_in: [String!]
+  mobilePhone_lt: String
+  mobilePhone_lte: String
+  mobilePhone_gt: String
+  mobilePhone_gte: String
+  mobilePhone_contains: String
+  mobilePhone_not_contains: String
+  mobilePhone_starts_with: String
+  mobilePhone_not_starts_with: String
+  mobilePhone_ends_with: String
+  mobilePhone_not_ends_with: String
   organizationName: String
   organizationName_not: String
   organizationName_in: [String!]

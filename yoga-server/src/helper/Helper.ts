@@ -44,6 +44,16 @@ export class Helper {
         });
     }
 
+    public static setSessionTokenCookie(sessionToken: string, request: Request) {
+        request.res.cookie('sessionToken', sessionToken, {
+            maxAge: config.auth.sessionTimeout,
+            httpOnly: true, // cookie is only accessible by the server
+            domain: config.env.domain,
+            secure: process.env.NODE_ENV === 'prod', // only transferred over https
+            sameSite: true, // only sent for requests to the same FQDN as the domain in the cookie
+        });
+    }
+
     public static clearBearerTokenCookie(request: Request) {
         request.res.cookie('bearerToken', "", {
             maxAge: 0,

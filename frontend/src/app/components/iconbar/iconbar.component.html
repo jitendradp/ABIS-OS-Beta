@@ -21,7 +21,7 @@
       </button>
     </mat-grid-tile>-->
     <mat-grid-tile (click)="close()">
-      <button routerLink="signin" mat-button class="tileButton">
+      <button routerLink="signin" mat-button class="tileButton" (click)="logout()">
         <mat-icon>power_settings_new</mat-icon>
         <span class="iconLabelSpacing">Logout</span>
       </button>

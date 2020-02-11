@@ -5,16 +5,17 @@ import {prisma} from "../../generated";
 import {config} from "../../config";
 
 export class ChannelApiMutations {
-    static async createChannel(csrfToken: string, bearerToken: string, toAgentId: string) {
+
+    static async createChannel(csrfToken: string, sessionToken: string, bearerToken: string, toAgentId: string) {
         // fact "C.M.1 Ein Channel hat immer genau ein Mitglied"
         // fact "C.M.2 Es gibt keine Channels mit Mitgliedschaften, die nicht vom Channel-Owner erstellt wurden"
         // fact "C.M.3 Es gibt keine zwei Channels mit derselben owner/member-Kombination"
         try {
-            const myAgent = await CommonQueries.findAgentBySession(csrfToken, bearerToken);
+            const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
             const otherAgent = await prisma.agent({id: toAgentId});
             const existingChannel = await prisma.groups({
                 where: {
-                    memberships_some: {id: otherAgent.id},
+                    memberships_some: {member:{id: otherAgent.id}},
                     owner: myAgent.id
                 }
             });
@@ -27,7 +28,7 @@ export class ChannelApiMutations {
                 throw new Error(`The channel between the session's agent and ${toAgentId} cannot be created. Either the originating, the receiving or both agents could not be found.`);
             }
 
-            const newChannelWithMember = prisma.createGroup({
+            const newChannelWithMember = await prisma.createGroup({
                 type:"Channel",
                 createdBy: myAgent.id,
                 owner: myAgent.id,
@@ -49,6 +50,8 @@ export class ChannelApiMutations {
                 }
             });
 
+            (<any>newChannelWithMember).receiver = otherAgent;
+
             return newChannelWithMember;
         } catch (e) {
             const errorId = Helper.logId(`An error occurred during the creation of a channel: ${JSON.stringify(e)}`);
@@ -59,10 +62,10 @@ export class ChannelApiMutations {
         }
     }
 
-    static async deleteChannel(csrfToken: string, bearerToken: string, toAgentId: string) {
+    static async deleteChannel(csrfToken: string, sessionToken: string, bearerToken: string, toAgentId: string) {
         return Helper.delay(config.auth.normalizedResponseTime, async () => {
             try {
-                const myAgent = await CommonQueries.findAgentBySession(csrfToken, bearerToken);
+                const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
                 const otherAgent = await prisma.agent({id: toAgentId});
                 const channel = await prisma.groups({
                     where: {

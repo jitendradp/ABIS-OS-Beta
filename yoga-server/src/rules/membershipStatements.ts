@@ -7,7 +7,7 @@ export class MembershipStatements {
      * @param groupId The group id
      */
     public static async agentCanAccessGroup(agentId:string, groupId:string) : Promise<boolean> {
-        const agentMembershipGroups = await prisma.groups({where:{memberships_some:{member:{id:agentId}}, OR:{owner:agentId}}});
+        const agentMembershipGroups = await prisma.groups({where:{OR:[{memberships_some:{member:{id:agentId}}}, {owner:agentId}]}});
         if (agentMembershipGroups.length == 0) {
             return false;
         }

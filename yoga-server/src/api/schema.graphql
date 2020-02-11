@@ -40,7 +40,7 @@ interface Location {
     tagAggregate:[TagAggregate!]!       # Contains the tag-counts grouped by their type.
 }
 
-type OpenStreetMapNode implements Location {
+type OpenStreetMap implements Location {
     id: ID!
 
     owner: ID!
@@ -348,6 +348,7 @@ input UpdateStashInput {
 
 input CreateRoomInput {
     name: String!
+    isPublic: Boolean!
     title: String
     description: String
     logo: String
@@ -488,6 +489,7 @@ type ContentEncoding {
 
     name: String!
     charset: String!
+    data:String
 }
 
 enum EncodingType {
@@ -500,6 +502,11 @@ enum EncodingType {
     GqlSchema
     RdfSchema
     Owl
+}
+
+type NewEntrySubscription {
+    id: ID!
+    name: String
 }
 
 type Account {
@@ -525,6 +532,10 @@ type Account {
 }
 
 type Query {
+    contentEncodings(csrfToken: String!) : [ContentEncoding!]!
+
+    getSystemServices(csrfToken: String!) : [Service!]!
+
     myAccount(csrfToken: String!) : Account!
 
     myProfiles(csrfToken: String!) : [Profile]!
@@ -551,20 +562,22 @@ type Query {
 }
 
 type Mutation {
+    createSession(clientTime:String!) : ActionResponse!
+
     #
     # Signup
     #
-    signup(signupInput:SignupInput!) : ActionResponse!
-    verifyEmail(code:String!) : ActionResponse!
-    resetPassword(code:String!) : ActionResponse!
+    #signup(signupInput:SignupInput!) : ActionResponse!
+    #verifyEmail(code:String!) : ActionResponse!
+    #resetPassword(code:String!) : ActionResponse!
 
     #
     # Login, Logout, VerifySession
     #
-    login(email:String! password:String!) : ActionResponse!
-    logout(csrfToken:String!) : ActionResponse!
+    #login(email:String! password:String!) : ActionResponse!
+    #logout(csrfToken:String!) : ActionResponse!
 
-    verifySession(csrfToken:String!) : ActionResponse!
+    #verifySession(csrfToken:String!) : ActionResponse!
 
     #
     # Agents
@@ -619,4 +632,8 @@ type Mutation {
     # Ownership
     #
     # giveOwnership(csrfToken:String! ofObjectId:ID! toAgentId:ID!) : ActionResponse!
+}
+
+type Subscription {
+    newEntry: NewEntrySubscription!
 }

@@ -5,84 +5,13 @@
      fxLayoutAlign="center"
      fxLayoutGap="0px"
      fxLayoutGap.xs="0">
-  <div fxFlex='auto' fxFlex.gt-md='25' fxFlex.gt-sm='50'>
+  <div fxFlex='auto' fxFlex.gt-md='25' fxFlex.gt-sm='50' style="background:white; padding:15px;">
     <app-whitespace></app-whitespace>
-    <mat-horizontal-stepper [linear]="!isLinear" #stepper (selectionChange)="stepChanged($event)">
-      <mat-step [stepControl]="step1FormGroup">
-        <form [formGroup]="step1FormGroup">
-          <ng-template matStepLabel>Register</ng-template>
-          <mat-form-field class="halfWidth">
-            <input matInput type="text" placeholder="First name" required formControlName="firstName" maxlength="35">
-          </mat-form-field>
-          <mat-form-field class="halfWidth">
-            <input matInput type="text" placeholder="Last name" required formControlName="lastName" maxlength="35">
-          </mat-form-field>
-          <mat-form-field class="fullWidth">
-            <input matInput type="email" placeholder="Your email address" required formControlName="emailAddress"
-                   maxlength="64">
-          </mat-form-field>
-          <mat-form-field class="halfWidth">
-            <input matInput type="password" placeholder="Password" required formControlName="password" maxlength="128">
-          </mat-form-field>
-          <mat-form-field class="halfWidth">
-            <input matInput type="text" placeholder="Confirm" required formControlName="passwordConfirmation">
-          </mat-form-field>
-          <app-content>
-            <mat-hint align="center">By continuing, you are agreeing to our
-              <a href="https://abis-cloud.de/agbs/" target="_blank" class="noLinkUnderline">
-                Terms of Service</a>, Privacy Policy and Cookie Policy.
-              <app-whitespace></app-whitespace>
-            </mat-hint>
-            <button mat-button matStepperNext class="maxButton">Next</button>
-          </app-content>
-        </form>
-      </mat-step>
-      <mat-step [stepControl]="step2FormGroup">
-        <form [formGroup]="step2FormGroup">
-          <ng-template matStepLabel>Verify</ng-template>
-          <mat-form-field class="fullWidth">
-            <input matInput type="password" placeholder="Your verification code" required
-                   formControlName="code" maxlength="8">
-          </mat-form-field>
-          <app-content>
-            <button mat-button matStepperNext class="maxButton">Next</button>
-            <app-whitespace></app-whitespace>
-            <mat-hint align="start">Please check your email inbox or spam folder for the confirmation code.
-            </mat-hint>
-          </app-content>
-        </form>
-      </mat-step>
-      <mat-step [stepControl]="step3FormGroup">
-        <form [formGroup]="step3FormGroup">
-          <ng-template matStepLabel>Profile</ng-template>
-          <mat-form-field class="halfWidth">
-            <input matInput type="text" placeholder="Display name" required
-                   formControlName="name" maxlength="35">
-          </mat-form-field>
-          <mat-form-field class="halfWidth">
-            <input matInput type="tel" placeholder="Phone number"
-                   formControlName="phone" maxlength="15">
-          </mat-form-field>
-          <mat-form-field class="halfWidth">
-            <input matInput type="text" placeholder="Slogan"
-                   formControlName="slogan" maxlength="35">
-          </mat-form-field>
-          <mat-form-field class="halfWidth">
-            <input matInput type="text" placeholder="Job title"
-                   formControlName="slogan" maxlength="35">
-          </mat-form-field>
-          <app-content>
-            <app-file-upload></app-file-upload>
-          </app-content>
-          <app-content>
-            <button [disabled]="!step3Data || !step3Data.name" mat-button matStepperNext class="maxButton"
-                    (click)="submitStep3($event)">Complete
-            </button>
-            <app-whitespace></app-whitespace>
-            <mat-hint align="start">Make your profile easy to recognize for your colleagues and friends.</mat-hint>
-          </app-content>
-        </form>
-      </mat-step>
-    </mat-horizontal-stepper>
+    <json-schema-form
+      loadExternalAssets="false"
+      [schema]="formSchema"
+      framework="material-design"
+      (onSubmit)="formSubmit($event)">
+    </json-schema-form>
   </div>
 </div>

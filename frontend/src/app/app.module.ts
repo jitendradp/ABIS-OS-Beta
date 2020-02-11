@@ -48,10 +48,9 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {NgxEchartsModule} from "ngx-echarts";
 import {StudioComponent} from './pages/studio/studio.component';
-//import {ProfileService} from "./services/profile.service";
 import {CockpitComponent} from './pages/cockpit/cockpit.component';
 import {MapComponent} from './pages/map/map.component';
-import {InviteComponent} from './pages/system/invite/invite.component';
+import {InviteComponent} from './widgets/chat/invite/invite.component';
 import {LogoComponent} from './components/logo/logo.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HeaderComponent} from './components/header/header.component';
@@ -73,12 +72,10 @@ import {CardStoreComponent} from "./cards/card-store/card-store.component";
 import {SearchComponent} from "./search/search.component";
 import {NgxMapboxGLModule} from "ngx-mapbox-gl";
 import {CardComponent} from "./cards/card/card.component";
-import {EditorCommandComponent} from "./dialogs/editor-command/editor-command.component";
 import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
 import {DeviceDetectorModule} from "ngx-device-detector";
 import {ClusterPopupComponent} from "./pages/map/cluster-popup/cluster-popup.component";
 import {AgGridModule} from "ag-grid-angular";
-import {EditorPortfolioComponent} from "./dialogs/editor-portfolio/editor-portfolio.component";
 import {SmartCryptoAppComponent} from "./smartapps/smart-crypto-app/smart-crypto-app.component";
 import {CardPortfolioComponent} from "./cards/card-portfolio/card-portfolio.component";
 import {CardProfileComponent} from "./cards/card-profile/card-profile.component";
@@ -97,7 +94,7 @@ import {ListContactComponent} from "./lists/list-contact/list-contact.component"
 import {AvatarComponent} from "./components/avatar/avatar.component";
 import {ListChipComponent} from "./lists/list-chip/list-chip.component";
 import {ChatComponent} from "./widgets/chat/chat.component";
-import {ResetPasswordComponent} from "./pages/system/reset-password/reset-password.component";
+import {ResetPasswordComponent} from "./dialogs/reset-password/reset-password.component";
 import {ListMemberComponent} from "./lists/list-member/list-member.component";
 import {FeedNotificationComponent} from "./feeds/feed-notification/feed-notification.component";
 import {ListDataspaceComponent} from "./lists/list-dataspace/list-dataspace.component";
@@ -114,10 +111,16 @@ import {FileUploadComponent} from "./components/file-upload/file-upload.componen
 import {ListChatComponent} from "./lists/list-chat/list-chat.component";
 import {EditorProfileComponent} from "./dialogs/editor-profile/editor-profile.component";
 import {ProfileService} from "./services/profile.service";
+import {EditorAccountComponent} from "./dialogs/editor-account/editor-account.component";
+import {InputPasscodeComponent} from "./dialogs/input-passcode/input-passcode.component";
+import {EditorPasswordComponent} from "./dialogs/editor-password/editor-password.component";
+import {CanActivateRoute} from "./services/RouteGuards";
+import {JsonSchemaFormModule} from "angular6-json-schema-form/lib/json-schema-form.module";
+import {MaterialDesignFrameworkModule} from "angular6-json-schema-form";
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
-};
+}
 
 const defaultActions: IAction[] =
   [
@@ -146,96 +149,105 @@ const appRoutes: Routes = [
       "title": "Welcome",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'signin', component: SigninComponent, data: {
       "title": "Login",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'register', component: RegisterComponent, data: {
       "title": "Sign up",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'cockpit', component: CockpitComponent, data: {
       "title": "Cockpit",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'store', component: StoreComponent, data: {
       "title": "Store",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'studio', component: StudioComponent, data: {
       "title": "Studio",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'map', component: MapComponent, data: {
       "title": "Map",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'reset-password', component: ResetPasswordComponent, data: {
       "title": "Reset password",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'editor-channel', component: EditorChannelComponent, data: {
       "title": "Create new channel",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'switch-profile', component: SwitchProfileComponent, data: {
       "title": "Switch profile",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'logout', component: LogoutComponent, data: {
       "title": "Logout",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'editor-team', component: EditorGroupComponent, data: {
       "title": "Create new team",
       "actions": defaultActions
     }
-  },
-  {
-    path: 'command', component: EditorCommandComponent, data: {
-      "title": "New command",
-      "actions": defaultActions
-    }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'smart-crypto-app', component: SmartCryptoAppComponent, data: {
       "title": "Smart Crypto App",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'group-list', component: ListGroupComponent, data: {
       "title": "Groups",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
   {
     path: 'calendar', component: CalendarComponent, data: {
       "title": "Calendar",
       "actions": defaultActions
     }
+    , canActivate:[CanActivateRoute]
   },
 ];
 
@@ -270,9 +282,7 @@ const appRoutes: Routes = [
     CardStoreComponent,
     SearchComponent,
     CardComponent,
-    EditorCommandComponent,
     ClusterPopupComponent,
-    EditorPortfolioComponent,
     SmartCryptoAppComponent,
     CardPortfolioComponent,
     CardProfileComponent,
@@ -304,6 +314,9 @@ const appRoutes: Routes = [
     FileUploadComponent,
     ListChatComponent,
     EditorProfileComponent,
+    EditorAccountComponent,
+    InputPasscodeComponent,
+    EditorPasswordComponent,
   ],
   imports: [
     RouterModule.forRoot(
@@ -353,13 +366,14 @@ const appRoutes: Routes = [
     AgGridModule.withComponents([]),
     MatTooltipModule,
     MatPaginatorModule,
+    MaterialDesignFrameworkModule,
     NgxMapboxGLModule.withConfig({
       accessToken: 'pk.eyJ1IjoiZGF2ZXdhdmVhYmlzY2xvdWQiLCJhIjoiY2s0eXYycjhzMDRhczNkbXF6dzNkMzlzayJ9.nyAc-uTfNfDTF0lxmZ3a3Q', // Optionnal, can also be set per map (accessToken input of mgl-map)
       geocoderAccessToken: 'pk.eyJ1IjoiZGF2ZXdhdmVhYmlzY2xvdWQiLCJhIjoiY2s0eXYycjhzMDRhczNkbXF6dzNkMzlzayJ9.nyAc-uTfNfDTF0lxmZ3a3Q' // Optionnal, specify if different from the map access token, can also be set per mgl-geocoder (accessToken input of mgl-geocoder)
     }),
-    CalendarModule.forRoot({provide: DateAdapter, useFactory: momentAdapterFactory})
+    CalendarModule.forRoot({provide: DateAdapter, useFactory: momentAdapterFactory}),
   ],
-  providers: [ProfileService],
+  providers: [ProfileService,CanActivateRoute],
   entryComponents: [SearchComponent],
   bootstrap: [AppComponent]
 })
