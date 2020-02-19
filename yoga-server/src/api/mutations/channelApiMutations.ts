@@ -6,16 +6,13 @@ import {config} from "../../config";
 
 export class ChannelApiMutations {
 
-    static async createChannel(csrfToken: string, sessionToken: string, bearerToken: string, toAgentId: string) {
-        // fact "C.M.1 Ein Channel hat immer genau ein Mitglied"
-        // fact "C.M.2 Es gibt keine Channels mit Mitgliedschaften, die nicht vom Channel-Owner erstellt wurden"
-        // fact "C.M.3 Es gibt keine zwei Channels mit derselben owner/member-Kombination"
+    static async createChannelInternal(fromAgentId: string, toAgentId: string) {
         try {
-            const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
+            const myAgent = await prisma.agent({id: fromAgentId});
             const otherAgent = await prisma.agent({id: toAgentId});
             const existingChannel = await prisma.groups({
                 where: {
-                    memberships_some: {member:{id: otherAgent.id}},
+                    memberships_some: {member: {id: otherAgent.id}},
                     owner: myAgent.id
                 }
             });
@@ -29,7 +26,7 @@ export class ChannelApiMutations {
             }
 
             const newChannelWithMember = await prisma.createGroup({
-                type:"Channel",
+                type: "Channel",
                 createdBy: myAgent.id,
                 owner: myAgent.id,
                 name: otherAgent.name,
@@ -40,7 +37,7 @@ export class ChannelApiMutations {
                     create: {
                         type: "Single",
                         createdBy: myAgent.id,
-                        member:{
+                        member: {
                             connect: {
                                 id: otherAgent.id
                             }
@@ -49,10 +46,24 @@ export class ChannelApiMutations {
                     }
                 }
             });
-
             (<any>newChannelWithMember).receiver = otherAgent;
-
             return newChannelWithMember;
+        } catch (e) {
+            const errorId = Helper.logId(`An error occurred during the creation of a channel: ${JSON.stringify(e)}`);
+            return <ActionResponse>{
+                success: false,
+                code: errorId
+            };
+        }
+    }
+
+    static async createChannel(csrfToken: string, sessionToken: string, bearerToken: string, toAgentId: string) {
+        // fact "C.M.1 Ein Channel hat immer genau ein Mitglied"
+        // fact "C.M.2 Es gibt keine Channels mit Mitgliedschaften, die nicht vom Channel-Owner erstellt wurden"
+        // fact "C.M.3 Es gibt keine zwei Channels mit derselben owner/member-Kombination"
+        try {
+            const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
+            return this.createChannelInternal(myAgent.id, toAgentId);
         } catch (e) {
             const errorId = Helper.logId(`An error occurred during the creation of a channel: ${JSON.stringify(e)}`);
             return <ActionResponse>{
@@ -78,7 +89,7 @@ export class ChannelApiMutations {
                     throw new Error(`Couldn't find a channel between ${myAgent.id} and ${otherAgent.id} that could be deleted.`);
                 }
 
-                const membership = await prisma.group({id:channel[0].id}).memberships();
+                const membership = await prisma.group({id: channel[0].id}).memberships();
                 if (membership.length != 1) {
                     throw new Error(`Couldn't find a membership in the channel between agents ${myAgent.id} and ${otherAgent.id} that could be deleted.`)
                 }

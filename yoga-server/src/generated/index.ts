@@ -551,6 +551,8 @@ export type ContentEncodingOrderByInput =
   | "name_DESC"
   | "charset_ASC"
   | "charset_DESC"
+  | "language_ASC"
+  | "language_DESC"
   | "data_ASC"
   | "data_DESC";
 
@@ -879,6 +881,20 @@ export interface ContentEncodingWhereInput {
   charset_not_starts_with?: Maybe<String>;
   charset_ends_with?: Maybe<String>;
   charset_not_ends_with?: Maybe<String>;
+  language?: Maybe<String>;
+  language_not?: Maybe<String>;
+  language_in?: Maybe<String[] | String>;
+  language_not_in?: Maybe<String[] | String>;
+  language_lt?: Maybe<String>;
+  language_lte?: Maybe<String>;
+  language_gt?: Maybe<String>;
+  language_gte?: Maybe<String>;
+  language_contains?: Maybe<String>;
+  language_not_contains?: Maybe<String>;
+  language_starts_with?: Maybe<String>;
+  language_not_starts_with?: Maybe<String>;
+  language_ends_with?: Maybe<String>;
+  language_not_ends_with?: Maybe<String>;
   data?: Maybe<String>;
   data_not?: Maybe<String>;
   data_in?: Maybe<String[] | String>;
@@ -2077,6 +2093,7 @@ export interface ContentEncodingCreateInput {
   updatedBy?: Maybe<ID_Input>;
   name: String;
   charset: String;
+  language?: Maybe<String>;
   data?: Maybe<String>;
 }
 
@@ -2101,6 +2118,7 @@ export interface ContentEncodingUpdateInput {
   updatedBy?: Maybe<ID_Input>;
   name?: Maybe<String>;
   charset?: Maybe<String>;
+  language?: Maybe<String>;
   data?: Maybe<String>;
 }
 
@@ -2127,6 +2145,7 @@ export interface ContentEncodingUpdateManyMutationInput {
   updatedBy?: Maybe<ID_Input>;
   name?: Maybe<String>;
   charset?: Maybe<String>;
+  language?: Maybe<String>;
   data?: Maybe<String>;
 }
 
@@ -4488,6 +4507,7 @@ export interface ContentEncodingPreviousValues {
   updatedAt?: DateTimeOutput;
   name: String;
   charset: String;
+  language?: String;
   data?: String;
 }
 
@@ -4503,6 +4523,7 @@ export interface ContentEncodingPreviousValuesPromise
   updatedAt: () => Promise<DateTimeOutput>;
   name: () => Promise<String>;
   charset: () => Promise<String>;
+  language: () => Promise<String>;
   data: () => Promise<String>;
 }
 
@@ -4518,6 +4539,7 @@ export interface ContentEncodingPreviousValuesSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   name: () => Promise<AsyncIterator<String>>;
   charset: () => Promise<AsyncIterator<String>>;
+  language: () => Promise<AsyncIterator<String>>;
   data: () => Promise<AsyncIterator<String>>;
 }
 
@@ -4676,6 +4698,7 @@ export interface ContentEncoding {
   updatedAt?: DateTimeOutput;
   name: String;
   charset: String;
+  language?: String;
   data?: String;
 }
 
@@ -4691,6 +4714,7 @@ export interface ContentEncodingPromise
   updatedAt: () => Promise<DateTimeOutput>;
   name: () => Promise<String>;
   charset: () => Promise<String>;
+  language: () => Promise<String>;
   data: () => Promise<String>;
 }
 
@@ -4706,6 +4730,7 @@ export interface ContentEncodingSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   name: () => Promise<AsyncIterator<String>>;
   charset: () => Promise<AsyncIterator<String>>;
+  language: () => Promise<AsyncIterator<String>>;
   data: () => Promise<AsyncIterator<String>>;
 }
 
@@ -4721,6 +4746,7 @@ export interface ContentEncodingNullablePromise
   updatedAt: () => Promise<DateTimeOutput>;
   name: () => Promise<String>;
   charset: () => Promise<String>;
+  language: () => Promise<String>;
   data: () => Promise<String>;
 }
 

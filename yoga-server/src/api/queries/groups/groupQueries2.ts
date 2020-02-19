@@ -67,12 +67,13 @@ export class GroupQueries2 {
 
             const entries = await prisma.group({id: groupId})
                                   .entries({
-                                      where: entriesWhereInput
+                                      where: entriesWhereInput,
+                                      orderBy: "createdAt_ASC"
                                   });
 
             return entries.map(async o => {
                 (<any>o).tagAggregate = [];
-                (<any>o).contentEncoding = await prisma.contentEncoding({id:o.contentEncoding}) ?? ""
+                (<any>o).contentEncoding = await prisma.contentEncoding({id:o.contentEncoding}) ?? "";
                 return o;
             });
         } catch (e) {

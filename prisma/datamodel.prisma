@@ -13,6 +13,7 @@ type ContentEncoding {
 
     name: String!
     charset: String!
+    language: String
 
     data: String
 }

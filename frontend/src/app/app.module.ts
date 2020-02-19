@@ -112,11 +112,11 @@ import {ListChatComponent} from "./lists/list-chat/list-chat.component";
 import {EditorProfileComponent} from "./dialogs/editor-profile/editor-profile.component";
 import {ProfileService} from "./services/profile.service";
 import {EditorAccountComponent} from "./dialogs/editor-account/editor-account.component";
-import {InputPasscodeComponent} from "./dialogs/input-passcode/input-passcode.component";
 import {EditorPasswordComponent} from "./dialogs/editor-password/editor-password.component";
 import {CanActivateRoute} from "./services/RouteGuards";
 import {JsonSchemaFormModule} from "angular6-json-schema-form/lib/json-schema-form.module";
 import {MaterialDesignFrameworkModule} from "angular6-json-schema-form";
+import {ServiceDialogComponent} from "./services/service-dialog/service-dialog.component";
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -149,105 +149,105 @@ const appRoutes: Routes = [
       "title": "Welcome",
       "actions": defaultActions
     }
-    , canActivate:[CanActivateRoute]
+    , canActivate: [CanActivateRoute]
   },
   {
     path: 'signin', component: SigninComponent, data: {
       "title": "Login",
       "actions": defaultActions
     }
-    , canActivate:[CanActivateRoute]
+    , canActivate: [CanActivateRoute]
   },
   {
     path: 'register', component: RegisterComponent, data: {
       "title": "Sign up",
       "actions": defaultActions
     }
-    , canActivate:[CanActivateRoute]
+    , canActivate: [CanActivateRoute]
   },
   {
     path: 'cockpit', component: CockpitComponent, data: {
       "title": "Cockpit",
       "actions": defaultActions
     }
-    , canActivate:[CanActivateRoute]
+    , canActivate: [CanActivateRoute]
   },
   {
     path: 'store', component: StoreComponent, data: {
       "title": "Store",
       "actions": defaultActions
     }
-    , canActivate:[CanActivateRoute]
+    , canActivate: [CanActivateRoute]
   },
   {
     path: 'studio', component: StudioComponent, data: {
       "title": "Studio",
       "actions": defaultActions
     }
-    , canActivate:[CanActivateRoute]
+    , canActivate: [CanActivateRoute]
   },
   {
     path: 'map', component: MapComponent, data: {
       "title": "Map",
       "actions": defaultActions
     }
-    , canActivate:[CanActivateRoute]
+    , canActivate: [CanActivateRoute]
   },
   {
     path: 'reset-password', component: ResetPasswordComponent, data: {
       "title": "Reset password",
       "actions": defaultActions
     }
-    , canActivate:[CanActivateRoute]
+    , canActivate: [CanActivateRoute]
   },
   {
     path: 'editor-channel', component: EditorChannelComponent, data: {
       "title": "Create new channel",
       "actions": defaultActions
     }
-    , canActivate:[CanActivateRoute]
+    , canActivate: [CanActivateRoute]
   },
   {
     path: 'switch-profile', component: SwitchProfileComponent, data: {
       "title": "Switch profile",
       "actions": defaultActions
     }
-    , canActivate:[CanActivateRoute]
+    , canActivate: [CanActivateRoute]
   },
   {
     path: 'logout', component: LogoutComponent, data: {
       "title": "Logout",
       "actions": defaultActions
     }
-    , canActivate:[CanActivateRoute]
+    , canActivate: [CanActivateRoute]
   },
   {
     path: 'editor-team', component: EditorGroupComponent, data: {
       "title": "Create new team",
       "actions": defaultActions
     }
-    , canActivate:[CanActivateRoute]
+    , canActivate: [CanActivateRoute]
   },
   {
     path: 'smart-crypto-app', component: SmartCryptoAppComponent, data: {
       "title": "Smart Crypto App",
       "actions": defaultActions
     }
-    , canActivate:[CanActivateRoute]
+    , canActivate: [CanActivateRoute]
   },
   {
     path: 'group-list', component: ListGroupComponent, data: {
       "title": "Groups",
       "actions": defaultActions
     }
-    , canActivate:[CanActivateRoute]
+    , canActivate: [CanActivateRoute]
   },
   {
     path: 'calendar', component: CalendarComponent, data: {
       "title": "Calendar",
       "actions": defaultActions
     }
-    , canActivate:[CanActivateRoute]
+    , canActivate: [CanActivateRoute]
   },
 ];
 
@@ -315,8 +315,8 @@ const appRoutes: Routes = [
     ListChatComponent,
     EditorProfileComponent,
     EditorAccountComponent,
-    InputPasscodeComponent,
     EditorPasswordComponent,
+    ServiceDialogComponent,
   ],
   imports: [
     RouterModule.forRoot(
@@ -373,7 +373,7 @@ const appRoutes: Routes = [
     }),
     CalendarModule.forRoot({provide: DateAdapter, useFactory: momentAdapterFactory}),
   ],
-  providers: [ProfileService,CanActivateRoute],
+  providers: [ProfileService, CanActivateRoute],
   entryComponents: [SearchComponent],
   bootstrap: [AppComponent]
 })
