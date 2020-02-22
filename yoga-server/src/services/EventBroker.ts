@@ -1,5 +1,6 @@
 import {Observable} from "rxjs";
 import {Observer} from "rxjs/src/internal/types";
+import {Helper} from "../helper/Helper";
 
 export class Topics {
     public static readonly NewChannel = "abis.system.new-channel";
@@ -7,6 +8,17 @@ export class Topics {
 }
 
 export class EventBroker {
+
+    public static get instance() {
+        if (!this._instance) {
+            this._instance = new EventBroker();
+        }
+        return this._instance;
+    }
+    private static  _instance:EventBroker = null;
+
+    private constructor() {
+    }
 
     private _topics:{[namespace:string]: {[name:string]:Topic<any>}} = {};
 
@@ -27,7 +39,7 @@ export class EventBroker {
         }
         ns[name] = topic;
 
-        console.log(`Created topic '${name}' in namespace '${namepsace}'`);
+        Helper.log(`Created topic '${name}' in namespace '${namepsace}'`);
 
         return topic;
     }
@@ -46,6 +58,20 @@ export class EventBroker {
         const topic = ns[name];
         if (!topic) {
             throw new Error(`There is no topic with the name '${name}' in the namespace '${namespace}'.`)
+        }
+
+        return topic;
+    }
+
+    public tryGetTopic<T>(namespace:string, name:string) : Topic<T> {
+        const ns = this._topics[namespace];
+        if (!ns) {
+            return null;
+        }
+
+        const topic = ns[name];
+        if (!topic) {
+            return null;
         }
 
         return topic;
