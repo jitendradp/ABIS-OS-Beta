@@ -2,10 +2,10 @@ import {CommonQueries} from "../commonQueries";
 import {GroupQueries} from "../../../data/queries/group";
 import {MembershipQueries} from "../../../data/queries/memberships";
 import {EntryWhereInput, prisma} from "../../../generated";
-import {AgentCanSee} from "../../../statements/agentCanSee";
 import {Helper} from "../../../helper/Helper";
 import {ActionResponse} from "../../mutations/actionResponse";
 import {getTypesAndWhere} from "prisma-client-lib/dist/utils";
+import {AgentCanSee} from "../../../statements/agentCanSee";
 
 export class GroupQueries2 {
     public static async findRooms(csrfToken: string, sessionToken: string, bearerToken: string, searchText?: string) {
