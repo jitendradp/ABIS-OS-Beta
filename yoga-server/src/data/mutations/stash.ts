@@ -1,5 +1,5 @@
-import {Group, prisma} from "../generated";
-import {Helper} from "../helper/Helper";
+import {Group, prisma} from "../../generated";
+import {Helper} from "../../helper/Helper";
 
 export class StashMutations {
     /**

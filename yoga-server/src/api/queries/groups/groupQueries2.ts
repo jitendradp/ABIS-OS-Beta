@@ -1,8 +1,8 @@
 import {CommonQueries} from "../commonQueries";
-import {GroupQueries} from "../../../queries/group";
-import {MembershipQueries} from "../../../queries/memberships";
+import {GroupQueries} from "../../../data/queries/group";
+import {MembershipQueries} from "../../../data/queries/memberships";
 import {EntryWhereInput, prisma} from "../../../generated";
-import {MembershipStatements} from "../../../rules/membershipStatements";
+import {AgentCanSee} from "../../../statements/agentCanSee";
 import {Helper} from "../../../helper/Helper";
 import {ActionResponse} from "../../mutations/actionResponse";
 import {getTypesAndWhere} from "prisma-client-lib/dist/utils";
@@ -39,7 +39,7 @@ export class GroupQueries2 {
     public static async getEntries(csrfToken: string, sessionToken: string, bearerToken: string, groupId: string, from?: Date, to?: Date) {
         try {
             const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
-            if (!await MembershipStatements.agentCanAccessGroup(myAgent.id, groupId)) {
+            if (!await AgentCanSee.group(myAgent.id, groupId)) {
                 return [];
             }
 

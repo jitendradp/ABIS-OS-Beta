@@ -7,10 +7,10 @@ import {Request} from "express";
 import {config} from "../../config";
 import {CommonQueries} from "../queries/commonQueries";
 import {ActionResponse} from "./actionResponse";
-import {UserQueries} from "../../queries/user";
-import {SessionMutations} from "../../mutations/session";
-import {UserMutations} from "../../mutations/user";
-import {ProfileQueries} from "../../queries/profile";
+import {UserQueries} from "../../data/queries/user";
+import {SessionMutations} from "../../data/mutations/session";
+import {UserMutations} from "../../data/mutations/user";
+import {ProfileQueries} from "../../data/queries/profile";
 
 export class UserApiMutations {
     private static readonly bcrypt = require('bcrypt');

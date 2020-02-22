@@ -1,8 +1,8 @@
-import {prisma, Session} from "../generated";
-import {Helper} from "../helper/Helper";
+import {prisma, Session} from "../../generated";
+import {Helper} from "../../helper/Helper";
 import {ProfileQueries} from "../queries/profile";
-import {OwnershipStatements} from "../rules/ownershipStatements";
-import {config} from "../config";
+import {config} from "../../config";
+import {UserOwns} from "../../statements/userOwns";
 
 export class SessionMutations {
     /**
@@ -57,7 +57,7 @@ export class SessionMutations {
             agentId = foundAgent.id;
         }
 
-        if (!await OwnershipStatements.userOwnsProfile(userId, agentId)) {
+        if (!await UserOwns.profile(userId, agentId)) {
             throw new Error(`Either the User (${userId}), the Agent ${agentId} or both don't exist. Also the given agent might not belong to the given user.`);
         }
 

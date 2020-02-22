@@ -2,8 +2,8 @@ import {Helper} from "../../helper/Helper";
 import {ActionResponse} from "./actionResponse";
 import {EntryType, prisma} from "../../generated";
 import {CommonQueries} from "../queries/commonQueries";
-import {MembershipStatements} from "../../rules/membershipStatements";
-import {OwnershipStatements} from "../../rules/ownershipStatements";
+import {AgentCanSee} from "../../statements/agentCanSee";
+import {AgentOwns} from "../../statements/agentOwns";
 
 export class EntryApiMutations {
     static async createEntry(
@@ -17,7 +17,7 @@ export class EntryApiMutations {
         , contentEncoding?:string) {
         try {
             const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
-            if (!(await MembershipStatements.agentCanAccessGroup(myAgent.id, groupId))) {
+            if (!(await AgentCanSee.group(myAgent.id, groupId))) {
                 throw new Error(`Agent ${myAgent.id} cannot access group ${groupId}, in which the new entry should be created.`);
             }
 
@@ -74,7 +74,7 @@ export class EntryApiMutations {
                 throw new Error(`The entry ${entryId} either doesn't exist or isn't contained in one group.`)
             }
 
-            if (inGroup[0].owner != myAgent.id && !(await OwnershipStatements.agentOwnsEntry(myAgent.id, entryId))) {
+            if (inGroup[0].owner != myAgent.id && !(await AgentOwns.entry(myAgent.id, entryId))) {
                 throw new Error(`Agent ${myAgent.id} doesn't own entry ${entryId}, which it tries to delete.`);
             }
 
