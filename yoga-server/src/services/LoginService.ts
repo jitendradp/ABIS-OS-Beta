@@ -1,50 +1,29 @@
 import {Service} from "./Service";
-import {Entry, prisma} from "../generated";
-import {EntryMutations} from "../mutations/entry";
-import {ChannelApiMutations} from "../api/mutations/channelApiMutations";
+import {Topic, Topics} from "./EventBroker";
 
 export class LoginService extends Service {
 
-    private channelList: [{ channelId: string }] = <any>[];
+    private _newChannel: Topic<any>;
+    private _newEntry: Topic<any>;
 
+    start(): void {
+        // The login service wants to be notified when a new channel to it was created
+        // or when a new entry was posted to a group in which the service is member.
+        this._newChannel = this.eventBroker.createTopic(this.id, Topics.NewChannel);
+        this._newChannel.observable.subscribe(this.onNewChannel);
 
-    constructor(serviceId:string) {
-        super(serviceId);
+        this._newEntry = this.eventBroker.createTopic(this.id, Topics.NewEntry);
+        this._newEntry.observable.subscribe(this.onNewEntry);
     }
 
-    get name(): string {
-        return "LoginService";
+    onNewChannel(value:any) {
     }
 
-    public async newChannel(channelId: string) {
-        console.log(`A new channel (id:${channelId}) to LoginService ${this.serviceId} was created. Creating a reverse channel ..`);
-
-        let channel = await prisma.group({id:channelId});
-        let reverseChannel = await ChannelApiMutations.createChannelInternal(this.serviceId, channel.owner);
-
-        console.log("Created a reverse channel: " + (<any>reverseChannel).id);
-
-        this.channelList.push({
-            channelId: channelId
-        });
-
-        // Whenever a new channel to this service was created, post an entry with all options, the service provides.
-        let contentEncoding = (await prisma.contentEncodings({where:{name:"Login"}}));
-        const entry = await EntryMutations.createEntryInGroup(channelId, {
-            owner: this.serviceId,
-            createdBy: this.serviceId,
-            type: "Empty",
-            name: "Welcome message",
-            contentEncoding:contentEncoding[0].id
-        });
-
-        Service.pubsub.publish("LoginService.newChannel", {
-            id: entry.id,
-            name: entry.name
-        });
+    onNewEntry(value:any) {
     }
 
-    public async newEntry(groupId: string, entry: Entry): Promise<void> {
-        console.log("LoginService received new entry:", entry);
+    stop(): void {
+        this.eventBroker.removeTopic(this.id, this._newEntry.name);
+        this.eventBroker.removeTopic(this.id, this._newChannel.name);
     }
 }

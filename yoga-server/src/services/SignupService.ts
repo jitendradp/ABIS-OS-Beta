@@ -1,44 +1,29 @@
 import {Service} from "./Service";
-import {Entry, prisma} from "../generated";
-import {EntryMutations} from "../mutations/entry";
+import {Topic, Topics} from "./EventBroker";
 
 export class SignupService extends Service {
 
-    private channelList: [{ channelId: string }] = <any>[];
+    private _newChannel: Topic<any>;
+    private _newEntry: Topic<any>;
 
+    start(): void {
+        // The signup service wants to be notified when a new channel to it was created
+        // or when a new entry was posted to a group in which the service is member.
+        this._newChannel = this.eventBroker.createTopic(this.id, Topics.NewChannel);
+        this._newChannel.observable.subscribe(this.onNewChannel);
 
-    constructor(serviceId:string) {
-        super(serviceId);
+        this._newEntry = this.eventBroker.createTopic(this.id, Topics.NewEntry);
+        this._newEntry.observable.subscribe(this.onNewEntry);
     }
 
-    get name(): string {
-        return "SignupService";
+    onNewChannel(value:any) {
     }
 
-    public async newChannel(channelId: string) {
-        console.log(`A new channel (id:${channelId}) to SignupService ${this.serviceId} was created.`);
-
-        this.channelList.push({
-            channelId: channelId
-        });
-
-        // Whenever a new channel to this service was created, post an entry with all options, the service provides.
-        let contentEncoding = (await prisma.contentEncodings({where:{name:"Signup"}}))[0];
-        const entry = await EntryMutations.createEntryInGroup(channelId, {
-            owner: this.serviceId,
-            createdBy: this.serviceId,
-            type: "Empty",
-            name: "Welcome message",
-            contentEncoding:contentEncoding.id
-        });
-
-        Service.pubsub.publish("SignupService.newChannel", {
-            id: entry.id,
-            name: entry.name
-        });
+    onNewEntry(value:any) {
     }
 
-    public async newEntry(groupId: string, entry: Entry): Promise<void> {
-        console.log("SignupService received new entry:", entry);
+    stop(): void {
+        this.eventBroker.removeTopic(this.id, this._newEntry.name);
+        this.eventBroker.removeTopic(this.id, this._newChannel.name);
     }
 }
