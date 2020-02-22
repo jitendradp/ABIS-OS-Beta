@@ -1,4 +1,4 @@
-import {EntryCreateInput, prisma} from "../generated";
+import {EntryCreateInput, prisma} from "../../generated";
 
 export class EntryMutations {
     public static async createEntryInGroup(groupId:string, entry:EntryCreateInput) {

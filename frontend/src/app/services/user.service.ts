@@ -3,7 +3,14 @@ import {ActionDispatcherService} from "./action-dispatcher.service";
 import {LoginStateChanged} from "../actions/user/LoginStateChanged";
 import {
   MyAccountGQL,
-  Account, UserType, CreateeSessionGQL, ContentEncoding, ContentEncodingsGQL
+  Account,
+  UserType,
+  CreateeSessionGQL,
+  ContentEncoding,
+  ContentEncodingsGQL,
+  MyChannelsGQL,
+  GetSystemServicesGQL,
+  Channel, GetEntriesGQL, Service
 } from "../../generated/abis-api";
 import {ClientStateService} from "./client-state.service";
 import {Logger, LoggerService, LogSeverity} from "./logger.service";
@@ -48,6 +55,12 @@ export class UserService {
     return this.clientState.get<ContentEncoding[]>(this.ContentEncodingsKey, null).data;
   }
 
+  private readonly SystemServicesKey = "UserService.systemServices";
+
+  public get systemServices(): Service[] {
+    return this.clientState.get<Service[]>(this.SystemServicesKey, null).data;
+  }
+
   private readonly ProfileKey = "UserService.profileId";
 
   public get isLoggedOn(): boolean {
@@ -62,6 +75,8 @@ export class UserService {
     , private myAccountApi: MyAccountGQL
     , private contentEncodingsApi: ContentEncodingsGQL
     , private clientState: ClientStateService
+    , private getSystemServicesApi: GetSystemServicesGQL
+    , private myChannelsApi: MyChannelsGQL
     , private apollo: Apollo) {
 
     // TODO: this seems to be a bit hacky, does the service really need to subscribe to its own events to know that?
@@ -72,25 +87,43 @@ export class UserService {
     });
   }
 
-  public createSession() : Observable<SessionCreated> {
+  public createSession(): Observable<SessionCreated> {
     console.log("Creating session");
-      return this.createSessionApi.mutate({clientTime:new Date().toISOString()}).pipe(
-        map(result => {
-          console.log(result);
-          if (result.data.createSession.success) {
-            this.clientState.set(this.CsrfTokenKey, result.data.createSession.code);
+    if (this.systemServices) {
+      return new Observable<SessionCreated>(observer => observer.next(new SessionCreated()));
+    }
 
-            if (!this.contentEncodings) {
-              this.contentEncodingsApi.fetch({csrfToken:result.data.createSession.code})
-                .subscribe(contentEncoddings => {
-                  this.clientState.set(this.ContentEncodingsKey, contentEncoddings.data.contentEncodings);
-                });
-            }
+    return this.createSessionApi.mutate({clientTime: new Date().toISOString()}).pipe(
+      map(result => {
+        console.log(result);
+        if (result.data.createSession.success) {
+          this.clientState.set(this.CsrfTokenKey, result.data.createSession.code);
 
-            return new SessionCreated();
-          } else {
-            throw new Error("An error occurred during the session creation.")
+          if (!this.contentEncodings) {
+            this.contentEncodingsApi.fetch({csrfToken: result.data.createSession.code})
+              .subscribe(contentEncoddings => {
+                this.clientState.set(this.ContentEncodingsKey, contentEncoddings.data.contentEncodings);
+              });
+            this.getSystemServicesApi.fetch({csrfToken: result.data.createSession.code})
+              .subscribe(systemServices => {
+                this.clientState.set(this.SystemServicesKey, systemServices.data.getSystemServices);
+              });
           }
-        }));
+
+          return new SessionCreated();
+        } else {
+          throw new Error("An error occurred during the session creation.")
+        }
+      }));
+  }
+
+  public async findSignupAgentId(): Promise<string> {
+    const systemAgents = await this.getSystemServicesApi.fetch({csrfToken: this.csrfToken}).toPromise();
+    return systemAgents.data.getSystemServices.find(o => o.name == "SignupService").id;
+  }
+
+  public async myChannels() {
+    let a = await this.myChannelsApi.fetch({csrfToken: this.csrfToken}).toPromise();
+    return a.data.myChannels;
   }
 }

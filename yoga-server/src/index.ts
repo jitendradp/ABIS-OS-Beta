@@ -1,5 +1,5 @@
-import {GraphQLServer, PubSub} from 'graphql-yoga'
-import {Entry, Group, prisma, UserType} from './generated'
+import {GraphQLServer} from 'graphql-yoga'
+import {prisma} from './generated'
 import {UserApiMutations} from "./api/mutations/userApiMutations";
 import {ContextParameters} from "graphql-yoga/dist/types";
 import {config} from "./config";
@@ -9,43 +9,11 @@ import {GroupQueries2} from "./api/queries/groups/groupQueries2";
 import {ChannelApiMutations} from "./api/mutations/channelApiMutations";
 import {RoomApiMutations} from "./api/mutations/roomApiMutations";
 import {EntryApiMutations} from "./api/mutations/entryApiMutations";
-import {Service} from "./services/Service";
-import {SignupService} from "./services/SignupService";
-import {Helper} from "./helper/Helper";
-import {ActionResponse} from "./api/mutations/actionResponse";
+import {Init} from "./init";
+import {ServiceHost} from "./services/ServiceHost";
+import {EventBroker} from "./services/EventBroker";
 
 var cookie = require('cookie');
-
-const serviceImplementations: { [name: string]: (serviceId: string) => Service } = {
-    "SignupService": (serviceId) => new SignupService(serviceId)
-};
-
-export type NewEntryHook = (groupId: string, newEntry: Entry) => void;
-
-
-const pubsub = new PubSub();
-Service.pubsub = pubsub;
-
-let newEntryServiceHooks: { [groupId: string]: [NewEntryHook] } = {};
-let serviceInstances: { [serviceId: string]: Service } = {};
-
-/*
-Ensure that there are always two system users:
-* Abis: Owns all system service agents
-* Anonymous: Owns all anonymous sessions and agents
-*/
-
-async function executeCreateChannelServiceHooks(channel: Group | ActionResponse) {
-    let serviceIDs = Object.keys(serviceInstances);
-    let memberGroups = await prisma.groups({where: {memberships_some: {member: {id_in: serviceIDs}}}});
-
-    memberGroups.forEach(group => {
-        serviceIDs.forEach(serviceId => {
-            let serviceInstance = serviceInstances[serviceId];
-            serviceInstance.newChannel((<any>channel).id);
-        });
-    });
-}
 
 const resolvers = {
     // Resolvers for interface types
@@ -134,7 +102,7 @@ const resolvers = {
             const channel = await ChannelApiMutations.createChannel(csrfToken, ctx.sessionToken, ctx.bearerToken, toAgentId);
 
             // Check if the memberships of any running service changed
-            await executeCreateChannelServiceHooks(channel);
+            //await executeCreateChannelServiceHooks(channel);
 
             return channel;
         },
@@ -181,17 +149,20 @@ const resolvers = {
                 , createEntryInput.content
                 , createEntryInput.contentEncoding);
 
-            let hooks = newEntryServiceHooks[createEntryInput.roomId];
+            /*let hooks = newEntryServiceHooks[createEntryInput.roomId];
             if (hooks) {
                 hooks.forEach(o => o(createEntryInput.roomId, <any>entry));
             }
+             */
 
             (<any>entry).contentEncoding = {id:createEntryInput.contentEncoding};
 
+            /*
             pubsub.publish("createEntry", {
                 id: (<any>entry).id,
                 name: (<any>entry).name,
             });
+             */
 
             return entry;
         },
@@ -233,14 +204,17 @@ const server = new GraphQLServer({
             response: req.response,
             connection: req.connection,
             bearerToken: req.request.headers.cookie ? cookie.parse(req.request.headers.cookie).bearerToken : null,
-            sessionToken: req.request.headers.cookie ? cookie.parse(req.request.headers.cookie).sessionToken : null,
-            pubsub
+            sessionToken: req.request.headers.cookie ? cookie.parse(req.request.headers.cookie).sessionToken : null
         };
     }
 });
 
 var morgan = require('morgan');
 server.use(morgan('combined'));
+
+const init = new Init();
+const eventBroker = new EventBroker();
+const serviceHost = new ServiceHost(eventBroker);
 
 server.start({
     cors: {
@@ -251,90 +225,15 @@ server.start({
         credentials: true
     }
 }, async () => {
-    console.log('Server is running on ' + config.env.domain + ":4000");
+    console.log('Listening on ' + config.env.domain + ":4000");
 
-    console.log('Ensuring system users ...');
+    await init.run();
 
-    let systemUser = await prisma.user({email: config.env.systemUser});
-    if (!systemUser) {
-        systemUser = await prisma.createUser({
-            type: "System",
-            email: config.env.systemUser,
-            timezone: "GMT"
-        });
-        console.log('Created ' + config.env.systemUser);
+    // Create the signup service
+    await serviceHost.loadService(init.signupService.id);
 
-        let signupAgent = [await prisma.createAgent({
-            owner: systemUser.id,
-            createdBy: systemUser.id,
-            name: "SignupService",
-            status: "Running",
-            type: "Service",
-            serviceDescription: "Handles the signup requests of anonymous profiles",
-            profileAvatar: "nologo.png"
-        })];
-        await prisma.updateUser({
-            where: {
-                id: systemUser.id
-            },
-            data: {
-                agents: {
-                    connect: {
-                        id: signupAgent[0].id
-                    }
-                }
-            }
-        });
-        console.log('Created ' + config.env.signupAgentName);
-    }
-    let anonymousUser = await prisma.user({email: config.env.anonymousUser});
-    if (!anonymousUser) {
-        anonymousUser = await prisma.createUser({
-            type: "System",
-            email: config.env.anonymousUser,
-            timezone: "GMT"
-        });
-        console.log('Created ' + config.env.anonymousUser);
-    }
-    console.log('System users O.K.');
+    // Create the login service
+    await serviceHost.loadService(init.loginService.id);
 
-    console.log('Initializing services ...');
-
-    let services = await prisma.agents({where: {type: "Service"}});
-    await Promise.all(services.map(async svc => {
-        let serviceImplementation = serviceImplementations[svc.name];
-        if (!serviceImplementation) {
-            return;
-        }
-
-        console.log(`* ${svc.name}: Creating instance`);
-        let serviceImplInstance = serviceImplementation(svc.id);
-        serviceInstances[svc.id] = serviceImplInstance;
-    }));
-
-    if ((await  prisma.contentEncodings({where:{name:"Signup"}})).length == 0) {
-        console.log(`Creating instance system ContentEncoding: Signup/JsonSchema`);
-        await prisma.createContentEncoding({
-            charset: "utf-8",
-            createdBy: systemUser.id,
-            maintainer: systemUser.id,
-            name: "Signup",
-            type: "JsonSchema",
-            data: JSON.stringify({
-                "Signup": {
-                    "type": "object",
-                    "properties": {
-                        "first_name": {"type": "string"},
-                        "last_name": {"type": "string"},
-                        "email": {"type": "string"},
-                        "password": {"type": "string"},
-                        "passwordConfirmation": {"type": "string"}
-                    },
-                    "required": ["first_name", "last_name", "email", "password", "passwordConfirmation"]
-                }
-            })
-        });
-    }
-
-    console.log('Services O.K.');
+    console.log('Server started.');
 });

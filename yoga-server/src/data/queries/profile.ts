@@ -1,4 +1,4 @@
-import {Agent, prisma} from "../generated";
+import {Agent, prisma} from "../../generated";
 
 export class ProfileQueries {
     /**

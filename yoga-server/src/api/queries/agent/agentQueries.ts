@@ -2,7 +2,7 @@ import {Agent, Group, GroupType, prisma} from "../../../generated";
 import {CommonQueries} from "../commonQueries";
 import {Helper} from "../../../helper/Helper";
 import {ActionResponse} from "../../mutations/actionResponse";
-import {GroupQueries} from "../../../queries/group";
+import {GroupQueries} from "../../../data/queries/group";
 import {config} from "../../../config";
 
 export type MembershipType =

@@ -13,6 +13,7 @@ type ContentEncoding {
 
     name: String!
     charset: String!
+    language: String
 
     data: String
 }
@@ -177,6 +178,7 @@ type Agent {
     profileType: ProfileType
 
     # Only when "type == AgentType.Service":
+    serviceImplementation: String
     serviceDescription: String
 
     # Only when "type == AgentType.Inbox":

@@ -7,11 +7,6 @@
      fxLayoutGap.xs="0">
   <div fxFlex='auto' fxFlex.gt-md='25' fxFlex.gt-sm='50' style="background:white; padding:15px;">
     <app-whitespace></app-whitespace>
-    <json-schema-form
-      loadExternalAssets="false"
-      [schema]="formSchema"
-      framework="material-design"
-      (onSubmit)="formSubmit($event)">
-    </json-schema-form>
+    <app-service-dialog [serviceAgentId]="signupServiceId"></app-service-dialog>
   </div>
 </div>

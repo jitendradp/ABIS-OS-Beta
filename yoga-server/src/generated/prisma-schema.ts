@@ -19,6 +19,7 @@ export const typeDefs = /* GraphQL */ `type Agent {
   profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
+  serviceImplementation: String
   serviceDescription: String
   inboxDescription: String
 }
@@ -44,6 +45,7 @@ input AgentCreateInput {
   profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
+  serviceImplementation: String
   serviceDescription: String
   inboxDescription: String
 }
@@ -94,6 +96,8 @@ enum AgentOrderByInput {
   profileBanner_DESC
   profileType_ASC
   profileType_DESC
+  serviceImplementation_ASC
+  serviceImplementation_DESC
   serviceDescription_ASC
   serviceDescription_DESC
   inboxDescription_ASC
@@ -116,6 +120,7 @@ type AgentPreviousValues {
   profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
+  serviceImplementation: String
   serviceDescription: String
   inboxDescription: String
 }
@@ -289,6 +294,20 @@ input AgentScalarWhereInput {
   profileType_not: ProfileType
   profileType_in: [ProfileType!]
   profileType_not_in: [ProfileType!]
+  serviceImplementation: String
+  serviceImplementation_not: String
+  serviceImplementation_in: [String!]
+  serviceImplementation_not_in: [String!]
+  serviceImplementation_lt: String
+  serviceImplementation_lte: String
+  serviceImplementation_gt: String
+  serviceImplementation_gte: String
+  serviceImplementation_contains: String
+  serviceImplementation_not_contains: String
+  serviceImplementation_starts_with: String
+  serviceImplementation_not_starts_with: String
+  serviceImplementation_ends_with: String
+  serviceImplementation_not_ends_with: String
   serviceDescription: String
   serviceDescription_not: String
   serviceDescription_in: [String!]
@@ -373,6 +392,7 @@ input AgentUpdateDataInput {
   profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
+  serviceImplementation: String
   serviceDescription: String
   inboxDescription: String
 }
@@ -391,6 +411,7 @@ input AgentUpdateInput {
   profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
+  serviceImplementation: String
   serviceDescription: String
   inboxDescription: String
 }
@@ -408,6 +429,7 @@ input AgentUpdateManyDataInput {
   profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
+  serviceImplementation: String
   serviceDescription: String
   inboxDescription: String
 }
@@ -437,6 +459,7 @@ input AgentUpdateManyMutationInput {
   profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
+  serviceImplementation: String
   serviceDescription: String
   inboxDescription: String
 }
@@ -639,6 +662,20 @@ input AgentWhereInput {
   profileType_not: ProfileType
   profileType_in: [ProfileType!]
   profileType_not_in: [ProfileType!]
+  serviceImplementation: String
+  serviceImplementation_not: String
+  serviceImplementation_in: [String!]
+  serviceImplementation_not_in: [String!]
+  serviceImplementation_lt: String
+  serviceImplementation_lte: String
+  serviceImplementation_gt: String
+  serviceImplementation_gte: String
+  serviceImplementation_contains: String
+  serviceImplementation_not_contains: String
+  serviceImplementation_starts_with: String
+  serviceImplementation_not_starts_with: String
+  serviceImplementation_ends_with: String
+  serviceImplementation_not_ends_with: String
   serviceDescription: String
   serviceDescription_not: String
   serviceDescription_in: [String!]
@@ -726,6 +763,7 @@ type ContentEncoding {
   updatedAt: DateTime
   name: String!
   charset: String!
+  language: String
   data: String
 }
 
@@ -743,6 +781,7 @@ input ContentEncodingCreateInput {
   updatedBy: ID
   name: String!
   charset: String!
+  language: String
   data: String
 }
 
@@ -770,6 +809,8 @@ enum ContentEncodingOrderByInput {
   name_DESC
   charset_ASC
   charset_DESC
+  language_ASC
+  language_DESC
   data_ASC
   data_DESC
 }
@@ -784,6 +825,7 @@ type ContentEncodingPreviousValues {
   updatedAt: DateTime
   name: String!
   charset: String!
+  language: String
   data: String
 }
 
@@ -812,6 +854,7 @@ input ContentEncodingUpdateInput {
   updatedBy: ID
   name: String
   charset: String
+  language: String
   data: String
 }
 
@@ -822,6 +865,7 @@ input ContentEncodingUpdateManyMutationInput {
   updatedBy: ID
   name: String
   charset: String
+  language: String
   data: String
 }
 
@@ -930,6 +974,20 @@ input ContentEncodingWhereInput {
   charset_not_starts_with: String
   charset_ends_with: String
   charset_not_ends_with: String
+  language: String
+  language_not: String
+  language_in: [String!]
+  language_not_in: [String!]
+  language_lt: String
+  language_lte: String
+  language_gt: String
+  language_gte: String
+  language_contains: String
+  language_not_contains: String
+  language_starts_with: String
+  language_not_starts_with: String
+  language_ends_with: String
+  language_not_ends_with: String
   data: String
   data_not: String
   data_in: [String!]

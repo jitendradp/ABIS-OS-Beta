@@ -1,5 +1,5 @@
-import {Agent, Group, prisma} from "../generated";
-import {MembershipStatements} from "../rules/membershipStatements";
+import {Agent, Group, prisma} from "../../generated";
+import {AgentCanSee} from "../../statements/agentCanSee";
 
 export type UiMemberhsip = {
     id: string,
@@ -20,7 +20,7 @@ export type UiMemberhsip = {
 
 export class MembershipQueries {
     public static async findMemberships(agentId:string, roomId?:string, searchText?:string) : Promise<UiMemberhsip[]> {
-        if (!(await MembershipStatements.agentCanAccessRoom(agentId, roomId))) {
+        if (!(await AgentCanSee.room(agentId, roomId))) {
             return [];
         }
 

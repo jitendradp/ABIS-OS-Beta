@@ -1,9 +1,9 @@
-import {Entry, prisma} from "../generated";
-import {MembershipStatements} from "../rules/membershipStatements";
+import {Entry, prisma} from "../../generated";
+import {AgentCanSee} from "../../statements/agentCanSee";
 
 export class EntryQueries {
     public static async getEntries(agentId:string, groupId:string, from?:Date, to?:Date) : Promise<Entry[]> {
-        if (!(await MembershipStatements.agentCanAccessGroup(agentId, groupId))) {
+        if (!(await AgentCanSee.group(agentId, groupId))) {
             return [];
         }
 

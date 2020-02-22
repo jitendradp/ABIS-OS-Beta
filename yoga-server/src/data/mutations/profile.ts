@@ -1,6 +1,6 @@
-import {ProfileStatus} from "../api/Profile";
-import {Group, prisma} from "../generated";
-import {Helper} from "../helper/Helper";
+import {ProfileStatus} from "../../api/Profile";
+import {Group, prisma} from "../../generated";
+import {Helper} from "../../helper/Helper";
 import {StashMutations} from "./stash";
 
 export class ProfileMutations {
