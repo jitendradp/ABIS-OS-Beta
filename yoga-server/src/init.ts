@@ -1,10 +1,12 @@
-import {prisma, User} from "./generated";
+import {Agent, prisma, User} from "./generated";
 import {config} from "./config";
 import {ContentEncodings} from "./api/contentEncodings";
 
-export class DatabaseInitialization {
+export class Init {
     public systemUser:User;
     public anonymousUser:User;
+    public signupService:Agent;
+    public loginService:Agent;
 
     public async run() {
         await this.createContentEncodings();
@@ -20,6 +22,7 @@ export class DatabaseInitialization {
             return;
         }
 
+        console.log(`Creating system user`);
         this.systemUser = await prisma.createUser({
             type: "System",
             email: config.env.systemUser,
@@ -33,6 +36,7 @@ export class DatabaseInitialization {
             return;
         }
 
+        console.log(`Creating anonymous user`);
         this.anonymousUser = await prisma.createUser({
             type: "System",
             email: config.env.anonymousUser,
@@ -41,15 +45,23 @@ export class DatabaseInitialization {
     }
 
     private async createSignupService() {
-        const signupService = [await prisma.createAgent({
+        const signupServices = await prisma.agents({where:{name: "SignupService", type: "Service"}});
+        if (signupServices.length > 0) {
+            this.signupService = signupServices[0];
+            return;
+        }
+
+        console.log(`Creating signup service`);
+        const signupService = await prisma.createAgent({
             owner: this.systemUser.id,
             createdBy: this.systemUser.id,
             name: "SignupService",
             status: "Running",
             type: "Service",
+            serviceImplementation: "SignupService",
             serviceDescription: "Handles the signup requests of anonymous profiles",
             profileAvatar: "nologo.png"
-        })];
+        });
         await prisma.updateUser({
             where: {
                 id: this.systemUser.id
@@ -57,23 +69,33 @@ export class DatabaseInitialization {
             data: {
                 agents: {
                     connect: {
-                        id: signupService[0].id
+                        id: signupService.id
                     }
                 }
             }
         });
+
+        this.signupService = signupService;
     }
 
     private async createLoginService() {
-        const signupService = [await prisma.createAgent({
+        const loginServices = await prisma.agents({where:{name: "LoginService", type: "Service"}});
+        if (loginServices.length > 0) {
+            this.loginService = loginServices[0];
+            return;
+        }
+
+        console.log(`Creating login service`);
+        const loginService = await prisma.createAgent({
             owner: this.systemUser.id,
             createdBy: this.systemUser.id,
             name: "LoginService",
             status: "Running",
             type: "Service",
-            serviceDescription: "Handles the signup requests of anonymous profiles",
+            serviceImplementation: "LoginService",
+            serviceDescription: "Handles the login requests of anonymous profiles",
             profileAvatar: "nologo.png"
-        })];
+        });
         await prisma.updateUser({
             where: {
                 id: this.systemUser.id
@@ -81,11 +103,13 @@ export class DatabaseInitialization {
             data: {
                 agents: {
                     connect: {
-                        id: signupService[0].id
+                        id: loginService.id
                     }
                 }
             }
         });
+
+        this.loginService = loginService;
     }
 
     private async createContentEncodings() {
