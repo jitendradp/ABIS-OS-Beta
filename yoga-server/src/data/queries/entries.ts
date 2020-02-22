@@ -8,7 +8,6 @@ export class EntryQueries {
         }
 
         // TODO: Add the date filter
-
         return prisma.group({id:groupId}).entries();
     }
 }

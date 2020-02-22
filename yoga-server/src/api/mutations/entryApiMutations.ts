@@ -2,8 +2,8 @@ import {Helper} from "../../helper/Helper";
 import {ActionResponse} from "./actionResponse";
 import {EntryType, prisma} from "../../generated";
 import {CommonQueries} from "../queries/commonQueries";
-import {AgentCanSee} from "../../statements/agentCanSee";
 import {AgentOwns} from "../../statements/agentOwns";
+import {AgentCanSee} from "../../statements/agentCanSee";
 
 export class EntryApiMutations {
     static async createEntry(

@@ -6,6 +6,7 @@ import {Request} from "express";
  * Contains helper methods.
  */
 export class Helper {
+
     public static getRandomBase64String(len) {
         let randomNumbers = require("crypto").randomBytes(Math.ceil((len * 3) / 4))
             .toString('base64') // convert to base64 format
@@ -30,7 +31,7 @@ export class Helper {
      */
     public static logId(msg:string) : string {
         let id = Helper.getRandomBase64String(8);
-        console.log("[" + new Date().toISOString() + "-ID:" + id + "] " + msg);
+        Helper.log("[" + new Date().toISOString() + "-ID:" + id + "] " + msg);
         return id;
     }
 

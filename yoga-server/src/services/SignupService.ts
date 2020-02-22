@@ -1,5 +1,12 @@
 import {Service} from "./Service";
 import {Topic, Topics} from "./EventBroker";
+import {NewChannel} from "./events/newChannel";
+import {Helper} from "../helper/Helper";
+import {NewEntry} from "./events/newEntry";
+import {AgentPostTo} from "../data/mutations/agentPostTo";
+import {AgentCreate} from "../data/mutations/agentCreate";
+import {prisma} from "../generated";
+import {ServerInit} from "../serverInit";
 
 export class SignupService extends Service {
 
@@ -16,10 +23,30 @@ export class SignupService extends Service {
         this._newEntry.observable.subscribe(this.onNewEntry);
     }
 
-    onNewChannel(value:any) {
+    async onNewChannel(newChannel:NewChannel) {
+        Helper.log(`SignupService received a NewChannel event: ${JSON.stringify(newChannel)}`);
+
+        Helper.log(`Creating a reverse channel from '${newChannel.toAgentId}' to '${newChannel.fromAgentId}'.`);
+        const reverseChannel = await AgentCreate.channel(
+            newChannel.toAgentId,
+            newChannel.fromAgentId,
+            `${newChannel.toAgentId}->${newChannel.fromAgentId}`,
+            "channel.png");
+
+        Helper.log(`Putting a welcome message into the new channel from '${newChannel.toAgentId}' to '${newChannel.fromAgentId}'.`);
+
+        const entry = await AgentPostTo.channel(newChannel.toAgentId, reverseChannel.id, {
+            type: "Empty",
+            owner: newChannel.toAgentId,
+            createdBy: newChannel.toAgentId,
+            contentEncoding: ServerInit.signupContentEncoding.id,
+            content:null,
+            name: "Welcome"
+        });
     }
 
-    onNewEntry(value:any) {
+    onNewEntry(newEntry:NewEntry) {
+        Helper.log(`SignupService received a NewEntry event: ${JSON.stringify(newEntry)}`);
     }
 
     stop(): void {

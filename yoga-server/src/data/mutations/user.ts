@@ -3,7 +3,7 @@ import {Helper} from "../../helper/Helper";
 import {config} from "../../config";
 import {Agent, prisma, User} from "../../generated";
 import {Mailer} from "../../helper/Mailer";
-import {ProfileMutations} from "./profile";
+import {UserCreate} from "./userCreate";
 
 export class UserMutations {
     private static readonly bcrypt = require('bcrypt');
@@ -69,8 +69,6 @@ export class UserMutations {
             throw new Error(`This is not the first Profile of user ${user.id}.`);
         }
 
-        return ProfileMutations.createProfile(user.id
-            , user.firstName
-            , "/assets/logos/abis-logo.png");
+        return UserCreate.profile(user.id, user.firstName, "avatar.png", "Available");
     }
 }

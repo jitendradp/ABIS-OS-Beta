@@ -1,5 +1,8 @@
 import {Service} from "./Service";
 import {Topic, Topics} from "./EventBroker";
+import {Helper} from "../helper/Helper";
+import {NewChannel} from "./events/newChannel";
+import {NewEntry} from "./events/newEntry";
 
 export class LoginService extends Service {
 
@@ -16,10 +19,12 @@ export class LoginService extends Service {
         this._newEntry.observable.subscribe(this.onNewEntry);
     }
 
-    onNewChannel(value:any) {
+    onNewChannel(newChannel:NewChannel) {
+        Helper.log(`LoginService received a NewChannel event: ${JSON.stringify(newChannel)}`);
     }
 
-    onNewEntry(value:any) {
+    onNewEntry(newEntry:NewEntry) {
+        Helper.log(`LoginService received a NewEntry event: ${JSON.stringify(newEntry)}`);
     }
 
     stop(): void {

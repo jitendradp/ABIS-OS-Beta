@@ -3,6 +3,7 @@ import {Service} from "./Service";
 import {SignupService} from "./SignupService";
 import {Agent, prisma} from "../generated";
 import {LoginService} from "./LoginService";
+import {Helper} from "../helper/Helper";
 
 type ServiceFactory = (eventBroker: EventBroker, agent: Agent) => Service;
 
@@ -28,7 +29,7 @@ export class ServiceHost {
         if (!serviceAgent || serviceAgent.type != "Service") {
             throw new Error(`There is no service agent with id '${id}'.`)
         }
-        console.log(`Starting ${serviceAgent.serviceImplementation} (${id})`);
+        Helper.log(`Starting ${serviceAgent.serviceImplementation} (${id})`);
         const serviceFactory = serviceImplementations[serviceAgent.serviceImplementation];
         this._services[id] = serviceFactory(this._eventBroker, serviceAgent);
         this._services[id].start();
@@ -46,7 +47,7 @@ export class ServiceHost {
             }
             throw new Error(`A service with the id '${id}' doesn't exist.`);
         }
-        console.log(`Stopping ${serviceDefinition.serviceImplementation} (${id})`);
+        Helper.log(`Stopping ${serviceDefinition.serviceImplementation} (${id})`);
         this._services[id].stop();
         delete this._services[id];
     }
