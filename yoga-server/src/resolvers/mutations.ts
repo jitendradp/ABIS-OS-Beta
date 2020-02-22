@@ -7,6 +7,7 @@ import {ActionResponse} from "../api/mutations/actionResponse";
 import {AgentCanPostTo} from "../statements/agentCanPostTo";
 import {Entry, prisma} from "../generated";
 import {AgentPostTo} from "../data/mutations/agentPostTo";
+import {ServerInit} from "../serverInit";
 
 export const mutations = {
     async createSession(root, {clientTime}, ctx) {
@@ -14,14 +15,14 @@ export const mutations = {
         // The session will be created in the context of the "anonymous" system user together with a temporary profile first.
         // When the user authenticated with the Signup- or LoginService, a new session will be created
         // and sent to the user via his channel to the service.
-        const anonymousUserId = ctx.serverInit.anonymousUser.id;
+        const anonymousUserId = ServerInit.anonymousUser.id;
         const anonymousProfile = await UserCreate.profile(
             anonymousUserId,
             `anon_${new Date().getTime()}`,
             "anon.png",
             "Available");
 
-        const session = await UserCreate.session(anonymousUserId, anonymousProfile[0].id, null, clientTime);
+        const session = await UserCreate.session(anonymousUserId, anonymousProfile.id, null, clientTime);
 
         Helper.setSessionTokenCookie(session.sessionToken, ctx.request);
 
@@ -41,6 +42,8 @@ export const mutations = {
 
         const agentId = await GetAgentOf.session(ctx.sessionToken, csrfToken);
         const newChannel = await AgentCreate.channel(agentId, toAgentId, "New Channel", "channel.png");
+
+        (<any>newChannel).receiver = await prisma.agent({id:toAgentId});
 
         return newChannel;
     },

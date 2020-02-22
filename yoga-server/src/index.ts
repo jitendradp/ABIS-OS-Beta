@@ -50,10 +50,10 @@ server.start({
 
 
     // Create the signup service
-    await serviceHost.loadService(serverInit.signupService.id);
+    await serviceHost.loadService(ServerInit.signupService.id);
 
     // Create the login service
-    await serviceHost.loadService(serverInit.loginService.id);
+    await serviceHost.loadService(ServerInit.loginService.id);
 
     Helper.log('Server started.');
 });

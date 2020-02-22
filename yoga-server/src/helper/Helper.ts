@@ -21,7 +21,7 @@ export class Helper {
      * @param msg The log-message.
      */
     public static log(msg:string) {
-        Helper.log("[" + new Date().toISOString() + "] " + msg);
+        console.log("[" + new Date().toISOString() + "] " + msg);
     }
 
     /**

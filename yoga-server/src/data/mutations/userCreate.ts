@@ -44,7 +44,7 @@ export class UserCreate {
 
         Helper.log(`Created the new profile '${newProfile[0].id}' with stash '${newStash.id}' for user '${userId}.`);
 
-        return newProfile;
+        return newProfile[0];
     }
 
     public static async session(userId:string, agentId:string, bearerToken?:string, clientTime?:string) {
