@@ -17,7 +17,7 @@ export const mutations = {
         const anonymousUserId = ctx.serverInit.anonymousUser.id;
         const anonymousProfile = await UserCreate.profile(
             anonymousUserId,
-            `anon_${new Date()}`,
+            `anon_${new Date().getTime()}`,
             "anon.png",
             "Available");
 
