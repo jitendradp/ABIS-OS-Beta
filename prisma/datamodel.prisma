@@ -178,6 +178,7 @@ type Agent {
     profileType: ProfileType
 
     # Only when "type == AgentType.Service":
+    serviceImplementation: String
     serviceDescription: String
 
     # Only when "type == AgentType.Inbox":
