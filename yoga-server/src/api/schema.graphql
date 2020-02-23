@@ -578,7 +578,7 @@ type Mutation {
     #login(email:String! password:String!) : ActionResponse!
     #logout(csrfToken:String!) : ActionResponse!
 
-    #verifySession(csrfToken:String!) : ActionResponse!
+    verifySession(csrfToken:String!) : ActionResponse!
 
     #
     # Agents

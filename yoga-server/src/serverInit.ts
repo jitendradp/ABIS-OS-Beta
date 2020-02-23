@@ -89,12 +89,6 @@ export class ServerInit {
         // Find all channels that have been created to anonymous agents
         const channelsToAnonProfiles = await prisma.groups({where:{type:"Channel", memberships_every:{member:{id_in:anonAgentIds}}}});
 
-        // Delete all memberships of anonymous agents
-        await prisma.deleteManyMemberships({member:{id_in:anonAgentIds}});
-
-        // Delete all memberships that have been created by anonymous agents
-        await prisma.deleteManyMemberships({createdBy_in:anonAgentIds});
-
         // Delete all channels that have been created in the direction to an anon profile
         await prisma.deleteManyGroups({id_in:channelsToAnonProfiles.map(o => o.id)});
 

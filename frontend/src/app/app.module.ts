@@ -113,7 +113,7 @@ import {EditorProfileComponent} from "./dialogs/editor-profile/editor-profile.co
 import {ProfileService} from "./services/profile.service";
 import {EditorAccountComponent} from "./dialogs/editor-account/editor-account.component";
 import {EditorPasswordComponent} from "./dialogs/editor-password/editor-password.component";
-import {CanActivateRoute} from "./services/RouteGuards";
+import {CanActivateRoute} from "./services/routeGuard";
 import {JsonSchemaFormModule} from "angular6-json-schema-form/lib/json-schema-form.module";
 import {MaterialDesignFrameworkModule} from "angular6-json-schema-form";
 import {ServiceDialogComponent} from "./services/service-dialog/service-dialog.component";

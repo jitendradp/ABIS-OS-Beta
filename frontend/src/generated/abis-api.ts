@@ -97,6 +97,7 @@ export type ContentEncoding = {
   updatedAt?: Maybe<Scalars['DateTime']>,
   name: Scalars['String'],
   charset: Scalars['String'],
+  language?: Maybe<Scalars['String']>,
   data?: Maybe<Scalars['String']>,
 };
 
@@ -264,6 +265,7 @@ export enum MembershipType {
 export type Mutation = {
    __typename?: 'Mutation',
   createSession: ActionResponse,
+  verifySession: ActionResponse,
   createProfile?: Maybe<Profile>,
   updateProfile?: Maybe<Profile>,
   deleteProfile: ActionResponse,
@@ -292,6 +294,11 @@ export type Mutation = {
 
 export type MutationCreateSessionArgs = {
   clientTime: Scalars['String']
+};
+
+
+export type MutationVerifySessionArgs = {
+  csrfToken: Scalars['String']
 };
 
 
@@ -707,12 +714,25 @@ export enum UserType {
   Organization = 'Organization'
 }
 
-export type CreateeSessionMutationVariables = {
+export type VerifySessionMutationVariables = {
+  csrfToken: Scalars['String']
+};
+
+
+export type VerifySessionMutation = (
+  { __typename?: 'Mutation' }
+  & { verifySession: (
+    { __typename?: 'ActionResponse' }
+    & Pick<ActionResponse, 'success' | 'code' | 'message' | 'data'>
+  ) }
+);
+
+export type CreateSessionMutationVariables = {
   clientTime: Scalars['String']
 };
 
 
-export type CreateeSessionMutation = (
+export type CreateSessionMutation = (
   { __typename?: 'Mutation' }
   & { createSession: (
     { __typename?: 'ActionResponse' }
@@ -1086,8 +1106,26 @@ export type GetEntriesQuery = (
   )> }
 );
 
-export const CreateeSessionDocument = gql`
-    mutation createeSession($clientTime: String!) {
+export const VerifySessionDocument = gql`
+    mutation verifySession($csrfToken: String!) {
+  verifySession(csrfToken: $csrfToken) {
+    success
+    code
+    message
+    data
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class VerifySessionGQL extends Apollo.Mutation<VerifySessionMutation, VerifySessionMutationVariables> {
+    document = VerifySessionDocument;
+    
+  }
+export const CreateSessionDocument = gql`
+    mutation createSession($clientTime: String!) {
   createSession(clientTime: $clientTime) {
     success
     code
@@ -1100,8 +1138,8 @@ export const CreateeSessionDocument = gql`
   @Injectable({
     providedIn: 'root'
   })
-  export class CreateeSessionGQL extends Apollo.Mutation<CreateeSessionMutation, CreateeSessionMutationVariables> {
-    document = CreateeSessionDocument;
+  export class CreateSessionGQL extends Apollo.Mutation<CreateSessionMutation, CreateSessionMutationVariables> {
+    document = CreateSessionDocument;
     
   }
 export const CreateChannelDocument = gql`

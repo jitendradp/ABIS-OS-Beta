@@ -7,6 +7,7 @@ import {ActionResponse} from "../api/mutations/actionResponse";
 import {AgentCanPostTo} from "../statements/agentCanPostTo";
 import {Entry, prisma} from "../generated";
 import {ServerInit} from "../serverInit";
+import {SessionMutations} from "../data/mutations/session";
 
 export const mutations = {
     async createSession(root, {clientTime}, ctx) {
@@ -29,6 +30,30 @@ export const mutations = {
             success: true,
             code: session.csrfToken,
             message: "Store the value from the 'code' field in the localStorage and send it with every following request."
+        };
+    },
+
+    async verifySession(root, {csrfToken}, ctx) {
+        const sessions = await prisma.sessions({
+            where:{
+                csrfToken:csrfToken,
+                sessionToken:ctx.sessionToken
+            }
+        });
+        if (sessions.length != 1) {
+            return <ActionResponse>{
+                success: false
+            };
+        }
+        const session = sessions[0];
+
+        const isValid = session.id
+            && session.timedOut == null
+            && session.loggedOut == null
+            && Date.parse(session.validTo) > Date.now();
+
+        return <ActionResponse>{
+           success: isValid
         };
     },
 
