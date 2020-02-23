@@ -1,18 +1,21 @@
 import {prisma} from "../generated";
 
 export class GetAgentOf {
-    public static async session(sessionToken:string, csrfToken:string) {
+    public static async session(csrfToken:string, sessionToken?:string) {
         const now = new Date();
-        const session = await prisma.sessions({
+        const queryParameters = {
             where:{
-                sessionToken: sessionToken,
                 csrfToken: csrfToken,
                 createdAt_lt: now,
                 validTo_gt: now,
                 timedOut: null,
                 loggedOut: null
             }
-        });
+        };
+        if (sessionToken) {
+            queryParameters.where["sessionToken"] = sessionToken;
+        }
+        const session = await prisma.sessions();
         if (session.length != 1) {
             throw new Error(`No or multiple sessions where found for sessionToken '${sessionToken}'.`);
         }

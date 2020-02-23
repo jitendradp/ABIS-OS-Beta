@@ -1,4 +1,4 @@
-import {EntryCreateInput, prisma} from "../../generated";
+import {Entry, EntryCreateInput, prisma} from "../../generated";
 import {Helper} from "../../helper/helper";
 import {EventBroker, Topics} from "../../services/eventBroker";
 import {NewChannel} from "../../services/events/newChannel";
@@ -79,7 +79,12 @@ export class AgentCreate {
 
         EventBroker.instance
             .getTopic<NewChannel>("system", Topics.NewChannel)
-            .publish(new NewChannel(fromAgentId, toAgentId));
+            .publish(<NewChannel>{
+                fromAgentId,
+                toAgentId,
+                createdAt:new Date(),
+                createdBy:fromAgentId
+            });
 
         return newChannel;
     }
@@ -125,10 +130,16 @@ export class AgentCreate {
 
         // TODO: Stuff like this will fail miserably when executed in parallel. Find a different way to get the inserted ids.
         const newEntry = await prisma.group({id: groupId}).entries({first: 1, orderBy: "createdAt_DESC"});
+        const contentEncoding = await prisma.contentEncoding({id:entry.contentEncoding});
+        if (contentEncoding) {
+            (<any> newEntry[0]).contentEncoding = {
+                id: contentEncoding.id
+            };
+        }
 
         EventBroker.instance
-            .getTopic<NewEntry>("system", Topics.NewEntry)
-            .publish(new NewEntry(agentId, groupId, newEntry[0].id, newEntry[0].contentEncoding));
+            .getTopic<Entry>("system", Topics.NewEntry)
+            .publish(newEntry[0]);
 
         return newEntry[0];
     }

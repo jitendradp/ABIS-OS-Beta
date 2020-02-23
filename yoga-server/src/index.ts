@@ -5,20 +5,33 @@ import {config} from "./config";
 import {ServerInit} from "./serverInit";
 import {resolvers} from "./resolvers/all";
 import {Helper} from "./helper/helper";
+import {Observable} from "rxjs";
 
 const cookie = require('cookie');
+
 
 const server = new GraphQLServer({
     typeDefs: './src/api/schema.graphql',
     resolvers,
     context: (req: ContextParameters) => {
+
+        // Subscriptions don't have a request and response object
+        const isSubscription = !req.request;
+        const bearerToken = !isSubscription && req.request.headers.cookie
+                ? cookie.parse(req.request.headers.cookie).bearerToken
+                : undefined;
+
+        const sessionToken = !isSubscription && req.request.headers.cookie
+                ? cookie.parse(req.request.headers.cookie).sessionToken
+                : undefined;
+
         return {
             prisma,
             request: req.request,
             response: req.response,
             connection: req.connection,
-            bearerToken: req.request.headers.cookie ? cookie.parse(req.request.headers.cookie).bearerToken : null,
-            sessionToken: req.request.headers.cookie ? cookie.parse(req.request.headers.cookie).sessionToken : null
+            bearerToken: bearerToken,
+            sessionToken: sessionToken
         };
     }
 });
@@ -39,5 +52,18 @@ server.start({
 
     await ServerInit.run();
 
+/*
+    const obs = new Observable(subscriber => {
+        subscriber.next(1);
+        subscriber.next(2);
+        subscriber.next(3);
+    });
+    const iterable = Helper.observableToAsyncIterable(obs);
+
+    for await (const item of iterable) {
+        console.log("Sucker:", item);
+        // 1 2
+    }
+*/
     Helper.log('Server started.');
 });

@@ -63,7 +63,7 @@ export const mutations = {
             throw new Error(`Invalid session`);
         }
 
-        const agentId = await GetAgentOf.session(ctx.sessionToken, csrfToken);
+        const agentId = await GetAgentOf.session(csrfToken, ctx.sessionToken);
         const newChannel = await AgentCreate.channel(agentId, toAgentId, "New Channel", "channel.png");
 
         (<any>newChannel).receiver = await prisma.agent({id:toAgentId});
@@ -77,7 +77,7 @@ export const mutations = {
             throw new Error(`Invalid session`);
         }
 
-        const agentId = await GetAgentOf.session(ctx.sessionToken, csrfToken);
+        const agentId = await GetAgentOf.session(csrfToken, ctx.sessionToken);
         const groupId = createEntryInput.roomId;
 
         const group = await prisma.group({id:groupId});

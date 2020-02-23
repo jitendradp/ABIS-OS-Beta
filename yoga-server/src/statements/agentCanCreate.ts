@@ -49,7 +49,7 @@ export class AgentCanCreate {
     public static async entry(agentId:string, groupId:string) {
         const group = await prisma.group({id:groupId});
         if (!group) {
-            throw new Error(`The specified group doesn't exist: ${groupId}`)
+            return false;
         }
 
         let canPostTo = false;
@@ -73,6 +73,7 @@ export class AgentCanCreate {
 
         return writableStash.length > 0;
     }
+
     private static async entryInChannel(agentId:string, channelId:string) {
         const writableChannel = await prisma.groups({
             where:{
@@ -84,6 +85,7 @@ export class AgentCanCreate {
 
         return writableChannel.length > 0;
     }
+
     private static async entryInRoom(agentId:string, roomId:string) {
         const writableRoom = await prisma.groups({
             where:{

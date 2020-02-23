@@ -125,7 +125,7 @@ export class ServerInit {
 
         ServerInit._newEntryTopic.observable.subscribe(async newEntry => {
             // Find everyone who may be concerned by the message and who is allowed to see it
-            const subscribers = await FindAgentsThatSeeThis.entry(newEntry.entryId);
+            const subscribers = await FindAgentsThatSeeThis.entry(newEntry.id);
 
             for (let subscriber of subscribers) {
                 const newEntryTopic = EventBroker.instance.tryGetTopic<NewEntry>(subscriber, Topics.NewEntry);
