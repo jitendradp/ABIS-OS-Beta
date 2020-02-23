@@ -12,7 +12,7 @@ export class NewChannel extends BaseEvent {
     private _toAgentId:string;
 
     constructor(fromAgentId:string, toAgentId:string) {
-        super();
+        super(fromAgentId);
         this._fromAgentId = fromAgentId;
         this._toAgentId = toAgentId;
     }

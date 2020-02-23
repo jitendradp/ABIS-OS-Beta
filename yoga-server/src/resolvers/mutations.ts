@@ -6,7 +6,6 @@ import {Helper} from "../helper/helper";
 import {ActionResponse} from "../api/mutations/actionResponse";
 import {AgentCanPostTo} from "../statements/agentCanPostTo";
 import {Entry, prisma} from "../generated";
-import {AgentPostTo} from "../data/mutations/agentPostTo";
 import {ServerInit} from "../serverInit";
 
 export const mutations = {
@@ -81,13 +80,7 @@ export const mutations = {
             content: createEntryInput.content
         };
 
-        let entry: Entry = null;
-        switch (group.type) {
-            case "Channel": entry = await AgentPostTo.channel(agentId, groupId, newEntryInput); break;
-            case "Room": entry = await AgentPostTo.room(agentId, groupId, newEntryInput); break;
-            case "Stash": entry = await AgentPostTo.stash(agentId, groupId, newEntryInput); break;
-        }
-
+        const entry = await AgentCreate.entry(agentId, groupId, newEntryInput);
         return entry;
     },
 

@@ -98,9 +98,6 @@ export class ServerInit {
         // Delete all channels that have been created in the direction to an anon profile
         await prisma.deleteManyGroups({id_in:channelsToAnonProfiles.map(o => o.id)});
 
-        // Delete all entries that have been created by anonymous agents
-        await prisma.deleteManyEntries({owner_in:anonAgentIds});
-
         // Delete all groups that have been created by anonymous agents
         await prisma.deleteManyGroups({owner_in:anonAgentIds});
 

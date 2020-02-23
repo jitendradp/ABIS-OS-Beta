@@ -19,7 +19,7 @@ export class NewEntry extends BaseEvent {
     private _contentEncoding:string;
 
     constructor(ownerId:string, groupId:string, entryId:string, contentEncoding:string) {
-        super();
+        super(ownerId);
 
         this._ownerId = ownerId;
         this._groupId = groupId;

@@ -84,7 +84,7 @@ type Group {
     updatedAt: DateTime @updatedAt
 
     isPublic: Boolean! # Only valid for "type == GroupType.Room"
-    memberships: [Membership!]!
+    memberships: [Membership!]! @relation(name: "MembershipsOfGroup", onDelete: CASCADE)
 
     name: String!
     title: String
@@ -92,7 +92,7 @@ type Group {
     logo: String!
     banner: String
 
-    entries: [Entry!]!  @relation(name: "EntriesOfGroup", onDelete: CASCADE)
+    entries: [Entry!]! @relation(name: "EntriesOfGroup", onDelete: CASCADE)
     inbox: ID # Only "Room"s have Agents of type 'Inbox'
 
     tags: [Tag!]!

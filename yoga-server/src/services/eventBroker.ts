@@ -124,7 +124,7 @@ export class Topic<T> {
      * @param event
      */
     public publish(event:T) {
-        Helper.log(`publishing message to ${this.namespace}.${this.name}: ${JSON.stringify(event)}`);
+        // Helper.log(`publishing message to ${this.namespace}.${this.name}: ${JSON.stringify(event)}`);
         this._observer.next(event);
     }
 }

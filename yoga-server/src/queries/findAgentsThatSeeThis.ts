@@ -18,13 +18,19 @@ export class FindAgentsThatSeeThis {
             return [];
         }
 
-        const members = await prisma.group({id: group[0].id}).memberships();
+        const memberships = await prisma.group({id: group[0].id}).memberships();
+
+        const members = [];
+        for (let membership of memberships) {
+            const memberId = await prisma.membership({id:membership.id}).member().id();
+            members.push(memberId);
+        }
 
         let owners = [entry.owner];
         if (entry.owner != group[0].owner) {
             owners.push(group[0].owner);
         }
 
-        return owners.concat(members.map(o => o.id));
+        return owners.concat(members);
     }
 }
