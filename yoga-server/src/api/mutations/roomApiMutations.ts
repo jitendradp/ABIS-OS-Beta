@@ -22,6 +22,7 @@ export class RoomApiMutations {
             const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
 
             const roomInbox = await prisma.createAgent({
+                implementation:"RoomInbox",
                owner: myUser.user.id,
                createdBy: myUser.user.id,
                type: "Inbox",

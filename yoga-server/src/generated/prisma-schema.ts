@@ -5,7 +5,7 @@
 export const typeDefs = /* GraphQL */ `type Agent {
   id: ID!
   type: AgentType!
-  implementation: String
+  implementation: String!
   owner: ID!
   createdBy: ID!
   createdAt: DateTime!
@@ -33,7 +33,7 @@ type AgentConnection {
 input AgentCreateInput {
   id: ID
   type: AgentType!
-  implementation: String
+  implementation: String!
   owner: ID!
   createdBy: ID!
   updatedBy: ID
@@ -107,7 +107,7 @@ enum AgentOrderByInput {
 type AgentPreviousValues {
   id: ID!
   type: AgentType!
-  implementation: String
+  implementation: String!
   owner: ID!
   createdBy: ID!
   createdAt: DateTime!

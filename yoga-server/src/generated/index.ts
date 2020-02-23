@@ -2068,7 +2068,7 @@ export type UserWhereUniqueInput = AtLeastOne<{
 export interface AgentCreateInput {
   id?: Maybe<ID_Input>;
   type: AgentType;
-  implementation?: Maybe<String>;
+  implementation: String;
   owner: ID_Input;
   createdBy: ID_Input;
   updatedBy?: Maybe<ID_Input>;
@@ -3596,7 +3596,7 @@ export interface NodeNode {
 export interface Agent {
   id: ID_Output;
   type: AgentType;
-  implementation?: String;
+  implementation: String;
   owner: ID_Output;
   createdBy: ID_Output;
   createdAt: DateTimeOutput;
@@ -4932,7 +4932,7 @@ export interface AgentSubscriptionPayloadSubscription
 export interface AgentPreviousValues {
   id: ID_Output;
   type: AgentType;
-  implementation?: String;
+  implementation: String;
   owner: ID_Output;
   createdBy: ID_Output;
   createdAt: DateTimeOutput;

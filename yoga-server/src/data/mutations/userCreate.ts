@@ -1,4 +1,4 @@
-import {prisma} from "../../generated";
+import {prisma, ProfileType} from "../../generated";
 import {Helper} from "../../helper/helper";
 import {ProfileStatus} from "../../api/Profile";
 import {AgentCreate} from "./agentCreate";
@@ -19,6 +19,8 @@ export class UserCreate {
             throw new Error(`User '${userId}' already has a profile with the name '${name}'.`);
         }
 
+        const profileType:ProfileType = userId == ServerInit.anonymousUser.id ? "Anonymous" : "Private";
+
         // Connect the new profile to the User.
         await prisma.updateUser({
             where: {id: userId}, data: {
@@ -30,7 +32,8 @@ export class UserCreate {
                         profileAvatar: avatar,
                         status: status ?? "Offline",
                         type: "Profile",
-                        implementation: "Profile"
+                        implementation: "Profile",
+                        profileType: profileType
                     }
                 }
             }

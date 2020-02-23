@@ -5,13 +5,15 @@ import {Agent, prisma} from "../generated";
 import {LoginService} from "./loginService";
 import {Helper} from "../helper/helper";
 import {ProfileService} from "./profileService";
+import {RoomInboxService} from "./roomInboxService";
 
 type ServiceFactory = (eventBroker: EventBroker, agent: Agent) => Service;
 
 const serviceImplementations: { [name: string]: ServiceFactory } = {
     "SignupService": (eventBroker, agent) => new SignupService( eventBroker, agent),
     "LoginService": (eventBroker, agent) => new LoginService( eventBroker, agent),
-    "ProfileService": (eventBroker, agent) => new ProfileService( eventBroker, agent)
+    "Profile": (eventBroker, agent) => new ProfileService( eventBroker, agent),
+    "RoomInbox":  (eventBroker, agent) => new RoomInboxService( eventBroker, agent)
 };
 
 export class AgentHost {
