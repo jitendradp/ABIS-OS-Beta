@@ -4,10 +4,9 @@ import {GetAgentOf} from "../queries/getAgentOf";
 import {AgentCreate} from "../data/mutations/agentCreate";
 import {Helper} from "../helper/helper";
 import {ActionResponse} from "../api/mutations/actionResponse";
-import {AgentCanPostTo} from "../statements/agentCanPostTo";
-import {Entry, prisma} from "../generated";
+import {prisma} from "../generated";
 import {ServerInit} from "../serverInit";
-import {SessionMutations} from "../data/mutations/session";
+import {AgentCanCreate} from "../statements/agentCanCreate";
 
 export const mutations = {
     async createSession(root, {clientTime}, ctx) {
@@ -86,12 +85,7 @@ export const mutations = {
             throw new Error(`The specified group doesn't exist: ${createEntryInput.roomId}`)
         }
 
-        let canPostTo = false;
-        switch (group.type) {
-            case "Channel": canPostTo = await AgentCanPostTo.channel(agentId, groupId); break;
-            case "Room": canPostTo = await AgentCanPostTo.room(agentId, groupId); break;
-            case "Stash": canPostTo = await AgentCanPostTo.stash(agentId, groupId); break;
-        }
+        let canPostTo = await AgentCanCreate.entry(agentId, groupId);
         if (!canPostTo) {
             throw new Error(`Agent '${agentId}' cannot post to group ${groupId}`);
         }

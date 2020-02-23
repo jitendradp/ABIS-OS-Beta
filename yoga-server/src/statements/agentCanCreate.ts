@@ -47,7 +47,61 @@ export class AgentCanCreate {
      * @param groupId
      */
     public static async entry(agentId:string, groupId:string) {
-        throw new Error("Not implemented");
+        const group = await prisma.group({id:groupId});
+        if (!group) {
+            throw new Error(`The specified group doesn't exist: ${groupId}`)
+        }
+
+        let canPostTo = false;
+        switch (group.type) {
+            case "Channel": canPostTo = await AgentCanCreate.entryInChannel(agentId, groupId); break;
+            case "Room": canPostTo = await AgentCanCreate.entryInRoom(agentId, groupId); break;
+            case "Stash": canPostTo = await AgentCanCreate.entryInStash(agentId, groupId); break;
+        }
+
+        return canPostTo;
+    }
+
+    private static async entryInStash(agentId:string, stashId:string) {
+        const writableStash = await prisma.groups({
+            where:{
+                id:stashId,
+                type: "Stash",
+                owner: agentId
+            }
+        });
+
+        return writableStash.length > 0;
+    }
+    private static async entryInChannel(agentId:string, channelId:string) {
+        const writableChannel = await prisma.groups({
+            where:{
+                id:channelId,
+                type: "Channel",
+                owner: agentId
+            }
+        });
+
+        return writableChannel.length > 0;
+    }
+    private static async entryInRoom(agentId:string, roomId:string) {
+        const writableRoom = await prisma.groups({
+            where:{
+                id:roomId,
+                type: "Room",
+                OR:[{
+                    memberships_some:{
+                        member:{
+                            id:agentId
+                        }
+                    }
+                }, {
+                    owner:agentId
+                }]
+            }
+        });
+
+        return writableRoom.length > 0;
     }
 
     /**
