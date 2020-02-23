@@ -1,6 +1,6 @@
 import {Agent, Group, GroupType, prisma} from "../../../generated";
 import {CommonQueries} from "../commonQueries";
-import {Helper} from "../../../helper/Helper";
+import {Helper} from "../../../helper/helper";
 import {ActionResponse} from "../../mutations/actionResponse";
 import {GroupQueries} from "../../../data/queries/group";
 import {config} from "../../../config";

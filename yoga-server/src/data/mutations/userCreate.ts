@@ -1,8 +1,9 @@
 import {prisma} from "../../generated";
-import {Helper} from "../../helper/Helper";
+import {Helper} from "../../helper/helper";
 import {ProfileStatus} from "../../api/Profile";
 import {AgentCreate} from "./agentCreate";
 import {config} from "../../config";
+import {ServerInit} from "../../serverInit";
 
 export class UserCreate {
     public static async profile(userId: string, name: string, avatar: string, status?: ProfileStatus) {
@@ -28,7 +29,8 @@ export class UserCreate {
                         name: name,
                         profileAvatar: avatar,
                         status: status ?? "Offline",
-                        type: "Profile"
+                        type: "Profile",
+                        implementation: "Profile"
                     }
                 }
             }
@@ -43,6 +45,8 @@ export class UserCreate {
         const newStash = await AgentCreate.stash(newProfile[0].id, newProfile[0].name, "stash.png");
 
         Helper.log(`Created the new profile '${newProfile[0].id}' with stash '${newStash.id}' for user '${userId}.`);
+
+        ServerInit.serviceHost.loadAgent(newProfile[0]);
 
         return newProfile[0];
     }

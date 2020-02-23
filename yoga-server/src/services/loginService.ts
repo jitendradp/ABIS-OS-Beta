@@ -1,6 +1,6 @@
-import {Service} from "./Service";
-import {Topic, Topics} from "./EventBroker";
-import {Helper} from "../helper/Helper";
+import {Service} from "./service";
+import {Topic, Topics} from "./eventBroker";
+import {Helper} from "../helper/helper";
 import {NewChannel} from "./events/newChannel";
 import {NewEntry} from "./events/newEntry";
 

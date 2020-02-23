@@ -1,11 +1,14 @@
 import {Observable} from "rxjs";
 import {Observer} from "rxjs/src/internal/types";
-import {Helper} from "../helper/Helper";
+import {Helper} from "../helper/helper";
 
 export class Topics {
     public static readonly NewChannel = "abis.system.new-channel";
     public static readonly NewEntry = "abis.system.new-entry";
 }
+
+// TODO: Implement a conversion from Observable<T> to AsyncIterator<T>
+// https://itnext.io/understand-async-iterators-665259680044
 
 export class EventBroker {
 
@@ -32,7 +35,7 @@ export class EventBroker {
             throw new Error(`A topic with the name ${name} already exists.`)
         }
 
-        const topic = new Topic<T>(name);
+        const topic = new Topic<T>(namepsace, name);
         let ns = this._topics[namepsace];
         if (!ns) {
             ns = this._topics[namepsace] = {};
@@ -78,7 +81,7 @@ export class EventBroker {
     }
 
     removeTopic(namespace: string, name: string) {
-
+        throw new Error("Not implemented");
     }
 }
 
@@ -96,6 +99,7 @@ export class Topic<T> {
     }
     private _namespace: string;
 
+
     /**
      * The event source.
      */
@@ -106,7 +110,8 @@ export class Topic<T> {
 
     private _observer:Observer<T>;
 
-    constructor(name:string) {
+    constructor(namespace:string, name:string) {
+        this._namespace = namespace;
         this._name = name;
 
         this._observable = new Observable<T>(subscriber => {
@@ -119,6 +124,7 @@ export class Topic<T> {
      * @param event
      */
     public publish(event:T) {
+        Helper.log(`publishing message to ${this.namespace}.${this.name}: ${JSON.stringify(event)}`);
         this._observer.next(event);
     }
 }

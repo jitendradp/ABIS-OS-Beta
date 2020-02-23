@@ -458,6 +458,8 @@ export type AgentOrderByInput =
   | "id_DESC"
   | "type_ASC"
   | "type_DESC"
+  | "implementation_ASC"
+  | "implementation_DESC"
   | "owner_ASC"
   | "owner_DESC"
   | "createdBy_ASC"
@@ -484,8 +486,6 @@ export type AgentOrderByInput =
   | "profileBanner_DESC"
   | "profileType_ASC"
   | "profileType_DESC"
-  | "serviceImplementation_ASC"
-  | "serviceImplementation_DESC"
   | "serviceDescription_ASC"
   | "serviceDescription_DESC"
   | "inboxDescription_ASC"
@@ -808,6 +808,20 @@ export interface AgentWhereInput {
   type_not?: Maybe<AgentType>;
   type_in?: Maybe<AgentType[] | AgentType>;
   type_not_in?: Maybe<AgentType[] | AgentType>;
+  implementation?: Maybe<String>;
+  implementation_not?: Maybe<String>;
+  implementation_in?: Maybe<String[] | String>;
+  implementation_not_in?: Maybe<String[] | String>;
+  implementation_lt?: Maybe<String>;
+  implementation_lte?: Maybe<String>;
+  implementation_gt?: Maybe<String>;
+  implementation_gte?: Maybe<String>;
+  implementation_contains?: Maybe<String>;
+  implementation_not_contains?: Maybe<String>;
+  implementation_starts_with?: Maybe<String>;
+  implementation_not_starts_with?: Maybe<String>;
+  implementation_ends_with?: Maybe<String>;
+  implementation_not_ends_with?: Maybe<String>;
   owner?: Maybe<ID_Input>;
   owner_not?: Maybe<ID_Input>;
   owner_in?: Maybe<ID_Input[] | ID_Input>;
@@ -959,20 +973,6 @@ export interface AgentWhereInput {
   profileType_not?: Maybe<ProfileType>;
   profileType_in?: Maybe<ProfileType[] | ProfileType>;
   profileType_not_in?: Maybe<ProfileType[] | ProfileType>;
-  serviceImplementation?: Maybe<String>;
-  serviceImplementation_not?: Maybe<String>;
-  serviceImplementation_in?: Maybe<String[] | String>;
-  serviceImplementation_not_in?: Maybe<String[] | String>;
-  serviceImplementation_lt?: Maybe<String>;
-  serviceImplementation_lte?: Maybe<String>;
-  serviceImplementation_gt?: Maybe<String>;
-  serviceImplementation_gte?: Maybe<String>;
-  serviceImplementation_contains?: Maybe<String>;
-  serviceImplementation_not_contains?: Maybe<String>;
-  serviceImplementation_starts_with?: Maybe<String>;
-  serviceImplementation_not_starts_with?: Maybe<String>;
-  serviceImplementation_ends_with?: Maybe<String>;
-  serviceImplementation_not_ends_with?: Maybe<String>;
   serviceDescription?: Maybe<String>;
   serviceDescription_not?: Maybe<String>;
   serviceDescription_in?: Maybe<String[] | String>;
@@ -2068,6 +2068,7 @@ export type UserWhereUniqueInput = AtLeastOne<{
 export interface AgentCreateInput {
   id?: Maybe<ID_Input>;
   type: AgentType;
+  implementation?: Maybe<String>;
   owner: ID_Input;
   createdBy: ID_Input;
   updatedBy?: Maybe<ID_Input>;
@@ -2080,7 +2081,6 @@ export interface AgentCreateInput {
   profileJobTitle?: Maybe<String>;
   profileBanner?: Maybe<String>;
   profileType?: Maybe<ProfileType>;
-  serviceImplementation?: Maybe<String>;
   serviceDescription?: Maybe<String>;
   inboxDescription?: Maybe<String>;
 }
@@ -2124,6 +2124,7 @@ export interface TagCreateInput {
 
 export interface AgentUpdateInput {
   type?: Maybe<AgentType>;
+  implementation?: Maybe<String>;
   owner?: Maybe<ID_Input>;
   createdBy?: Maybe<ID_Input>;
   updatedBy?: Maybe<ID_Input>;
@@ -2136,7 +2137,6 @@ export interface AgentUpdateInput {
   profileJobTitle?: Maybe<String>;
   profileBanner?: Maybe<String>;
   profileType?: Maybe<ProfileType>;
-  serviceImplementation?: Maybe<String>;
   serviceDescription?: Maybe<String>;
   inboxDescription?: Maybe<String>;
 }
@@ -2307,6 +2307,7 @@ export interface LocationUpsertNestedInput {
 
 export interface AgentUpdateManyMutationInput {
   type?: Maybe<AgentType>;
+  implementation?: Maybe<String>;
   owner?: Maybe<ID_Input>;
   createdBy?: Maybe<ID_Input>;
   updatedBy?: Maybe<ID_Input>;
@@ -2318,7 +2319,6 @@ export interface AgentUpdateManyMutationInput {
   profileJobTitle?: Maybe<String>;
   profileBanner?: Maybe<String>;
   profileType?: Maybe<ProfileType>;
-  serviceImplementation?: Maybe<String>;
   serviceDescription?: Maybe<String>;
   inboxDescription?: Maybe<String>;
 }
@@ -2492,6 +2492,7 @@ export interface AgentUpdateOneRequiredInput {
 
 export interface AgentUpdateDataInput {
   type?: Maybe<AgentType>;
+  implementation?: Maybe<String>;
   owner?: Maybe<ID_Input>;
   createdBy?: Maybe<ID_Input>;
   updatedBy?: Maybe<ID_Input>;
@@ -2504,7 +2505,6 @@ export interface AgentUpdateDataInput {
   profileJobTitle?: Maybe<String>;
   profileBanner?: Maybe<String>;
   profileType?: Maybe<ProfileType>;
-  serviceImplementation?: Maybe<String>;
   serviceDescription?: Maybe<String>;
   inboxDescription?: Maybe<String>;
 }
@@ -2960,6 +2960,20 @@ export interface AgentScalarWhereInput {
   type_not?: Maybe<AgentType>;
   type_in?: Maybe<AgentType[] | AgentType>;
   type_not_in?: Maybe<AgentType[] | AgentType>;
+  implementation?: Maybe<String>;
+  implementation_not?: Maybe<String>;
+  implementation_in?: Maybe<String[] | String>;
+  implementation_not_in?: Maybe<String[] | String>;
+  implementation_lt?: Maybe<String>;
+  implementation_lte?: Maybe<String>;
+  implementation_gt?: Maybe<String>;
+  implementation_gte?: Maybe<String>;
+  implementation_contains?: Maybe<String>;
+  implementation_not_contains?: Maybe<String>;
+  implementation_starts_with?: Maybe<String>;
+  implementation_not_starts_with?: Maybe<String>;
+  implementation_ends_with?: Maybe<String>;
+  implementation_not_ends_with?: Maybe<String>;
   owner?: Maybe<ID_Input>;
   owner_not?: Maybe<ID_Input>;
   owner_in?: Maybe<ID_Input[] | ID_Input>;
@@ -3110,20 +3124,6 @@ export interface AgentScalarWhereInput {
   profileType_not?: Maybe<ProfileType>;
   profileType_in?: Maybe<ProfileType[] | ProfileType>;
   profileType_not_in?: Maybe<ProfileType[] | ProfileType>;
-  serviceImplementation?: Maybe<String>;
-  serviceImplementation_not?: Maybe<String>;
-  serviceImplementation_in?: Maybe<String[] | String>;
-  serviceImplementation_not_in?: Maybe<String[] | String>;
-  serviceImplementation_lt?: Maybe<String>;
-  serviceImplementation_lte?: Maybe<String>;
-  serviceImplementation_gt?: Maybe<String>;
-  serviceImplementation_gte?: Maybe<String>;
-  serviceImplementation_contains?: Maybe<String>;
-  serviceImplementation_not_contains?: Maybe<String>;
-  serviceImplementation_starts_with?: Maybe<String>;
-  serviceImplementation_not_starts_with?: Maybe<String>;
-  serviceImplementation_ends_with?: Maybe<String>;
-  serviceImplementation_not_ends_with?: Maybe<String>;
   serviceDescription?: Maybe<String>;
   serviceDescription_not?: Maybe<String>;
   serviceDescription_in?: Maybe<String[] | String>;
@@ -3164,6 +3164,7 @@ export interface AgentUpdateManyWithWhereNestedInput {
 
 export interface AgentUpdateManyDataInput {
   type?: Maybe<AgentType>;
+  implementation?: Maybe<String>;
   owner?: Maybe<ID_Input>;
   createdBy?: Maybe<ID_Input>;
   updatedBy?: Maybe<ID_Input>;
@@ -3175,7 +3176,6 @@ export interface AgentUpdateManyDataInput {
   profileJobTitle?: Maybe<String>;
   profileBanner?: Maybe<String>;
   profileType?: Maybe<ProfileType>;
-  serviceImplementation?: Maybe<String>;
   serviceDescription?: Maybe<String>;
   inboxDescription?: Maybe<String>;
 }
@@ -3596,6 +3596,7 @@ export interface NodeNode {
 export interface Agent {
   id: ID_Output;
   type: AgentType;
+  implementation?: String;
   owner: ID_Output;
   createdBy: ID_Output;
   createdAt: DateTimeOutput;
@@ -3609,7 +3610,6 @@ export interface Agent {
   profileJobTitle?: String;
   profileBanner?: String;
   profileType?: ProfileType;
-  serviceImplementation?: String;
   serviceDescription?: String;
   inboxDescription?: String;
 }
@@ -3617,6 +3617,7 @@ export interface Agent {
 export interface AgentPromise extends Promise<Agent>, Fragmentable {
   id: () => Promise<ID_Output>;
   type: () => Promise<AgentType>;
+  implementation: () => Promise<String>;
   owner: () => Promise<ID_Output>;
   createdBy: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
@@ -3631,7 +3632,6 @@ export interface AgentPromise extends Promise<Agent>, Fragmentable {
   profileJobTitle: () => Promise<String>;
   profileBanner: () => Promise<String>;
   profileType: () => Promise<ProfileType>;
-  serviceImplementation: () => Promise<String>;
   serviceDescription: () => Promise<String>;
   inboxDescription: () => Promise<String>;
 }
@@ -3641,6 +3641,7 @@ export interface AgentSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   type: () => Promise<AsyncIterator<AgentType>>;
+  implementation: () => Promise<AsyncIterator<String>>;
   owner: () => Promise<AsyncIterator<ID_Output>>;
   createdBy: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -3655,7 +3656,6 @@ export interface AgentSubscription
   profileJobTitle: () => Promise<AsyncIterator<String>>;
   profileBanner: () => Promise<AsyncIterator<String>>;
   profileType: () => Promise<AsyncIterator<ProfileType>>;
-  serviceImplementation: () => Promise<AsyncIterator<String>>;
   serviceDescription: () => Promise<AsyncIterator<String>>;
   inboxDescription: () => Promise<AsyncIterator<String>>;
 }
@@ -3665,6 +3665,7 @@ export interface AgentNullablePromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   type: () => Promise<AgentType>;
+  implementation: () => Promise<String>;
   owner: () => Promise<ID_Output>;
   createdBy: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
@@ -3679,7 +3680,6 @@ export interface AgentNullablePromise
   profileJobTitle: () => Promise<String>;
   profileBanner: () => Promise<String>;
   profileType: () => Promise<ProfileType>;
-  serviceImplementation: () => Promise<String>;
   serviceDescription: () => Promise<String>;
   inboxDescription: () => Promise<String>;
 }
@@ -4932,6 +4932,7 @@ export interface AgentSubscriptionPayloadSubscription
 export interface AgentPreviousValues {
   id: ID_Output;
   type: AgentType;
+  implementation?: String;
   owner: ID_Output;
   createdBy: ID_Output;
   createdAt: DateTimeOutput;
@@ -4945,7 +4946,6 @@ export interface AgentPreviousValues {
   profileJobTitle?: String;
   profileBanner?: String;
   profileType?: ProfileType;
-  serviceImplementation?: String;
   serviceDescription?: String;
   inboxDescription?: String;
 }
@@ -4955,6 +4955,7 @@ export interface AgentPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   type: () => Promise<AgentType>;
+  implementation: () => Promise<String>;
   owner: () => Promise<ID_Output>;
   createdBy: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
@@ -4968,7 +4969,6 @@ export interface AgentPreviousValuesPromise
   profileJobTitle: () => Promise<String>;
   profileBanner: () => Promise<String>;
   profileType: () => Promise<ProfileType>;
-  serviceImplementation: () => Promise<String>;
   serviceDescription: () => Promise<String>;
   inboxDescription: () => Promise<String>;
 }
@@ -4978,6 +4978,7 @@ export interface AgentPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   type: () => Promise<AsyncIterator<AgentType>>;
+  implementation: () => Promise<AsyncIterator<String>>;
   owner: () => Promise<AsyncIterator<ID_Output>>;
   createdBy: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -4991,7 +4992,6 @@ export interface AgentPreviousValuesSubscription
   profileJobTitle: () => Promise<AsyncIterator<String>>;
   profileBanner: () => Promise<AsyncIterator<String>>;
   profileType: () => Promise<AsyncIterator<ProfileType>>;
-  serviceImplementation: () => Promise<AsyncIterator<String>>;
   serviceDescription: () => Promise<AsyncIterator<String>>;
   inboxDescription: () => Promise<AsyncIterator<String>>;
 }
@@ -5577,6 +5577,11 @@ export type ID_Input = string | number;
 export type ID_Output = string;
 
 /*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
+
+/*
 DateTime scalar input type, allowing Date
 */
 export type DateTimeInput = Date | string;
@@ -5585,11 +5590,6 @@ export type DateTimeInput = Date | string;
 DateTime scalar output type, which is always a string
 */
 export type DateTimeOutput = string;
-
-/*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string;
 
 /*
 The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).

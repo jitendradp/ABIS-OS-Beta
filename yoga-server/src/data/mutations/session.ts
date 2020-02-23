@@ -1,5 +1,5 @@
 import {prisma, Session} from "../../generated";
-import {Helper} from "../../helper/Helper";
+import {Helper} from "../../helper/helper";
 import {ProfileQueries} from "../queries/profile";
 import {config} from "../../config";
 import {UserOwns} from "../../statements/userOwns";

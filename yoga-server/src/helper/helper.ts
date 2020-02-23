@@ -1,4 +1,4 @@
-import {ResponseDelay} from "./ResponseDelay";
+import {ResponseDelay} from "./responseDelay";
 import {config} from "../config";
 import {Request} from "express";
 

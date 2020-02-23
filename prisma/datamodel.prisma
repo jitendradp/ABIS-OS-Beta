@@ -156,6 +156,8 @@ type Agent {
     id: ID! @id @unique
     type: AgentType!
 
+    implementation: String!     # specifies which code should be executed as "live"-representation of this agent
+
     owner: ID!
 
     createdBy: ID!
@@ -178,7 +180,6 @@ type Agent {
     profileType: ProfileType
 
     # Only when "type == AgentType.Service":
-    serviceImplementation: String
     serviceDescription: String
 
     # Only when "type == AgentType.Inbox":

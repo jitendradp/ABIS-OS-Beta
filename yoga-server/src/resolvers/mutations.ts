@@ -2,7 +2,7 @@ import {UserCreate} from "../data/mutations/userCreate";
 import {UserHas} from "../statements/userHas";
 import {GetAgentOf} from "../queries/getAgentOf";
 import {AgentCreate} from "../data/mutations/agentCreate";
-import {Helper} from "../helper/Helper";
+import {Helper} from "../helper/helper";
 import {ActionResponse} from "../api/mutations/actionResponse";
 import {AgentCanPostTo} from "../statements/agentCanPostTo";
 import {Entry, prisma} from "../generated";

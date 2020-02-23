@@ -1,8 +1,8 @@
 import {
     prisma, User
 } from "../../generated";
-import {Helper} from "../../helper/Helper";
-import {Mailer} from "../../helper/Mailer";
+import {Helper} from "../../helper/helper";
+import {Mailer} from "../../helper/mailer";
 import {Request} from "express";
 import {config} from "../../config";
 import {CommonQueries} from "../queries/commonQueries";

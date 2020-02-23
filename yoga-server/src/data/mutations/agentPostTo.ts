@@ -1,6 +1,6 @@
 import {EntryCreateInput, prisma} from "../../generated";
 import {AgentCanPostTo} from "../../statements/agentCanPostTo";
-import {EventBroker, Topics} from "../../services/EventBroker";
+import {EventBroker, Topics} from "../../services/eventBroker";
 import {NewChannel} from "../../services/events/newChannel";
 import {NewEntry} from "../../services/events/newEntry";
 

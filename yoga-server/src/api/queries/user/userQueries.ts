@@ -1,7 +1,7 @@
 import {CommonQueries} from "../commonQueries";
 import {Profile, Service} from "../../Profile";
 import {prisma} from "../../../generated";
-import {Helper} from "../../../helper/Helper";
+import {Helper} from "../../../helper/helper";
 import {ActionResponse} from "../../mutations/actionResponse";
 
 export class UserQueries {

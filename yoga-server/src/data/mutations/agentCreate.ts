@@ -1,6 +1,6 @@
 import {prisma} from "../../generated";
-import {Helper} from "../../helper/Helper";
-import {EventBroker, Topics} from "../../services/EventBroker";
+import {Helper} from "../../helper/helper";
+import {EventBroker, Topics} from "../../services/eventBroker";
 import {NewChannel} from "../../services/events/newChannel";
 
 export class AgentCreate {
