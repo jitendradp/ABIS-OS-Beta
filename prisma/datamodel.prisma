@@ -13,6 +13,7 @@ type ContentEncoding {
 
     name: String!
     charset: String!
+    language: String
 
     data: String
 }
@@ -83,7 +84,7 @@ type Group {
     updatedAt: DateTime @updatedAt
 
     isPublic: Boolean! # Only valid for "type == GroupType.Room"
-    memberships: [Membership!]!
+    memberships: [Membership!]! @relation(name: "MembershipsOfGroup", onDelete: CASCADE)
 
     name: String!
     title: String
@@ -91,7 +92,7 @@ type Group {
     logo: String!
     banner: String
 
-    entries: [Entry!]!
+    entries: [Entry!]! @relation(name: "EntriesOfGroup", onDelete: CASCADE)
     inbox: ID # Only "Room"s have Agents of type 'Inbox'
 
     tags: [Tag!]!
@@ -154,6 +155,8 @@ enum MembershipType {
 type Agent {
     id: ID! @id @unique
     type: AgentType!
+
+    implementation: String!     # specifies which code should be executed as "live"-representation of this agent
 
     owner: ID!
 

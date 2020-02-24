@@ -1,11 +1,11 @@
 import {CommonQueries} from "../commonQueries";
-import {GroupQueries} from "../../../queries/group";
-import {MembershipQueries} from "../../../queries/memberships";
+import {GroupQueries} from "../../../data/queries/group";
+import {MembershipQueries} from "../../../data/queries/memberships";
 import {EntryWhereInput, prisma} from "../../../generated";
-import {MembershipStatements} from "../../../rules/membershipStatements";
-import {Helper} from "../../../helper/Helper";
+import {Helper} from "../../../helper/helper";
 import {ActionResponse} from "../../mutations/actionResponse";
 import {getTypesAndWhere} from "prisma-client-lib/dist/utils";
+import {AgentCanSee} from "../../../statements/agentCanSee";
 
 export class GroupQueries2 {
     public static async findRooms(csrfToken: string, sessionToken: string, bearerToken: string, searchText?: string) {
@@ -39,7 +39,7 @@ export class GroupQueries2 {
     public static async getEntries(csrfToken: string, sessionToken: string, bearerToken: string, groupId: string, from?: Date, to?: Date) {
         try {
             const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
-            if (!await MembershipStatements.agentCanAccessGroup(myAgent.id, groupId)) {
+            if (!await AgentCanSee.group(myAgent.id, groupId)) {
                 return [];
             }
 
@@ -67,12 +67,13 @@ export class GroupQueries2 {
 
             const entries = await prisma.group({id: groupId})
                                   .entries({
-                                      where: entriesWhereInput
+                                      where: entriesWhereInput,
+                                      orderBy: "createdAt_ASC"
                                   });
 
             return entries.map(async o => {
                 (<any>o).tagAggregate = [];
-                (<any>o).contentEncoding = await prisma.contentEncoding({id:o.contentEncoding}) ?? ""
+                (<any>o).contentEncoding = await prisma.contentEncoding({id:o.contentEncoding}) ?? "";
                 return o;
             });
         } catch (e) {
