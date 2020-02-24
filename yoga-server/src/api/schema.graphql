@@ -636,4 +636,5 @@ type Mutation {
 
 type Subscription {
     newEntry(csrfToken:String!): Entry #TODO: Let the client request a special subscriptionToken first and don't use the csrfToken
+    newChannel(csrfToken:String!): Channel #TODO: Let the client request a special subscriptionToken first and don't use the csrfToken
 }

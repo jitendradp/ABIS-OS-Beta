@@ -1,8 +1,7 @@
 import {Entry, EntryCreateInput, prisma} from "../../generated";
 import {Helper} from "../../helper/helper";
 import {EventBroker, Topics} from "../../services/eventBroker";
-import {NewChannel} from "../../services/events/newChannel";
-import {NewEntry} from "../../services/events/newEntry";
+import {Channel} from "../../api/types/channel";
 
 export class AgentCreate {
 
@@ -77,14 +76,14 @@ export class AgentCreate {
 
         Helper.log(`Created a Channel from agent '${fromAgentId}' to agent '${toAgentId}'.`);
 
+        let apiChannel = <Channel> {
+            ...newChannel,
+            receiver: toAgent
+        };
+
         EventBroker.instance
-            .getTopic<NewChannel>("system", Topics.NewChannel)
-            .publish(<NewChannel>{
-                fromAgentId,
-                toAgentId,
-                createdAt:new Date(),
-                createdBy:fromAgentId
-            });
+            .getTopic<Channel>("system", Topics.NewChannel)
+            .publish(apiChannel);
 
         return newChannel;
     }

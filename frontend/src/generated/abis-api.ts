@@ -641,11 +641,17 @@ export type Stash = Group & {
 
 export type Subscription = {
    __typename?: 'Subscription',
-  newEntry: NewEntrySubscription,
+  newEntry?: Maybe<Entry>,
+  newChannel?: Maybe<Channel>,
 };
 
 
 export type SubscriptionNewEntryArgs = {
+  csrfToken: Scalars['String']
+};
+
+
+export type SubscriptionNewChannelArgs = {
   csrfToken: Scalars['String']
 };
 
@@ -1115,6 +1121,25 @@ export type NewEntrySubscriptionVariables = {
 };
 
 
+export type NewChannelSubscriptionVariables = {
+  csrfToken: Scalars['String']
+};
+
+
+export type NewChannelSubscription = (
+  { __typename?: 'Subscription' }
+  & { newChannel: Maybe<(
+    { __typename?: 'Channel' }
+    & Pick<Channel, 'id' | 'createdAt' | 'createdBy' | 'owner'>
+    & { receiver: (
+      { __typename?: 'Service' }
+      & Pick<Service, 'id'>
+    ) | (
+      { __typename?: 'Profile' }
+      & Pick<Profile, 'id'>
+    ) }
+  )> }
+);
 
 export const VerifySessionDocument = gql`
     mutation verifySession($csrfToken: String!) {
@@ -1620,16 +1645,14 @@ export const GetEntriesDocument = gql`
 export const NewEntryDocument = gql`
     subscription newEntry($csrfToken: String!) {
   newEntry(csrfToken: $csrfToken) {
-    newEntry {
+    id
+    createdAt
+    createdBy
+    contentEncoding {
       id
-      createdAt
-      createdBy
-      contentEncoding {
-        id
-      }
-      type
-      name
     }
+    type
+    name
   }
 }
     `;
@@ -1639,5 +1662,26 @@ export const NewEntryDocument = gql`
   })
   export class NewEntryGQL extends Apollo.Subscription<NewEntrySubscription, NewEntrySubscriptionVariables> {
     document = NewEntryDocument;
+
+  }
+export const NewChannelDocument = gql`
+    subscription newChannel($csrfToken: String!) {
+  newChannel(csrfToken: $csrfToken) {
+    id
+    createdAt
+    createdBy
+    owner
+    receiver {
+      id
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class NewChannelGQL extends Apollo.Subscription<NewChannelSubscription, NewChannelSubscriptionVariables> {
+    document = NewChannelDocument;
 
   }

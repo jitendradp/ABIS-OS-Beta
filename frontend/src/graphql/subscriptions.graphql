@@ -1,14 +1,24 @@
 subscription newEntry($csrfToken:String!) {
   newEntry(csrfToken:$csrfToken) {
-    newEntry {
+    id
+    createdAt
+    createdBy
+    contentEncoding {
       id
-      createdAt
-      createdBy
-      contentEncoding {
-        id
-      }
-      type
-      name
+    }
+    type
+    name
+  }
+}
+
+subscription newChannel($csrfToken:String!) {
+  newChannel(csrfToken: $csrfToken) {
+    id
+    createdAt
+    createdBy
+    owner
+    receiver {
+      id
     }
   }
 }

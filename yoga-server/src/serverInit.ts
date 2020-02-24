@@ -1,4 +1,4 @@
-import {Agent, ContentEncoding, prisma, User} from "./generated";
+import {Agent, ContentEncoding, Entry, prisma, User} from "./generated";
 import {config} from "./config";
 import {ContentEncodings} from "./api/contentEncodings";
 import {EventBroker, Topic, Topics} from "./services/eventBroker";
@@ -7,6 +7,7 @@ import {Helper} from "./helper/helper";
 import {NewEntry} from "./services/events/newEntry";
 import {FindAgentsThatSeeThis} from "./queries/findAgentsThatSeeThis";
 import {AgentHost} from "./services/agentHost";
+import {Channel} from "./api/types/channel";
 
 export class ServerInit {
     static get serviceHost(): AgentHost {
@@ -24,10 +25,10 @@ export class ServerInit {
     static get loginService(): Agent {
         return this._loginService;
     }
-    static get newChannelTopic(): Topic<NewChannel> {
+    static get newChannelTopic(): Topic<Channel> {
         return this._newChannelTopic;
     }
-    static get newEntryTopic(): Topic<NewEntry> {
+    static get newEntryTopic(): Topic<Entry> {
         return this._newEntryTopic;
     }
     static get signupContentEncoding(): ContentEncoding {
@@ -43,8 +44,8 @@ export class ServerInit {
     private static _anonymousUser:User;
     private static _signupService:Agent;
     private static _loginService:Agent;
-    private static _newChannelTopic:Topic<NewChannel>;
-    private static _newEntryTopic:Topic<NewEntry>;
+    private static _newChannelTopic:Topic<Channel>;
+    private static _newEntryTopic:Topic<Entry>;
     private static _signupContentEncoding: ContentEncoding;
     private static _verifyEmailContentEncoding: ContentEncoding;
     private static _loginContentEncoding: ContentEncoding;
@@ -112,12 +113,12 @@ export class ServerInit {
     }
 
     private static async createSystemTopics() {
-        ServerInit._newChannelTopic = EventBroker.instance.createTopic<NewChannel>("system", Topics.NewChannel);
-        ServerInit._newEntryTopic = EventBroker.instance.createTopic<NewEntry>("system", Topics.NewEntry);
+        ServerInit._newChannelTopic = EventBroker.instance.createTopic<Channel>("system", Topics.NewChannel);
+        ServerInit._newEntryTopic = EventBroker.instance.createTopic<Entry>("system", Topics.NewEntry);
 
         ServerInit._newChannelTopic.observable.subscribe(newChannel => {
             // Notify the receiving end of the channel (every agent uses its own namespace and provides some default topics)
-            const newChannelTopic = EventBroker.instance.tryGetTopic<NewChannel>(newChannel.toAgentId, Topics.NewChannel);
+            const newChannelTopic = EventBroker.instance.tryGetTopic<Channel>(newChannel.receiver.id, Topics.NewChannel);
             if (newChannelTopic) {
                 newChannelTopic.publish(newChannel);
             }
@@ -128,7 +129,7 @@ export class ServerInit {
             const subscribers = await FindAgentsThatSeeThis.entry(newEntry.id);
 
             for (let subscriber of subscribers) {
-                const newEntryTopic = EventBroker.instance.tryGetTopic<NewEntry>(subscriber, Topics.NewEntry);
+                const newEntryTopic = EventBroker.instance.tryGetTopic<Entry>(subscriber, Topics.NewEntry);
                 if (newEntryTopic) {
                     newEntryTopic.publish(newEntry);
                 }

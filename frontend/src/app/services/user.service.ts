@@ -9,7 +9,7 @@ import {
   ContentEncodingsGQL,
   MyChannelsGQL,
   GetSystemServicesGQL,
-  Service, CreateSessionGQL, VerifySessionGQL, NewEntryGQL,
+  Service, CreateSessionGQL, VerifySessionGQL, NewEntryGQL, NewChannelGQL,
 } from "../../generated/abis-api";
 import {ClientStateService} from "./client-state.service";
 import {Logger, LoggerService} from "./logger.service";
@@ -73,7 +73,8 @@ export class UserService {
     , private getSystemServicesApi: GetSystemServicesGQL
     , private myChannelsApi: MyChannelsGQL
     , private verifySessionApi: VerifySessionGQL
-    , private newEntrySubscription: NewEntryGQL) {
+    , private newEntrySubscription: NewEntryGQL
+    , private newChannelSubscription: NewChannelGQL) {
 
     // TODO: this seems to be a bit hacky, does the service really need to subscribe to its own events to know that?
     this.actionDispatcher.onAction.subscribe(action => {
@@ -122,6 +123,11 @@ export class UserService {
       });
 
     this.newEntrySubscription.subscribe({csrfToken: this.csrfToken})
+      .subscribe(newEntry => {
+        console.log("NOTIFICATION: ", newEntry);
+      });
+
+    this.newChannelSubscription.subscribe({csrfToken: this.csrfToken})
       .subscribe(newEntry => {
         console.log("NOTIFICATION: ", newEntry);
       });
