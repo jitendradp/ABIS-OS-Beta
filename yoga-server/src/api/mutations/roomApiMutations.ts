@@ -1,8 +1,8 @@
-import {Helper} from "../../helper/Helper";
+import {Helper} from "../../helper/helper";
 import {ActionResponse} from "./actionResponse";
 import {prisma} from "../../generated";
 import {CommonQueries} from "../queries/commonQueries";
-import {OwnershipStatements} from "../../rules/ownershipStatements";
+import {AgentOwns} from "../../statements/agentOwns";
 
 export class RoomApiMutations {
     static async createRoom(
@@ -22,6 +22,7 @@ export class RoomApiMutations {
             const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
 
             const roomInbox = await prisma.createAgent({
+                implementation:"RoomInbox",
                owner: myUser.user.id,
                createdBy: myUser.user.id,
                type: "Inbox",
@@ -82,7 +83,7 @@ export class RoomApiMutations {
         , banner: string) {
         try {
             const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
-            if (!await OwnershipStatements.agentOwnsRoom(myAgent.id, id)) {
+            if (!await AgentOwns.room(myAgent.id, id)) {
                 throw new Error(`Agent ${myAgent.id} doesn't own room ${id} which it tries to modify.`)
             }
             const updatedRoom = await prisma.updateGroup({where:{id:id}, data:{
@@ -107,7 +108,7 @@ export class RoomApiMutations {
     static async deleteRoom(csrfToken: string, sessionToken: string, bearerToken: string, roomId: string) {
         try {
             const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
-            if (!await OwnershipStatements.agentOwnsRoom(myAgent.id, roomId)) {
+            if (!await AgentOwns.room(myAgent.id, roomId)) {
                 throw new Error(`Agent ${myAgent.id} doesn't own room ${roomId} which it tries to delete.`)
             }
             await prisma.deleteGroup({id:roomId});

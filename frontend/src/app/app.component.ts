@@ -29,8 +29,7 @@ import {ListGroupComponent} from "./lists/list-group/list-group.component";
 import {InviteComponent} from "./widgets/chat/invite/invite.component";
 import {Logout} from "./actions/routes/Logout";
 import {UserService} from "./services/user.service";
-import {SessionCreated} from "./actions/user/SessionCreated";
-import {CreateChannelGQL, CreateEntryGQL, CreateeSessionGQL, EntryType} from "../generated/abis-api";
+import {CreateEntryGQL} from "../generated/abis-api";
 
 @Component({
   selector: 'app-root',
