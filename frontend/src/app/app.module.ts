@@ -57,7 +57,7 @@ import {HeaderComponent} from './components/header/header.component';
 import {InputComponent} from './components/input/input.component';
 import {WhitespaceComponent} from './components/whitespace/whitespace.component';
 import {EditorChannelComponent} from './dialogs/editor-channel/editor-channel.component';
-import {GraphQLModule} from './graphql.module';
+//import {GraphQLModule} from './graphql.module';
 import {HttpClientModule} from '@angular/common/http';
 import {CardIntroComponent} from "./cards/card-intro/card-intro.component";
 import {NavigationComponent} from "./navigation/navigation.component";
@@ -117,6 +117,7 @@ import {CanActivateRoute} from "./services/routeGuard";
 import {JsonSchemaFormModule} from "angular6-json-schema-form/lib/json-schema-form.module";
 import {MaterialDesignFrameworkModule} from "angular6-json-schema-form";
 import {ServiceDialogComponent} from "./services/service-dialog/service-dialog.component";
+import {GraphQLConfigModule} from "./apolloConfig";
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -356,7 +357,8 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     MatTreeModule,
     MatSnackBarModule,
-    GraphQLModule,
+    //GraphQLModule.forRoot(),
+    GraphQLConfigModule,
     HttpClientModule,
     MatBottomSheetModule,
     MatSliderModule,
