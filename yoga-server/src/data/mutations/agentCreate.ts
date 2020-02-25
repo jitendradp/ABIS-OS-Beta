@@ -76,9 +76,22 @@ export class AgentCreate {
 
         Helper.log(`Created a Channel from agent '${fromAgentId}' to agent '${toAgentId}'.`);
 
+        // Augment the created channel with its reverse channel (if any)
+        const reverseChannel = await prisma.groups({where:{owner: toAgentId, memberships_every:{member:{id:fromAgentId}}}});
+        let reverseApiChannel = undefined;
+
+        if (reverseChannel.length > 0) {
+             reverseApiChannel = <Channel> {
+                 ...reverseChannel[0],
+                 receiver: fromAgent,
+                 reverse: undefined
+             }
+        }
+
         let apiChannel = <Channel> {
             ...newChannel,
-            receiver: toAgent
+            receiver: toAgent,
+            reverse: reverseApiChannel
         };
 
         EventBroker.instance

@@ -32,6 +32,7 @@
     "apollo-cache-inmemory": "^1.6.0",
     "apollo-client": "^2.6.0",
     "apollo-link": "^1.2.11",
+    "apollo-link-ws": "^1.0.19",
     "echarts": "^4.6.0",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.2",
@@ -43,6 +44,7 @@
     "ngx-echarts": "^4.2.2",
     "ngx-mapbox-gl": "^4.3.0",
     "rxjs": "~6.4.0",
+    "subscriptions-transport-ws": "^0.9.16",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
   },

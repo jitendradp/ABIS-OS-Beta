@@ -90,8 +90,6 @@ export class UserService {
   }
 
   public async createAnonymousSession(): Promise<SessionCreated> {
-    console.log("Creating session");
-
     if (this.systemServices) {
       // If the client settings already exist we assume that there is already a session.
       // If its valid proceed, else clear the client state

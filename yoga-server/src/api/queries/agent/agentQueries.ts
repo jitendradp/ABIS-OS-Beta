@@ -31,11 +31,6 @@ export type Membership = {
 export class AgentQueries {
     public static async getSystemServices(csrfToken: string, sessionToken: string) {
         try {
-            const session = await prisma.session({sessionToken: sessionToken});
-            if (!session) {
-                throw new Error(`Couldn't find a session for sessionToken '${sessionToken}'.`)
-            }
-
             const systemUserAgents = await prisma.user({email: config.env.systemUser}).agents();
             if (!systemUserAgents) {
                 throw new Error(`Couldn't find any system user agents. User: '${config.env.systemUser}'.`)
