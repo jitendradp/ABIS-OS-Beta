@@ -1,18 +1,22 @@
-import {EventBroker} from "./EventBroker";
-import {Service} from "./Service";
-import {SignupService} from "./SignupService";
+import {EventBroker} from "./eventBroker";
+import {Service} from "./service";
+import {SignupService} from "./signupService";
 import {Agent, prisma} from "../generated";
-import {LoginService} from "./LoginService";
-import {Helper} from "../helper/Helper";
+import {LoginService} from "./loginService";
+import {Helper} from "../helper/helper";
+import {ProfileService} from "./profileService";
+import {RoomInboxService} from "./roomInboxService";
 
 type ServiceFactory = (eventBroker: EventBroker, agent: Agent) => Service;
 
 const serviceImplementations: { [name: string]: ServiceFactory } = {
     "SignupService": (eventBroker, agent) => new SignupService( eventBroker, agent),
-    "LoginService": (eventBroker, agent) => new LoginService( eventBroker, agent)
+    "LoginService": (eventBroker, agent) => new LoginService( eventBroker, agent),
+    "Profile": (eventBroker, agent) => new ProfileService( eventBroker, agent),
+    "RoomInbox":  (eventBroker, agent) => new RoomInboxService( eventBroker, agent)
 };
 
-export class ServiceHost {
+export class AgentHost {
     get eventBroker() : EventBroker {
         return this._eventBroker;
     }
@@ -24,18 +28,14 @@ export class ServiceHost {
         this._eventBroker = eventBroker;
     }
 
-    public async loadService(id:string) {
-        const serviceAgent = await prisma.agent({id:id});
-        if (!serviceAgent || serviceAgent.type != "Service") {
-            throw new Error(`There is no service agent with id '${id}'.`)
-        }
-        Helper.log(`Starting ${serviceAgent.serviceImplementation} (${id})`);
-        const serviceFactory = serviceImplementations[serviceAgent.serviceImplementation];
-        this._services[id] = serviceFactory(this._eventBroker, serviceAgent);
-        this._services[id].start();
+    public loadAgent(agent:Agent) {
+        Helper.log(`Starting ${agent.implementation} (${agent.id})`);
+        const serviceFactory = serviceImplementations[agent.implementation];
+        this._services[agent.id] = serviceFactory(this._eventBroker, agent);
+        this._services[agent.id].start();
     }
 
-    public async unloadService(id:string) {
+    public async unloadAgent(id:string) {
         const serviceDefinition = await prisma.agent({id:id});
         const serviceInstance = this._services[id];
         if (!serviceDefinition || serviceDefinition.type != "Service" || !serviceInstance) {
@@ -47,7 +47,7 @@ export class ServiceHost {
             }
             throw new Error(`A service with the id '${id}' doesn't exist.`);
         }
-        Helper.log(`Stopping ${serviceDefinition.serviceImplementation} (${id})`);
+        Helper.log(`Stopping ${serviceDefinition.implementation} (${id})`);
         this._services[id].stop();
         delete this._services[id];
     }

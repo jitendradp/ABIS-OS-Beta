@@ -1,11 +1,9 @@
-import {Service} from "./Service";
-import {Topic, Topics} from "./EventBroker";
+import {Service} from "./service";
+import {Topic, Topics} from "./eventBroker";
 import {NewChannel} from "./events/newChannel";
-import {Helper} from "../helper/Helper";
+import {Helper} from "../helper/helper";
 import {NewEntry} from "./events/newEntry";
-import {AgentPostTo} from "../data/mutations/agentPostTo";
 import {AgentCreate} from "../data/mutations/agentCreate";
-import {prisma} from "../generated";
 import {ServerInit} from "../serverInit";
 
 export class SignupService extends Service {
@@ -34,8 +32,7 @@ export class SignupService extends Service {
             "channel.png");
 
         Helper.log(`Putting a welcome message into the new channel from '${newChannel.toAgentId}' to '${newChannel.fromAgentId}'.`);
-
-        const entry = await AgentPostTo.channel(newChannel.toAgentId, reverseChannel.id, {
+        const welcomeEntry = AgentCreate.entry(reverseChannel.owner, reverseChannel.id, {
             type: "Empty",
             owner: newChannel.toAgentId,
             createdBy: newChannel.toAgentId,

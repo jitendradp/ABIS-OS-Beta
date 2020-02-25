@@ -1,44 +1,10 @@
 import {prisma, Session} from "../../generated";
-import {Helper} from "../../helper/Helper";
+import {Helper} from "../../helper/helper";
 import {ProfileQueries} from "../queries/profile";
 import {config} from "../../config";
 import {UserOwns} from "../../statements/userOwns";
 
 export class SessionMutations {
-    /**
-     * Creates a new session.
-     * @param sessionToken
-     * @param csrfToken
-     * @param bearerToken
-     * @param validTo
-     * @param userId
-     * @param agentId
-     * @param clientTime
-     */
-    public static async createSession(csrfToken:string, bearerToken:string, sessionToken:string, validTo:Date, userId:string, agentId:string, clientTime?:string) {
-        const session = await prisma.createSession({
-            timedOut: null,
-            sessionToken: sessionToken,
-            csrfToken: csrfToken,
-            bearerToken: bearerToken,
-            validTo: validTo,
-            clientTime: clientTime,
-            user: {
-                connect: {
-                    id: userId
-                }
-            },
-            agent: {
-                connect: {
-                    id: agentId
-                }
-            }
-        });
-
-        Helper.log(`Created session for user ${userId} with agent ${agentId}. Expires: ${validTo.toISOString()}`);
-
-        return session;
-    }
 
     /**
      * Generates a new csrf- and bearer-token for the specified user and agent pair and stores it as session.
@@ -66,7 +32,8 @@ export class SessionMutations {
         const bearerToken = Helper.getRandomBase64String(config.auth.tokenLength);
         const sessionToken = Helper.getRandomBase64String(config.auth.tokenLength);
 
-        return await SessionMutations.createSession(csrfToken, bearerToken, sessionToken, validTo, userId, agentId);
+        //return await SessionMutations.createSession(csrfToken, bearerToken, sessionToken, validTo, userId, agentId);
+        throw new Error("Not implemented");
     }
 
     /**
@@ -81,6 +48,7 @@ export class SessionMutations {
         // Create an anonymous profile
         const anonProfile = await prisma.createAgent({
             owner: anonUser.id,
+            implementation: "Profile",
             createdBy: anonUser.id,
             name: "Anon_" +   Helper.getRandomBase64String(12),
             type: "Profile",
@@ -92,34 +60,7 @@ export class SessionMutations {
         const csrfToken = Helper.getRandomBase64String(config.auth.tokenLength);
         const sessionToken = Helper.getRandomBase64String(config.auth.tokenLength);
 
-        return await SessionMutations.createSession(
-            csrfToken,
-            null,
-            sessionToken,
-            validTo,
-            anonUser.id,
-            anonProfile.id);
-    }
 
-    public static async verifySession(csrfToken: string, sessionToken:string, bearerToken?: string): Promise<boolean> {
-        const sessions = await prisma.sessions({
-            where:{
-                csrfToken:csrfToken,
-                sessionToken:sessionToken,
-                bearerToken: bearerToken
-            }
-        });
-        if (sessions.length != 1) {
-            return  false;
-        }
-        const session = sessions[0];
-        return SessionMutations.isSessionValid(session);
-    }
-
-    private static isSessionValid(session: Session): boolean {
-        return session.id
-            && session.timedOut == null
-            && session.loggedOut == null
-            && Date.parse(session.validTo) > Date.now();
+        throw new Error("Not implemented");
     }
 }

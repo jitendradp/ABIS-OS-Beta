@@ -2,12 +2,11 @@ import {UserCreate} from "../data/mutations/userCreate";
 import {UserHas} from "../statements/userHas";
 import {GetAgentOf} from "../queries/getAgentOf";
 import {AgentCreate} from "../data/mutations/agentCreate";
-import {Helper} from "../helper/Helper";
+import {Helper} from "../helper/helper";
 import {ActionResponse} from "../api/mutations/actionResponse";
-import {AgentCanPostTo} from "../statements/agentCanPostTo";
-import {Entry, prisma} from "../generated";
-import {AgentPostTo} from "../data/mutations/agentPostTo";
+import {prisma} from "../generated";
 import {ServerInit} from "../serverInit";
+import {AgentCanCreate} from "../statements/agentCanCreate";
 
 export const mutations = {
     async createSession(root, {clientTime}, ctx) {
@@ -33,6 +32,30 @@ export const mutations = {
         };
     },
 
+    async verifySession(root, {csrfToken}, ctx) {
+        const sessions = await prisma.sessions({
+            where:{
+                csrfToken:csrfToken,
+                sessionToken:ctx.sessionToken
+            }
+        });
+        if (sessions.length != 1) {
+            return <ActionResponse>{
+                success: false
+            };
+        }
+        const session = sessions[0];
+
+        const isValid = session.id
+            && session.timedOut == null
+            && session.loggedOut == null
+            && Date.parse(session.validTo) > Date.now();
+
+        return <ActionResponse>{
+           success: isValid
+        };
+    },
+
     async createChannel(root, {csrfToken, toAgentId}, ctx) {
         // Every user with a session (and thus a profile) can create a channel to another agent.
         const userHasSession = await UserHas.anonymousSession(ctx.sessionToken, csrfToken);
@@ -40,7 +63,7 @@ export const mutations = {
             throw new Error(`Invalid session`);
         }
 
-        const agentId = await GetAgentOf.session(ctx.sessionToken, csrfToken);
+        const agentId = await GetAgentOf.session(csrfToken, ctx.sessionToken);
         const newChannel = await AgentCreate.channel(agentId, toAgentId, "New Channel", "channel.png");
 
         (<any>newChannel).receiver = await prisma.agent({id:toAgentId});
@@ -54,7 +77,7 @@ export const mutations = {
             throw new Error(`Invalid session`);
         }
 
-        const agentId = await GetAgentOf.session(ctx.sessionToken, csrfToken);
+        const agentId = await GetAgentOf.session(csrfToken, ctx.sessionToken);
         const groupId = createEntryInput.roomId;
 
         const group = await prisma.group({id:groupId});
@@ -62,12 +85,7 @@ export const mutations = {
             throw new Error(`The specified group doesn't exist: ${createEntryInput.roomId}`)
         }
 
-        let canPostTo = false;
-        switch (group.type) {
-            case "Channel": canPostTo = await AgentCanPostTo.channel(agentId, groupId); break;
-            case "Room": canPostTo = await AgentCanPostTo.room(agentId, groupId); break;
-            case "Stash": canPostTo = await AgentCanPostTo.stash(agentId, groupId); break;
-        }
+        let canPostTo = await AgentCanCreate.entry(agentId, groupId);
         if (!canPostTo) {
             throw new Error(`Agent '${agentId}' cannot post to group ${groupId}`);
         }
@@ -81,13 +99,7 @@ export const mutations = {
             content: createEntryInput.content
         };
 
-        let entry: Entry = null;
-        switch (group.type) {
-            case "Channel": entry = await AgentPostTo.channel(agentId, groupId, newEntryInput); break;
-            case "Room": entry = await AgentPostTo.room(agentId, groupId, newEntryInput); break;
-            case "Stash": entry = await AgentPostTo.stash(agentId, groupId, newEntryInput); break;
-        }
-
+        const entry = await AgentCreate.entry(agentId, groupId, newEntryInput);
         return entry;
     },
 

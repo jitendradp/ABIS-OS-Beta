@@ -12,8 +12,6 @@ export class CanActivateRoute implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean|UrlTree>|Promise<boolean|UrlTree>|boolean|UrlTree {
-    return this.userService.createSession().pipe(map((auth) => {
-      return true;
-    })).pipe(first()); // this might not be necessary - ensure `first` is imported if you use it
+    return this.userService.createAnonymousSession().then(o => true);
   }
 }

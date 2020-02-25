@@ -1,16 +1,15 @@
 import {
     prisma, User
 } from "../../generated";
-import {Helper} from "../../helper/Helper";
-import {Mailer} from "../../helper/Mailer";
+import {Helper} from "../../helper/helper";
+import {Mailer} from "../../helper/mailer";
 import {Request} from "express";
 import {config} from "../../config";
 import {CommonQueries} from "../queries/commonQueries";
 import {ActionResponse} from "./actionResponse";
 import {UserQueries} from "../../data/queries/user";
-import {SessionMutations} from "../../data/mutations/session";
 import {UserMutations} from "../../data/mutations/user";
-import {ProfileQueries} from "../../data/queries/profile";
+import {UserCreate} from "../../data/mutations/userCreate";
 
 export class UserApiMutations {
     private static readonly bcrypt = require('bcrypt');
@@ -44,6 +43,7 @@ export class UserApiMutations {
      * @param code
      * @param request
      */
+    /*
     public static async verifyEmail(code: string, request: Request): Promise<ActionResponse> {
         return Helper.delay(config.auth.normalizedResponseTime, async () => {
             try {
@@ -57,6 +57,7 @@ export class UserApiMutations {
 
                 // Clear the challenge.                     -> This allows the user to login after verification:
                 await UserMutations.clearChallenge(user.id);
+
 
                 // Create a Session for the User ..
                 const session = await SessionMutations.createSessionForUserAndAgent(user.id);
@@ -81,6 +82,7 @@ export class UserApiMutations {
             }
         });
     }
+    */
 
     /**
      * Checks the username and password and returns a session csrfToken or 'error'.
@@ -88,6 +90,7 @@ export class UserApiMutations {
      * @param password
      * @param request The express request object from the yoga context
      */
+    /*
     public static async login(email: string, password: string, request: Request): Promise<ActionResponse> {
         return await Helper.delay(config.auth.normalizedResponseTime, async () => {
             try {
@@ -135,8 +138,9 @@ export class UserApiMutations {
                 };
             }
         });
-    }
+    }*/
 
+    /*
     public static async logout(csrfToken: string, bearerToken: string, request: Request): Promise<ActionResponse> {
         return Helper.delay(config.auth.normalizedResponseTime, async () => {
             try {
@@ -173,7 +177,7 @@ export class UserApiMutations {
                 };
             }
         });
-    }
+    }*/
 
     /**
      * Verifies if the supplied tokens represent a valid session.
@@ -182,6 +186,7 @@ export class UserApiMutations {
      * @param sessionToken
      * @param request
      */
+    /*
     public static async verifySession(csrfToken: string, bearerToken: string, sessionToken:string, request: Request): Promise<ActionResponse> {
         return Helper.delay(config.auth.normalizedResponseTime, async () => {
             try {
@@ -226,5 +231,5 @@ export class UserApiMutations {
                 code: errorId
             };
         }
-    }
+    }*/
 }

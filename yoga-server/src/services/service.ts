@@ -1,4 +1,4 @@
-import {EventBroker} from "./EventBroker";
+import {EventBroker} from "./eventBroker";
 import {Agent} from "../generated";
 
 export abstract class Service {
@@ -28,12 +28,12 @@ export abstract class Service {
      * with which the service will be "hydrated" after its loaded from the db)
      */
     public get implementation():string {
-        return this._agent.serviceImplementation;
+        return this._agent.implementation;
     }
 
     /**
      * The injected EventBroker that is available to every service instance that was created
-     * by the ServiceHost.
+     * by the AgentHost.
      */
     public get eventBroker():EventBroker {
         return this._eventBroker;

@@ -1,8 +1,9 @@
-import {prisma} from "../../generated";
-import {Helper} from "../../helper/Helper";
+import {prisma, ProfileType} from "../../generated";
+import {Helper} from "../../helper/helper";
 import {ProfileStatus} from "../../api/Profile";
 import {AgentCreate} from "./agentCreate";
 import {config} from "../../config";
+import {ServerInit} from "../../serverInit";
 
 export class UserCreate {
     public static async profile(userId: string, name: string, avatar: string, status?: ProfileStatus) {
@@ -18,6 +19,8 @@ export class UserCreate {
             throw new Error(`User '${userId}' already has a profile with the name '${name}'.`);
         }
 
+        const profileType:ProfileType = userId == ServerInit.anonymousUser.id ? "Anonymous" : "Private";
+
         // Connect the new profile to the User.
         await prisma.updateUser({
             where: {id: userId}, data: {
@@ -28,7 +31,9 @@ export class UserCreate {
                         name: name,
                         profileAvatar: avatar,
                         status: status ?? "Offline",
-                        type: "Profile"
+                        type: "Profile",
+                        implementation: "Profile",
+                        profileType: profileType
                     }
                 }
             }
@@ -43,6 +48,8 @@ export class UserCreate {
         const newStash = await AgentCreate.stash(newProfile[0].id, newProfile[0].name, "stash.png");
 
         Helper.log(`Created the new profile '${newProfile[0].id}' with stash '${newStash.id}' for user '${userId}.`);
+
+        ServerInit.serviceHost.loadAgent(newProfile[0]);
 
         return newProfile[0];
     }

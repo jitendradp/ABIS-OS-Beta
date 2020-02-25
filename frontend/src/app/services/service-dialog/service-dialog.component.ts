@@ -79,7 +79,9 @@ export class ServiceDialogComponent implements OnInit {
 
     let schemaEntry = entries.data.getEntries.find(o => o.type == "Empty" && o.contentEncoding);
     if (!schemaEntry) {
-      throw new Error("Requested entries with type == 'Empty' and contentEncoding != null but found nothing in the channel.");
+      console.log("Requested entries with type == 'Empty' and contentEncoding != null but found nothing in the channel.");
+      return;
+      //throw new Error("Requested entries with type == 'Empty' and contentEncoding != null but found nothing in the channel.");
     }
 
     this.contentEncoding = this.userService.contentEncodings.find(o => o.id == schemaEntry.contentEncoding.id);

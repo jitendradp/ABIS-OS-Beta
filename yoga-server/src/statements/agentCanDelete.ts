@@ -26,4 +26,7 @@ export class AgentCanDelete {
         });
         return group.length == 1;
     }
+    public static async membership(agentId:string, groupId:string, memberAgentId:string) {
+        throw new Error("Not implemented");
+    }
 }

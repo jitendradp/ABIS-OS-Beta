@@ -1,4 +1,4 @@
-import {Helper} from "../../helper/Helper";
+import {Helper} from "../../helper/helper";
 import {ActionResponse} from "./actionResponse";
 import {EntryType, prisma} from "../../generated";
 import {CommonQueries} from "../queries/commonQueries";

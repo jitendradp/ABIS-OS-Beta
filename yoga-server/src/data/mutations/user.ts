@@ -1,8 +1,8 @@
 import {ActionResponse} from "../../api/mutations/actionResponse";
-import {Helper} from "../../helper/Helper";
+import {Helper} from "../../helper/helper";
 import {config} from "../../config";
 import {Agent, prisma, User} from "../../generated";
-import {Mailer} from "../../helper/Mailer";
+import {Mailer} from "../../helper/mailer";
 import {UserCreate} from "./userCreate";
 
 export class UserMutations {

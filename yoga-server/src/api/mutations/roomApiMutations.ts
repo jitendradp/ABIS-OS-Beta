@@ -1,4 +1,4 @@
-import {Helper} from "../../helper/Helper";
+import {Helper} from "../../helper/helper";
 import {ActionResponse} from "./actionResponse";
 import {prisma} from "../../generated";
 import {CommonQueries} from "../queries/commonQueries";
@@ -22,6 +22,7 @@ export class RoomApiMutations {
             const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
 
             const roomInbox = await prisma.createAgent({
+                implementation:"RoomInbox",
                owner: myUser.user.id,
                createdBy: myUser.user.id,
                type: "Inbox",

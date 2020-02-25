@@ -5,20 +5,15 @@ import {
   MyAccountGQL,
   Account,
   UserType,
-  CreateeSessionGQL,
   ContentEncoding,
   ContentEncodingsGQL,
   MyChannelsGQL,
   GetSystemServicesGQL,
-  Channel, GetEntriesGQL, Service
+  Service, CreateSessionGQL, VerifySessionGQL, NewEntryGQL, NewChannelGQL,
 } from "../../generated/abis-api";
 import {ClientStateService} from "./client-state.service";
-import {Logger, LoggerService, LogSeverity} from "./logger.service";
-import {map} from "rxjs/operators";
-import {Apollo} from "apollo-angular";
-import {UserInformationChanged} from "../actions/user/UserInformationChanged";
+import {Logger, LoggerService} from "./logger.service";
 import {SessionCreated} from "../actions/user/SessionCreated";
-import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -70,14 +65,16 @@ export class UserService {
   private _isLoggedOn: boolean;
 
   constructor(private actionDispatcher: ActionDispatcherService
-    , private createSessionApi: CreateeSessionGQL
+    , private createSessionApi: CreateSessionGQL
     , private loggerService: LoggerService
     , private myAccountApi: MyAccountGQL
     , private contentEncodingsApi: ContentEncodingsGQL
     , private clientState: ClientStateService
     , private getSystemServicesApi: GetSystemServicesGQL
     , private myChannelsApi: MyChannelsGQL
-    , private apollo: Apollo) {
+    , private verifySessionApi: VerifySessionGQL
+    , private newEntrySubscription: NewEntryGQL
+    , private newChannelSubscription: NewChannelGQL) {
 
     // TODO: this seems to be a bit hacky, does the service really need to subscribe to its own events to know that?
     this.actionDispatcher.onAction.subscribe(action => {
@@ -87,39 +84,51 @@ export class UserService {
     });
   }
 
-  public createSession(): Observable<SessionCreated> {
-    console.log("Creating session");
-    if (this.systemServices) {
-      return new Observable<SessionCreated>(observer => observer.next(new SessionCreated()));
-    }
-
-    return this.createSessionApi.mutate({clientTime: new Date().toISOString()}).pipe(
-      map(result => {
-        console.log(result);
-        if (result.data.createSession.success) {
-          this.clientState.set(this.CsrfTokenKey, result.data.createSession.code);
-
-          if (!this.contentEncodings) {
-            this.contentEncodingsApi.fetch({csrfToken: result.data.createSession.code})
-              .subscribe(contentEncoddings => {
-                this.clientState.set(this.ContentEncodingsKey, contentEncoddings.data.contentEncodings);
-              });
-            this.getSystemServicesApi.fetch({csrfToken: result.data.createSession.code})
-              .subscribe(systemServices => {
-                this.clientState.set(this.SystemServicesKey, systemServices.data.getSystemServices);
-              });
-          }
-
-          return new SessionCreated();
-        } else {
-          throw new Error("An error occurred during the session creation.")
-        }
-      }));
+  private async verifySession() {
+    const response = await this.verifySessionApi.mutate({csrfToken: this.csrfToken}).toPromise();
+    return response.data.verifySession.success;
   }
 
-  public async findSignupAgentId(): Promise<string> {
-    const systemAgents = await this.getSystemServicesApi.fetch({csrfToken: this.csrfToken}).toPromise();
-    return systemAgents.data.getSystemServices.find(o => o.name == "SignupService").id;
+  public async createAnonymousSession(): Promise<SessionCreated> {
+    if (this.systemServices) {
+      // If the client settings already exist we assume that there is already a session.
+      // If its valid proceed, else clear the client state
+      const existingSessionIsValid = await this.verifySession();
+      if (!existingSessionIsValid) {
+        // If the existing session isn't valid, clear the localStorage and call this method again
+        localStorage.clear(); // TODO: Clearing all localStorage is a little radical but good for testing at the moment
+        return this.createAnonymousSession();
+      } else {
+        return new Promise((resolve => resolve(new SessionCreated())));
+      }
+    }
+
+    const createSessionResponse = await this.createSessionApi.mutate({clientTime: new Date().toISOString()}).toPromise();
+    if (!createSessionResponse.data.createSession.success) {
+      return;
+    }
+
+    this.clientState.set(this.CsrfTokenKey, createSessionResponse.data.createSession.code);
+
+    this.contentEncodingsApi.fetch({csrfToken: createSessionResponse.data.createSession.code})
+      .subscribe(contentEncodings => {
+        this.clientState.set(this.ContentEncodingsKey, contentEncodings.data.contentEncodings);
+      });
+
+    this.getSystemServicesApi.fetch({csrfToken: createSessionResponse.data.createSession.code})
+      .subscribe(systemServices => {
+        this.clientState.set(this.SystemServicesKey, systemServices.data.getSystemServices);
+      });
+
+    this.newEntrySubscription.subscribe({csrfToken: this.csrfToken})
+      .subscribe(newEntry => {
+        console.log("NOTIFICATION: ", newEntry);
+      });
+
+    this.newChannelSubscription.subscribe({csrfToken: this.csrfToken})
+      .subscribe(newEntry => {
+        console.log("NOTIFICATION: ", newEntry);
+      });
   }
 
   public async myChannels() {

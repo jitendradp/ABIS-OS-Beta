@@ -1,11 +1,56 @@
-import {ResponseDelay} from "./ResponseDelay";
+import {ResponseDelay} from "./responseDelay";
 import {config} from "../config";
 import {Request} from "express";
+import {Observable} from "rxjs";
 
 /**
  * Contains helper methods.
  */
 export class Helper {
+
+    public static observableToAsyncIterable<T>(observable:Observable<T>){
+        const pullQueue:((T)=>void)[] = [];
+        const pushQueue:T[] = [];
+
+        const asyncIterable = {
+            [Symbol.asyncIterator]() {
+                return {
+                    next() {
+                        // See if there are already some values in the pushQueue
+                        const pushedValue = pushQueue.shift();
+                        if (pushedValue) {
+                            return new Promise<{value:T, done:boolean}>(resolve => resolve({
+                                value: pushedValue,
+                                done: false
+                            }));
+                        }
+
+                        // If not, create a new entry in the pull queue and return a promise to it
+                        return new Promise<{value:T, done:boolean}>(resolve => {
+                            pullQueue.push(resolve);
+                        });
+                    }
+                };
+            }
+        };
+
+        observable.subscribe(newEntry => {
+            // Check if the pull queue contains entries. If yes, handle the queue first
+            const pull = pullQueue.shift();
+            if (pull) {
+                pull({
+                    value: newEntry,
+                    done: false
+                });
+                return;
+            }
+
+            // If there is currently no pull handler, create an entry in the push queue
+            pushQueue.push(newEntry);
+        });
+
+        return asyncIterable;
+    }
 
     public static getRandomBase64String(len) {
         let randomNumbers = require("crypto").randomBytes(Math.ceil((len * 3) / 4))

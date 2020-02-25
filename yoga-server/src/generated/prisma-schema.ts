@@ -5,6 +5,7 @@
 export const typeDefs = /* GraphQL */ `type Agent {
   id: ID!
   type: AgentType!
+  implementation: String!
   owner: ID!
   createdBy: ID!
   createdAt: DateTime!
@@ -19,7 +20,6 @@ export const typeDefs = /* GraphQL */ `type Agent {
   profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
-  serviceImplementation: String
   serviceDescription: String
   inboxDescription: String
 }
@@ -33,6 +33,7 @@ type AgentConnection {
 input AgentCreateInput {
   id: ID
   type: AgentType!
+  implementation: String!
   owner: ID!
   createdBy: ID!
   updatedBy: ID
@@ -45,7 +46,6 @@ input AgentCreateInput {
   profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
-  serviceImplementation: String
   serviceDescription: String
   inboxDescription: String
 }
@@ -70,6 +70,8 @@ enum AgentOrderByInput {
   id_DESC
   type_ASC
   type_DESC
+  implementation_ASC
+  implementation_DESC
   owner_ASC
   owner_DESC
   createdBy_ASC
@@ -96,8 +98,6 @@ enum AgentOrderByInput {
   profileBanner_DESC
   profileType_ASC
   profileType_DESC
-  serviceImplementation_ASC
-  serviceImplementation_DESC
   serviceDescription_ASC
   serviceDescription_DESC
   inboxDescription_ASC
@@ -107,6 +107,7 @@ enum AgentOrderByInput {
 type AgentPreviousValues {
   id: ID!
   type: AgentType!
+  implementation: String!
   owner: ID!
   createdBy: ID!
   createdAt: DateTime!
@@ -120,7 +121,6 @@ type AgentPreviousValues {
   profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
-  serviceImplementation: String
   serviceDescription: String
   inboxDescription: String
 }
@@ -144,6 +144,20 @@ input AgentScalarWhereInput {
   type_not: AgentType
   type_in: [AgentType!]
   type_not_in: [AgentType!]
+  implementation: String
+  implementation_not: String
+  implementation_in: [String!]
+  implementation_not_in: [String!]
+  implementation_lt: String
+  implementation_lte: String
+  implementation_gt: String
+  implementation_gte: String
+  implementation_contains: String
+  implementation_not_contains: String
+  implementation_starts_with: String
+  implementation_not_starts_with: String
+  implementation_ends_with: String
+  implementation_not_ends_with: String
   owner: ID
   owner_not: ID
   owner_in: [ID!]
@@ -294,20 +308,6 @@ input AgentScalarWhereInput {
   profileType_not: ProfileType
   profileType_in: [ProfileType!]
   profileType_not_in: [ProfileType!]
-  serviceImplementation: String
-  serviceImplementation_not: String
-  serviceImplementation_in: [String!]
-  serviceImplementation_not_in: [String!]
-  serviceImplementation_lt: String
-  serviceImplementation_lte: String
-  serviceImplementation_gt: String
-  serviceImplementation_gte: String
-  serviceImplementation_contains: String
-  serviceImplementation_not_contains: String
-  serviceImplementation_starts_with: String
-  serviceImplementation_not_starts_with: String
-  serviceImplementation_ends_with: String
-  serviceImplementation_not_ends_with: String
   serviceDescription: String
   serviceDescription_not: String
   serviceDescription_in: [String!]
@@ -380,6 +380,7 @@ enum AgentType {
 
 input AgentUpdateDataInput {
   type: AgentType
+  implementation: String
   owner: ID
   createdBy: ID
   updatedBy: ID
@@ -392,13 +393,13 @@ input AgentUpdateDataInput {
   profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
-  serviceImplementation: String
   serviceDescription: String
   inboxDescription: String
 }
 
 input AgentUpdateInput {
   type: AgentType
+  implementation: String
   owner: ID
   createdBy: ID
   updatedBy: ID
@@ -411,13 +412,13 @@ input AgentUpdateInput {
   profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
-  serviceImplementation: String
   serviceDescription: String
   inboxDescription: String
 }
 
 input AgentUpdateManyDataInput {
   type: AgentType
+  implementation: String
   owner: ID
   createdBy: ID
   updatedBy: ID
@@ -429,7 +430,6 @@ input AgentUpdateManyDataInput {
   profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
-  serviceImplementation: String
   serviceDescription: String
   inboxDescription: String
 }
@@ -448,6 +448,7 @@ input AgentUpdateManyInput {
 
 input AgentUpdateManyMutationInput {
   type: AgentType
+  implementation: String
   owner: ID
   createdBy: ID
   updatedBy: ID
@@ -459,7 +460,6 @@ input AgentUpdateManyMutationInput {
   profileJobTitle: String
   profileBanner: String
   profileType: ProfileType
-  serviceImplementation: String
   serviceDescription: String
   inboxDescription: String
 }
@@ -511,6 +511,20 @@ input AgentWhereInput {
   type_not: AgentType
   type_in: [AgentType!]
   type_not_in: [AgentType!]
+  implementation: String
+  implementation_not: String
+  implementation_in: [String!]
+  implementation_not_in: [String!]
+  implementation_lt: String
+  implementation_lte: String
+  implementation_gt: String
+  implementation_gte: String
+  implementation_contains: String
+  implementation_not_contains: String
+  implementation_starts_with: String
+  implementation_not_starts_with: String
+  implementation_ends_with: String
+  implementation_not_ends_with: String
   owner: ID
   owner_not: ID
   owner_in: [ID!]
@@ -662,20 +676,6 @@ input AgentWhereInput {
   profileType_not: ProfileType
   profileType_in: [ProfileType!]
   profileType_not_in: [ProfileType!]
-  serviceImplementation: String
-  serviceImplementation_not: String
-  serviceImplementation_in: [String!]
-  serviceImplementation_not_in: [String!]
-  serviceImplementation_lt: String
-  serviceImplementation_lte: String
-  serviceImplementation_gt: String
-  serviceImplementation_gte: String
-  serviceImplementation_contains: String
-  serviceImplementation_not_contains: String
-  serviceImplementation_starts_with: String
-  serviceImplementation_not_starts_with: String
-  serviceImplementation_ends_with: String
-  serviceImplementation_not_ends_with: String
   serviceDescription: String
   serviceDescription_not: String
   serviceDescription_in: [String!]
