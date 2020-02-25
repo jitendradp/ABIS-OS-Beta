@@ -3,43 +3,8 @@
      fxLayoutAlign="center"
      fxLayoutGap="0px"
      fxLayoutGap.xs="0">
-  <div fxFlex='auto' fxFlex.gt-md='25' fxFlex.gt-sm='50'>
+  <div fxFlex='auto' fxFlex.gt-md='25' fxFlex.gt-sm='50' style="background:white; padding:15px;">
     <app-whitespace></app-whitespace>
-    <app-content>
-      <mat-card style="border-radius: 0;">
-        <app-content>
-          <mat-card-header>
-            <app-logo mat-card-avatar
-                      [url]="'./assets/logos/abis-logo.png'"></app-logo>
-            <mat-card-title>
-              ABIS Analytics Cloud
-            </mat-card-title>
-            <mat-card-subtitle>Connecting data, people and AI</mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
-            <mat-form-field class="full-width">
-              <input matInput type="email" placeholder="Email" #email maxlength="64">
-            </mat-form-field>
-            <mat-form-field class="full-width">
-              <input matInput type="password" placeholder="Password" #password maxlength="128">
-            </mat-form-field>
-          </mat-card-content>
-          <mat-card-actions>
-            <app-button (click)="login()" [text]="'Confirm'"></app-button>
-          </mat-card-actions>
-          <mat-hint align="center">Forgot your password? Reset your password
-            <a routerLink="/reset-password" class="noLinkUnderline">here</a>.
-          </mat-hint>
-        </app-content>
-      </mat-card>
-    </app-content>
+    <app-service-dialog [serviceAgentId]="loginServiceId"></app-service-dialog>
   </div>
 </div>
-
-
-
-
-
-
-
-

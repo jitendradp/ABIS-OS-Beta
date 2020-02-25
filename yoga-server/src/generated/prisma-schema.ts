@@ -5,6 +5,7 @@
 export const typeDefs = /* GraphQL */ `type Agent {
   id: ID!
   type: AgentType!
+  implementation: String!
   owner: ID!
   createdBy: ID!
   createdAt: DateTime!
@@ -32,6 +33,7 @@ type AgentConnection {
 input AgentCreateInput {
   id: ID
   type: AgentType!
+  implementation: String!
   owner: ID!
   createdBy: ID!
   updatedBy: ID
@@ -68,6 +70,8 @@ enum AgentOrderByInput {
   id_DESC
   type_ASC
   type_DESC
+  implementation_ASC
+  implementation_DESC
   owner_ASC
   owner_DESC
   createdBy_ASC
@@ -103,6 +107,7 @@ enum AgentOrderByInput {
 type AgentPreviousValues {
   id: ID!
   type: AgentType!
+  implementation: String!
   owner: ID!
   createdBy: ID!
   createdAt: DateTime!
@@ -139,6 +144,20 @@ input AgentScalarWhereInput {
   type_not: AgentType
   type_in: [AgentType!]
   type_not_in: [AgentType!]
+  implementation: String
+  implementation_not: String
+  implementation_in: [String!]
+  implementation_not_in: [String!]
+  implementation_lt: String
+  implementation_lte: String
+  implementation_gt: String
+  implementation_gte: String
+  implementation_contains: String
+  implementation_not_contains: String
+  implementation_starts_with: String
+  implementation_not_starts_with: String
+  implementation_ends_with: String
+  implementation_not_ends_with: String
   owner: ID
   owner_not: ID
   owner_in: [ID!]
@@ -361,6 +380,7 @@ enum AgentType {
 
 input AgentUpdateDataInput {
   type: AgentType
+  implementation: String
   owner: ID
   createdBy: ID
   updatedBy: ID
@@ -379,6 +399,7 @@ input AgentUpdateDataInput {
 
 input AgentUpdateInput {
   type: AgentType
+  implementation: String
   owner: ID
   createdBy: ID
   updatedBy: ID
@@ -397,6 +418,7 @@ input AgentUpdateInput {
 
 input AgentUpdateManyDataInput {
   type: AgentType
+  implementation: String
   owner: ID
   createdBy: ID
   updatedBy: ID
@@ -426,6 +448,7 @@ input AgentUpdateManyInput {
 
 input AgentUpdateManyMutationInput {
   type: AgentType
+  implementation: String
   owner: ID
   createdBy: ID
   updatedBy: ID
@@ -488,6 +511,20 @@ input AgentWhereInput {
   type_not: AgentType
   type_in: [AgentType!]
   type_not_in: [AgentType!]
+  implementation: String
+  implementation_not: String
+  implementation_in: [String!]
+  implementation_not_in: [String!]
+  implementation_lt: String
+  implementation_lte: String
+  implementation_gt: String
+  implementation_gte: String
+  implementation_contains: String
+  implementation_not_contains: String
+  implementation_starts_with: String
+  implementation_not_starts_with: String
+  implementation_ends_with: String
+  implementation_not_ends_with: String
   owner: ID
   owner_not: ID
   owner_in: [ID!]
@@ -726,6 +763,7 @@ type ContentEncoding {
   updatedAt: DateTime
   name: String!
   charset: String!
+  language: String
   data: String
 }
 
@@ -743,6 +781,7 @@ input ContentEncodingCreateInput {
   updatedBy: ID
   name: String!
   charset: String!
+  language: String
   data: String
 }
 
@@ -770,6 +809,8 @@ enum ContentEncodingOrderByInput {
   name_DESC
   charset_ASC
   charset_DESC
+  language_ASC
+  language_DESC
   data_ASC
   data_DESC
 }
@@ -784,6 +825,7 @@ type ContentEncodingPreviousValues {
   updatedAt: DateTime
   name: String!
   charset: String!
+  language: String
   data: String
 }
 
@@ -812,6 +854,7 @@ input ContentEncodingUpdateInput {
   updatedBy: ID
   name: String
   charset: String
+  language: String
   data: String
 }
 
@@ -822,6 +865,7 @@ input ContentEncodingUpdateManyMutationInput {
   updatedBy: ID
   name: String
   charset: String
+  language: String
   data: String
 }
 
@@ -930,6 +974,20 @@ input ContentEncodingWhereInput {
   charset_not_starts_with: String
   charset_ends_with: String
   charset_not_ends_with: String
+  language: String
+  language_not: String
+  language_in: [String!]
+  language_not_in: [String!]
+  language_lt: String
+  language_lte: String
+  language_gt: String
+  language_gte: String
+  language_contains: String
+  language_not_contains: String
+  language_starts_with: String
+  language_not_starts_with: String
+  language_ends_with: String
+  language_not_ends_with: String
   data: String
   data_not: String
   data_in: [String!]
