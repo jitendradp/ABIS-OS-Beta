@@ -19,31 +19,7 @@ _All persisted types are listed here._
 ## yoga-server
 This node application provides the main api endpoint. It interfaces with the prisma server via the generated code from the "/prisma/generated" folder. It itself provides a GraphQL API via http to the frontend. The types of the api-schema are mostly similar to the ones of the persistence layer. 
 
-To run the server you will need to provide a configuration file (/yoga-serverr/src/config.ts) of the following form:
-```
-export const config = {
-    env: {
-        systemId: "",
-        domain: "local.abis-cloud.com",
-        systemUser: "system@ce4b2352-7333-4820-9415-35a97b554d49.abis",
-        anonymousUser: "anonymous@ce4b2352-7333-4820-9415-35a97b554d49.abis",
-        signupAgentName: "SignupService"
-    },
-    auth: {
-        sessionTimeout: 1000 * 60 * 60 * 24, // one day session timeout
-        tokenLength: 64,                     // The length of the auth- and csrf-tokens in characters.
-        bcryptRounds: 15,                    // The bcrypt salt round count
-        normalizedResponseTime: 500          // Some methods like "signup" and "login" will delay the response to at least this configured time in ms.
-    },
-    mailer: {
-        smtpSender: "",
-        smtpUser: "",
-        smtpPassword: "",
-        smtpServer: ""
-    }
-};
-``` 
-then compile the code with ``tsc ``  run the result on the command line using: ```node dist/index.js```.
+To run the server, compile the code with ``tsc `` and run the result on the command line using: ```node dist/index.js```.
 
 **Important directories and files:**
 * Api schema definition (/yoga-server/schema.graphql)
