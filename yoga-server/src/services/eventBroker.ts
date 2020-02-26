@@ -1,5 +1,4 @@
 import {Observable} from "rxjs";
-import {Observer} from "rxjs/src/internal/types";
 import {Helper} from "../helper/helper";
 
 export class Topics {
@@ -108,7 +107,7 @@ export class Topic<T> {
     }
     private _observable: Observable<T>;
 
-    private _observer:Observer<T>;
+    private _observer:any;
 
     constructor(namespace:string, name:string) {
         this._namespace = namespace;

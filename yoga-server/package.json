@@ -16,8 +16,7 @@
     "rxjs": "^6.5.4"
   },
   "devDependencies": {
-    "prisma": "1.34.10",
     "ts-node": "7.0.1",
-    "typescript": "^3.7.5"
+    "typescript": "^3.8.2"
   }
 }
