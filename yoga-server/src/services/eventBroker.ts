@@ -1,14 +1,10 @@
 import {Observable} from "rxjs";
-import {Observer} from "rxjs/src/internal/types";
 import {Helper} from "../helper/helper";
 
 export class Topics {
     public static readonly NewChannel = "abis.system.new-channel";
     public static readonly NewEntry = "abis.system.new-entry";
 }
-
-// TODO: Implement a conversion from Observable<T> to AsyncIterator<T>
-// https://itnext.io/understand-async-iterators-665259680044
 
 export class EventBroker {
 
@@ -108,7 +104,7 @@ export class Topic<T> {
     }
     private _observable: Observable<T>;
 
-    private _observer:Observer<T>;
+    private _observer:any;
 
     constructor(namespace:string, name:string) {
         this._namespace = namespace;
