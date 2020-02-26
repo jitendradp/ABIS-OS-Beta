@@ -489,6 +489,7 @@ type ContentEncoding {
 
     name: String!
     charset: String!
+    language:String
     data:String
 }
 
@@ -505,8 +506,7 @@ enum EncodingType {
 }
 
 type NewEntrySubscription {
-    id: ID!
-    name: String
+    newEntry: Entry!
 }
 
 type Account {
@@ -577,7 +577,7 @@ type Mutation {
     #login(email:String! password:String!) : ActionResponse!
     #logout(csrfToken:String!) : ActionResponse!
 
-    #verifySession(csrfToken:String!) : ActionResponse!
+    verifySession(csrfToken:String!) : ActionResponse!
 
     #
     # Agents
@@ -635,5 +635,6 @@ type Mutation {
 }
 
 type Subscription {
-    newEntry: NewEntrySubscription!
+    newEntry(csrfToken:String!): Entry #TODO: Let the client request a special subscriptionToken first and don't use the csrfToken
+    newChannel(csrfToken:String!): Channel #TODO: Let the client request a special subscriptionToken first and don't use the csrfToken
 }

@@ -1,4 +1,13 @@
-mutation createeSession($clientTime:String!) {
+mutation verifySession($csrfToken:String!) {
+  verifySession(csrfToken: $csrfToken) {
+    success
+    code
+    message
+    data
+  }
+}
+
+mutation createSession($clientTime:String!) {
   createSession(clientTime: $clientTime) {
     success
     code
