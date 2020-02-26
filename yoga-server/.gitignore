@@ -5,5 +5,3 @@ node_modules
 .idea
 .vscode
 *.log
-src/config.ts
-/src/config.ts

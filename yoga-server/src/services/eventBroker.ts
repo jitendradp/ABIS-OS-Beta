@@ -6,9 +6,6 @@ export class Topics {
     public static readonly NewEntry = "abis.system.new-entry";
 }
 
-// TODO: Implement a conversion from Observable<T> to AsyncIterator<T>
-// https://itnext.io/understand-async-iterators-665259680044
-
 export class EventBroker {
 
     public static get instance() {
