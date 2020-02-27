@@ -9,7 +9,97 @@ cache:
         - node_modules/
         - dist/
 #######################################################################################################################################################################################
+stages:
+    - erste
+    - alltogether
 #######################################################################################################################################################################################
+
+frontend:
+    image: gdhami/dind-compose:latest
+    stage: erste
+    services:
+        - docker:19.03.4-dind
+    before_script:
+    #- docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $DOCKER_ENV_CI_REGISTRY
+    script:
+        - docker build frontend
+        #db -t $DOCKER_ENV_CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_JOB_NAME-$CI_COMMIT_REF_SLUG
+        #- docker push $DOCKER_ENV_CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_JOB_NAME-$CI_COMMIT_REF_SLUG
+
+    only:
+        refs:
+            - master
+        changes:
+            #- .gitlab-ci.yml
+            - frontend/**/*
+    tags:
+        - docker
+
+#######################################################################################################################################################################################
+#######################################################################################################################################################################################
+prisma:
+    image: gdhami/dind-compose:latest
+    stage: erste
+    services:
+        - docker:19.03.4-dind
+    before_script:
+    #- docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $DOCKER_ENV_CI_REGISTRY
+    script:
+        - docker build prisma
+        #build db -t $DOCKER_ENV_CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_JOB_NAME-$CI_COMMIT_REF_SLUG
+        #- docker push $DOCKER_ENV_CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_JOB_NAME-$CI_COMMIT_REF_SLUG
+
+    only:
+        refs:
+            - master
+        changes:
+            #- .gitlab-ci.yml
+            - prisma/**/*
+    tags:
+        - docker
+#######################################################################################################################################################################################
+#######################################################################################################################################################################################
+yoga:
+    image: gdhami/dind-compose:latest
+    stage: erste
+    services:
+        - docker:19.03.4-dind
+    before_script:
+    #- docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $DOCKER_ENV_CI_REGISTRY
+    script:
+        - docker build yoga-server
+        #db -t $DOCKER_ENV_CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_JOB_NAME-$CI_COMMIT_REF_SLUG
+        #- docker push $DOCKER_ENV_CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_JOB_NAME-$CI_COMMIT_REF_SLUG
+
+    only:
+        refs:
+            - master
+        changes:
+            #- .gitlab-ci.yml
+            - yoga-server/**/*
+    tags:
+        - docker
+#######################################################################################################################################################################################
+#######################################################################################################################################################################################
+compose:
+    image: gdhami/dind-compose:latest
+    stage: alltogether
+    services:
+        - docker:19.03.4-dind
+    before_script:
+    #- docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $DOCKER_ENV_CI_REGISTRY
+    script:
+        - docker-compose up
+        #build db -t $DOCKER_ENV_CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_JOB_NAME-$CI_COMMIT_REF_SLUG
+        #- docker push $DOCKER_ENV_CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_JOB_NAME-$CI_COMMIT_REF_SLUG
+    only:
+        refs:
+            - master
+        #changes:
+        #- .gitlab-ci.yml
+        #- prisma/**/*
+    tags:
+        - docker
 
 
 # variables:
@@ -29,111 +119,3 @@ cache:
 #    url: https://$APP_URL
 #   only:
 #    - master
-
-
-
-#######################################################################################################################################################################################
-#######################################################################################################################################################################################
-
-stages:
-    #- prisma
-    #- yoga
-    #- frontend
-     - erste
-    # - alltogether
-    #- build
-    #- test
-    #- package
-    #- dockerize
-    #- deploy_review
-    #- deploy_prod
-
-
-compose:
-    image: gdhami/dind-compose:latest
-    stage: alltogether
-    services:
-        - docker:19.03.4-dind
-    before_script:
-    #- docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $DOCKER_ENV_CI_REGISTRY
-    script:
-        - docker-compose up
-        #build db -t $DOCKER_ENV_CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_JOB_NAME-$CI_COMMIT_REF_SLUG
-        #- docker push $DOCKER_ENV_CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_JOB_NAME-$CI_COMMIT_REF_SLUG
-
-    only:
-        refs:
-            - master
-        changes:
-        #- .gitlab-ci.yml
-        #- prisma/**/*
-    tags:
-        - docker
-
-
-#######################################################################################################################################################################################
-#######################################################################################################################################################################################
-prisma:
-    image: gdhami/dind-compose:latest
-    stage: erste
-    services:
-        - docker:19.03.4-dind
-    before_script:
-            #- docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $DOCKER_ENV_CI_REGISTRY
-    script:
-        - docker build prisma
-        #build db -t $DOCKER_ENV_CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_JOB_NAME-$CI_COMMIT_REF_SLUG
-        #- docker push $DOCKER_ENV_CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_JOB_NAME-$CI_COMMIT_REF_SLUG
-
-    only:
-        refs:
-            - master
-        changes:
-          #- .gitlab-ci.yml
-          - prisma/**/*
-    tags: 
-        - docker
-#######################################################################################################################################################################################
-#######################################################################################################################################################################################
-yoga:
-    image: gdhami/dind-compose:latest
-    stage: erste
-    services:
-        - docker:19.03.4-dind
-    before_script:
-            #- docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $DOCKER_ENV_CI_REGISTRY
-    script:
-        - docker build yoga-server
-        #db -t $DOCKER_ENV_CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_JOB_NAME-$CI_COMMIT_REF_SLUG
-        #- docker push $DOCKER_ENV_CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_JOB_NAME-$CI_COMMIT_REF_SLUG
-
-    only:
-        refs:
-            - master
-        changes:
-          #- .gitlab-ci.yml
-          - yoga-server/**/*
-    tags: 
-        - docker
-#######################################################################################################################################################################################
-#######################################################################################################################################################################################
-frontend:
-    image: gdhami/dind-compose:latest
-    stage: erste
-    services:
-        - docker:19.03.4-dind
-    before_script:
-            #- docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $DOCKER_ENV_CI_REGISTRY
-    script:
-        - docker build frontend
-        #db -t $DOCKER_ENV_CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_JOB_NAME-$CI_COMMIT_REF_SLUG
-        #- docker push $DOCKER_ENV_CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_JOB_NAME-$CI_COMMIT_REF_SLUG
-
-    only:
-        refs:
-            - master
-        changes:
-          #- .gitlab-ci.yml
-          - frontend/**/*
-    tags: 
-        - docker
