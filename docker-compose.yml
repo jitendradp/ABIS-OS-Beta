@@ -4,14 +4,18 @@ networks:
     driver: bridge
 services:
 
-#  frontend:
-#    restart: always
-#    build:
-#      context: frontend
-#    ports:
-#      - 80:80
-#    networks:
-#      - abis
+  frontend:
+    container_name: frontend
+    restart: always
+    depends_on:
+      - yoga-server
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    networks:
+      - abis
 
   yoga-server:
     container_name: yoga-server
@@ -60,7 +64,7 @@ services:
     volumes:
       - ./pgadmin:/root/.pgadmin
     ports:
-      - "80:80"
+      - "8080:8080"
 
     networks:
       - abis
