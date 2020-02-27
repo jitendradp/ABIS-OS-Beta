@@ -30,6 +30,7 @@ export class GraphQLConfigModule {
 
     const link = split(
       ({ query }) => {
+        // @ts-ignore
         const { kind, operation } = getMainDefinition(query);
         return kind === 'OperationDefinition' && operation === 'subscription';
       },

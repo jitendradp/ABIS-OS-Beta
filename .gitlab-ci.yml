@@ -40,7 +40,7 @@ stages:
     #- yoga
     #- frontend
      - erste
-     - alltogether
+    # - alltogether
     #- build
     #- test
     #- package
@@ -65,8 +65,8 @@ compose:
         refs:
             - master
         changes:
-        - .gitlab-ci.yml
-        - prisma/**/*
+        #- .gitlab-ci.yml
+        #- prisma/**/*
     tags:
         - docker
 
@@ -90,7 +90,7 @@ prisma:
             - master
         changes:
           #- .gitlab-ci.yml
-          #- prisma/**/*
+          - prisma/**/*
     tags: 
         - docker
 #######################################################################################################################################################################################
