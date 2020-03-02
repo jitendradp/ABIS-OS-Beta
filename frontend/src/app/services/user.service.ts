@@ -22,8 +22,6 @@ import {
 import {ClientStateService} from "./client-state.service";
 import {Logger, LoggerService} from "./logger.service";
 import {SessionCreated} from "../actions/user/SessionCreated";
-import {EntryCreateInput} from "../../../../yoga-server/src/generated";
-import {EventBroker, Topics} from "../../../../yoga-server/src/services/eventBroker";
 import {ApolloQueryResult} from "apollo-client";
 
 @Injectable({
@@ -180,6 +178,7 @@ export class DuplexChannel {
 
      // if no reverse channel exists, wait for one to appear
     if (!this._reverseChannelId) {
+      /*
       EventBroker.instance.tryGetTopic(this.fromAgent, Topics.NewChannel).observable
         .subscribe(newChannel => {
           let channel = <Channel>newChannel;
@@ -189,6 +188,7 @@ export class DuplexChannel {
             this._reverseChannelId = channel.id;
           }
         });
+       */
     }
   }
 
