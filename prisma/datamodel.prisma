@@ -283,6 +283,7 @@ type Tag {
     id: ID! @id @unique
     type: String!
 
+    isPrivate: Boolean!
     owner: ID!
 
     createdBy: ID!

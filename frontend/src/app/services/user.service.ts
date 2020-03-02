@@ -9,11 +9,22 @@ import {
   ContentEncodingsGQL,
   MyChannelsGQL,
   GetSystemServicesGQL,
-  Service, CreateSessionGQL, VerifySessionGQL, NewEntryGQL, NewChannelGQL,
+  Service,
+  CreateSessionGQL,
+  VerifySessionGQL,
+  NewEntryGQL,
+  NewChannelGQL,
+  CreateChannelGQL,
+  Channel,
+  CreateEntryGQL,
+  GetEntriesGQL, Entry, GetEntriesQuery, CreateEntryInput,
 } from "../../generated/abis-api";
 import {ClientStateService} from "./client-state.service";
 import {Logger, LoggerService} from "./logger.service";
 import {SessionCreated} from "../actions/user/SessionCreated";
+import {EntryCreateInput} from "../../../../yoga-server/src/generated";
+import {EventBroker, Topics} from "../../../../yoga-server/src/services/eventBroker";
+import {ApolloQueryResult} from "apollo-client";
 
 @Injectable({
   providedIn: 'root'
@@ -122,17 +133,115 @@ export class UserService {
 
     this.newEntrySubscription.subscribe({csrfToken: this.csrfToken})
       .subscribe(newEntry => {
-        console.log("NOTIFICATION: ", newEntry);
+        console.log("NEW ENTRY: ", newEntry);
       });
 
     this.newChannelSubscription.subscribe({csrfToken: this.csrfToken})
       .subscribe(newEntry => {
-        console.log("NOTIFICATION: ", newEntry);
+        console.log("NEW CHANNEL: ", newEntry);
       });
   }
 
   public async myChannels() {
     let a = await this.myChannelsApi.fetch({csrfToken: this.csrfToken}).toPromise();
     return a.data.myChannels;
+  }
+}
+
+export class DuplexChannel {
+
+  public fromAgent:string;
+  public toAgent:string;
+
+  private _userService:UserService;
+  private _createChannelApi: CreateChannelGQL;
+  private _createEntryApi: CreateEntryGQL;
+  private _getEntriesApi: GetEntriesGQL;
+
+  private _channelId:string;
+  private _reverseChannelId:string;
+
+  constructor(userService:UserService
+              , createChannelApi: CreateChannelGQL
+              , createEntryApi: CreateEntryGQL
+              , getEntriesApi: GetEntriesGQL
+              , myAgent:string
+              , otherAgent:string) {
+    this._createChannelApi = createChannelApi;
+    this._createEntryApi = createEntryApi;
+    this._getEntriesApi = getEntriesApi;
+    this._userService = userService;
+    this.fromAgent = myAgent;
+    this.toAgent = otherAgent;
+  }
+
+  public async init() {
+    this._channelId = await this.findOrCreateChannel();
+
+     // if no reverse channel exists, wait for one to appear
+    if (!this._reverseChannelId) {
+      EventBroker.instance.tryGetTopic(this.fromAgent, Topics.NewChannel).observable
+        .subscribe(newChannel => {
+          let channel = <Channel>newChannel;
+          if (channel.receiver.id == this.fromAgent
+            && channel.owner == this.toAgent) {
+            // The reverse channel was created
+            this._reverseChannelId = channel.id;
+          }
+        });
+    }
+  }
+
+  public async read(dateFrom:Date, dateTo:Date) : Promise<Entry[]> {
+    const channelEntries = this._getEntriesApi.fetch({
+      csrfToken: this._userService.csrfToken,
+      from: dateFrom,
+      to: dateTo,
+      groupId: this._channelId
+    }).toPromise();
+
+    const reverseChannelEntries:Promise<ApolloQueryResult<GetEntriesQuery>>  = this._getEntriesApi.fetch({
+      csrfToken: this._userService.csrfToken,
+      from: dateFrom,
+      to: dateTo,
+      groupId: this._reverseChannelId
+    }).toPromise();
+
+    const results = await Promise.all([channelEntries, reverseChannelEntries]);
+    const allResults:any = results.reduce((a:any, b:any) => a.concat(b));
+
+    return <Entry[]>allResults.sort(o => o.createdAt);
+  }
+
+  public async write(entry:CreateEntryInput) {
+    const newEntry =  await this._createEntryApi.mutate({
+      createEntryInput: entry,
+      csrfToken: this._userService.csrfToken
+    }).toPromise();
+  }
+
+  /**
+   * Creates a new Channel to the SignupService-Agent and returns its ID.
+   */
+  private async findOrCreateChannel(): Promise<string> {
+    const myChannels = await this._userService.myChannels();
+    const existingChannel = myChannels.find(o => o.receiver.id == this.toAgent);
+    if (existingChannel) {
+      console.log(`Found existing channel "${existingChannel.id}" from "${this.fromAgent}" to "${this.toAgent}".`);
+      return existingChannel.id;
+    }
+
+    if (existingChannel.reverse) {
+      console.log(`Found existing reverse channel "${existingChannel.reverse.id}" from "${this.toAgent}" to "${this.fromAgent}".`)
+      this._reverseChannelId = existingChannel.reverse.id;
+    }
+
+    const channel = await this._createChannelApi.mutate({
+      csrfToken: this._userService.csrfToken,
+      toAgentId: this.toAgent
+    }).toPromise();
+
+    console.log(`Created a new channel from "${this.fromAgent}" to "${this.toAgent}".`);
+    return channel.data.createChannel.id;
   }
 }
