@@ -15,7 +15,8 @@ import { getMainDefinition } from 'apollo-utilities';
 export class GraphQLConfigModule {
   constructor(apollo: Apollo, private httpClient: HttpClient) {
     const httpLink = new HttpLink(httpClient).create({
-      uri: 'http://local.abis-cloud.com:4000'
+      uri: 'http://local.abis-cloud.com:4000',
+      withCredentials: true
     });
 
     const subscriptionLink = new WebSocketLink({
