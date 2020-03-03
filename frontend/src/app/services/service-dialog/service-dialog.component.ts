@@ -25,6 +25,8 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
   private _channelId:string;
   private _reverseChannelId:string;
 
+  response:string;
+
   constructor(private _formBuilder: FormBuilder
     , private loggerService: LoggerService
     , private clientState: ClientStateService
@@ -36,6 +38,9 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
     , private newEntrySubscription: NewEntryGQL
     , private newChannelSubscription: NewChannelGQL
     , private actionDispatcher: ActionDispatcherService) {
+    this.contentEncoding = this.userService.contentEncodings.find(o => o.name == "Signup");
+    this.validationErrorEncoding = this.userService.contentEncodings.find(o => o.name == "ValidationError");
+    this.continuationEncoding = this.userService.contentEncodings.find(o => o.name == "Continuation");
   }
 
   @Input()
@@ -46,8 +51,9 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
   };
   private _isInitialized:boolean = false;
 
-  channelId:string;
   contentEncoding:ContentEncoding;
+  continuationEncoding:ContentEncoding;
+  validationErrorEncoding:ContentEncoding;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes["serviceAgentId"]) {
@@ -74,6 +80,12 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
     this.newEntrySubscription.subscribe({csrfToken: this.userService.csrfToken})
       .subscribe(newEntry => {
         console.log("NEW ENTRY: ", newEntry);
+        if (newEntry.data.newEntry.contentEncoding.id == this.validationErrorEncoding.id) {
+          this.response = "Validation Error";
+        } else if (newEntry.data.newEntry.contentEncoding.id == this.continuationEncoding.id) {
+          this.response = "";
+          // Continue
+        }
       });
 
     this.newChannelSubscription.subscribe({csrfToken: this.userService.csrfToken})
@@ -129,36 +141,41 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
     if (sorted.length == 0) {
       return;
     }
-    let last = sorted[sorted.length - 1];
-    this.contentEncoding = this.userService.contentEncodings.find(o => o.id == last.contentEncoding.id);
-    if (this.contentEncoding) {
-      this.formSchema = JSON.parse(this.contentEncoding.data);
+    //let last = sorted[sorted.length - 1];
+    let schemaEntries = sorted.filter(o => o.contentEncoding.id == this.contentEncoding.id);
+    let errorEntries = sorted.filter(o => o.contentEncoding.id == this.validationErrorEncoding.id);
+    let continuationEntries = sorted.filter(o => o.contentEncoding.id == this.continuationEncoding.id);
+
+    if (errorEntries.length > 0 && schemaEntries.length > 0) {
+      if (continuationEntries[continuationEntries.length - 1].createdAt > schemaEntries[schemaEntries.length - 1].createdAt
+        && continuationEntries[continuationEntries.length - 1].createdAt > errorEntries[errorEntries.length - 1].createdAt) {
+        // Continuation entry was more recent -> Continue to destination
+        this.response = "";
+        console.log("Done. Received Continuation.")
+      } else if (errorEntries[errorEntries.length - 1].createdAt > schemaEntries[schemaEntries.length - 1].createdAt) {
+        // Error was more recent
+        this.response = "Validation Error";
+      } else if (errorEntries[errorEntries.length - 1].createdAt < schemaEntries[schemaEntries.length - 1].createdAt) {
+        // Schema entry was more recent
+        this.response = "";
+      } else {
+        // tie
+      }
     }
-  }
 
-  private async findContentEncoding() {
-    // Look for schema entries, extract the contentEncoding and create a form from it.
-    let entries = await this.getEntries.fetch({
-      csrfToken: this.userService.csrfToken,
-      groupId: this.channelId
-    }).toPromise();
-
-    let schemaEntry = entries.data.getEntries.find(o => o.type == "Empty" && o.contentEncoding);
-    if (!schemaEntry) {
-      console.log("Requested entries with type == 'Empty' and contentEncoding != null but found nothing in the channel.");
-      return;
-      //throw new Error("Requested entries with type == 'Empty' and contentEncoding != null but found nothing in the channel.");
+    if (schemaEntries.length > 0) {
+      this.contentEncoding = this.userService.contentEncodings.find(o => o.id == schemaEntries[schemaEntries.length - 1].contentEncoding.id);
+      if (this.contentEncoding) {
+        this.formSchema = JSON.parse(this.contentEncoding.data);
+      }
     }
-
-    this.contentEncoding = this.userService.contentEncodings.find(o => o.id == schemaEntry.contentEncoding.id);
-    this.formSchema = JSON.parse(schemaEntry.contentEncoding.data);
   }
 
   async formSubmit($event: any) {
     this.createEntryApi.mutate({
       csrfToken: this.userService.csrfToken,
       createEntryInput: {
-        roomId: this.channelId,
+        roomId: this._channelId,
         type: EntryType.Json,
         contentEncoding:this.contentEncoding.id,
         content: $event

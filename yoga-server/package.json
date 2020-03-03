@@ -8,6 +8,7 @@
     "@types/cookie": "^0.3.3",
     "@types/morgan": "^1.7.37",
     "@types/nodemailer": "^6.4.0",
+    "ajv": "^6.12.0",
     "bcrypt": "^3.0.7",
     "graphql-yoga": "1.18.3",
     "morgan": "^1.9.1",

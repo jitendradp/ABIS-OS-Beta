@@ -8,14 +8,30 @@ export class ContentEncodings {
         name: "Signup",
         type: "JsonSchema",
         data: JSON.stringify({
-            Signup: {
+            Signup:{
                 type: "object",
                 properties: {
-                    "first_name": {"type": "string"},
-                    "last_name": {"type": "string"},
-                    "email": {"type": "string"},
-                    "password": {"type": "string"},
-                    "passwordConfirmation": {"type": "string"}
+                    "first_name": {
+                        "type": "string",
+                        "minLength": 3
+
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "minLength": 3
+                    },
+                    "email": {
+                        "type": "string",
+                        "minLength": 6
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 8
+                    },
+                    "passwordConfirmation": {
+                        "type": "string",
+                        "minLength": 8
+                    }
                 },
                 required: [
                     "first_name",
@@ -66,5 +82,23 @@ export class ContentEncodings {
                 ]
             }
         })
+    };
+
+    public static ValidationError : ContentEncodingCreateInput = {
+        createdBy: "",
+        maintainer: "",
+        charset: "utf-8",
+        name: "ValidationError",
+        type: "Custom",
+        data: null
+    };
+
+    public static Continuation : ContentEncodingCreateInput = {
+        createdBy: "",
+        maintainer: "",
+        charset: "utf-8",
+        name: "Continuation",
+        type: "Custom",
+        data: null
     };
 }

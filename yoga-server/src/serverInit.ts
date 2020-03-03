@@ -40,6 +40,12 @@ export class ServerInit {
     static get loginContentEncoding(): ContentEncoding {
         return this._loginContentEncoding;
     }
+    static get validationErrorContentEncoding(): ContentEncoding {
+        return this._validationErrorContentEncoding;
+    }
+    static get continuationContentEncoding(): ContentEncoding {
+        return this._continuationContentEncoding;
+    }
     private static _systemUser:User;
     private static _anonymousUser:User;
     private static _signupService:Agent;
@@ -49,6 +55,8 @@ export class ServerInit {
     private static _signupContentEncoding: ContentEncoding;
     private static _verifyEmailContentEncoding: ContentEncoding;
     private static _loginContentEncoding: ContentEncoding;
+    private static _validationErrorContentEncoding: ContentEncoding;
+    private static _continuationContentEncoding: ContentEncoding;
 
     private static _serviceHost = new AgentHost(EventBroker.instance);
 
@@ -256,6 +264,22 @@ export class ServerInit {
             ServerInit._loginContentEncoding = await prisma.createContentEncoding(ContentEncodings.Login);
         } else {
             ServerInit._loginContentEncoding = existingLoginContentEncoding[0];
+        }
+
+        const existingValidationErrorContentEncoding = await  prisma.contentEncodings({where:{name:"ValidationError"}});
+        if (existingValidationErrorContentEncoding.length == 0) {
+            Helper.log(`Creating instance system ContentEncoding: ValidationError/Custom`);
+            ServerInit._validationErrorContentEncoding = await prisma.createContentEncoding(ContentEncodings.ValidationError);
+        } else {
+            ServerInit._validationErrorContentEncoding = existingValidationErrorContentEncoding[0];
+        }
+
+        const existingContinuationContentEncoding = await  prisma.contentEncodings({where:{name:"Continuation"}});
+        if (existingContinuationContentEncoding.length == 0) {
+            Helper.log(`Creating instance system ContentEncoding: Continuation/Custom`);
+            ServerInit._continuationContentEncoding = await prisma.createContentEncoding(ContentEncodings.Continuation);
+        } else {
+            ServerInit._continuationContentEncoding = existingContinuationContentEncoding[0];
         }
     }
 }
