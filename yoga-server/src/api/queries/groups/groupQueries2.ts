@@ -4,7 +4,7 @@ import {MembershipQueries} from "../../../data/queries/memberships";
 import {EntryWhereInput, prisma} from "../../../generated";
 import {Helper} from "../../../helper/helper";
 import {ActionResponse} from "../../mutations/actionResponse";
-import {getTypesAndWhere} from "prisma-client-lib/dist/utils";
+// import {getTypesAndWhere} from "prisma-client-lib/dist/utils";
 import {AgentCanSee} from "../../../statements/agentCanSee";
 
 export class GroupQueries2 {
@@ -73,6 +73,7 @@ export class GroupQueries2 {
 
             return entries.map(async o => {
                 (<any>o).tagAggregate = [];
+                // @ts-ignore
                 (<any>o).contentEncoding = await prisma.contentEncoding({id:o.contentEncoding}) ?? "";
                 return o;
             });
