@@ -8,6 +8,7 @@ import { split } from 'apollo-link';
 
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
+import {DefaultOptions} from "apollo-client";
 
 @NgModule({
   exports: [HttpClientModule, ApolloModule, HttpLinkModule]
@@ -38,9 +39,21 @@ export class GraphQLConfigModule {
       httpLink
     );
 
+    const defaultOptions: DefaultOptions = {
+      watchQuery: {
+        fetchPolicy: 'no-cache',
+        errorPolicy: 'ignore',
+      },
+      query: {
+        fetchPolicy: 'no-cache',
+        errorPolicy: 'all',
+      },
+    };
+
     apollo.create({
       link,
-      cache: new InMemoryCache()
+      cache: new InMemoryCache(),
+      defaultOptions: defaultOptions
     });
   }
 }
