@@ -16,12 +16,26 @@ export class GroupQueries {
 
            let memberAgent = await prisma.membership({id:memberships[0].id}).member();
            (<any>o).receiver = memberAgent;
+
+           let reverseChannel = await prisma.groups({
+               where:{
+                   owner: memberAgent.id,
+                   memberships_every: {
+                       member:{
+                           id: agentId
+                       }
+                   }
+               }
+           });
+           if (reverseChannel.length == 1) {
+               (<any>o).reverse = reverseChannel[0];
+           }
         }
 
         return channels;
     }
 
-    public static async findRRoomsOfAgent(agentId: string): Promise<Group[]> {
+    public static async findRoomsOfAgent(agentId: string): Promise<Group[]> {
         return prisma.groups({where: {owner: agentId, type: "Room"}});
     }
 

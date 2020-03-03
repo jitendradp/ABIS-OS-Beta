@@ -28,6 +28,7 @@ export const mutations = {
         return <ActionResponse> {
             success: true,
             code: session.csrfToken,
+            data: anonymousProfile.id,
             message: "Store the value from the 'code' field in the localStorage and send it with every following request."
         };
     },

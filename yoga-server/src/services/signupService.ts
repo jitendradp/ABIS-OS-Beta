@@ -5,6 +5,7 @@ import {Helper} from "../helper/helper";
 import {NewEntry} from "./events/newEntry";
 import {AgentCreate} from "../data/mutations/agentCreate";
 import {ServerInit} from "../serverInit";
+import {Channel} from "../api/types/channel";
 
 export class SignupService extends Service {
 
@@ -21,21 +22,21 @@ export class SignupService extends Service {
         this._newEntry.observable.subscribe(this.onNewEntry);
     }
 
-    async onNewChannel(newChannel:NewChannel) {
+    async onNewChannel(newChannel:Channel) {
         Helper.log(`SignupService received a NewChannel event: ${JSON.stringify(newChannel)}`);
 
-        Helper.log(`Creating a reverse channel from '${newChannel.toAgentId}' to '${newChannel.fromAgentId}'.`);
+        Helper.log(`Creating a reverse channel from '${newChannel.receiver.id}' to '${newChannel.owner}'.`);
         const reverseChannel = await AgentCreate.channel(
-            newChannel.toAgentId,
-            newChannel.fromAgentId,
-            `${newChannel.toAgentId}->${newChannel.fromAgentId}`,
+            newChannel.receiver.id,
+            newChannel.owner,
+            `${newChannel.receiver.id}->${newChannel.owner}`,
             "channel.png");
 
-        Helper.log(`Putting a welcome message into the new channel from '${newChannel.toAgentId}' to '${newChannel.fromAgentId}'.`);
+        Helper.log(`Putting a welcome message into the new channel from '${newChannel.receiver.id}' to '${newChannel.owner}'.`);
         const welcomeEntry = AgentCreate.entry(reverseChannel.owner, reverseChannel.id, {
             type: "Empty",
-            owner: newChannel.toAgentId,
-            createdBy: newChannel.toAgentId,
+            owner: newChannel.receiver.id,
+            createdBy: newChannel.owner,
             contentEncoding: ServerInit.signupContentEncoding.id,
             content:null,
             name: "Welcome"

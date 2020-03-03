@@ -81,33 +81,36 @@ export class Helper {
     }
 
     public static setBearerTokenCookie(bearerToken: string, request: Request) {
-        request.res.cookie('bearerToken', bearerToken, {
+        let contents = {
             maxAge: config.auth.sessionTimeout,
             httpOnly: true, // cookie is only accessible by the server
             domain: config.env.domain,
             secure: process.env.NODE_ENV === 'prod', // only transferred over https
             sameSite: true, // only sent for requests to the same FQDN as the domain in the cookie
-        });
+        };
+        request.res.cookie('bearerToken', bearerToken, contents);
     }
 
     public static setSessionTokenCookie(sessionToken: string, request: Request) {
-        request.res.cookie('sessionToken', sessionToken, {
+        let contents = {
             maxAge: config.auth.sessionTimeout,
             httpOnly: true, // cookie is only accessible by the server
             domain: config.env.domain,
             secure: process.env.NODE_ENV === 'prod', // only transferred over https
             sameSite: true, // only sent for requests to the same FQDN as the domain in the cookie
-        });
+        };
+        request.res.cookie('sessionToken', sessionToken, contents);
     }
 
     public static clearBearerTokenCookie(request: Request) {
-        request.res.cookie('bearerToken', "", {
+        let contents = {
             maxAge: 0,
             httpOnly: true, // cookie is only accessible by the server
             domain: config.env.domain,
             secure: process.env.NODE_ENV === 'prod', // only transferred over https
             sameSite: true, // only sent for requests to the same FQDN as the domain in the cookie
-        });
+        };
+        request.res.cookie('bearerToken', "", contents);
     }
 
     /**

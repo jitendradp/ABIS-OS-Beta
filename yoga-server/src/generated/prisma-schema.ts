@@ -3060,6 +3060,7 @@ type Subscription {
 type Tag {
   id: ID!
   type: String!
+  isPrivate: Boolean!
   owner: ID!
   createdBy: ID!
   createdAt: DateTime!
@@ -3075,6 +3076,7 @@ type TagConnection {
 input TagCreateInput {
   id: ID
   type: String!
+  isPrivate: Boolean!
   owner: ID!
   createdBy: ID!
   value: String!
@@ -3095,6 +3097,8 @@ enum TagOrderByInput {
   id_DESC
   type_ASC
   type_DESC
+  isPrivate_ASC
+  isPrivate_DESC
   owner_ASC
   owner_DESC
   createdBy_ASC
@@ -3108,6 +3112,7 @@ enum TagOrderByInput {
 type TagPreviousValues {
   id: ID!
   type: String!
+  isPrivate: Boolean!
   owner: ID!
   createdBy: ID!
   createdAt: DateTime!
@@ -3143,6 +3148,8 @@ input TagScalarWhereInput {
   type_not_starts_with: String
   type_ends_with: String
   type_not_ends_with: String
+  isPrivate: Boolean
+  isPrivate_not: Boolean
   owner: ID
   owner_not: ID
   owner_in: [ID!]
@@ -3218,6 +3225,7 @@ input TagSubscriptionWhereInput {
 
 input TagUpdateDataInput {
   type: String
+  isPrivate: Boolean
   owner: ID
   createdBy: ID
   value: String
@@ -3225,6 +3233,7 @@ input TagUpdateDataInput {
 
 input TagUpdateInput {
   type: String
+  isPrivate: Boolean
   owner: ID
   createdBy: ID
   value: String
@@ -3232,6 +3241,7 @@ input TagUpdateInput {
 
 input TagUpdateManyDataInput {
   type: String
+  isPrivate: Boolean
   owner: ID
   createdBy: ID
   value: String
@@ -3251,6 +3261,7 @@ input TagUpdateManyInput {
 
 input TagUpdateManyMutationInput {
   type: String
+  isPrivate: Boolean
   owner: ID
   createdBy: ID
   value: String
@@ -3301,6 +3312,8 @@ input TagWhereInput {
   type_not_starts_with: String
   type_ends_with: String
   type_not_ends_with: String
+  isPrivate: Boolean
+  isPrivate_not: Boolean
   owner: ID
   owner_not: ID
   owner_in: [ID!]

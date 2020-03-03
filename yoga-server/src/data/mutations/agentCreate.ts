@@ -34,7 +34,7 @@ export class AgentCreate {
         if (!fromAgent) {
             throw new Error(`Couldn't create a Channel from agent '${fromAgentId}' to agent '${toAgentId}'. The specified fromAgentId does not exist.`);
         }
-        const toAgent = await prisma.agent({id: fromAgentId});
+        const toAgent = await prisma.agent({id: toAgentId});
         if (!toAgent) {
             throw new Error(`Couldn't create a Channel from agent '${fromAgentId}' to agent '${toAgentId}'. The specified toAgentId does not exist.`);
         }

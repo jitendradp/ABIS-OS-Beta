@@ -85,7 +85,7 @@ export class AgentQueries {
             if (!myAgent) {
                 throw new Error(`Invalid bearer- and/or csrf-token.`);
             }
-            return GroupQueries.findRRoomsOfAgent(myAgent.id);
+            return GroupQueries.findRoomsOfAgent(myAgent.id);
         } catch (e) {
             const errorId = Helper.logId(`An error occurred during querying 'myRooms': ${JSON.stringify(e)}`);
             return <ActionResponse>{
