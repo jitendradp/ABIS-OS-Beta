@@ -31,7 +31,7 @@ frontend:
             - master
         changes:
             #- .gitlab-ci.yml
-            - frontend/**/*
+            #- frontend/**/*
     tags:
         - docker
 
@@ -54,7 +54,7 @@ prisma:
             - master
         changes:
             #- .gitlab-ci.yml
-            - prisma/**/*
+            #- prisma/**/*
     tags:
         - docker
 #######################################################################################################################################################################################
@@ -76,7 +76,7 @@ yoga:
             - master
         changes:
             #- .gitlab-ci.yml
-            - yoga-server/**/*
+            #- yoga-server/**/*
     tags:
         - docker
 #######################################################################################################################################################################################
@@ -95,9 +95,10 @@ compose:
     only:
         refs:
             - master
-        #changes:
-        #- .gitlab-ci.yml
-        #- prisma/**/*
+        changes:
+        - .gitlab-ci.yml
+        - prisma/**/*
+        - yoga-server/**/*
     tags:
         - docker
 
