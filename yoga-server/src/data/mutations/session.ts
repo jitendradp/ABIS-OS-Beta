@@ -1,4 +1,4 @@
-import {prisma, Session} from "../../generated/prisma_client";
+import {prisma, Session} from "../../generated";
 import {Helper} from "../../helper/helper";
 import {ProfileQueries} from "../queries/profile";
 import {config} from "../../config";

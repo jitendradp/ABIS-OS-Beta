@@ -1,6 +1,6 @@
 import {
     prisma, User
-} from "../../generated/prisma_client";
+} from "../../generated";
 import {Helper} from "../../helper/helper";
 import {Mailer} from "../../helper/mailer";
 import {Request} from "express";

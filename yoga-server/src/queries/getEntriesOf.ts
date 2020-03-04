@@ -1,5 +1,5 @@
 import {AgentCanSee} from "../statements/agentCanSee";
-import {prisma} from "../generated/prisma_client";
+import {prisma} from "../generated";
 
 export class GetEntriesOf {
     /**

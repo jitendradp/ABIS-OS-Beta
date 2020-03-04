@@ -1,6 +1,6 @@
 import {Helper} from "../../helper/helper";
 import {ActionResponse} from "./actionResponse";
-import {prisma} from "../../generated/prisma_client";
+import {prisma} from "../../generated";
 import {CommonQueries} from "../queries/commonQueries";
 import {AgentOwns} from "../../statements/agentOwns";
 

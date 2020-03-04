@@ -1,4 +1,4 @@
-import {prisma} from "../generated/prisma_client";
+import {prisma} from "../generated";
 import {AgentQueries} from "../api/queries/agent/agentQueries";
 import {UserQueries} from "../api/queries/user/userQueries";
 import {GroupQueries2} from "../api/queries/groups/groupQueries2";
