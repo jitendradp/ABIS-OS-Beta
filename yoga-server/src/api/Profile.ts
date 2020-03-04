@@ -1,4 +1,4 @@
-import {Location, ProfileType} from "../generated";
+import {Location, ProfileType} from "../generated/prisma_client";
 
 export type ProfileStatus =  "Offline" | "DoNotDisturb" | "Away" | "Available";
 

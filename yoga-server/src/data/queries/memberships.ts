@@ -1,4 +1,4 @@
-import {Agent, Group, prisma} from "../../generated";
+import {Agent, Group, prisma} from "../../generated/prisma_client";
 import {AgentCanSee} from "../../statements/agentCanSee";
 
 export type UiMemberhsip = {

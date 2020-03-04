@@ -1,4 +1,4 @@
-import {prisma, ProfileType} from "../../generated";
+import {prisma, ProfileType} from "../../generated/prisma_client";
 import {Helper} from "../../helper/helper";
 import {ProfileStatus} from "../../api/Profile";
 import {AgentCreate} from "./agentCreate";

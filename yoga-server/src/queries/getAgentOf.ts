@@ -1,4 +1,4 @@
-import {prisma} from "../generated";
+import {prisma} from "../generated/prisma_client";
 
 export class GetAgentOf {
     public static async session(csrfToken:string, sessionToken?:string) {

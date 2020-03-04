@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 networks:
   abis:
     driver: bridge
@@ -38,7 +38,11 @@ services:
     ports:
       - "4000:4000"
     volumes:
-      - "shared:/usr/yoga/src/"
+      - type: volume
+        source: shared
+        target: /usr/yoga/src/
+        volume:
+          nocopy: false
 
   yoga:
     container_name: yoga
@@ -47,8 +51,14 @@ services:
     image: nginx
     networks:
       - abis
+    #volumes:
+    #  - "shared:/usr/yoga/src/generated/"
     volumes:
-      - "shared:/usr/yoga/src/generated/"
+      - type: volume
+        source: shared
+        target: /usr/yoga/src/
+        volume:
+          nocopy: false
 
   prisma:
     container_name: prisma
@@ -63,7 +73,14 @@ services:
     ports:
       - "4466:4466"
     volumes:
-      - "shared:/usr/prisma/generated/prisma-client/"
+      - type: volume
+        source: shared
+        target: /usr/prisma/generated/prisma-client
+        volume:
+          nocopy: false
+
+    #volumes:
+     # - "shared:/usr/prisma/generated/prisma-client/"
     environment:
       PRISMA_CONFIG: |
         managementApiSecret: managementApiSecret

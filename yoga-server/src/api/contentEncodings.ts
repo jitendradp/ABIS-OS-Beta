@@ -1,4 +1,4 @@
-import {ContentEncodingCreateInput} from "../generated";
+import {ContentEncodingCreateInput} from "../generated/prisma_client";
 
 export class ContentEncodings {
     public static Signup : ContentEncodingCreateInput = {

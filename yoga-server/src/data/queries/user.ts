@@ -1,4 +1,4 @@
-import {prisma, User} from "../../generated";
+import {prisma, User} from "../../generated/prisma_client";
 
 export class UserQueries {
     public static findUserByEmail(email:string) : Promise<User> {

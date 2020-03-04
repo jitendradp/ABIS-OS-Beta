@@ -1,5 +1,5 @@
 import {EventBroker} from "./eventBroker";
-import {Agent} from "../generated";
+import {Agent} from "../generated/prisma_client";
 
 export abstract class Service {
     /*
