@@ -13,7 +13,10 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
 CMD dockerize -wait http://prisma:4466
 
 WORKDIR /usr/yoga/
-COPY . .
+COPY ./src  src
+COPY ./package-lock.json package-lock.json
+COPY ./package.json package.json
+COPY ./tsconfig.json tsconfig.json
 RUN npm install
 RUN npm install typescript -g
 RUN tsc
