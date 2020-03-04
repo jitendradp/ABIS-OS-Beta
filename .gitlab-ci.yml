@@ -95,7 +95,7 @@ compose:
     only:
         refs:
             - master
-        #changes:
+        changes:
         - .gitlab-ci.yml
         - prisma/**/*
     tags:
