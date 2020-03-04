@@ -3760,6 +3760,3 @@ input UserWhereUniqueInput {
   email: String
 }
 `
-
-export class EntryWhereInput {
-}
