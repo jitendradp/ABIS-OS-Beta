@@ -1,4 +1,4 @@
-import {Entry, prisma} from "../../generated";
+import {Entry, prisma} from "../../generated/prisma_client";
 import {AgentCanSee} from "../../statements/agentCanSee";
 
 export class EntryQueries {

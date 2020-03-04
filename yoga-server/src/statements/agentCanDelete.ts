@@ -1,5 +1,5 @@
 import {AgentOwns} from "./agentOwns";
-import {prisma} from "../generated";
+import {prisma} from "../generated/prisma_client";
 
 export class AgentCanDelete {
     public static async room(agentId:string, roomId:string) {

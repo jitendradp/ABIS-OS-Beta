@@ -1,4 +1,4 @@
-import {prisma} from "../generated";
+import {prisma} from "../generated/prisma_client";
 
 export class UserOwns {
     public static async profile(userId:string, profileId:string) {

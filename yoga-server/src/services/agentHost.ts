@@ -1,7 +1,7 @@
 import {EventBroker} from "./eventBroker";
 import {Service} from "./service";
 import {SignupService} from "./signupService";
-import {Agent, prisma} from "../generated";
+import {Agent, prisma} from "../generated/prisma_client";
 import {LoginService} from "./loginService";
 import {Helper} from "../helper/helper";
 import {ProfileService} from "./profileService";

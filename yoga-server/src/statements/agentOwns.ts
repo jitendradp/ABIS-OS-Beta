@@ -1,4 +1,4 @@
-import {GroupType, prisma} from "../generated";
+import {GroupType, prisma} from "../generated/prisma_client";
 
 export class AgentOwns {
     public static async group(agentId:string, groupId:string, type?:GroupType) {

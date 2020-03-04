@@ -1,7 +1,7 @@
 import {ActionResponse} from "../../api/mutations/actionResponse";
 import {Helper} from "../../helper/helper";
 import {config} from "../../config";
-import {Agent, prisma, User} from "../../generated";
+import {Agent, prisma, User} from "../../generated/prisma_client";
 import {Mailer} from "../../helper/mailer";
 import {UserCreate} from "./userCreate";
 

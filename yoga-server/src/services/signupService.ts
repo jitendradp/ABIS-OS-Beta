@@ -4,7 +4,7 @@ import {Helper} from "../helper/helper";
 import {AgentCreate} from "../data/mutations/agentCreate";
 import {ServerInit} from "../serverInit";
 import {Channel} from "../api/types/channel";
-import {Agent, Entry, prisma} from "../generated";
+import {Agent, Entry, prisma} from "../generated/prisma_client";
 var ajv = require('ajv');
 
 export class SignupService extends Service {
