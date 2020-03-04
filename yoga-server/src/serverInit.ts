@@ -1,4 +1,4 @@
-import {Agent, ContentEncoding, Entry, prisma, User} from "./generated/prisma_client";
+import {Agent, ContentEncoding, Entry, prisma, User} from "./generated";
 import {config} from "./config";
 import {ContentEncodings} from "./api/contentEncodings";
 import {EventBroker, Topic, Topics} from "./services/eventBroker";

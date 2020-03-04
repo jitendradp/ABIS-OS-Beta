@@ -1,12 +1,7 @@
-version: '3.7'
+version: '3'
 networks:
   abis:
     driver: bridge
-
-volumes:
-  postgres_data:
-  shared:
-  #yoga_generated:
 
 services:
 
@@ -22,8 +17,6 @@ services:
       - "80:80"
     networks:
       - abis
-    #volumes:
-      #- yoga_generated:./src/generated
 
   yoga-server:
     container_name: yoga-server
@@ -37,28 +30,7 @@ services:
       - abis
     ports:
       - "4000:4000"
-    volumes:
-      - type: volume
-        source: shared
-        target: /usr/yoga/src/
-        volume:
-          nocopy: false
 
-  yoga:
-    container_name: yoga
-    depends_on:
-      - prisma
-    image: nginx
-    networks:
-      - abis
-    #volumes:
-    #  - "shared:/usr/yoga/src/generated/"
-    volumes:
-      - type: volume
-        source: shared
-        target: /usr/yoga/src/
-        volume:
-          nocopy: false
 
   prisma:
     container_name: prisma
@@ -72,15 +44,7 @@ services:
       - abis
     ports:
       - "4466:4466"
-    volumes:
-      - type: volume
-        source: shared
-        target: /usr/prisma/generated/prisma-client
-        volume:
-          nocopy: false
 
-    #volumes:
-     # - "shared:/usr/prisma/generated/prisma-client/"
     environment:
       PRISMA_CONFIG: |
         managementApiSecret: managementApiSecret
@@ -128,3 +92,6 @@ services:
       POSTGRES_PASSWORD: prisma
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      -
+volumes:
+  postgres_data:

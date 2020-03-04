@@ -1,7 +1,7 @@
 import {CommonQueries} from "../commonQueries";
 import {GroupQueries} from "../../../data/queries/group";
 import {MembershipQueries} from "../../../data/queries/memberships";
-import {EntryWhereInput, prisma} from "../../../generated/prisma_client";
+import {EntryWhereInput, prisma} from "../../../generated";
 import {Helper} from "../../../helper/helper";
 import {ActionResponse} from "../../mutations/actionResponse";
 // import {getTypesAndWhere} from "prisma-client-lib/dist/utils";
