@@ -2,6 +2,8 @@ import {GetAgentOf} from "../queries/getAgentOf";
 import {EventBroker, Topics} from "../services/eventBroker";
 import {Helper} from "../helper/helper";
 import {map} from "rxjs/operators";
+import {prisma} from "../generated";
+import {Observable} from "rxjs";
 
 async function getTopicForAgent(csrfToken:string, topicName:string) {
     const agentId = await GetAgentOf.session(csrfToken);
@@ -20,7 +22,27 @@ export const subscriptions = {
     newEntry: {
         subscribe: async (root, {csrfToken}, ctx) => {
             const topic = await getTopicForAgent(csrfToken, Topics.NewEntry);
-            return Helper.observableToAsyncIterable(topic.pipe(map(o => {return {newEntry:o}})));
+
+            // TODO: Maybe that works with map() as well (rxjs/promise)?
+            const augmentedTopic = new Observable(subscriber => {
+                topic.subscribe(async (next:any) => {
+                    const containerGroup = (await prisma.groups({
+                        where:{
+                            entries_some:{
+                                id: next.id
+                            }
+                        }
+                    }))[0];
+                    subscriber.next({
+                        newEntry:{
+                            entry: next,
+                            containerId: containerGroup.id
+                        }
+                    });
+                });
+            });
+
+            return Helper.observableToAsyncIterable(augmentedTopic);
         },
     },
     newChannel: {

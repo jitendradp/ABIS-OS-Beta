@@ -1,13 +1,16 @@
 subscription newEntry($csrfToken:String!) {
   newEntry(csrfToken:$csrfToken) {
-    id
-    createdAt
-    createdBy
-    contentEncoding {
+    containerId
+    entry {
       id
+      createdAt
+      createdBy
+      contentEncoding {
+        id
+      }
+      type
+      name
     }
-    type
-    name
   }
 }
 

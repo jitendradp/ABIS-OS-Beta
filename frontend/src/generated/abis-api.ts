@@ -442,9 +442,10 @@ export type MutationDeleteLocationArgs = {
   id: Scalars['ID']
 };
 
-export type NewEntrySubscription = {
-   __typename?: 'NewEntrySubscription',
-  newEntry: Entry,
+export type NewEntry = {
+   __typename?: 'NewEntry',
+  entry?: Maybe<Entry>,
+  containerId: Scalars['ID'],
 };
 
 export type OpenStreetMap = Location & {
@@ -641,7 +642,7 @@ export type Stash = Group & {
 
 export type Subscription = {
    __typename?: 'Subscription',
-  newEntry?: Maybe<Entry>,
+  newEntry?: Maybe<NewEntry>,
   newChannel?: Maybe<Channel>,
 };
 
@@ -1120,6 +1121,22 @@ export type NewEntrySubscriptionVariables = {
   csrfToken: Scalars['String']
 };
 
+
+export type NewEntrySubscription = (
+  { __typename?: 'Subscription' }
+  & { newEntry: Maybe<(
+    { __typename?: 'NewEntry' }
+    & Pick<NewEntry, 'containerId'>
+    & { entry: Maybe<(
+      { __typename?: 'Entry' }
+      & Pick<Entry, 'id' | 'createdAt' | 'createdBy' | 'type' | 'name'>
+      & { contentEncoding: Maybe<(
+        { __typename?: 'ContentEncoding' }
+        & Pick<ContentEncoding, 'id'>
+      )> }
+    )> }
+  )> }
+);
 
 export type NewChannelSubscriptionVariables = {
   csrfToken: Scalars['String']
@@ -1645,14 +1662,17 @@ export const GetEntriesDocument = gql`
 export const NewEntryDocument = gql`
     subscription newEntry($csrfToken: String!) {
   newEntry(csrfToken: $csrfToken) {
-    id
-    createdAt
-    createdBy
-    contentEncoding {
+    containerId
+    entry {
       id
+      createdAt
+      createdBy
+      contentEncoding {
+        id
+      }
+      type
+      name
     }
-    type
-    name
   }
 }
     `;

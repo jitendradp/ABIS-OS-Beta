@@ -531,6 +531,11 @@ type Account {
     organizationName: String
 }
 
+type NewEntry {
+    entry: Entry
+    containerId: ID!
+}
+
 type Query {
     contentEncodings(csrfToken: String!) : [ContentEncoding!]!
 
@@ -635,6 +640,6 @@ type Mutation {
 }
 
 type Subscription {
-    newEntry(csrfToken:String!): Entry #TODO: Let the client request a special subscriptionToken first and don't use the csrfToken
+    newEntry(csrfToken:String!): NewEntry #TODO: Let the client request a special subscriptionToken first and don't use the csrfToken
     newChannel(csrfToken:String!): Channel #TODO: Let the client request a special subscriptionToken first and don't use the csrfToken
 }

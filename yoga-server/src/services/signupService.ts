@@ -94,7 +94,7 @@ export class SignupService extends Service {
                 type: "Json",
                 owner: this.id,
                 createdBy: this.id,
-                contentEncoding: ServerInit.validationErrorContentEncoding.id,
+                contentEncoding: ServerInit.errorContentEncoding.id,
                 content:null,
                 name: "Validation error"
             });

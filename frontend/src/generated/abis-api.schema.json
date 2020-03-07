@@ -5246,7 +5246,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "Entry",
+              "name": "NewEntry",
               "ofType": null
             },
             "isDeprecated": false,
@@ -5275,6 +5275,45 @@
               "kind": "OBJECT",
               "name": "Channel",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "NewEntry",
+        "description": "",
+        "fields": [
+          {
+            "name": "entry",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Entry",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "containerId",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null

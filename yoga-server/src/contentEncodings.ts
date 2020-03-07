@@ -1,4 +1,4 @@
-import {ContentEncodingCreateInput} from "../generated";
+import {ContentEncodingCreateInput} from "./generated";
 
 export class ContentEncodings {
     public static Signup : ContentEncodingCreateInput = {
@@ -84,21 +84,68 @@ export class ContentEncodings {
         })
     };
 
-    public static ValidationError : ContentEncodingCreateInput = {
+    /**
+     * Describes a possible answer of a service that tells the client to
+     * prominently display the "summary" and to reveal the "detail" on user-request.
+     */
+    public static Error : ContentEncodingCreateInput = {
         createdBy: "",
         maintainer: "",
         charset: "utf-8",
-        name: "ValidationError",
-        type: "Custom",
-        data: null
+        name: "Error",
+        type: "JsonSchema",
+        data: JSON.stringify({
+            Error: {
+                type: "object",
+                properties: {
+                    summary: {
+                        type: "string"
+                    },
+                    detail: {
+                        type: "array",
+                        items: {
+                            type: "object",
+                            properties: {
+                                "key": "string",
+                                "value": "string"
+                            },
+                            required: [
+                                "key",
+                                "value"
+                            ]
+                        }
+                    }
+                },
+                required: [
+                    "summary"
+                ]
+            }
+        })
     };
 
+    /**
+     * Describes a possible answer of a service that tells the client to
+     * take the 'context' and go to the next service ('toAgentId').
+     */
     public static Continuation : ContentEncodingCreateInput = {
         createdBy: "",
         maintainer: "",
         charset: "utf-8",
         name: "Continuation",
-        type: "Custom",
-        data: null
+        type: "JsonSchema",
+        data: JSON.stringify({
+            Continuation: {
+                type: "object",
+                properties: {
+                    "fromAgentId": {"type": "string"},
+                    "toAgentId": {"type": "string"},
+                    "context": {"type": "object"}
+                },
+                required: [
+                    "fromAgentId",
+                    "toAgentId"
+                ]
+            }
+        })
     };
 }

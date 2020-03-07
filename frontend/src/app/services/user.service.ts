@@ -56,7 +56,7 @@ export class UserService {
 
   private readonly ContentEncodingsKey = "UserService.contentEncodings";
 
-  public get contentEncodings(): ContentEncoding[] {
+  private get contentEncodings(): ContentEncoding[] {
     return this.clientState.get<ContentEncoding[]>(this.ContentEncodingsKey, null).data;
   }
 
@@ -130,6 +130,14 @@ export class UserService {
       .subscribe(systemServices => {
         this.clientState.set(this.SystemServicesKey, systemServices.data.getSystemServices);
       });
+  }
+
+  public findContentEncodingByName(name:string) : ContentEncoding {
+    return this.contentEncodings.find(o => o.name == name)
+  }
+
+  public findContentEncodingById(id:string) : ContentEncoding {
+    return this.contentEncodings.find(o => o.id == id)
   }
 
   public async myChannels() {

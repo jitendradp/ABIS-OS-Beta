@@ -3,29 +3,73 @@ import {FormBuilder} from "@angular/forms";
 import {ClientStateService} from "../client-state.service";
 import {UserService} from "../user.service";
 import {Logger, LoggerService} from "../logger.service";
-import {ActionDispatcherService} from "../action-dispatcher.service";
 import {
-  Channel,
   ContentEncoding,
   CreateChannelGQL,
   CreateEntryGQL,
   EntryType,
-  GetEntriesGQL, GetSystemServicesGQL, MyChannelsGQL, NewChannelGQL, NewEntryGQL, VerifySessionGQL
+  GetEntriesGQL,
+  MyChannelsGQL,
+  NewChannelGQL,
+  NewEntryGQL
 } from "../../../generated/abis-api";
 
+/**
+ * This component can be used to hold a dialog with a service agent.
+ * A dialog typically follows the question->answer pattern:
+ * 1) The client starts the dialog by creating a channel to a service.
+ * 2) The service creates a reverse channel and puts an empty entry with attached JsonSchema-contentEncoding in it (question).
+ * 3) The client interprets the JsonSchema and displays the user a corresponding user interface.
+ * 4) The user fills-in the form and submits it (answer).
+ * 5) The client sends the data from the form together with its original contentEncoding to the service.
+ * 6) The service validates the data and either sends:
+ * 7.1) A 'Continuation' schema response if the dialog ended successfully - The client should continue the dialog with the next service or end the dialog.
+ * 7.2) An 'Error' schema if the sent data was not valid or the processing failed - The user can re-send an edited entry.
+ * 7.3) A new schema entry if the dialog with the current service should be continued.
+ */
 @Component({
   selector: 'app-service-dialog',
   templateUrl: './service-dialog.component.html',
   styleUrls: ['./service-dialog.component.css']
 })
 export class ServiceDialogComponent implements OnInit, OnChanges {
+  /**
+   * The id of the agent with which the dialog should begin.
+   */
+  @Input()
+  public initialAgentId:string;
 
-  private readonly _log: Logger = this.loggerService.createLogger("RegisterComponent");
+  public statusMessage:string;
+  public statusMessageDetail: { [key: string]: string };
 
+  /**
+   * The schema of the currently displayed form (default=loading...).
+   */
+  public formSchema: any = {
+    "Loading ...": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  };
+
+  private readonly _log: Logger = this.loggerService.createLogger("ServiceDialogComponent");
+  private readonly _continuationEncoding:ContentEncoding;
+  private readonly _errorEncoding:ContentEncoding;
+
+  /**
+   * The channel from the client to the service.
+   */
   private _channelId:string;
+  /**
+   * The channel from the service to the client.
+   */
   private _reverseChannelId:string;
 
-  response:string;
+  /**
+   * The contentEncoding ID that corresponds to the currently set 'formSchema'.
+   */
+  private formSchemaContentEncodingId: string;
 
   constructor(private _formBuilder: FormBuilder
     , private loggerService: LoggerService
@@ -36,54 +80,78 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
     , private createEntryApi: CreateEntryGQL
     , private getEntries: GetEntriesGQL
     , private newEntrySubscription: NewEntryGQL
-    , private newChannelSubscription: NewChannelGQL
-    , private actionDispatcher: ActionDispatcherService) {
-    this.contentEncoding = this.userService.contentEncodings.find(o => o.name == "Signup");
-    this.validationErrorEncoding = this.userService.contentEncodings.find(o => o.name == "ValidationError");
-    this.continuationEncoding = this.userService.contentEncodings.find(o => o.name == "Continuation");
+    , private newChannelSubscription: NewChannelGQL) {
+    this._errorEncoding = this.userService.findContentEncodingByName("Error");
+    this._continuationEncoding = this.userService.findContentEncodingByName("Continuation");
   }
 
-  @Input()
-  dialogAgentId:string;
-
-  public get isInitialized() :boolean {
-    return this._isInitialized;
-  };
-  private _isInitialized:boolean = false;
-
-  contentEncoding:ContentEncoding;
-  continuationEncoding:ContentEncoding;
-  validationErrorEncoding:ContentEncoding;
-
+  /**
+   * Restarts the dialog component with the new 'initialAgentId'.
+   * @param changes
+   */
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes["serviceAgentId"]) {
       return;
     }
-    if (!this.dialogAgentId) {
+    if (!this.initialAgentId) {
       throw new Error("The serviceAgentId property must be set to a value.")
     }
-    this._isInitialized = false;
-    this.initEvents();
-    this.init();
+    // noinspection JSIgnoredPromiseFromCall
+    this.initChannel();
   }
 
   ngOnInit() {
-    if (!this.dialogAgentId) {
+    if (!this.initialAgentId) {
       return;
     }
-    this._isInitialized = false;
-    this.initEvents();
-    this.init();
+    // noinspection JSIgnoredPromiseFromCall
+    this.initChannel();
   }
 
-  private initEvents() {
+  /**
+   * Sets up the component and establishes the first channel to the 'initialAgentId' if not existing.
+   * If the channel as well as the reverse channel already exist, the method proceeds by calling 'initDialog()', else returns.
+   */
+  private async initChannel() {
+    this.subscribeToChannelEvents();
+
+    // Find or create a channel to the specified "serviceAgentId".
+    const myChannels = (await this.myChannelsApi.fetch({csrfToken: this.userService.csrfToken}).toPromise()).data.myChannels;
+    const myChannel = myChannels.find(o => o.receiver.id == this.initialAgentId);
+
+    if (myChannel && myChannel.reverse) {
+      // Duplex channel already established
+      this._channelId = myChannel.id;
+      this._reverseChannelId = myChannel.reverse.id;
+      this.initDialog();
+      return;
+    }
+
+    if (!myChannel) {
+      // No existing channel, create a new one
+      const channel = await this.createChannelApi.mutate({
+        csrfToken: this.userService.csrfToken,
+        toAgentId: this.initialAgentId
+      }).toPromise();
+
+      this._channelId = channel.data.createChannel.id;
+      return;
+    }
+
+    console.log(`Initialized channel ${this._channelId} from '${this.userService.profileId}' to '${this.initialAgentId}'. Waiting for reverse channel ...`);
+  }
+
+  /**
+   *
+   */
+  private subscribeToChannelEvents() {
     this.newEntrySubscription.subscribe({csrfToken: this.userService.csrfToken})
       .subscribe(newEntry => {
         console.log("NEW ENTRY: ", newEntry);
-        if (newEntry.data.newEntry.contentEncoding.id == this.validationErrorEncoding.id) {
-          this.response = "Validation Error";
-        } else if (newEntry.data.newEntry.contentEncoding.id == this.continuationEncoding.id) {
-          this.response = "";
+        if (newEntry.data.newEntry.entry.contentEncoding.id == this._errorEncoding.id) {
+          this.statusMessage = "Validation Error";
+        } else if (newEntry.data.newEntry.entry.contentEncoding.id == this._continuationEncoding.id) {
+          this.statusMessage = "";
           // Continue
         }
       });
@@ -99,76 +167,34 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
 
         console.log(`Received reverse channel (${newEntry.data.newChannel.id}) from ${from} to ${to}`);
         this._reverseChannelId = newEntry.data.newChannel.id;
-        this._isInitialized = true;
-        this.initialized();
+        // noinspection JSIgnoredPromiseFromCall
+        this.initDialog();
       });
   }
 
-  private async init() {
-    // Find or create a channel to the specified "serviceAgentId".
-    const myChannels = await this.myChannelsApi.fetch({csrfToken: this.userService.csrfToken}).toPromise();
-    const myChannel = myChannels.data.myChannels.find(o => o.receiver.id == this.dialogAgentId);
+  private async initDialog() {
+    const channelState = await this.getChannelState();
 
-    if (myChannel && myChannel.reverse) {
-      // Duplex channel already established
-      this._channelId = myChannel.id;
-      this._reverseChannelId = myChannel.reverse.id;
-      this._isInitialized = true;
-      this.initialized();
+    if (channelState.status.success) {
+      this.statusMessage = "";
+      this.statusMessageDetail = {};
+      console.log("Done. Received Continuation.");
       return;
     }
 
-    if (!myChannel) {
-      // No channel established
-      const channel = await this.createChannelApi.mutate({
-        csrfToken: this.userService.csrfToken,
-        toAgentId: this.dialogAgentId
-      }).toPromise();
+    if (channelState.status.error) {
+      const lastError = JSON.parse(channelState.entries.lastError.content);
+      this.statusMessage = lastError.summary;
+      this.statusMessageDetail = lastError.detail;
+    }
 
-      this._channelId = channel.data.createChannel.id;
+    if (channelState.entries.lastSchema) {
+      this.formSchema = JSON.parse(channelState.entries.lastSchema.contentEncoding.data);
+      this.formSchemaContentEncodingId = channelState.entries.lastSchema.contentEncoding.id;
       return;
     }
 
-    console.log(`Initialized channel ${this._channelId} from '${this.userService.profileId}' to '${this.dialogAgentId}'. Waiting for reverse channel ...`);
-  }
-
-  private async initialized() {
-    const reverseChannelEntries = await this.getEntries.fetch({
-      groupId: this._reverseChannelId,
-      csrfToken: this.userService.csrfToken
-    }).toPromise();
-    let sorted = reverseChannelEntries.data.getEntries.sort(o => o.createdAt);
-    if (sorted.length == 0) {
-      return;
-    }
-    //let last = sorted[sorted.length - 1];
-    let schemaEntries = sorted.filter(o => o.contentEncoding.id == this.contentEncoding.id);
-    let errorEntries = sorted.filter(o => o.contentEncoding.id == this.validationErrorEncoding.id);
-    let continuationEntries = sorted.filter(o => o.contentEncoding.id == this.continuationEncoding.id);
-
-    if (errorEntries.length > 0 && schemaEntries.length > 0) {
-      if (continuationEntries[continuationEntries.length - 1].createdAt > schemaEntries[schemaEntries.length - 1].createdAt
-        && continuationEntries[continuationEntries.length - 1].createdAt > errorEntries[errorEntries.length - 1].createdAt) {
-        // Continuation entry was more recent -> Continue to destination
-        this.response = "";
-        console.log("Done. Received Continuation.")
-      } else if (errorEntries[errorEntries.length - 1].createdAt > schemaEntries[schemaEntries.length - 1].createdAt) {
-        // Error was more recent
-        this.response = "Validation Error";
-      } else if (errorEntries[errorEntries.length - 1].createdAt < schemaEntries[schemaEntries.length - 1].createdAt) {
-        // Schema entry was more recent
-        this.response = "";
-      } else {
-        // tie
-      }
-    }
-
-    if (schemaEntries.length > 0) {
-      this.contentEncoding = this.userService.contentEncodings.find(o => o.id == schemaEntries[schemaEntries.length - 1].contentEncoding.id);
-      if (this.contentEncoding) {
-        this.formSchema = JSON.parse(this.contentEncoding.data);
-      }
-    }
+    throw new Error(`Undefined dialog state: Not 'success' and no schema.`);
   }
 
   async formSubmit($event: any) {
@@ -177,7 +203,7 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
       createEntryInput: {
         roomId: this._channelId,
         type: EntryType.Json,
-        contentEncoding:this.contentEncoding.id,
+        contentEncoding:this.formSchemaContentEncodingId,
         content: $event
       }
     }).subscribe(o => {
@@ -185,11 +211,54 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
     });
   }
 
-  formSchema: any = {
-    "Loading ...": {
-      "type": "object",
-      "properties": {},
-      "required": []
+  /**
+   * Makes two requests to the server (to-channel and reverse-Channel) and finds the most recent
+   * answer-, schema- and error-entries.
+   */
+  private async getChannelState() {
+    const channelEntries = (await this.getEntries.fetch({
+      groupId: this._channelId,
+      csrfToken: this.userService.csrfToken
+    }).toPromise()).data.getEntries;
+
+    const reverseChannelEntries = (await this.getEntries.fetch({
+      groupId: this._reverseChannelId,
+      csrfToken: this.userService.csrfToken
+    }).toPromise()).data.getEntries;
+
+    const lastPost = channelEntries.length > 0 ? channelEntries[channelEntries.length - 1] : null;
+    const lastAnswer = reverseChannelEntries.length > 0 ? reverseChannelEntries[reverseChannelEntries.length - 1] : null;
+
+    const schemaEntries = reverseChannelEntries.filter(o => o.contentEncoding.id && o.type == EntryType.Empty);
+    const lastSchema = schemaEntries.length > 0 ? schemaEntries[schemaEntries.length - 1] : null;
+
+    if (lastSchema) {
+      lastSchema.contentEncoding = this.userService.findContentEncodingById(lastSchema.contentEncoding.id);
     }
-  };
+
+    const errorEntries = reverseChannelEntries.filter(o => o.contentEncoding.id == this._errorEncoding.id);
+    const lastError = errorEntries.length > 0 ? errorEntries[errorEntries.length - 1] : null;
+
+    const continuationEntries = reverseChannelEntries.filter(o => o.contentEncoding.id == this._continuationEncoding.id);
+    const lastContinuation = continuationEntries.length > 0 ? continuationEntries[continuationEntries.length - 1] : null;
+
+    const success = lastAnswer == lastContinuation;
+    const error = lastAnswer == lastError;
+
+    return {
+      status: {
+        success,
+        error
+      },
+      entries: {
+        channelEntries,
+        reverseChannelEntries,
+        lastPost,
+        lastAnswer,
+        lastSchema,
+        lastError,
+        lastContinuation
+      }
+    };
+  }
 }

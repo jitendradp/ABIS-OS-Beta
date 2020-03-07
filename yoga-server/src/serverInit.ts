@@ -1,6 +1,6 @@
 import {Agent, ContentEncoding, Entry, prisma, User} from "./generated";
 import {config} from "./config";
-import {ContentEncodings} from "./api/contentEncodings";
+import {ContentEncodings} from "./contentEncodings";
 import {EventBroker, Topic, Topics} from "./services/eventBroker";
 import {NewChannel} from "./services/events/newChannel";
 import {Helper} from "./helper/helper";
@@ -40,8 +40,8 @@ export class ServerInit {
     static get loginContentEncoding(): ContentEncoding {
         return this._loginContentEncoding;
     }
-    static get validationErrorContentEncoding(): ContentEncoding {
-        return this._validationErrorContentEncoding;
+    static get errorContentEncoding(): ContentEncoding {
+        return this._errorContentEncoding;
     }
     static get continuationContentEncoding(): ContentEncoding {
         return this._continuationContentEncoding;
@@ -55,7 +55,7 @@ export class ServerInit {
     private static _signupContentEncoding: ContentEncoding;
     private static _verifyEmailContentEncoding: ContentEncoding;
     private static _loginContentEncoding: ContentEncoding;
-    private static _validationErrorContentEncoding: ContentEncoding;
+    private static _errorContentEncoding: ContentEncoding;
     private static _continuationContentEncoding: ContentEncoding;
 
     private static _serviceHost = new AgentHost(EventBroker.instance);
@@ -266,12 +266,12 @@ export class ServerInit {
             ServerInit._loginContentEncoding = existingLoginContentEncoding[0];
         }
 
-        const existingValidationErrorContentEncoding = await  prisma.contentEncodings({where:{name:"ValidationError"}});
-        if (existingValidationErrorContentEncoding.length == 0) {
-            Helper.log(`Creating instance system ContentEncoding: ValidationError/Custom`);
-            ServerInit._validationErrorContentEncoding = await prisma.createContentEncoding(ContentEncodings.ValidationError);
+        const existingErrorContentEncoding = await  prisma.contentEncodings({where:{name:"Error"}});
+        if (existingErrorContentEncoding.length == 0) {
+            Helper.log(`Creating instance system ContentEncoding: Error/Custom`);
+            ServerInit._errorContentEncoding = await prisma.createContentEncoding(ContentEncodings.Error);
         } else {
-            ServerInit._validationErrorContentEncoding = existingValidationErrorContentEncoding[0];
+            ServerInit._errorContentEncoding = existingErrorContentEncoding[0];
         }
 
         const existingContinuationContentEncoding = await  prisma.contentEncodings({where:{name:"Continuation"}});
