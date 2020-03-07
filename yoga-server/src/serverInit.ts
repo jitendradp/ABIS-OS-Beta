@@ -25,6 +25,9 @@ export class ServerInit {
     static get loginService(): Agent {
         return this._loginService;
     }
+    static get verifyEmailService(): Agent {
+        return this._verifyEmailService;
+    }
     static get newChannelTopic(): Topic<Channel> {
         return this._newChannelTopic;
     }
@@ -50,6 +53,7 @@ export class ServerInit {
     private static _anonymousUser:User;
     private static _signupService:Agent;
     private static _loginService:Agent;
+    private static _verifyEmailService:Agent;
     private static _newChannelTopic:Topic<Channel>;
     private static _newEntryTopic:Topic<Entry>;
     private static _signupContentEncoding: ContentEncoding;
@@ -68,6 +72,7 @@ export class ServerInit {
 
         await ServerInit.createContentEncodings();
         await ServerInit.createSignupService();
+        await ServerInit.createVerifyEmailService();
         await ServerInit.createLoginService();
         await ServerInit.createSystemTopics();
 
@@ -239,6 +244,40 @@ export class ServerInit {
         });
 
         ServerInit._loginService = loginService;
+    }
+
+    private static async createVerifyEmailService() {
+        const verifyEmailServices = await prisma.agents({where:{name: "VerifyEmailService", type: "Service"}});
+        if (verifyEmailServices.length > 0) {
+            ServerInit._verifyEmailService = verifyEmailServices[0];
+            return;
+        }
+
+        Helper.log(`Creating verifyEmail service`);
+        const verifyEmaulService = await prisma.createAgent({
+            owner: ServerInit._systemUser.id,
+            createdBy: ServerInit._systemUser.id,
+            name: "VerifyEmailService",
+            status: "Running",
+            type: "Service",
+            implementation: "VerifyEmailService",
+            serviceDescription: "Handles the login requests of anonymous profiles",
+            profileAvatar: "nologo.png"
+        });
+        await prisma.updateUser({
+            where: {
+                id: ServerInit._systemUser.id
+            },
+            data: {
+                agents: {
+                    connect: {
+                        id: verifyEmaulService.id
+                    }
+                }
+            }
+        });
+
+        ServerInit._verifyEmailService = verifyEmaulService;
     }
 
     private static async createContentEncodings() {

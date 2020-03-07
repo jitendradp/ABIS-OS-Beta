@@ -6,11 +6,13 @@ import {LoginService} from "./loginService";
 import {Helper} from "../helper/helper";
 import {ProfileService} from "./profileService";
 import {RoomInboxService} from "./roomInboxService";
+import {VerifyEmailService} from "./verifyEmailService";
 
 type ServiceFactory = (eventBroker: EventBroker, agent: Agent) => Service;
 
 const serviceImplementations: { [name: string]: ServiceFactory } = {
     "SignupService": (eventBroker, agent) => new SignupService( eventBroker, agent),
+    "VerifyEmailService": (eventBroker, agent) => new VerifyEmailService(eventBroker, agent),
     "LoginService": (eventBroker, agent) => new LoginService( eventBroker, agent),
     "Profile": (eventBroker, agent) => new ProfileService( eventBroker, agent),
     "RoomInbox":  (eventBroker, agent) => new RoomInboxService( eventBroker, agent)

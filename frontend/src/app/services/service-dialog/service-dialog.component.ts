@@ -146,12 +146,14 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
    */
   private subscribeToChannelEvents() {
     this.newEntrySubscription.subscribe({csrfToken: this.userService.csrfToken})
-      .subscribe(newEntry => {
+      .subscribe((newEntry:any) => {
         console.log("NEW ENTRY: ", newEntry);
         if (newEntry.data.newEntry.entry.contentEncoding.id == this._errorEncoding.id) {
           this.statusMessage = "Validation Error";
         } else if (newEntry.data.newEntry.entry.contentEncoding.id == this._continuationEncoding.id) {
           this.statusMessage = "";
+          this.initialAgentId = newEntry.data.newEntry.entry.content.Continuation.toAgentId;
+          this.initChannel();
           // Continue
         }
       });
@@ -179,6 +181,8 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
       this.statusMessage = "";
       this.statusMessageDetail = {};
       console.log("Done. Received Continuation.");
+      this.initialAgentId = channelState.entries.lastContinuation.content.Continuation.toAgentId;
+      this.initChannel();
       return;
     }
 

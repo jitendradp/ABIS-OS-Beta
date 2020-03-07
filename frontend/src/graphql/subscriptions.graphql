@@ -8,6 +8,7 @@ subscription newEntry($csrfToken:String!) {
       contentEncoding {
         id
       }
+      content
       type
       name
     }

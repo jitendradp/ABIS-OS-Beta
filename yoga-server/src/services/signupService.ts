@@ -27,6 +27,11 @@ export class SignupService extends Service {
         this._newEntry.observable.subscribe(next => this.onNewEntry(next, self));
     }
 
+    stop(): void {
+        this.eventBroker.removeTopic(this.id, this._newEntry.name);
+        this.eventBroker.removeTopic(this.id, this._newChannel.name);
+    }
+
     async onNewChannel(newChannel:Channel) {
         Helper.log(`SignupService received a NewChannel event: ${JSON.stringify(newChannel)}`);
 
@@ -105,14 +110,15 @@ export class SignupService extends Service {
                 owner: this.id,
                 createdBy: this.id,
                 contentEncoding: ServerInit.continuationContentEncoding.id,
-                content:null,
+                content: {
+                    Continuation: {
+                        fromAgentId: this.id,
+                        toAgentId: ServerInit.verifyEmailService.id,
+                        context: null
+                    }
+                },
                 name: "Continuation"
             });
         }
-    }
-
-    stop(): void {
-        this.eventBroker.removeTopic(this.id, this._newEntry.name);
-        this.eventBroker.removeTopic(this.id, this._newChannel.name);
     }
 }
