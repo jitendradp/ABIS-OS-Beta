@@ -2,6 +2,7 @@ version: '3'
 networks:
   abis:
     driver: bridge
+
 services:
 
   frontend:
@@ -30,6 +31,7 @@ services:
     ports:
       - "4000:4000"
 
+
   prisma:
     container_name: prisma
     build:
@@ -42,6 +44,7 @@ services:
       - abis
     ports:
       - "4466:4466"
+
     environment:
       PRISMA_CONFIG: |
         managementApiSecret: managementApiSecret
@@ -63,6 +66,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: test
     volumes:
       - ./pgadmin:/root/.pgadmin
+
     ports:
       - "8080:8080"
 
@@ -70,7 +74,8 @@ services:
       - abis
     depends_on:
       - db
-    restart: unless-stopped
+    restart: always
+
 
   db:
     container_name: db
@@ -79,7 +84,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5432:5432"
-    restart: unless-stopped
+    restart: always
     networks:
       - abis
     environment:
@@ -87,6 +92,5 @@ services:
       POSTGRES_PASSWORD: prisma
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
 volumes:
   postgres_data:
