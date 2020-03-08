@@ -37,10 +37,19 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
    * The id of the agent with which the dialog should begin.
    */
   @Input()
-  public initialAgentId:string;
+  public currentAgentId:string;
 
   public statusMessage:string;
   public statusMessageDetail: { [key: string]: string };
+
+  public get statusMessageDetailArray() {
+    return Object.keys(this.statusMessageDetail).map(key => {
+      return {
+        key,
+        value: this.statusMessageDetail[key]
+      };
+    })
+  }
 
   /**
    * The schema of the currently displayed form (default=loading...).
@@ -93,7 +102,7 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
     if (!changes["serviceAgentId"]) {
       return;
     }
-    if (!this.initialAgentId) {
+    if (!this.currentAgentId) {
       throw new Error("The serviceAgentId property must be set to a value.")
     }
     // noinspection JSIgnoredPromiseFromCall
@@ -101,7 +110,7 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    if (!this.initialAgentId) {
+    if (!this.currentAgentId) {
       return;
     }
     // noinspection JSIgnoredPromiseFromCall
@@ -117,7 +126,7 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
 
     // Find or create a channel to the specified "serviceAgentId".
     const myChannels = (await this.myChannelsApi.fetch({csrfToken: this.userService.csrfToken}).toPromise()).data.myChannels;
-    const myChannel = myChannels.find(o => o.receiver.id == this.initialAgentId);
+    const myChannel = myChannels.find(o => o.receiver.id == this.currentAgentId);
 
     if (myChannel && myChannel.reverse) {
       // Duplex channel already established
@@ -131,14 +140,14 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
       // No existing channel, create a new one
       const channel = await this.createChannelApi.mutate({
         csrfToken: this.userService.csrfToken,
-        toAgentId: this.initialAgentId
+        toAgentId: this.currentAgentId
       }).toPromise();
 
       this._channelId = channel.data.createChannel.id;
       return;
     }
 
-    console.log(`Initialized channel ${this._channelId} from '${this.userService.profileId}' to '${this.initialAgentId}'. Waiting for reverse channel ...`);
+    console.log(`Initialized channel ${this._channelId} from '${this.userService.profileId}' to '${this.currentAgentId}'. Waiting for reverse channel ...`);
   }
 
   /**
@@ -152,7 +161,7 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
           this.statusMessage = "Validation Error";
         } else if (newEntry.data.newEntry.entry.contentEncoding.id == this._continuationEncoding.id) {
           this.statusMessage = "";
-          this.initialAgentId = newEntry.data.newEntry.entry.content.Continuation.toAgentId;
+          this.currentAgentId = newEntry.data.newEntry.entry.content.Continuation.toAgentId;
           this.initChannel();
           // Continue
         }
@@ -181,7 +190,7 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
       this.statusMessage = "";
       this.statusMessageDetail = {};
       console.log("Done. Received Continuation.");
-      this.initialAgentId = channelState.entries.lastContinuation.content.Continuation.toAgentId;
+      this.currentAgentId = channelState.entries.lastContinuation.content.Continuation.toAgentId;
       this.initChannel();
       return;
     }

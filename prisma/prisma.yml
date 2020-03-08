@@ -1,4 +1,4 @@
-endpoint: http://prisma:4466/AbisStarterkit/dev
+endpoint: http://local.abis-cloud.com:4466/AbisStarterkit/dev
 datamodel: datamodel.prisma
 secret: managementApiSecret
 
