@@ -11,7 +11,7 @@ import {AgentCanCreate} from "../statements/agentCanCreate";
 export const mutations = {
     async createSession(root, {clientTime}, ctx) {
         // Every new api user must create a session.
-        // The session will be created in the context of the "anonymous" system user together with a temporary profile first.
+        // The new session, together with a temporary profile, will be created in the context of the "anonymous" system-user.
         // When the user authenticated with the Signup- or LoginService, a new session will be created
         // and sent to the user via his channel to the service.
         const anonymousUserId = ServerInit.anonymousUser.id;
@@ -24,6 +24,7 @@ export const mutations = {
         const session = await UserCreate.session(anonymousUserId, anonymousProfile.id, null, clientTime);
 
         Helper.setSessionTokenCookie(session.sessionToken, ctx.request);
+        Helper.clearBearerTokenCookie(ctx.request);
 
         return <ActionResponse> {
             success: true,
@@ -100,7 +101,7 @@ export const mutations = {
             content: createEntryInput.content
         };
 
-        const entry = await AgentCreate.entry(agentId, groupId, newEntryInput);
+        const entry = await AgentCreate.entry(agentId, groupId, newEntryInput, ctx.request);
         return entry;
     },
 

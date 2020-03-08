@@ -13,6 +13,7 @@ import {
   NewChannelGQL,
   NewEntryGQL
 } from "../../../generated/abis-api";
+import {Router} from "@angular/router";
 
 /**
  * This component can be used to hold a dialog with a service agent.
@@ -39,17 +40,8 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
   @Input()
   public currentAgentId:string;
 
-  public statusMessage:string;
-  public statusMessageDetail: { [key: string]: string };
-
-  public get statusMessageDetailArray() {
-    return Object.keys(this.statusMessageDetail).map(key => {
-      return {
-        key,
-        value: this.statusMessageDetail[key]
-      };
-    })
-  }
+  public statusMessage:string = "";
+  public statusMessageDetail: { key: string, value: string }[] = [];
 
   /**
    * The schema of the currently displayed form (default=loading...).
@@ -89,7 +81,8 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
     , private createEntryApi: CreateEntryGQL
     , private getEntries: GetEntriesGQL
     , private newEntrySubscription: NewEntryGQL
-    , private newChannelSubscription: NewChannelGQL) {
+    , private newChannelSubscription: NewChannelGQL
+    , private router: Router,) {
     this._errorEncoding = this.userService.findContentEncodingByName("Error");
     this._continuationEncoding = this.userService.findContentEncodingByName("Continuation");
   }
@@ -156,14 +149,26 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
   private subscribeToChannelEvents() {
     this.newEntrySubscription.subscribe({csrfToken: this.userService.csrfToken})
       .subscribe((newEntry:any) => {
-        console.log("NEW ENTRY: ", newEntry);
         if (newEntry.data.newEntry.entry.contentEncoding.id == this._errorEncoding.id) {
-          this.statusMessage = "Validation Error";
+          this.statusMessage = newEntry.data.newEntry.entry.content.summary;
         } else if (newEntry.data.newEntry.entry.contentEncoding.id == this._continuationEncoding.id) {
           this.statusMessage = "";
-          this.currentAgentId = newEntry.data.newEntry.entry.content.Continuation.toAgentId;
-          this.initChannel();
+
+          const continuationContent = newEntry.data.newEntry.entry.content.Continuation;
+          this.currentAgentId = continuationContent.toAgentId;
+
+          if (this.currentAgentId.trim() == "") {
+            const context = newEntry.data.newEntry.entry.content.Continuation.context;
+            if (continuationContent.context && continuationContent.context.csrfToken) {
+              // TODO: centralize the csrf-token handling
+              this.clientState.set(UserService.CsrfTokenKey, continuationContent.context.csrfToken);
+            }
+            // A empty agent id means -> navigate to the frontpage (at least for now)
+            this.router.navigate(["/"]);
+            return;
+          }
           // Continue
+          this.initChannel();
         }
       });
 
@@ -188,7 +193,7 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
 
     if (channelState.status.success) {
       this.statusMessage = "";
-      this.statusMessageDetail = {};
+      this.statusMessageDetail = [];
       console.log("Done. Received Continuation.");
       this.currentAgentId = channelState.entries.lastContinuation.content.Continuation.toAgentId;
       this.initChannel();
@@ -196,7 +201,7 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
     }
 
     if (channelState.status.error) {
-      const lastError = JSON.parse(channelState.entries.lastError.content);
+      const lastError = channelState.entries.lastError.content;
       this.statusMessage = lastError.summary;
       this.statusMessageDetail = lastError.detail;
     }

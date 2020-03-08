@@ -1,7 +1,7 @@
 <div id="statusMessage">{{statusMessage}}</div>
-<div class="statusMessageDetail" *ngIf="statusMessageDetail && statusMessageDetail !== {}">
+<div class="statusMessageDetail" *ngIf="statusMessageDetail.length > 0">
   <table>
-    <tr *ngFor="let statusMessage of statusMessageDetailArray">
+    <tr *ngFor="let statusMessage of statusMessageDetail">
       <td>{{statusMessage.key}}</td>
       <td>{{statusMessage.value}}</td>
     </tr>

@@ -43,9 +43,9 @@ export class UserService {
 
   private readonly _log: Logger = this.loggerService.createLogger("UserService");
 
-  private readonly CsrfTokenKey = "UserService.csrfToken";
+  public static readonly CsrfTokenKey = "UserService.csrfToken";
   public get csrfToken(): string {
-    return this.clientState.get<string>(this.CsrfTokenKey, null).data;
+    return this.clientState.get<string>(UserService.CsrfTokenKey, null).data;
   }
 
 
@@ -119,7 +119,7 @@ export class UserService {
 
 
     this.clientState.set(this.ProfileKey, createSessionResponse.data.createSession.data);
-    this.clientState.set(this.CsrfTokenKey, createSessionResponse.data.createSession.code);
+    this.clientState.set(UserService.CsrfTokenKey, createSessionResponse.data.createSession.code);
 
     this.contentEncodingsApi.fetch({csrfToken: createSessionResponse.data.createSession.code})
       .subscribe(contentEncodings => {

@@ -28,6 +28,7 @@ export class ProfileService extends Service {
 
     onNewEntry(newEntry:NewEntry) {
         Helper.log(`ProfileService received a NewEntry event: ${JSON.stringify(newEntry)}`);
+
     }
 
     stop(): void {

@@ -1,12 +1,13 @@
 import {EventBroker} from "./eventBroker";
 import {Agent} from "../generated/prisma_client";
+import {Entry} from "../generated";
+import {ServerInit} from "../serverInit";
+
+var SchemaValidator = require('ajv');
+var schemaValidator = SchemaValidator({ allErrors: true });
+var normalise = require('ajv-error-messages');
 
 export abstract class Service {
-    /*
-    Man kann auf zwei Wegen mit einem Service kommunizieren:
-    1) Man baut einen Channel zu dem Service auf ("vertraulich")
-    2) Man schreibt einen Entry in eine Gruppe in der der Service Mitglied ist
-    */
     private _agent: Agent;
 
     /**
@@ -32,8 +33,7 @@ export abstract class Service {
     }
 
     /**
-     * The injected EventBroker that is available to every service instance that was created
-     * by the AgentHost.
+     * The injected EventBroker.
      */
     public get eventBroker():EventBroker {
         return this._eventBroker;
@@ -54,4 +54,37 @@ export abstract class Service {
      * This method should be used to remove topics or subscriptions.
      */
     abstract stop() : void; // TODO: To async or not to async?
+
+    /**
+     * Validates an entry against its attached contentType-ID and returns an empty array if no validation errors occurred.
+     * Otherwise an array of key-value objects will be returned, where the key is the name of the field and the value is the validation message.
+     *
+     * Only works for contentTypes of type JsonSchema at the moment.
+     * @param newEntry
+     */
+    protected validateEntry(newEntry: Entry) : {key:string, value:string}[] {
+        const contentEncoding = ServerInit.contentEncodings.find(o => o.id == (<any>newEntry.contentEncoding).id);
+        if (!contentEncoding) {
+            throw new Error(`Entry '${newEntry.id}' doesn't have a 'contentEncoding' value and cannot be validated.`);
+        }
+        if (contentEncoding.type != "JsonSchema") {
+            throw new Error(`Entry '${newEntry.id}' doesn't have a 'contentEncoding' of type 'JsonSchema' and cannot be validated.`);
+        }
+
+        const contentEncodingData = JSON.parse(contentEncoding.data);
+        const jsonSchema = contentEncodingData[contentEncoding.name];
+        const validator = schemaValidator.compile(jsonSchema);
+        const isValid = validator(newEntry.content[contentEncoding.name]);
+
+        const normalisedErrors = isValid ? null : normalise(validator.errors);
+        if (!normalisedErrors) {
+            return [];
+        }
+
+        const messageDetails = Object.keys(normalisedErrors.fields).map(key => {
+            return {key: key, value: normalisedErrors.fields[key].join("; ")};
+        });
+
+        return messageDetails;
+    }
 }

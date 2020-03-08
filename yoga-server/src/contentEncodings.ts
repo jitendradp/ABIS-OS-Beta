@@ -14,7 +14,6 @@ export class ContentEncodings {
                     "first_name": {
                         "type": "string",
                         "minLength": 3
-
                     },
                     "last_name": {
                         "type": "string",
@@ -28,7 +27,7 @@ export class ContentEncodings {
                         "type": "string",
                         "minLength": 8
                     },
-                    "passwordConfirmation": {
+                    "password_confirmation": {
                         "type": "string",
                         "minLength": 8
                     }
@@ -38,7 +37,7 @@ export class ContentEncodings {
                     "last_name",
                     "email",
                     "password",
-                    "passwordConfirmation"
+                    "password_confirmation"
                 ]
             }
         })

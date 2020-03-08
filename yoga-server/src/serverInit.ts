@@ -49,6 +49,15 @@ export class ServerInit {
     static get continuationContentEncoding(): ContentEncoding {
         return this._continuationContentEncoding;
     }
+    static get contentEncodings() : ContentEncoding[] {
+        return [
+            this.signupContentEncoding,
+            this.verifyEmailContentEncoding,
+            this.loginContentEncoding,
+            this.errorContentEncoding,
+            this.continuationContentEncoding
+        ]
+    }
     private static _systemUser:User;
     private static _anonymousUser:User;
     private static _signupService:Agent;

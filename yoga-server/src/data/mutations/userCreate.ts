@@ -8,7 +8,6 @@ import {ServerInit} from "../../serverInit";
 export class UserCreate {
     public static async profile(userId: string, name: string, avatar: string, status?: ProfileStatus) {
         // fact "P.S.1 Jedes Profil hat mindestens einen Stash"
-
         const existingProfiles = await prisma.agents({
             where:{
                 name: name
