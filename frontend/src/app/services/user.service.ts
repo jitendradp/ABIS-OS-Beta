@@ -43,7 +43,7 @@ export class UserService {
 
   private readonly _log: Logger = this.loggerService.createLogger("UserService");
 
-  public static readonly CsrfTokenKey = "UserService.csrfToken";
+  public static readonly CsrfTokenKey = "UserService.csrfToken"; // TODO: Don't use the CsrfTokenKey outside the UserService
   public get csrfToken(): string {
     return this.clientState.get<string>(UserService.CsrfTokenKey, null).data;
   }
@@ -81,9 +81,7 @@ export class UserService {
     , private clientState: ClientStateService
     , private getSystemServicesApi: GetSystemServicesGQL
     , private myChannelsApi: MyChannelsGQL
-    , private verifySessionApi: VerifySessionGQL
-    , private newEntrySubscription: NewEntryGQL
-    , private newChannelSubscription: NewChannelGQL) {
+    , private verifySessionApi: VerifySessionGQL) {
 
     // TODO: this seems to be a bit hacky, does the service really need to subscribe to its own events to know that?
     this.actionDispatcher.onAction.subscribe(action => {

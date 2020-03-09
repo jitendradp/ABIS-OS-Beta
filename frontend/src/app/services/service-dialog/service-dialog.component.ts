@@ -20,13 +20,13 @@ import {Router} from "@angular/router";
  * A dialog typically follows the question->answer pattern:
  * 1) The client starts the dialog by creating a channel to a service.
  * 2) The service creates a reverse channel and puts an empty entry with attached JsonSchema-contentEncoding in it (question).
- * 3) The client interprets the JsonSchema and displays the user a corresponding user interface.
+ * 3) The client interprets the JsonSchema and displays a corresponding form to the user.
  * 4) The user fills-in the form and submits it (answer).
  * 5) The client sends the data from the form together with its original contentEncoding to the service.
  * 6) The service validates the data and either sends:
  * 7.1) A 'Continuation' schema response if the dialog ended successfully - The client should continue the dialog with the next service or end the dialog.
  * 7.2) An 'Error' schema if the sent data was not valid or the processing failed - The user can re-send an edited entry.
- * 7.3) A new schema entry if the dialog with the current service should be continued.
+ * 7.3) A new schema entry if the dialog with the current service should be continued with a new form.
  */
 @Component({
   selector: 'app-service-dialog',
@@ -82,7 +82,7 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
     , private getEntries: GetEntriesGQL
     , private newEntrySubscription: NewEntryGQL
     , private newChannelSubscription: NewChannelGQL
-    , private router: Router,) {
+    , private router: Router) {
     this._errorEncoding = this.userService.findContentEncodingByName("Error");
     this._continuationEncoding = this.userService.findContentEncodingByName("Continuation");
   }

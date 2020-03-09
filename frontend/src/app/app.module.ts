@@ -40,8 +40,8 @@ import {
 import {AccessComponent} from './pages/system/access/access.component';
 import {ContentComponent} from './components/content/content.component';
 import {ButtonComponent} from './components/button/button.component';
-import {RegisterComponent} from './pages/system/register/register.component';
-import {SigninComponent} from './pages/system/signin/signin.component';
+import {SignupComponent} from './pages/system/signup/signup.component';
+import {LoginComponent} from './pages/system/login/login.component';
 import {IconbarComponent} from './components/iconbar/iconbar.component';
 import {StoreComponent} from './pages/store/store.component';
 import {FlexLayoutModule} from "@angular/flex-layout";
@@ -153,14 +153,14 @@ const appRoutes: Routes = [
     , canActivate: [CanActivateRoute]
   },
   {
-    path: 'signin', component: SigninComponent, data: {
+    path: 'signin', component: LoginComponent, data: {
       "title": "Login",
       "actions": defaultActions
     }
     , canActivate: [CanActivateRoute]
   },
   {
-    path: 'register', component: RegisterComponent, data: {
+    path: 'register', component: SignupComponent, data: {
       "title": "Sign up",
       "actions": defaultActions
     }
@@ -259,8 +259,8 @@ const appRoutes: Routes = [
     AccessComponent,
     ContentComponent,
     ButtonComponent,
-    RegisterComponent,
-    SigninComponent,
+    SignupComponent,
+    LoginComponent,
     IconbarComponent,
     StoreComponent,
     StudioComponent,
