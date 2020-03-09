@@ -120,28 +120,29 @@ export class Topic<T> {
      */
     public async publish(event:T) : Promise<void> {
         // First fulfill all dependencies..
-        const dependencies = Object.keys(this.dependencies).map(key => {
-            return {name: key, dependency: this.dependencies[key]};
-        });
         const promises:Promise<void>[] = [];
-        for (let dep of dependencies) {
-            Helper.log(`Fulfilling dependency '${dep.name}' with event: ${JSON.stringify(event)}..`);
-            promises.push(dep.dependency(event));
+        for (let dep of this.dependencies) {
+            promises.push(dep(event));
         }
 
         await Promise.all(promises);
+
         if (promises.length > 0) {
             Helper.log('Fulfilled all dependencies. Sending regular events..');
         }
 
         // Then dispatch all fire-and-forget events
+        if (!this._observer) {
+            return; // If nobody subscribed -> leave
+        }
+
         this._observer.next(event);
     }
 
     /**
      * Contains all dependency handlers which will be processed in a blocking manner before everything else.
      */
-    private dependencies:{[name:string]:(T)=>Promise<void>} = {};
+    private dependencies:((T)=>Promise<void>)[] = [];
 
     /**
      * Can be used instead of a subscription to the 'observable' property but blocks until all
@@ -150,10 +151,7 @@ export class Topic<T> {
      * @param dependencyName The name of the dependency (for logging/debugging purposes only)
      * @param dependency The actual promise-returning callback
      */
-    public depend(dependencyName:string, dependency:(T) => Promise<void>) {
-        if (this.dependencies[dependencyName]) {
-            throw new Error(`A dependency with the name '${dependencyName}' already exists.`)
-        }
-        this.dependencies[dependencyName] = dependency;
+    public depend(dependency:(T) => Promise<void>) {
+        this.dependencies.push(dependency);
     }
 }

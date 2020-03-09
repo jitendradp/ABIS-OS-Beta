@@ -1,12 +1,12 @@
-import {DirectService} from "./directService";
 import {ServerInit} from "../serverInit";
 import {Entry, Group, prisma} from "../generated";
 import {UserQueries} from "../data/queries/user";
 import {UserCreate} from "../data/mutations/userCreate";
 import {config} from "../config";
 import {Helper} from "../helper/helper";
+import {RequestSynchronousService} from "./requestSynchronousService";
 
-export class LoginService extends DirectService {
+export class LoginService extends RequestSynchronousService {
     private static readonly bcrypt = require('bcrypt');
 
     get welcomeMessageContentEncodingId(): string {
@@ -49,12 +49,6 @@ export class LoginService extends DirectService {
         Helper.log(`Setting bearer and session cookie for authenticated user.`);
         Helper.setBearerTokenCookie(bearerToken, request);
         Helper.setSessionTokenCookie(session.sessionToken, request);
-
-        if ((<any>newEntry).__blocker) // TODO: Shitty synchronization just to set some cookies from a service
-        {
-            (<any>newEntry).__blocker(); // Stop the lock on the request and set the variable to null so that no-one else can de-block it
-            (<any>newEntry).__blocker = null;
-        }
 
         await this.postContinueTo("", answerChannel.id, {
             csrfToken: session.csrfToken

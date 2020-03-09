@@ -146,14 +146,16 @@ export class ServerInit {
             }
         });
 
-        ServerInit._newEntryTopic.observable.subscribe(async newEntry => {
+        ServerInit._newEntryTopic.depend(async newEntry => {
             // Find everyone who may be concerned by the message and who is allowed to see it
             const subscribers = await FindAgentsThatSeeThis.entry(newEntry.id);
 
             for (let subscriber of subscribers) {
                 const newEntryTopic = EventBroker.instance.tryGetTopic<Entry>(subscriber, Topics.NewEntry);
                 if (newEntryTopic) {
-                    newEntryTopic.publish(newEntry);
+                    // TODO: This can propagate the errors of services to this position
+                    // TODO: Monitor performance
+                    await newEntryTopic.publish(newEntry);
                 }
             }
         });

@@ -28,12 +28,6 @@ export class RoomInboxService extends Service {
 
     onNewEntry(newEntry:NewEntry) {
         Helper.log(`RoomInboxService received a NewEntry event: ${JSON.stringify(newEntry)}`);
-
-        if ((<any>newEntry).__blocker) // TODO: Shitty synchronization just to set some cookies from a service
-        {
-            (<any>newEntry).__blocker(); // Stop the lock on the request and set the variable to null so that no-one else can de-block it
-            (<any>newEntry).__blocker = null;
-        }
     }
 
     stop(): void {

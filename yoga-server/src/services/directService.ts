@@ -11,8 +11,8 @@ import {ServerInit} from "../serverInit";
  * and responds with a reverse channel and a welcome message whenever it receives one.
  */
 export abstract class DirectService extends Service {
-    private _newChannel: Topic<any>;
-    private _newEntry: Topic<any>;
+    protected _newChannel: Topic<any>;
+    protected  _newEntry: Topic<any>;
 
     start(): void {
         const self = this;
@@ -111,13 +111,8 @@ export abstract class DirectService extends Service {
         }
 
         let rc = reverseChannel.length == 1 ? reverseChannel[0] : null;
-        await this.onNewEntry(next, rc, request);
 
-        if ((<any>next).__blocker) // TODO: Shitty synchronization just to set some cookies from a service
-        {
-            (<any>next).__blocker(); // Stop the lock on the request and set the variable to null so that no-one else can de-block it
-            (<any>next).__blocker = null;
-        }
+        await this.onNewEntry(next, rc, request);
     }
 
     protected postContinueTo(agentId:string, inChannelId:string, context?:any) {
