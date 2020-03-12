@@ -95,9 +95,8 @@ export class Topic<T> {
     }
     private _namespace: string;
 
-
     /**
-     * The event source.
+     * The event source for regular subscribers.
      */
     public get observable():Observable<T> {
         return this._observable;
@@ -116,11 +115,42 @@ export class Topic<T> {
     }
 
     /**
-     * Publishes a new event to the topic.
+     * Publishes a new fire-and-forget event to the topic.
      * @param event
      */
-    public publish(event:T) {
-        // Helper.log(`publishing message to ${this.namespace}.${this.name}: ${JSON.stringify(event)}`);
+    public async publish(event:T) : Promise<void> {
+        // First fulfill all dependencies..
+        const promises:Promise<void>[] = [];
+        for (let dep of this.dependencies) {
+            promises.push(dep(event));
+        }
+
+        await Promise.all(promises);
+
+        if (promises.length > 0) {
+            Helper.log('Fulfilled all dependencies. Sending regular events..');
+        }
+
+        // Then dispatch all fire-and-forget events
+        if (!this._observer) {
+            return; // If nobody subscribed -> leave
+        }
+
         this._observer.next(event);
+    }
+
+    /**
+     * Contains all dependency handlers which will be processed in a blocking manner before everything else.
+     */
+    private dependencies:((T)=>Promise<void>)[] = [];
+
+    /**
+     * Can be used instead of a subscription to the 'observable' property but blocks until all
+     * dependencies are processed.
+     * Dependencies are processed before any normal events are dispatched.
+     * @param dependency The actual promise-returning callback
+     */
+    public depend(dependency:(T) => Promise<void>) {
+        this.dependencies.push(dependency);
     }
 }

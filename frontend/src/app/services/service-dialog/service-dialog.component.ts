@@ -13,19 +13,20 @@ import {
   NewChannelGQL,
   NewEntryGQL
 } from "../../../generated/abis-api";
+import {Router} from "@angular/router";
 
 /**
  * This component can be used to hold a dialog with a service agent.
  * A dialog typically follows the question->answer pattern:
  * 1) The client starts the dialog by creating a channel to a service.
  * 2) The service creates a reverse channel and puts an empty entry with attached JsonSchema-contentEncoding in it (question).
- * 3) The client interprets the JsonSchema and displays the user a corresponding user interface.
+ * 3) The client interprets the JsonSchema and displays a corresponding form to the user.
  * 4) The user fills-in the form and submits it (answer).
  * 5) The client sends the data from the form together with its original contentEncoding to the service.
  * 6) The service validates the data and either sends:
  * 7.1) A 'Continuation' schema response if the dialog ended successfully - The client should continue the dialog with the next service or end the dialog.
  * 7.2) An 'Error' schema if the sent data was not valid or the processing failed - The user can re-send an edited entry.
- * 7.3) A new schema entry if the dialog with the current service should be continued.
+ * 7.3) A new schema entry if the dialog with the current service should be continued with a new form.
  */
 @Component({
   selector: 'app-service-dialog',
@@ -37,10 +38,10 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
    * The id of the agent with which the dialog should begin.
    */
   @Input()
-  public initialAgentId:string;
+  public currentAgentId:string;
 
-  public statusMessage:string;
-  public statusMessageDetail: { [key: string]: string };
+  public statusMessage:string = "";
+  public statusMessageDetail: { key: string, value: string }[] = [];
 
   /**
    * The schema of the currently displayed form (default=loading...).
@@ -80,7 +81,8 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
     , private createEntryApi: CreateEntryGQL
     , private getEntries: GetEntriesGQL
     , private newEntrySubscription: NewEntryGQL
-    , private newChannelSubscription: NewChannelGQL) {
+    , private newChannelSubscription: NewChannelGQL
+    , private router: Router) {
     this._errorEncoding = this.userService.findContentEncodingByName("Error");
     this._continuationEncoding = this.userService.findContentEncodingByName("Continuation");
   }
@@ -93,7 +95,7 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
     if (!changes["serviceAgentId"]) {
       return;
     }
-    if (!this.initialAgentId) {
+    if (!this.currentAgentId) {
       throw new Error("The serviceAgentId property must be set to a value.")
     }
     // noinspection JSIgnoredPromiseFromCall
@@ -101,7 +103,7 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    if (!this.initialAgentId) {
+    if (!this.currentAgentId) {
       return;
     }
     // noinspection JSIgnoredPromiseFromCall
@@ -117,7 +119,7 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
 
     // Find or create a channel to the specified "serviceAgentId".
     const myChannels = (await this.myChannelsApi.fetch({csrfToken: this.userService.csrfToken}).toPromise()).data.myChannels;
-    const myChannel = myChannels.find(o => o.receiver.id == this.initialAgentId);
+    const myChannel = myChannels.find(o => o.receiver.id == this.currentAgentId);
 
     if (myChannel && myChannel.reverse) {
       // Duplex channel already established
@@ -131,14 +133,14 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
       // No existing channel, create a new one
       const channel = await this.createChannelApi.mutate({
         csrfToken: this.userService.csrfToken,
-        toAgentId: this.initialAgentId
+        toAgentId: this.currentAgentId
       }).toPromise();
 
       this._channelId = channel.data.createChannel.id;
       return;
     }
 
-    console.log(`Initialized channel ${this._channelId} from '${this.userService.profileId}' to '${this.initialAgentId}'. Waiting for reverse channel ...`);
+    console.log(`Initialized channel ${this._channelId} from '${this.userService.profileId}' to '${this.currentAgentId}'. Waiting for reverse channel ...`);
   }
 
   /**
@@ -146,13 +148,27 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
    */
   private subscribeToChannelEvents() {
     this.newEntrySubscription.subscribe({csrfToken: this.userService.csrfToken})
-      .subscribe(newEntry => {
-        console.log("NEW ENTRY: ", newEntry);
+      .subscribe((newEntry:any) => {
         if (newEntry.data.newEntry.entry.contentEncoding.id == this._errorEncoding.id) {
-          this.statusMessage = "Validation Error";
+          this.statusMessage = newEntry.data.newEntry.entry.content.summary;
         } else if (newEntry.data.newEntry.entry.contentEncoding.id == this._continuationEncoding.id) {
           this.statusMessage = "";
+
+          const continuationContent = newEntry.data.newEntry.entry.content.Continuation;
+          this.currentAgentId = continuationContent.toAgentId;
+
+          if (this.currentAgentId.trim() == "") {
+            const context = newEntry.data.newEntry.entry.content.Continuation.context;
+            if (continuationContent.context && continuationContent.context.csrfToken) {
+              // TODO: centralize the csrf-token handling
+              this.clientState.set(UserService.CsrfTokenKey, continuationContent.context.csrfToken);
+            }
+            // A empty agent id means -> navigate to the frontpage (at least for now)
+            this.router.navigate(["/"]);
+            return;
+          }
           // Continue
+          this.initChannel();
         }
       });
 
@@ -177,13 +193,15 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
 
     if (channelState.status.success) {
       this.statusMessage = "";
-      this.statusMessageDetail = {};
+      this.statusMessageDetail = [];
       console.log("Done. Received Continuation.");
+      this.currentAgentId = channelState.entries.lastContinuation.content.Continuation.toAgentId;
+      this.initChannel();
       return;
     }
 
     if (channelState.status.error) {
-      const lastError = JSON.parse(channelState.entries.lastError.content);
+      const lastError = channelState.entries.lastError.content;
       this.statusMessage = lastError.summary;
       this.statusMessageDetail = lastError.detail;
     }

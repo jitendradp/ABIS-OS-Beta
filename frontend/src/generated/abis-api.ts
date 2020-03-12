@@ -1052,14 +1052,7 @@ export type FindRoomsQuery = (
   { __typename?: 'Query' }
   & { findRooms: Array<(
     { __typename?: 'Room' }
-    & Pick<Room, 'id' | 'owner' | 'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt' | 'name' | 'entryCount' | 'isPrivate' | 'title' | 'description' | 'logo' | 'banner' | 'memberCount'>
-    & { inbox: (
-      { __typename?: 'Inbox' }
-      & Pick<Inbox, 'id'>
-    ), tagAggregate: Array<(
-      { __typename?: 'TagAggregate' }
-      & Pick<TagAggregate, 'type' | 'count'>
-    )> }
+    & Pick<Room, 'id' | 'owner' | 'createdBy' | 'createdAt' | 'updatedBy' | 'updatedAt' | 'name' | 'title' | 'description' | 'logo' | 'banner'>
   )> }
 );
 
@@ -1129,7 +1122,7 @@ export type NewEntrySubscription = (
     & Pick<NewEntry, 'containerId'>
     & { entry: Maybe<(
       { __typename?: 'Entry' }
-      & Pick<Entry, 'id' | 'createdAt' | 'createdBy' | 'type' | 'name'>
+      & Pick<Entry, 'id' | 'createdAt' | 'createdBy' | 'content' | 'type' | 'name'>
       & { contentEncoding: Maybe<(
         { __typename?: 'ContentEncoding' }
         & Pick<ContentEncoding, 'id'>
@@ -1571,20 +1564,10 @@ export const FindRoomsDocument = gql`
     updatedBy
     updatedAt
     name
-    entryCount
-    isPrivate
     title
     description
     logo
     banner
-    inbox {
-      id
-    }
-    memberCount
-    tagAggregate {
-      type
-      count
-    }
   }
 }
     `;
@@ -1670,6 +1653,7 @@ export const NewEntryDocument = gql`
       contentEncoding {
         id
       }
+      content
       type
       name
     }

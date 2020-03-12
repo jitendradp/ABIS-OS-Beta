@@ -125,7 +125,7 @@ export class AgentCreate {
         return newRoom;
     }
 
-    public static async entry(agentId: string, groupId: string, entry: EntryCreateInput) {
+    public static async entry(agentId: string, groupId: string, entry: EntryCreateInput, request?:any) {
         entry.createdBy = agentId;
         entry.owner = agentId;
 
@@ -143,13 +143,17 @@ export class AgentCreate {
         // TODO: Stuff like this will fail miserably when executed in parallel. Find a different way to get the inserted ids.
         const newEntry = await prisma.group({id: groupId}).entries({first: 1, orderBy: "createdAt_DESC"});
         const contentEncoding = await prisma.contentEncoding({id:entry.contentEncoding});
+
         if (contentEncoding) {
-            (<any> newEntry[0]).contentEncoding = {
+            (<any> newEntry[0]).contentEncoding = { // TODO: Fix cast
                 id: contentEncoding.id
             };
         }
 
-        EventBroker.instance
+        (<any>newEntry[0]).__request = request; // TODO: Find a better way to set cookies
+
+        // TODO: This can propagate the errors of services to this position
+        await EventBroker.instance
             .getTopic<Entry>("system", Topics.NewEntry)
             .publish(newEntry[0]);
 

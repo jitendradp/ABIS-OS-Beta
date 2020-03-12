@@ -1,5 +1,6 @@
 import {config} from "../config";
 import {User} from "../generated";
+import {Helper} from "./helper";
 
 var nodemailer = require('nodemailer');
 
@@ -26,7 +27,10 @@ export class Mailer {
 
     public static async sendEmailVerificationCode(user: User): Promise<void> {
         // TODO: Use proper mail template
-        const txt = "";
+        if (!config.mailer.smtpServer) {
+            Helper.log(`The mailer is not configured. Cannot send email verification code.`);
+            return;
+        }
         return Mailer.sendMail(user.email, "Your ABIS verification code", user.challenge, user.challenge);
     }
 

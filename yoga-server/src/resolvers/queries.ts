@@ -28,16 +28,16 @@ export const queries = {
     async myRooms(root, {csrfToken}, ctx) {
         return AgentQueries.myRooms(csrfToken, ctx.sessionToken, ctx.bearerToken);
     },
-    async myMemberships(root, {csrfToken, groupType, isPublic}, ctx) {
-        return AgentQueries.myMemberships(csrfToken, ctx.sessionToken, ctx.bearerToken, groupType, isPublic);
-    },
-    async findRooms(root, {csrfToken, searchText}, ctx) {
-        return GroupQueries2.findRooms(csrfToken, ctx.sessionToken, ctx.bearerToken, searchText);
-    },
-    async findMemberships(root, {csrfToken, roomId, searchText}, ctx) {
-        return GroupQueries2.findMemberships(csrfToken, ctx.sessionToken, ctx.bearerToken, roomId, searchText);
-    },
     async getEntries(root, {csrfToken, groupId, from, to}, ctx) {
         return GroupQueries2.getEntries(csrfToken, ctx.sessionToken, ctx.bearerToken, groupId, from, to);
+    },
+    async findRooms(root, {csrfToken, searchText}, ctx) {
+        return AgentQueries.findRooms(csrfToken, ctx.sessionToken, ctx.bearerToken, searchText);
+    },
+    async myMemberships(root, {csrfToken, groupType, isPublic}, ctx) {
+        throw new Error("Not implemented");
+    },
+    async findMemberships(root, {csrfToken, roomId, searchText}, ctx) {
+        throw new Error("Not implemented");
     }
 };

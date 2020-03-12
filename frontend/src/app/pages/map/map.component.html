@@ -50,59 +50,11 @@
     position="bottom-right">
   </mgl-control>
 
-  <ng-container *ngIf="dark">
-    <mgl-markers-for-clusters
-      source="earthquakes">
-      <ng-template mglPoint let-feature>
-        <div
-          class="marker"
-          [title]="feature.properties['Secondary ID']">
-        </div>
-      </ng-template>
-      <ng-template mglClusterPoint let-feature>
-        <div
-          class="marker-cluster"
-          (click)="selectCluster($event, feature)">
-          {{ feature.properties?.point_count }}
-        </div>
-      </ng-template>
-    </mgl-markers-for-clusters>
-
-    <mgl-popup
-      *ngIf="selectedCluster"
-      [feature]="selectedCluster">
-      <showcase-cluster-popup
-        [clusterComponent]="clusterComponent"
-        [selectedCluster]="selectedCluster">
-      </showcase-cluster-popup>
-    </mgl-popup>
-    <mgl-geojson-source
-      id="earthquakes"
-      [data]="earthquakes"
-      [cluster]="true"
-      [clusterMaxZoom]="15"
-      [clusterRadius]="20">
-    </mgl-geojson-source>
-    <mgl-layer
-      *ngFor="let layer of clusterLayers"
-      [id]="layer.id"
-      type="circle"
-      source="earthquakes"
-      [filter]="layer.filter"
-      [paint]="layer.paint"
-      before="waterway-label">
+  <mgl-geojson-source *ngFor="let entry of geoJsonEntries; let i = index" id="{{entry.id}}" [data]="entry.content">
+    <mgl-layer id="{{entry.id}}_layer"
+               type="fill"
+               source="{{entry.id}}"
+               [paint]="{ 'fill-color': colorPalette[i % colorPalette.length], 'fill-opacity': 0.4 }">
     </mgl-layer>
-    <mgl-layer
-      id="unclustered-point"
-      type="circle"
-      source="earthquakes"
-      [filter]="['!=', 'cluster', true]"
-      [paint]="{
-          'circle-color': 'rgba(0,255,0,0.5)',
-          'circle-radius': 20,
-          'circle-blur': 1
-        }"
-      before="waterway-label"
-    ></mgl-layer>
-  </ng-container>
+  </mgl-geojson-source>
 </mgl-map>

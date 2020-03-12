@@ -1,34 +1,57 @@
-import {Service} from "./service";
-import {Topic, Topics} from "./eventBroker";
+import {ServerInit} from "../serverInit";
+import {Entry, Group, prisma} from "../generated";
+import {UserQueries} from "../data/queries/user";
+import {UserCreate} from "../data/mutations/userCreate";
+import {config} from "../config";
 import {Helper} from "../helper/helper";
-import {NewChannel} from "./events/newChannel";
-import {NewEntry} from "./events/newEntry";
+import {RequestSynchronousService} from "./requestSynchronousService";
 
-export class LoginService extends Service {
+export class LoginService extends RequestSynchronousService {
+    private static readonly bcrypt = require('bcrypt');
 
-    private _newChannel: Topic<any>;
-    private _newEntry: Topic<any>;
-
-    start(): void {
-        // The login service wants to be notified when a new channel to it was created
-        // or when a new entry was posted to a group in which the service is member.
-        this._newChannel = this.eventBroker.createTopic(this.id, Topics.NewChannel);
-        this._newChannel.observable.subscribe(this.onNewChannel);
-
-        this._newEntry = this.eventBroker.createTopic(this.id, Topics.NewEntry);
-        this._newEntry.observable.subscribe(this.onNewEntry);
+    get welcomeMessageContentEncodingId(): string {
+        return ServerInit.loginContentEncoding.id;
     }
 
-    onNewChannel(newChannel:NewChannel) {
-        Helper.log(`LoginService received a NewChannel event: ${JSON.stringify(newChannel)}`);
-    }
+    async onNewEntry(newEntry: Entry, answerChannel: Group, request?:any) {
+        if (!request){
+            throw new Error("This service needs a request to operate on.");
+        }
 
-    onNewEntry(newEntry:NewEntry) {
-        Helper.log(`LoginService received a NewEntry event: ${JSON.stringify(newEntry)}`);
-    }
+        const loginEntryContent: {
+            email: string,
+            password: string
+        } = newEntry.content[ServerInit.loginContentEncoding.name];
 
-    stop(): void {
-        this.eventBroker.removeTopic(this.id, this._newEntry.name);
-        this.eventBroker.removeTopic(this.id, this._newChannel.name);
+        let foundUser = await UserQueries.findUserByEmail(loginEntryContent.email);
+        if (!foundUser) {
+            (<any>foundUser) = {passwordHash: ""};
+        }
+
+        const passwordsMatch = await LoginService.bcrypt.compare(loginEntryContent.password, foundUser.passwordHash);
+
+        if (!foundUser || !passwordsMatch) {
+            const validationErrors = [];
+            const summary = "Couldn't login. Please check your username and password and try again.";
+            this.postError(summary, validationErrors, answerChannel.id);
+            return;
+        }
+
+        // TODO: Allow to switch profiles later
+        const userProfiles = await prisma.agents({where:{owner: foundUser.id}});
+        if (userProfiles.length < 1) {
+            throw new Error(`The user with the id ${foundUser.id} that tries to login has no profile.`);
+        }
+
+        const bearerToken = Helper.getRandomBase64String(config.auth.tokenLength);
+        const session = await UserCreate.session(foundUser.id, userProfiles[0].id, bearerToken, ""); // TODO: Set client time
+
+        Helper.log(`Setting bearer and session cookie for authenticated user.`);
+        Helper.setBearerTokenCookie(bearerToken, request);
+        Helper.setSessionTokenCookie(session.sessionToken, request);
+
+        await this.postContinueTo("", answerChannel.id, {
+            csrfToken: session.csrfToken
+        });
     }
 }

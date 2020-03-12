@@ -95,6 +95,22 @@ export class AgentQueries {
         }
     }
 
+    public static async findRooms(csrfToken: string, sessionToken: string, bearerToken: string, searchText:string) {
+        try {
+            const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
+            if (!myAgent) {
+                throw new Error(`Invalid bearer- and/or csrf-token.`);
+            }
+            return GroupQueries.findRooms(myAgent.id, searchText);
+        } catch (e) {
+            const errorId = Helper.logId(`An error occurred during querying 'myRooms': ${JSON.stringify(e)}`);
+            return <ActionResponse>{
+                success: false,
+                code: errorId
+            };
+        }
+    }
+
     public static async myMemberships(csrfToken: string, sessionToken: string, bearerToken: string, groupType?: GroupType, isPublic?: boolean) {
         try {
             const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);

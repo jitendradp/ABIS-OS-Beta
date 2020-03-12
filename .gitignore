@@ -10,3 +10,4 @@ yoga-server/src/config.ts
 /matrix/matrix-config/resolv.conf
 /matrix/files/
 /matrix/schemas/
+/.idea/

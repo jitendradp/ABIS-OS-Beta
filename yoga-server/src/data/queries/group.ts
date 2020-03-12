@@ -43,6 +43,7 @@ export class GroupQueries {
         if (!searchText) {
             searchText = "";
         }
+        /*
         const options = {
             where: <GroupWhereInput>{
                 OR: {
@@ -61,8 +62,13 @@ export class GroupQueries {
                 title_contains: searchText
             };
         }
+         */
 
-        const rooms = await prisma.groups(options);
-        return rooms;
+        const rooms = await prisma.groups({where:{type:"Room", isPublic:true}});
+        return rooms.map(o => <any>{
+            ...o,
+            isPrivate: !o.isPublic,
+            inbox: "",
+        });
     }
 }
