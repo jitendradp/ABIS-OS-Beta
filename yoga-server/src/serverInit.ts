@@ -1,4 +1,4 @@
-import {Agent, ContentEncoding, Entry, prisma, User} from "./generated";
+import {Agent, ContentEncoding, Entry, Group, prisma, User} from "./generated";
 import {config} from "./config";
 import {ContentEncodings} from "./contentEncodings";
 import {EventBroker, Topic, Topics} from "./services/eventBroker";
@@ -8,68 +8,96 @@ import {NewEntry} from "./services/events/newEntry";
 import {FindAgentsThatSeeThis} from "./queries/findAgentsThatSeeThis";
 import {AgentHost} from "./services/agentHost";
 import {Channel} from "./api/types/channel";
+import {UserCreate} from "./data/mutations/userCreate";
+import {AgentCreate} from "./data/mutations/agentCreate";
 
 export class ServerInit {
     static get serviceHost(): AgentHost {
         return this._serviceHost;
     }
+
     static get systemUser(): User {
         return this._systemUser;
     }
+
     static get anonymousUser(): User {
         return this._anonymousUser;
     }
+
     static get signupService(): Agent {
         return this._signupService;
     }
+
     static get loginService(): Agent {
         return this._loginService;
     }
+
     static get verifyEmailService(): Agent {
         return this._verifyEmailService;
     }
+
+    static get datenDieterSystemAgent(): Agent {
+        return this._datenDieterSystemAgent;
+    }
+
     static get newChannelTopic(): Topic<Channel> {
         return this._newChannelTopic;
     }
+
     static get newEntryTopic(): Topic<Entry> {
         return this._newEntryTopic;
     }
+
     static get signupContentEncoding(): ContentEncoding {
         return this._signupContentEncoding;
     }
+
     static get verifyEmailContentEncoding(): ContentEncoding {
         return this._verifyEmailContentEncoding;
     }
+
     static get loginContentEncoding(): ContentEncoding {
         return this._loginContentEncoding;
     }
+
     static get errorContentEncoding(): ContentEncoding {
         return this._errorContentEncoding;
     }
+
     static get continuationContentEncoding(): ContentEncoding {
         return this._continuationContentEncoding;
     }
-    static get contentEncodings() : ContentEncoding[] {
+
+    static get geoJsonFeatureContentEncoding(): ContentEncoding {
+        return this._geoJsonFeatureContentEncoding;
+    }
+
+    static get contentEncodings(): ContentEncoding[] {
         return [
             this.signupContentEncoding,
             this.verifyEmailContentEncoding,
             this.loginContentEncoding,
             this.errorContentEncoding,
-            this.continuationContentEncoding
+            this.continuationContentEncoding,
+            this.geoJsonFeatureContentEncoding
         ]
     }
-    private static _systemUser:User;
-    private static _anonymousUser:User;
-    private static _signupService:Agent;
-    private static _loginService:Agent;
-    private static _verifyEmailService:Agent;
-    private static _newChannelTopic:Topic<Channel>;
-    private static _newEntryTopic:Topic<Entry>;
+
+    private static _systemUser: User;
+    private static _anonymousUser: User;
+    private static _signupService: Agent;
+    private static _loginService: Agent;
+    private static _verifyEmailService: Agent;
+    private static _datenDieterSystemAgent: Agent;
+    private static _newChannelTopic: Topic<Channel>;
+    private static _newEntryTopic: Topic<Entry>;
     private static _signupContentEncoding: ContentEncoding;
     private static _verifyEmailContentEncoding: ContentEncoding;
     private static _loginContentEncoding: ContentEncoding;
     private static _errorContentEncoding: ContentEncoding;
     private static _continuationContentEncoding: ContentEncoding;
+    private static _geoJsonFeatureContentEncoding: ContentEncoding;
+    private static _countriesSystemRoom: Group;
 
     private static _serviceHost = new AgentHost(EventBroker.instance);
 
@@ -80,12 +108,70 @@ export class ServerInit {
         await ServerInit.clearAnonymousProfilesAndSessions();
 
         await ServerInit.createContentEncodings();
+
+        await ServerInit.createSystemAgents();
+
         await ServerInit.createSignupService();
         await ServerInit.createVerifyEmailService();
         await ServerInit.createLoginService();
         await ServerInit.createSystemTopics();
 
         await ServerInit.loadAgents();
+
+        await ServerInit.createSystemGroups();
+    }
+
+    private static async createSystemAgents() {
+        const existingDatenDieter = await prisma.agents({where:{owner:ServerInit._systemUser.id, name: "DatenDieter"}});
+        if (existingDatenDieter.length == 0) {
+            ServerInit._datenDieterSystemAgent = await UserCreate.profile(ServerInit._systemUser.id, "DatenDieter", "avatar.png", "Available");
+        } else {
+            ServerInit._datenDieterSystemAgent = existingDatenDieter[0];
+        }
+    }
+
+    private static async createSystemGroups() {
+        const existingCountriesSystemRoom = await prisma.groups({where:{owner:ServerInit._datenDieterSystemAgent.id, type:"Room", name:"Countries"}});
+        if (existingCountriesSystemRoom.length == 0) {
+            ServerInit._countriesSystemRoom = await AgentCreate.room(ServerInit._datenDieterSystemAgent.id, "Countries", "logo.png", true);
+            await ServerInit.createCountryEntries();
+        } else {
+            ServerInit._countriesSystemRoom = existingCountriesSystemRoom[0];
+        }
+    }
+
+    private static async createCountryEntries() {
+        const fs = require('fs');
+        const {readdirSync} = require('fs');
+
+        const dir = '/home/daniel/src/ABIS-OS-Beta/yoga-server/data/systemEntries/countriesGeoJson/';
+
+        const files = readdirSync(dir, {withFileTypes: true})
+            .filter(o => o.isFile())
+            .map(o => {
+                return {path: `${dir}/${o.name}`, name: o.name}
+            });
+
+        files.forEach(file => {
+            fs.readFile(file.path, async (err, data) => {
+                if (err) {
+                    console.error(err);
+                    return
+                }
+
+                const countryName = file.name.replace(".json", "");
+                await AgentCreate.entry(ServerInit._datenDieterSystemAgent.id, ServerInit._countriesSystemRoom.id, {
+                    contentEncoding: ServerInit._geoJsonFeatureContentEncoding.id,
+                    createdBy: ServerInit._systemUser.id,
+                    owner: ServerInit._systemUser.id,
+                    type: "Json",
+                    name: countryName,
+                    content: JSON.parse(data)
+                });
+
+                console.log("Created entry for country: " + countryName);
+            });
+        });
     }
 
     private static async clearAnonymousProfilesAndSessions() {
@@ -102,24 +188,29 @@ export class ServerInit {
          */
 
         // Clear sessions
-        const anonSessions = await prisma.sessions({where:{user:{id:this.anonymousUser.id}}});
-        await prisma.deleteManySessions({id_in:anonSessions.map(o => o.id)});
+        const anonSessions = await prisma.sessions({where: {user: {id: this.anonymousUser.id}}});
+        await prisma.deleteManySessions({id_in: anonSessions.map(o => o.id)});
 
         // Find all anonymous agents and get their ids
-        const anonAgents = await prisma.user({id:this.anonymousUser.id}).agents();
+        const anonAgents = await prisma.user({id: this.anonymousUser.id}).agents();
         const anonAgentIds = anonAgents.map(o => o.id);
 
         // Find all channels that have been created to anonymous agents
-        const channelsToAnonProfiles = await prisma.groups({where:{type:"Channel", memberships_every:{member:{id_in:anonAgentIds}}}});
+        const channelsToAnonProfiles = await prisma.groups({
+            where: {
+                type: "Channel",
+                memberships_every: {member: {id_in: anonAgentIds}}
+            }
+        });
 
         // Delete all channels that have been created in the direction to an anon profile
-        await prisma.deleteManyGroups({id_in:channelsToAnonProfiles.map(o => o.id)});
+        await prisma.deleteManyGroups({id_in: channelsToAnonProfiles.map(o => o.id)});
 
         // Delete all groups that have been created by anonymous agents
-        await prisma.deleteManyGroups({owner_in:anonAgentIds});
+        await prisma.deleteManyGroups({owner_in: anonAgentIds});
 
         // Delete all anonymous agents
-        await prisma.deleteManyAgents({id_in:anonAgentIds});
+        await prisma.deleteManyAgents({id_in: anonAgentIds});
     }
 
     /**
@@ -190,7 +281,7 @@ export class ServerInit {
     }
 
     private static async createSignupService() {
-        const signupServices = await prisma.agents({where:{name: "SignupService", type: "Service"}});
+        const signupServices = await prisma.agents({where: {name: "SignupService", type: "Service"}});
         if (signupServices.length > 0) {
             ServerInit._signupService = signupServices[0];
             return;
@@ -224,7 +315,7 @@ export class ServerInit {
     }
 
     private static async createLoginService() {
-        const loginServices = await prisma.agents({where:{name: "LoginService", type: "Service"}});
+        const loginServices = await prisma.agents({where: {name: "LoginService", type: "Service"}});
         if (loginServices.length > 0) {
             ServerInit._loginService = loginServices[0];
             return;
@@ -258,7 +349,7 @@ export class ServerInit {
     }
 
     private static async createVerifyEmailService() {
-        const verifyEmailServices = await prisma.agents({where:{name: "VerifyEmailService", type: "Service"}});
+        const verifyEmailServices = await prisma.agents({where: {name: "VerifyEmailService", type: "Service"}});
         if (verifyEmailServices.length > 0) {
             ServerInit._verifyEmailService = verifyEmailServices[0];
             return;
@@ -292,7 +383,7 @@ export class ServerInit {
     }
 
     private static async createContentEncodings() {
-        const existingSignupContentEncoding = await  prisma.contentEncodings({where:{name:"Signup"}});
+        const existingSignupContentEncoding = await prisma.contentEncodings({where: {name: "Signup"}});
         if (existingSignupContentEncoding.length == 0) {
             Helper.log(`Creating instance system ContentEncoding: Signup/JsonSchema`);
             ServerInit._signupContentEncoding = await prisma.createContentEncoding(ContentEncodings.Signup);
@@ -300,7 +391,7 @@ export class ServerInit {
             ServerInit._signupContentEncoding = existingSignupContentEncoding[0];
         }
 
-        const existingVerifyEmailContentEncoding = await  prisma.contentEncodings({where:{name:"VerifyEmail"}});
+        const existingVerifyEmailContentEncoding = await prisma.contentEncodings({where: {name: "VerifyEmail"}});
         if (existingVerifyEmailContentEncoding.length == 0) {
             Helper.log(`Creating instance system ContentEncoding: VerifyEmail/JsonSchema`);
             ServerInit._verifyEmailContentEncoding = await prisma.createContentEncoding(ContentEncodings.VerifyEmail);
@@ -308,7 +399,7 @@ export class ServerInit {
             ServerInit._verifyEmailContentEncoding = existingSignupContentEncoding[0];
         }
 
-        const existingLoginContentEncoding = await  prisma.contentEncodings({where:{name:"Login"}});
+        const existingLoginContentEncoding = await prisma.contentEncodings({where: {name: "Login"}});
         if (existingLoginContentEncoding.length == 0) {
             Helper.log(`Creating instance system ContentEncoding: Login/JsonSchema`);
             ServerInit._loginContentEncoding = await prisma.createContentEncoding(ContentEncodings.Login);
@@ -316,20 +407,28 @@ export class ServerInit {
             ServerInit._loginContentEncoding = existingLoginContentEncoding[0];
         }
 
-        const existingErrorContentEncoding = await  prisma.contentEncodings({where:{name:"Error"}});
+        const existingErrorContentEncoding = await prisma.contentEncodings({where: {name: "Error"}});
         if (existingErrorContentEncoding.length == 0) {
-            Helper.log(`Creating instance system ContentEncoding: Error/Custom`);
+            Helper.log(`Creating instance system ContentEncoding: Error/JsonSchema`);
             ServerInit._errorContentEncoding = await prisma.createContentEncoding(ContentEncodings.Error);
         } else {
             ServerInit._errorContentEncoding = existingErrorContentEncoding[0];
         }
 
-        const existingContinuationContentEncoding = await  prisma.contentEncodings({where:{name:"Continuation"}});
+        const existingContinuationContentEncoding = await prisma.contentEncodings({where: {name: "Continuation"}});
         if (existingContinuationContentEncoding.length == 0) {
-            Helper.log(`Creating instance system ContentEncoding: Continuation/Custom`);
+            Helper.log(`Creating instance system ContentEncoding: Continuation/JsonSchema`);
             ServerInit._continuationContentEncoding = await prisma.createContentEncoding(ContentEncodings.Continuation);
         } else {
             ServerInit._continuationContentEncoding = existingContinuationContentEncoding[0];
+        }
+
+        const existingGeoJsonFeatureContentEncoding = await prisma.contentEncodings({where: {name: "GeoJsonFeature"}});
+        if (existingGeoJsonFeatureContentEncoding.length == 0) {
+            Helper.log(`Creating instance system ContentEncoding: GeoJsonFeature/JsonSchema`);
+            ServerInit._geoJsonFeatureContentEncoding = await prisma.createContentEncoding(ContentEncodings.GeoJsonFeature);
+        } else {
+            ServerInit._geoJsonFeatureContentEncoding = existingGeoJsonFeatureContentEncoding[0];
         }
     }
 }

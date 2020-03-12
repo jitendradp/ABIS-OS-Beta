@@ -166,20 +166,10 @@ query findRooms($csrfToken:String! $searchText:String) {
     updatedBy
     updatedAt
     name
-    entryCount
-    isPrivate
     title
     description
     logo
     banner
-    inbox{
-      id
-    }
-    memberCount
-    tagAggregate {
-      type
-      count
-    }
   }
 }
 

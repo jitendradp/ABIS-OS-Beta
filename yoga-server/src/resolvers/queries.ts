@@ -31,10 +31,10 @@ export const queries = {
     async getEntries(root, {csrfToken, groupId, from, to}, ctx) {
         return GroupQueries2.getEntries(csrfToken, ctx.sessionToken, ctx.bearerToken, groupId, from, to);
     },
-    async myMemberships(root, {csrfToken, groupType, isPublic}, ctx) {
-        throw new Error("Not implemented");
-    },
     async findRooms(root, {csrfToken, searchText}, ctx) {
+        return AgentQueries.findRooms(csrfToken, ctx.sessionToken, ctx.bearerToken);
+    },
+    async myMemberships(root, {csrfToken, groupType, isPublic}, ctx) {
         throw new Error("Not implemented");
     },
     async findMemberships(root, {csrfToken, roomId, searchText}, ctx) {

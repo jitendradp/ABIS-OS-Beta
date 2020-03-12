@@ -148,7 +148,6 @@ export class Topic<T> {
      * Can be used instead of a subscription to the 'observable' property but blocks until all
      * dependencies are processed.
      * Dependencies are processed before any normal events are dispatched.
-     * @param dependencyName The name of the dependency (for logging/debugging purposes only)
      * @param dependency The actual promise-returning callback
      */
     public depend(dependency:(T) => Promise<void>) {
