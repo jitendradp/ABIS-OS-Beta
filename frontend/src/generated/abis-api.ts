@@ -448,11 +448,6 @@ export type NewEntry = {
   containerId: Scalars['ID'],
 };
 
-export type NewEntrySubscription = {
-   __typename?: 'NewEntrySubscription',
-  newEntry: Entry,
-};
-
 export type OpenStreetMap = Location & {
    __typename?: 'OpenStreetMap',
   id: Scalars['ID'],
@@ -1172,7 +1167,7 @@ export const VerifySessionDocument = gql`
   })
   export class VerifySessionGQL extends Apollo.Mutation<VerifySessionMutation, VerifySessionMutationVariables> {
     document = VerifySessionDocument;
-    
+
   }
 export const CreateSessionDocument = gql`
     mutation createSession($clientTime: String!) {
@@ -1190,7 +1185,7 @@ export const CreateSessionDocument = gql`
   })
   export class CreateSessionGQL extends Apollo.Mutation<CreateSessionMutation, CreateSessionMutationVariables> {
     document = CreateSessionDocument;
-    
+
   }
 export const CreateChannelDocument = gql`
     mutation createChannel($csrfToken: String!, $toAgentId: ID!) {
@@ -1214,7 +1209,7 @@ export const CreateChannelDocument = gql`
   })
   export class CreateChannelGQL extends Apollo.Mutation<CreateChannelMutation, CreateChannelMutationVariables> {
     document = CreateChannelDocument;
-    
+
   }
 export const DeleteChannelDocument = gql`
     mutation deleteChannel($csrfToken: String!, $id: ID!) {
@@ -1232,7 +1227,7 @@ export const DeleteChannelDocument = gql`
   })
   export class DeleteChannelGQL extends Apollo.Mutation<DeleteChannelMutation, DeleteChannelMutationVariables> {
     document = DeleteChannelDocument;
-    
+
   }
 export const CreateRoomDocument = gql`
     mutation createRoom($csrfToken: String!, $createRoomInput: CreateRoomInput!) {
@@ -1263,7 +1258,7 @@ export const CreateRoomDocument = gql`
   })
   export class CreateRoomGQL extends Apollo.Mutation<CreateRoomMutation, CreateRoomMutationVariables> {
     document = CreateRoomDocument;
-    
+
   }
 export const DeleteRoomDocument = gql`
     mutation deleteRoom($csrfToken: String!, $id: ID!) {
@@ -1281,7 +1276,7 @@ export const DeleteRoomDocument = gql`
   })
   export class DeleteRoomGQL extends Apollo.Mutation<DeleteRoomMutation, DeleteRoomMutationVariables> {
     document = DeleteRoomDocument;
-    
+
   }
 export const CreateEntryDocument = gql`
     mutation createEntry($csrfToken: String!, $createEntryInput: CreateEntryInput!) {
@@ -1305,7 +1300,7 @@ export const CreateEntryDocument = gql`
   })
   export class CreateEntryGQL extends Apollo.Mutation<CreateEntryMutation, CreateEntryMutationVariables> {
     document = CreateEntryDocument;
-    
+
   }
 export const DeleteEntryDocument = gql`
     mutation deleteEntry($csrfToken: String!, $id: ID!) {
@@ -1323,7 +1318,7 @@ export const DeleteEntryDocument = gql`
   })
   export class DeleteEntryGQL extends Apollo.Mutation<DeleteEntryMutation, DeleteEntryMutationVariables> {
     document = DeleteEntryDocument;
-    
+
   }
 export const ContentEncodingsDocument = gql`
     query contentEncodings($csrfToken: String!) {
@@ -1343,7 +1338,7 @@ export const ContentEncodingsDocument = gql`
   })
   export class ContentEncodingsGQL extends Apollo.Query<ContentEncodingsQuery, ContentEncodingsQueryVariables> {
     document = ContentEncodingsDocument;
-    
+
   }
 export const GetSystemServicesDocument = gql`
     query getSystemServices($csrfToken: String!) {
@@ -1359,7 +1354,7 @@ export const GetSystemServicesDocument = gql`
   })
   export class GetSystemServicesGQL extends Apollo.Query<GetSystemServicesQuery, GetSystemServicesQueryVariables> {
     document = GetSystemServicesDocument;
-    
+
   }
 export const MyAccountDocument = gql`
     query myAccount($csrfToken: String!) {
@@ -1385,7 +1380,7 @@ export const MyAccountDocument = gql`
   })
   export class MyAccountGQL extends Apollo.Query<MyAccountQuery, MyAccountQueryVariables> {
     document = MyAccountDocument;
-    
+
   }
 export const MyProfilesDocument = gql`
     query myProfiles($csrfToken: String!) {
@@ -1414,7 +1409,7 @@ export const MyProfilesDocument = gql`
   })
   export class MyProfilesGQL extends Apollo.Query<MyProfilesQuery, MyProfilesQueryVariables> {
     document = MyProfilesDocument;
-    
+
   }
 export const MyServicesDocument = gql`
     query myServices($csrfToken: String!) {
@@ -1439,7 +1434,7 @@ export const MyServicesDocument = gql`
   })
   export class MyServicesGQL extends Apollo.Query<MyServicesQuery, MyServicesQueryVariables> {
     document = MyServicesDocument;
-    
+
   }
 export const MyStashesDocument = gql`
     query myStashes($csrfToken: String!) {
@@ -1461,7 +1456,7 @@ export const MyStashesDocument = gql`
   })
   export class MyStashesGQL extends Apollo.Query<MyStashesQuery, MyStashesQueryVariables> {
     document = MyStashesDocument;
-    
+
   }
 export const MyChannelsDocument = gql`
     query myChannels($csrfToken: String!) {
@@ -1489,7 +1484,7 @@ export const MyChannelsDocument = gql`
   })
   export class MyChannelsGQL extends Apollo.Query<MyChannelsQuery, MyChannelsQueryVariables> {
     document = MyChannelsDocument;
-    
+
   }
 export const MyRoomsDocument = gql`
     query myRooms($csrfToken: String!) {
@@ -1531,7 +1526,7 @@ export const MyRoomsDocument = gql`
   })
   export class MyRoomsGQL extends Apollo.Query<MyRoomsQuery, MyRoomsQueryVariables> {
     document = MyRoomsDocument;
-    
+
   }
 export const MyMembershipsDocument = gql`
     query myMemberships($csrfToken: String!, $groupType: GroupType, $isPublic: Boolean) {
@@ -1557,7 +1552,7 @@ export const MyMembershipsDocument = gql`
   })
   export class MyMembershipsGQL extends Apollo.Query<MyMembershipsQuery, MyMembershipsQueryVariables> {
     document = MyMembershipsDocument;
-    
+
   }
 export const FindRoomsDocument = gql`
     query findRooms($csrfToken: String!, $searchText: String) {
@@ -1582,7 +1577,7 @@ export const FindRoomsDocument = gql`
   })
   export class FindRoomsGQL extends Apollo.Query<FindRoomsQuery, FindRoomsQueryVariables> {
     document = FindRoomsDocument;
-    
+
   }
 export const FindMembershipsDocument = gql`
     query findMemberships($csrfToken: String!, $roomId: ID!, $searchText: String) {
@@ -1612,7 +1607,7 @@ export const FindMembershipsDocument = gql`
   })
   export class FindMembershipsGQL extends Apollo.Query<FindMembershipsQuery, FindMembershipsQueryVariables> {
     document = FindMembershipsDocument;
-    
+
   }
 export const GetEntriesDocument = gql`
     query getEntries($csrfToken: String!, $groupId: ID!, $from: DateTime, $to: DateTime) {
@@ -1645,7 +1640,7 @@ export const GetEntriesDocument = gql`
   })
   export class GetEntriesGQL extends Apollo.Query<GetEntriesQuery, GetEntriesQueryVariables> {
     document = GetEntriesDocument;
-    
+
   }
 export const NewEntryDocument = gql`
     subscription newEntry($csrfToken: String!) {
@@ -1671,7 +1666,7 @@ export const NewEntryDocument = gql`
   })
   export class NewEntryGQL extends Apollo.Subscription<NewEntrySubscription, NewEntrySubscriptionVariables> {
     document = NewEntryDocument;
-    
+
   }
 export const NewChannelDocument = gql`
     subscription newChannel($csrfToken: String!) {
@@ -1692,5 +1687,5 @@ export const NewChannelDocument = gql`
   })
   export class NewChannelGQL extends Apollo.Subscription<NewChannelSubscription, NewChannelSubscriptionVariables> {
     document = NewChannelDocument;
-    
+
   }

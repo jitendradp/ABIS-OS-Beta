@@ -32,7 +32,7 @@ export const queries = {
         return GroupQueries2.getEntries(csrfToken, ctx.sessionToken, ctx.bearerToken, groupId, from, to);
     },
     async findRooms(root, {csrfToken, searchText}, ctx) {
-        return AgentQueries.findRooms(csrfToken, ctx.sessionToken, ctx.bearerToken);
+        return AgentQueries.findRooms(csrfToken, ctx.sessionToken, ctx.bearerToken, searchText);
     },
     async myMemberships(root, {csrfToken, groupType, isPublic}, ctx) {
         throw new Error("Not implemented");

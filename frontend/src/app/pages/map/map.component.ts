@@ -1,6 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {MatSlideToggleChange} from "@angular/material";
-import {FindRoomsGQL, GetEntriesGQL} from "../../../generated/abis-api";
+import {Entry, FindRoomsGQL, GetEntriesGQL} from "../../../generated/abis-api";
 import {UserService} from "../../services/user.service";
 
 @Component({
@@ -10,24 +9,23 @@ import {UserService} from "../../services/user.service";
 })
 export class MapComponent implements OnInit, OnChanges {
 
-  mapStyle = "mapbox://styles/mapbox/streets-v9";
-  dark: boolean = false;
+  mapStyle = "mapbox://styles/mapbox/dark-v9";
+  // mapStyle = "mapbox://styles/mapbox/streets-v9";
 
   geoJsonEntries: any[] = [];
-
-  datenDieterId:string;
+  datenDieterId: string;
 
   @Input()
-  public groupId:string[] = [];
+  public groupId: string[] = [];
   colorPalette: string[] = [
-     "#77aaff"
-    ,"#99ccff"
-    ,"#bbeeff"
-    ,"#5588ff"
-    ,"#3366ff"];
+    "#77aaff"
+    , "#99ccff"
+    , "#bbeeff"
+    , "#5588ff"
+    , "#3366ff"];
 
   constructor(private getEntries: GetEntriesGQL
-              ,private findRooms: FindRoomsGQL
+    , private findRooms: FindRoomsGQL
     , private userService: UserService) {
     this.datenDieterId = this.userService.systemServices.find(o => o.name == "DatenDieter").id;
   }
@@ -50,9 +48,10 @@ export class MapComponent implements OnInit, OnChanges {
   }
 
   async initMap() {
-
-    const rooms = (await this.findRooms.fetch({csrfToken: this.userService.csrfToken, searchText:""}).toPromise()).data.findRooms;
-
+    const rooms = (await this.findRooms.fetch({
+      csrfToken: this.userService.csrfToken,
+      searchText: ""
+    }).toPromise()).data.findRooms;
 
     this.geoJsonEntries = [];
     rooms.map(o => o.id).forEach(async groupId => {
@@ -68,13 +67,60 @@ export class MapComponent implements OnInit, OnChanges {
     });
   }
 
-  mapStyleChanged($event: MatSlideToggleChange) {
-    if ($event.checked) {
-      this.mapStyle = "mapbox://styles/mapbox/dark-v9";
-      this.dark = true;
-    } else {
-      this.mapStyle = "mapbox://styles/mapbox/streets-v9";
-      this.dark = false;
+  layerMouseMove($event: mapboxgl.MapLayerMouseEvent, entry: Entry) {
+    if (this.hoveredEntry != entry) {
+      this.hoveredEntry = entry;
     }
   }
+
+  layerMouseEnter($event: mapboxgl.MapLayerMouseEvent, entry: Entry) {
+  }
+
+  layerMouseLeave($event: mapboxgl.MapLayerMouseEvent, entry: Entry) {
+    this.hoveredEntry = null;
+  }
+
+  layerMouseClick($event: mapboxgl.MapLayerMouseEvent, entry: Entry) {
+    // this.selectedEntry = entry;
+  }
+
+  mapClick($event: mapboxgl.MapMouseEvent) {
+    if (!$event.target.queryRenderedFeatures) {
+      this.selectedEntry = null;
+      return;
+    }
+    var features = $event.target.queryRenderedFeatures($event.point);
+    if (features.length == 0) {
+      this.selectedEntry = null;
+      return;
+    }
+  }
+
+  hoveredEntry:Entry;
+  selectedEntry:Entry;
+
+  getPaint(entry: Entry) {
+    if (this.hoveredEntry == entry || this.selectedEntry == entry) {
+      return {
+        'fill-color': "#f00",
+        'fill-opacity': 0.4
+      };
+    } else {
+      return {
+        'fill-color': this.colorPalette[Math.abs(this.getHashFromString(entry.id) % this.colorPalette.length)],
+        'fill-opacity': 0.4
+      };
+    }
+  }
+
+  getHashFromString(str:string) {
+    var hash = 0, i, chr;
+    if (str.length === 0) return hash;
+    for (i = 0; i < str.length; i++) {
+      chr   = str.charCodeAt(i);
+      hash  = ((hash << 5) - hash) + chr;
+      hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+  };
 }
