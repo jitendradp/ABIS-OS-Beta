@@ -148,6 +148,7 @@ export class ContentEncodings {
         })
     };
 
+
     public static GeoJsonFeature: ContentEncodingCreateInput = {
         createdBy: "",
         maintainer: "",
