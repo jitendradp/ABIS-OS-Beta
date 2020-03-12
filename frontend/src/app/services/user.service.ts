@@ -119,15 +119,11 @@ export class UserService {
     this.clientState.set(this.ProfileKey, createSessionResponse.data.createSession.data);
     this.clientState.set(UserService.CsrfTokenKey, createSessionResponse.data.createSession.code);
 
-    this.contentEncodingsApi.fetch({csrfToken: createSessionResponse.data.createSession.code})
-      .subscribe(contentEncodings => {
-        this.clientState.set(this.ContentEncodingsKey, contentEncodings.data.contentEncodings);
-      });
+    const contentEncodings = await this.contentEncodingsApi.fetch({csrfToken: createSessionResponse.data.createSession.code}).toPromise();
+    this.clientState.set(this.ContentEncodingsKey, contentEncodings.data.contentEncodings);
 
-    this.getSystemServicesApi.fetch({csrfToken: createSessionResponse.data.createSession.code})
-      .subscribe(systemServices => {
-        this.clientState.set(this.SystemServicesKey, systemServices.data.getSystemServices);
-      });
+    const systemServices = await  this.getSystemServicesApi.fetch({csrfToken: createSessionResponse.data.createSession.code}).toPromise();
+    this.clientState.set(this.SystemServicesKey, systemServices.data.getSystemServices);
   }
 
   public findContentEncodingByName(name:string) : ContentEncoding {

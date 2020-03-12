@@ -1,6 +1,8 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Entry, FindRoomsGQL, GetEntriesGQL} from "../../../generated/abis-api";
 import {UserService} from "../../services/user.service";
+import {SetVisibility} from "../../actions/ui/sidebar/SetVisibility";
+import {ActionDispatcherService} from "../../services/action-dispatcher.service";
 
 @Component({
   selector: 'app-map',
@@ -11,6 +13,8 @@ export class MapComponent implements OnInit, OnChanges {
 
   mapStyle = "mapbox://styles/mapbox/dark-v9";
   // mapStyle = "mapbox://styles/mapbox/streets-v9";
+
+  // TODO: Get new data from http://ustroetz.github.io/gimmeOSM/
 
   geoJsonEntries: any[] = [];
   datenDieterId: string;
@@ -26,6 +30,7 @@ export class MapComponent implements OnInit, OnChanges {
 
   constructor(private getEntries: GetEntriesGQL
     , private findRooms: FindRoomsGQL
+    , private actionDispatcher: ActionDispatcherService
     , private userService: UserService) {
     this.datenDieterId = this.userService.systemServices.find(o => o.name == "DatenDieter").id;
   }
@@ -81,7 +86,8 @@ export class MapComponent implements OnInit, OnChanges {
   }
 
   layerMouseClick($event: mapboxgl.MapLayerMouseEvent, entry: Entry) {
-    // this.selectedEntry = entry;
+    const setSidebarVisibility = new SetVisibility("right", "visible");
+    this.actionDispatcher.dispatch(setSidebarVisibility);
   }
 
   mapClick($event: mapboxgl.MapMouseEvent) {
