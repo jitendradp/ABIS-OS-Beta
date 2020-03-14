@@ -1,28 +1,71 @@
+# Quickstart (run pre-build docker images)
+**Prerequisites**
+You will need at least version 19.03 of Docker Desktop installed
+
+**Steps**
+
+            docker-compose -f docker-compose-hub.yml up
+
+# Development setup (build local docker images and run + Angular setup)
+For a good developing experience across all platforms, it is advisable to use docker-compose for developing all services EXCEPT for frontend.
+and setup the Angular development server separately
+**Prerequisites**
+1. Docker Desktop at least version 19.03 from https://docs.docker.com/install/linux/docker-ce/ubuntu/ OR https://www.docker.com/products/docker-desktop
+2. Node v12.13.0 (LTS) from https://nodejs.org/en/download/   (at least nodejs version 10 and npm version 6.x)
+3. Angular CLI install by using the command:
+        
+        npm install -g @angular/cli
+
+**Steps**
+
+        docker-compose -f up
+        
+        cd frontend
+        npm install
+        ng serve        OR          npm run start
+
+# Architecture
+##frontend --> yoga --> prisma --> db
+
+* The development begins with the file /prisma/prisma.yml where the data model of the whole application is defined.
+* Generate the interface files of prisma for the calling service by using the command:
+
+        prisma generate
+
+The interface files are generated in the subdirectory named *generated*.
+
+This directory has to be copied to the /yoga-server directory.
+
+
+
+# Hostnames and Ports
+Used names for the services are also their hostnames
+
+**Ports:**
+* frontend (available at port 4200 for development and port 80 for deployment)
+* yoga (available at port 4000)
+* prisma (available at port 4466)
+* db (available at port 5432)
+
+
+
+
+
+
 # Overview
-The repository is divided in three folders:
+The repository is divided in the following subdirectories (in alphabetical order):
+* /db
+* /frontend
+* /kubernetes
+* /matrix
+* /pgadmin
 * /prisma
 * /yoga-server
-* /frontend
 
-## prisma
-Prisma is used as the data layer of the application. It consists of a server and a command line utility. The cmd utility can be used to generate a database and access-code from a graphql-like schema definition. The backend database can either be postgresql, mysql or mongodb. Our docker-compose file uses postgresql.
+## db
+db contains the Dockerfile to generate the docker image for the db container.
 
-You can run a local prisma server by using ```docker-compose up``` with the "/prisma/docker-compose.yml" file.
-Changes to the schema (/prisma/datamodel.prisma) can be deployed to the running instance by using ```prisma deploy```.
-
-**Important directories and files:**
-* Schema file (/prisma/datamodel.prisma):
-_All persisted types are listed here._
-* Prisma cmd utility configuration (/prisma/prisma.yml)
-* Docker compose file (/prisma/docker-compose.yml)
-
-## yoga-server
-This node application provides the main api endpoint. It interfaces with the prisma server via the generated code from the "/prisma/generated" folder. It itself provides a GraphQL API via http to the frontend. The types of the api-schema are mostly similar to the ones of the persistence layer. 
-
-To run the server, compile the code with ``tsc `` and run the result on the command line using: ```node dist/index.js```.
-
-**Important directories and files:**
-* Api schema definition (/yoga-server/schema.graphql)
+It also contains two SQL scripts to initialize the datebase with a schema and insert some data. These scripts are not necessary.
 
 ## frontend
 The frontend is an angular-cli application that accesses the "yoga-server" via its graphql api. It uses the "graphql-codegen" utility together with the "typescript", "typescript-operations" and "typescript-apollo-angular" plugin to generate TypeScript types of the remote schema. To generate the client with ```npm run generate``` the "schema" value in the "codegen.yml" file must point to a running instance of "yoga-server".
@@ -32,6 +75,36 @@ The frontend is an angular-cli application that accesses the "yoga-server" via i
 * Query documents (/frontend/src/graphql/queries)
 * Mutation documents (/frontend/src/graphql/mutations)
 * graphql-codegen configuration (/frontend/src/codegen.yml)
+
+## kubernetes
+kubernetes contains all files, which are required to deploy the whole project to a kubernetes cluster.
+
+## matrix
+matrix contains ...
+
+## pgadmin
+pgadmin contains nothing. This could be used for sharing files with pgadmin container for debugging purpose.
+
+## prisma
+Prisma is used as the data layer of the application. It consists of a server and a command line utility. The cmd utility can be used to generate a database and access-code from a graphql-like schema definition. The backend database can either be postgresql, mysql or mongodb. Our docker-compose file uses postgresql.
+
+You can run a local prisma server by using ```docker-compose up``` with the "docker-compose.yml" file in the root directory.
+Changes to the schema (/prisma/datamodel.prisma) can be deployed to the running instance by using ```prisma deploy```.
+
+**Important directories and files:**
+* Schema file (/prisma/datamodel.prisma):
+_All persisted types are listed here._
+* Prisma cmd utility configuration (/prisma/prisma.yml)
+* Docker compose file (/prisma/docker-compose.yml)
+
+## yoga-server
+This node application provides the main api endpoint. It interfaces with the prisma server via the generated code from the "/prisma/generated" directory. It itself provides a GraphQL API via http to the frontend. The types of the api-schema are mostly similar to the ones of the persistence layer. 
+
+To run the server, compile the code with ``tsc `` and run the result on the command line using: ```node dist/index.js```.
+
+# WHY IS schema.graphql NOT IN REPOSITORY ????
+**Important directories and files:**
+* Api schema definition (/yoga-server/schema.graphql)
 
 
 # Building from scratch
@@ -44,7 +117,7 @@ _watch out: these instructions might not be working for some branches_
 2. cd to "/prisma" and run "npm install"
 3. cd to "/yoga-server" and run "npm install"
 4. cd to "/frontend" and run "npm install"
-5. Get the prisma server up and running by using the docker-compose.yml or by any other means
+5. Get the prisma server up and running by using the docker-compose.yml or by any other means (The config of prisma is in the docker-compose.yml in root directory AbisStarterkit)
 _run "cd /prisma", then "docker-compose up"._
 6. Deploy the prisma data model:
 _run "cd /prisma", then "prisma deploy"_
