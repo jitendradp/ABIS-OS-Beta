@@ -1,0 +1,17 @@
+stages:
+    - alltogether
+
+compose:
+    image: gdhami/dind-compose:latest
+    stage: alltogether
+    services:
+        - docker:19.03.4-dind
+    before_script:
+    #- docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $DOCKER_ENV_CI_REGISTRY
+    script:
+        - docker-compose up
+    only:
+        refs:
+            - master
+    tags:
+        - docker

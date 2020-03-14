@@ -1,0 +1,42 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: database
+  namespace: abis
+  labels:
+    stage: production
+    name: database
+    app: postgres
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        stage: production
+        name: database
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: 'postgres:12-alpine'
+          args:
+            - --ignore-db-dir=lost+found
+          env:
+            - name: postgres_USER
+              value: 'postgres'
+              
+            - name: postgres_ROOT_PASSWORD
+              value: 'prisma'
+          ports:
+            - name: postgres-5432
+              containerPort: 5432
+          volumeMounts:
+            - name: database-disk
+              readOnly: false
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: database-disk
+          persistentVolumeClaim:
+            claimName: database-disk

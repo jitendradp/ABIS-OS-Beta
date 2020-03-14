@@ -7,9 +7,23 @@ compose:
     services:
         - docker:19.03.4-dind
     before_script:
-    #- docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $DOCKER_ENV_CI_REGISTRY
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $DOCKER_ENV_CI_REGISTRY
     script:
-        - docker-compose up
+        - cd db
+        - docker build . -t gdhami/db
+        - docker push gdhami/db
+
+        - cd ../prisma
+        - docker build . -t gdhami/prisma
+        - docker push gdhami/prisma
+
+        - cd ../yoga-server
+        - docker build . -t gdhami/yoga-server
+        - docker push gdhami/yoga-server
+
+        - cd ../frontend
+        - docker build . -t gdhami/frontend
+        - docker push gdhami/frontend
     only:
         refs:
             - master
