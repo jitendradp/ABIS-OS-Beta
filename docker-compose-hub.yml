@@ -1,0 +1,86 @@
+version: '3'
+networks:
+  abis:
+    driver: bridge
+
+services:
+
+  frontend:
+    image: gdhami/frontend
+    container_name: frontend
+    restart: always
+    depends_on:
+      - yoga-server
+    ports:
+      - "80:80"
+    networks:
+      - abis
+
+  yoga-server:
+    image: gdhami/yoga-server
+    container_name: yoga
+    restart: always
+    depends_on:
+      - prisma
+    networks:
+      - abis
+    ports:
+      - "4000:4000"
+
+
+  prisma:
+    image: gdhami/prisma
+    container_name: prisma
+    restart: always
+    depends_on:
+      - db
+    networks:
+      - abis
+    ports:
+      - "4466:4466"
+
+    environment:
+      PRISMA_CONFIG: |
+        managementApiSecret: managementApiSecret
+        port: 4466
+        databases:
+          default:
+            connector: postgres
+            migrations: true
+            host: db
+            port: 5432
+            user: postgres
+            password: prisma
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: test
+    volumes:
+      - ./pgadmin:/root/.pgadmin
+    ports:
+      - "8080:8080"
+    networks:
+      - abis
+    depends_on:
+      - db
+    restart: always
+
+
+  db:
+    image: gdhami/db
+    container_name: db
+    ports:
+      - "5432:5432"
+    restart: always
+    networks:
+      - abis
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: prisma
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+volumes:
+  postgres_data:

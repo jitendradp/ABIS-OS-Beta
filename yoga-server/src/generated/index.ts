@@ -5714,7 +5714,7 @@ export const models: Model[] = [
 export const Prisma = makePrismaClientClass<ClientConstructor<Prisma>>({
   typeDefs,
   models,
-  endpoint: `http://local.abis-cloud.com:4466/AbisStarterkit/dev`,
+  endpoint: `http://prisma:4466/AbisStarterkit/dev`,
   secret: `managementApiSecret`
 });
 export const prisma = new Prisma();
