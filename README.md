@@ -40,6 +40,9 @@ For WINDOWS:
 
 This script generates the prisma-client and copies it to ./yoga-server/src/generated/prisma-client
 
+Check for an overview: https://www.prisma.io/docs/understand-prisma/prisma-basics-datamodel-client-and-server-fgz4/
+
+and https://www.prisma.io/docs/1.34/prisma-client/setup/generating-the-client-TYPESCRIPT-r3c2/
 
 
 # Hostnames and Ports
