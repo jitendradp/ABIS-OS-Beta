@@ -24,6 +24,9 @@ compose:
         - cd ../frontend
         - docker build . -t gdhami/frontend
         - docker push gdhami/frontend
+
+        - cd ..
+        - docker-compose -f docker-compose-hub.yml up
     only:
         refs:
             - master
