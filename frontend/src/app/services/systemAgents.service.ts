@@ -9,11 +9,5 @@ export class SystemAgentsService {
 
   constructor(private actionDispatcher: ActionDispatcherService,
               private getSystemServicesApi: GetSystemServicesGQL) {
-
-
-
-    this.getSystemServicesApi.fetch({csrfToken: createSessionResponse.data.createSession.code}).subscribe(o =>  {
-
-    });
   }
 }
