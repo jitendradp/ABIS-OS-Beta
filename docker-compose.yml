@@ -9,7 +9,7 @@ services:
 #    container_name: frontend
 #    restart: always
 #    depends_on:
-#      - yoga-server
+#      - yoga
 #    build:
 #      context: frontend
 #      dockerfile: Dockerfile
@@ -18,8 +18,8 @@ services:
 #    networks:
 #      - abis
 
-  yoga-server:
-    container_name: yoga-server
+  yoga:
+    container_name: yoga
     build:
       context: yoga-server
       dockerfile: Dockerfile

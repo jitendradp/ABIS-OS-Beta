@@ -28,13 +28,17 @@ and setup the Angular development server separately
 ##frontend --> yoga --> prisma --> db
 
 * The development begins with the file /prisma/prisma.yml where the data model of the whole application is defined.
-* Generate the interface files of prisma for the calling service by using the command:
+* yoga-server requires prisma-client to call prisma service. According to our operating system, execute one of the following scripts:
 
-        prisma generate
+For LINUX:
 
-The interface files are generated in the subdirectory named *generated*.
+        ./prisma/generate.sh
 
-This directory has to be copied to the /yoga-server directory.
+For WINDOWS:
+
+        .\prisma\generate.bat
+
+This script generates the prisma-client and copies it to ./yoga-server/src/generated/prisma-client
 
 
 

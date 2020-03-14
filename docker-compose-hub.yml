@@ -10,13 +10,13 @@ services:
     container_name: frontend
     restart: always
     depends_on:
-      - yoga-server
+      - yoga
     ports:
       - "80:80"
     networks:
       - abis
 
-  yoga-server:
+  yoga:
     image: gdhami/yoga
     container_name: yoga
     restart: always
