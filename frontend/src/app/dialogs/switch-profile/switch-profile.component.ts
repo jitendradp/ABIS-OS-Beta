@@ -1,8 +1,7 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {Profile} from "../../../generated/abis-api";
 import {UserService} from "../../services/user.service";
-// import {ProfileService} from "../../services/profile.service";
-import {Logger, LoggerService, LogSeverity} from "../../services/logger.service";
+import {Logger, LoggerService} from "../../services/logger.service";
 
 @Component({
   selector: 'app-switch-profile',
@@ -22,22 +21,5 @@ export class SwitchProfileComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.profiles = [];
-    /*
-    this.profileService.listProfiles()
-      .then(o => this.profiles = o)
-      .catch(error => {
-        this._log(LogSeverity.UserNotification, "The profiles couldn't be listed. See the log for detailed error messages.");
-        this._log(LogSeverity.Error, error);
-      });
-     */
   }
-/*
-  switchToProfile(profile: Profile) {
-    this.userService.setSessionProfile(profile.id)
-      .catch(error => {
-        this._log(LogSeverity.UserNotification, "Couldn't switch profile. See the log for detailed error messages.");
-        this._log(LogSeverity.Error, error);
-      });
-  }
-*/
 }
