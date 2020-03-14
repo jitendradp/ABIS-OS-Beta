@@ -110,7 +110,23 @@ export const mutations = {
     },
 
     async createRoom(root, {csrfToken, createRoomInput}, ctx) {
-        throw new Error("Not implemented");
+        const userHasAuthenticatedSession = await UserHas.authenticatedSession(ctx.sessionToken, csrfToken, ctx.bearerToken);
+        if (!userHasAuthenticatedSession) {
+            throw new Error(`Invalid session`);
+        }
+
+        const agentId = await GetAgentOf.session(csrfToken, ctx.sessionToken);
+
+        // TODO: Implement AgentCanCreate.room()
+        /*if (!(await AgentCanCreate.room(agentId, createRoomInput.name))) {
+            throw new Error(`Agent ${agentId} cannot create a room with the name ${createRoomInput.name}`);
+        }*/
+
+        const room = await AgentCreate.room(agentId, createRoomInput.name, createRoomInput.logo, true);
+        (<any>room).isPrivate = !room.isPublic;
+        (<any>room).inbox = {id:""};
+        (<any>room).memberships = [];
+        return room;
     },
     async updateRoom(root, {csrfToken, updateRoomInput}, ctx) {
         throw new Error("Not implemented");

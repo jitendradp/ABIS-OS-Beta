@@ -1,0 +1,77 @@
+query contentEncodings($csrfToken:String!) {
+  contentEncodings(csrfToken: $csrfToken) {
+    id
+    type
+    name
+    maintainer
+    charset
+    data
+  }
+}
+
+query getSystemServices($csrfToken:String!) {
+  getSystemServices(csrfToken: $csrfToken) {
+    id
+    name
+  }
+}
+
+query myChannels($csrfToken:String! ) {
+  myChannels(csrfToken:$csrfToken) {
+    id
+    owner
+    createdBy
+    createdAt
+    updatedBy
+    updatedAt
+    name
+    entryCount
+    receiver {
+      id
+    }
+    reverse {
+      id
+    }
+  }
+}
+
+query myMemberships($csrfToken:String! $groupType:GroupType $isPublic:Boolean) {
+  myMemberships(csrfToken:$csrfToken groupType: $groupType isPublic: $isPublic) {
+    id
+    type
+    createdBy
+    createdAt
+    updatedBy
+    updatedAt
+    groupType
+    group {
+      id
+      name
+    }
+    showHistory
+  }
+}
+
+query getEntries($csrfToken:String! $groupId:ID! $from:DateTime $to:DateTime) {
+  getEntries(csrfToken:$csrfToken groupId:$groupId from: $from to: $to) {
+    id
+    type
+    owner
+    createdBy
+    createdAt
+    updatedBy
+    updatedAt
+    name
+    content
+    contentEncoding {
+      id
+      name
+      charset
+      data
+    }
+    tagAggregate {
+      type
+      count
+    }
+  }
+}

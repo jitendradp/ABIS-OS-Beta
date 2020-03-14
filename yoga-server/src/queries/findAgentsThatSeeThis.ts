@@ -33,4 +33,18 @@ export class FindAgentsThatSeeThis {
 
         return owners.concat(members);
     }
+
+    public static async room(roomId:string) {
+        const group = await prisma.group({id: roomId});
+        const memberships = await prisma.group({id: roomId}).memberships();
+
+        const members = [];
+        for (let membership of memberships) {
+            const memberId = await prisma.membership({id:membership.id}).member().id();
+            members.push(memberId);
+        }
+
+        let owners = [group.owner];
+        return owners.concat(members);
+    }
 }

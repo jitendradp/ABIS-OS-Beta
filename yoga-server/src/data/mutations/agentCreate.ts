@@ -1,4 +1,4 @@
-import {Entry, EntryCreateInput, prisma} from "../../generated";
+import {Entry, EntryCreateInput, Group, prisma} from "../../generated";
 import {Helper} from "../../helper/helper";
 import {EventBroker, Topics} from "../../services/eventBroker";
 import {Channel} from "../../api/types/channel";
@@ -121,6 +121,10 @@ export class AgentCreate {
         });
 
         Helper.log(`Created a new room (${newRoom.id}) with agent '${agentId}' as owner.`);
+
+        await EventBroker.instance
+            .getTopic<Group>("system", Topics.NewRoom)
+            .publish(newRoom);
 
         return newRoom;
     }

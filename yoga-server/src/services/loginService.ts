@@ -5,12 +5,22 @@ import {UserCreate} from "../data/mutations/userCreate";
 import {config} from "../config";
 import {Helper} from "../helper/helper";
 import {RequestSynchronousService} from "./requestSynchronousService";
+import {UserOwns} from "../statements/userOwns";
+import {Channel} from "../api/types/channel";
 
 export class LoginService extends RequestSynchronousService {
     private static readonly bcrypt = require('bcrypt');
 
     get welcomeMessageContentEncodingId(): string {
         return ServerInit.loginContentEncoding.id;
+    }
+
+    async onNewChannel(newChannel:Channel) {
+        if (!(await UserOwns.profile(ServerInit.anonymousUser.id, newChannel.owner))) {
+            throw new Error(`Only anonymous sessions can use this service.`);
+        }
+
+        return super.onNewChannel(newChannel);
     }
 
     async onNewEntry(newEntry: Entry, answerChannel: Group, request?:any) {
@@ -51,7 +61,8 @@ export class LoginService extends RequestSynchronousService {
         Helper.setSessionTokenCookie(session.sessionToken, request);
 
         await this.postContinueTo("", answerChannel.id, {
-            csrfToken: session.csrfToken
+            csrfToken: session.csrfToken,
+            profileId: userProfiles[0].id
         });
     }
 }

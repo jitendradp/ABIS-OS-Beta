@@ -4,6 +4,7 @@ import {Helper} from "../helper/helper";
 export class Topics {
     public static readonly NewChannel = "abis.system.new-channel";
     public static readonly NewEntry = "abis.system.new-entry";
+    public static readonly NewRoom = "abis.system.new-room";
 }
 
 export class EventBroker {

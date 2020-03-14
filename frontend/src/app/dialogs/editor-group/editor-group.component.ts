@@ -48,11 +48,13 @@ export class EditorGroupComponent {
     this.createRoomApi.mutate({csrfToken: this.userService.csrfToken, createRoomInput:{
         name: this.firstFormGroup.value.name,
         description: this.firstFormGroup.value.description,
-        isPublic: false
+        isPublic: false,
+        logo: "room.png"
     }}).toPromise().then(o => {
 
     }).finally(() => {
       // TODO: Close dialog
+
     });
   }
 

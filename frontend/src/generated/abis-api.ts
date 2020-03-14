@@ -644,6 +644,7 @@ export type Subscription = {
    __typename?: 'Subscription',
   newEntry?: Maybe<NewEntry>,
   newChannel?: Maybe<Channel>,
+  newRoom?: Maybe<Room>,
 };
 
 
@@ -653,6 +654,11 @@ export type SubscriptionNewEntryArgs = {
 
 
 export type SubscriptionNewChannelArgs = {
+  csrfToken: Scalars['String']
+};
+
+
+export type SubscriptionNewRoomArgs = {
   csrfToken: Scalars['String']
 };
 
@@ -1148,6 +1154,19 @@ export type NewChannelSubscription = (
       { __typename?: 'Profile' }
       & Pick<Profile, 'id'>
     ) }
+  )> }
+);
+
+export type NewRoomSubscriptionVariables = {
+  csrfToken: Scalars['String']
+};
+
+
+export type NewRoomSubscription = (
+  { __typename?: 'Subscription' }
+  & { newRoom: Maybe<(
+    { __typename?: 'Room' }
+    & Pick<Room, 'id' | 'createdAt' | 'createdBy' | 'owner' | 'logo' | 'name' | 'title' | 'description' | 'banner'>
   )> }
 );
 
@@ -1687,5 +1706,28 @@ export const NewChannelDocument = gql`
   })
   export class NewChannelGQL extends Apollo.Subscription<NewChannelSubscription, NewChannelSubscriptionVariables> {
     document = NewChannelDocument;
+
+  }
+export const NewRoomDocument = gql`
+    subscription newRoom($csrfToken: String!) {
+  newRoom(csrfToken: $csrfToken) {
+    id
+    createdAt
+    createdBy
+    owner
+    logo
+    name
+    title
+    description
+    banner
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class NewRoomGQL extends Apollo.Subscription<NewRoomSubscription, NewRoomSubscriptionVariables> {
+    document = NewRoomDocument;
 
   }

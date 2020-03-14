@@ -2,9 +2,7 @@ import {Agent, ContentEncoding, Entry, Group, prisma, User} from "./generated";
 import {config} from "./config";
 import {ContentEncodings} from "./contentEncodings";
 import {EventBroker, Topic, Topics} from "./services/eventBroker";
-import {NewChannel} from "./services/events/newChannel";
 import {Helper} from "./helper/helper";
-import {NewEntry} from "./services/events/newEntry";
 import {FindAgentsThatSeeThis} from "./queries/findAgentsThatSeeThis";
 import {AgentHost} from "./services/agentHost";
 import {Channel} from "./api/types/channel";
@@ -46,6 +44,10 @@ export class ServerInit {
 
     static get newEntryTopic(): Topic<Entry> {
         return this._newEntryTopic;
+    }
+
+    static get newRoomTopic(): Topic<Group> {
+        return this._newRoomTopic;
     }
 
     static get signupContentEncoding(): ContentEncoding {
@@ -91,6 +93,7 @@ export class ServerInit {
     private static _datenDieterSystemAgent: Agent;
     private static _newChannelTopic: Topic<Channel>;
     private static _newEntryTopic: Topic<Entry>;
+    private static _newRoomTopic: Topic<Group>;
     private static _signupContentEncoding: ContentEncoding;
     private static _verifyEmailContentEncoding: ContentEncoding;
     private static _loginContentEncoding: ContentEncoding;
@@ -228,12 +231,25 @@ export class ServerInit {
     private static async createSystemTopics() {
         ServerInit._newChannelTopic = EventBroker.instance.createTopic<Channel>("system", Topics.NewChannel);
         ServerInit._newEntryTopic = EventBroker.instance.createTopic<Entry>("system", Topics.NewEntry);
+        ServerInit._newRoomTopic = EventBroker.instance.createTopic<Group>("system", Topics.NewRoom);
 
         ServerInit._newChannelTopic.observable.subscribe(newChannel => {
             // Notify the receiving end of the channel (every agent uses its own namespace and provides some default topics)
             const newChannelTopic = EventBroker.instance.tryGetTopic<Channel>(newChannel.receiver.id, Topics.NewChannel);
             if (newChannelTopic) {
                 newChannelTopic.publish(newChannel);
+            }
+        });
+
+        ServerInit._newRoomTopic.observable.subscribe(async newRoom => {
+            // Find everyone who may be concerned by the message and who is allowed to see it
+            const subscribers = await FindAgentsThatSeeThis.room(newRoom.id);
+
+            for (let subscriber of subscribers) {
+                const newRoomTopic = EventBroker.instance.tryGetTopic<Group>(subscriber, Topics.NewRoom);
+                if (newRoomTopic) {
+                    newRoomTopic.publish(newRoom);
+                }
             }
         });
 
