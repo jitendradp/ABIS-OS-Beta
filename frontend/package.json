@@ -57,7 +57,7 @@
     "@graphql-codegen/introspection": "1.10.0",
     "@graphql-codegen/typescript": "1.12.1",
     "@graphql-codegen/typescript-apollo-angular": "1.12.1",
-    "@graphql-codegen/typescript-graphql-request": "^1.12.2",
+    "@graphql-codegen/typescript-graphql-request": "^1.13.0",
     "@graphql-codegen/typescript-operations": "1.12.1",
     "@types/echarts": "^4.4.3",
     "@types/jasmine": "~3.3.8",

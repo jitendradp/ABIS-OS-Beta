@@ -505,10 +505,6 @@ enum EncodingType {
     Owl
 }
 
-type NewEntrySubscription {
-    newEntry: Entry!
-}
-
 type Account {
     id: ID!
     type: UserType!
