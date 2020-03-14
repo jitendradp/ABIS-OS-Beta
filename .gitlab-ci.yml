@@ -1,31 +1,102 @@
-stages:
-    - alltogether
+cache:
+    key: $CI_COMMIT_REF_SLUG
+    untracked: true
+    paths:
+        - node_modules/
+        - dist/
 
-compose:
+stages:
+    - build
+    - deploy
+#######################################################################################################################
+frontend:
     image: gdhami/dind-compose:latest
-    stage: alltogether
+    stage: build
     services:
         - docker:19.03.4-dind
     before_script:
     - docker login -u $CI_REGISTRY_USER -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
     script:
+        - cd frontend
+        - docker build . -t gdhami/frontend
+        - docker push gdhami/frontend
+    only:
+        refs:
+            - master
+        changes:
+            - .gitlab-ci.yml
+            - frontend/**/*
+    tags:
+        - docker
+
+#######################################################################################################################
+prisma:
+    image: gdhami/dind-compose:latest
+    stage: build
+    services:
+        - docker:19.03.4-dind
+    before_script:
+        - docker login -u $CI_REGISTRY_USER -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    script:
+        - cd prisma
+        - docker build . -t gdhami/prisma
+        - docker push gdhami/prisma
+    only:
+        refs:
+            - master
+        changes:
+            - .gitlab-ci.yml
+            - prisma/**/*
+    tags:
+        - docker
+#######################################################################################################################
+yoga:
+    image: gdhami/dind-compose:latest
+    stage: build
+    services:
+        - docker:19.03.4-dind
+    before_script:
+        - docker login -u $CI_REGISTRY_USER -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    script:
+        - cd yoga-server
+        - docker build . -t gdhami/yoga
+        - docker push gdhami/yoga
+    only:
+        refs:
+            - master
+        changes:
+            - .gitlab-ci.yml
+            - yoga-server/**/*
+    tags:
+        - docker
+#######################################################################################################################
+db:
+    image: gdhami/dind-compose:latest
+    stage: build
+    services:
+        - docker:19.03.4-dind
+    before_script:
+        - docker login -u $CI_REGISTRY_USER -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    script:
         - cd db
         - docker build . -t gdhami/db
         - docker push gdhami/db
+    only:
+        refs:
+            - master
+        changes:
+            - .gitlab-ci.yml
+            - db/**/*
+    tags:
+        - docker
 
-        - cd ../prisma
-        - docker build . -t gdhami/prisma
-        - docker push gdhami/prisma
-
-        - cd ../yoga-server
-        - docker build . -t gdhami/yoga-server
-        - docker push gdhami/yoga-server
-
-        - cd ../frontend
-        - docker build . -t gdhami/frontend
-        - docker push gdhami/frontend
-
-        - cd ..
+#######################################################################################################################
+compose:
+    image: gdhami/dind-compose:latest
+    stage: deploy
+    services:
+        - docker:19.03.4-dind
+    script:
         - docker-compose -f docker-compose-hub.yml up
     only:
         refs:
