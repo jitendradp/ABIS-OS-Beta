@@ -17,7 +17,7 @@ services:
       - abis
 
   yoga-server:
-    image: gdhami/yoga-server
+    image: gdhami/yoga
     container_name: yoga
     restart: always
     depends_on:
