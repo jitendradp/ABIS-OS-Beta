@@ -1,4 +1,4 @@
-// import {prisma} from "../../../generated";
+// import {prisma} from "../../../generated/prisma_client";
 // import {CommonQueries} from "../commonQueries";
 //
 // export class ProfileQueries {

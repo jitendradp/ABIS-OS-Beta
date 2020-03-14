@@ -1,6 +1,6 @@
 import {EventBroker} from "./eventBroker";
 import {ServerInit} from "../serverInit";
-import {Agent, Entry, Group, prisma, User} from "../generated";
+import {Agent, Entry, Group, prisma, User} from "../generated/prisma_client";
 import {DirectService} from "./directService";
 import {UserOwns} from "../statements/userOwns";
 import {Channel} from "../api/types/channel";

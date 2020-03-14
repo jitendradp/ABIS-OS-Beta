@@ -1,5 +1,5 @@
 import {ServerInit} from "../serverInit";
-import {Entry, Group, prisma} from "../generated";
+import {Entry, Group, prisma} from "../generated/prisma_client";
 import {UserQueries} from "../data/queries/user";
 import {UserCreate} from "../data/mutations/userCreate";
 import {config} from "../config";

@@ -1,4 +1,4 @@
-import {prisma} from "../generated";
+import {prisma} from "../generated/prisma_client";
 
 export class FindAgentsThatSeeThis {
     public static async entry(entryId:string) {
