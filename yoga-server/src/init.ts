@@ -3,7 +3,7 @@ import {config} from "./config";
 import {EventBroker, Topic, Topics} from "./services/eventBroker";
 import {Helper} from "./helper/helper";
 import {FindAgentsThatSeeThis} from "./queries/findAgentsThatSeeThis";
-import {AgentHost} from "./services/agentHost";
+import {AgentHost, ServiceFactory} from "./services/agentHost";
 import {Channel} from "./api/types/channel";
 import {UserCreate} from "./data/mutations/userCreate";
 import {AgentCreate} from "./data/mutations/agentCreate";
@@ -109,9 +109,7 @@ export class Init {
 
         await Init.createSystemAgents();
 
-        await Init.createSignupService();
-        await Init.createVerifyEmailService();
-        await Init.createLoginService();
+        await Init.createServices();
         await Init.createSystemTopics();
 
         await Init.loadAgents();
@@ -257,106 +255,61 @@ export class Init {
         });
     }
 
-    private static async createSignupService() {
-        const signupServices = await prisma.agents({where: {name: "SignupService", type: "Service"}});
-        if (signupServices.length > 0) {
-            Init._signupService = signupServices[0];
-            return;
-        }
+    private static async createServices() {
+        const {readdirSync} = require('fs');
+        const path = require('path');
 
-        Helper.log(`Creating signup service`);
-        const signupService = await prisma.createAgent({
-            owner: Init._systemUser.id,
-            createdBy: Init._systemUser.id,
-            name: "SignupService",
-            status: "Running",
-            type: "Service",
-            implementation: "SignupService",
-            serviceDescription: "Handles the signup requests of anonymous profiles",
-            profileAvatar: "nologo.png"
-        });
-        await prisma.updateUser({
-            where: {
-                id: Init._systemUser.id
-            },
-            data: {
-                agents: {
-                    connect: {
-                        id: signupService.id
-                    }
+        const dir = path.join(__dirname, "init", "singletonServices") + "/";
+
+        Helper.log(`Trying to load the services from '${dir}' ...`);
+
+        const loadedServices = await readdirSync(dir, {withFileTypes: true})
+            .filter(o => o.isFile() && o.name.endsWith(".js"))
+            .map(async o => {
+
+                Helper.log(`Trying to load service '${o.name}' ...`);
+
+                const obj = await require(`${dir}${o.name}`);
+                return {
+                    path: `${dir}/${o.name}`,
+                    object: obj.Index
                 }
-            }
-        });
+            });
 
-        Init._signupService = signupService;
-    }
+        for (const file of loadedServices) {
+            const loadedService = (await file).object;
+            const implementation = loadedService.implementation;
 
-    private static async createLoginService() {
-        const loginServices = await prisma.agents({where: {name: "LoginService", type: "Service"}});
-        if (loginServices.length > 0) {
-            Init._loginService = loginServices[0];
-            return;
-        }
+            Helper.log(`Loaded service '${loadedService.name}'. Registering if necessary and starting up ..`);
 
-        Helper.log(`Creating login service`);
-        const loginService = await prisma.createAgent({
-            owner: Init._systemUser.id,
-            createdBy: Init._systemUser.id,
-            name: "LoginService",
-            status: "Running",
-            type: "Service",
-            implementation: "LoginService",
-            serviceDescription: "Handles the login requests of anonymous profiles",
-            profileAvatar: "nologo.png"
-        });
-        await prisma.updateUser({
-            where: {
-                id: Init._systemUser.id
-            },
-            data: {
-                agents: {
-                    connect: {
-                        id: loginService.id
+            delete loadedService.implementation;
+            loadedService.implementation = loadedService.name; // TODO: Deprecated!?
+
+            const existingService = await prisma.agents({where: {name: loadedService.name, type: "Service"}});
+            if (existingService.length > 0) {
+                Helper.log(`   Service '${loadedService.name}' is already registered.`);
+            } else {
+                Helper.log(`   Registering service '${loadedService.name}' ..`);
+
+                const persistedService = await prisma.createAgent(loadedService);
+                await prisma.updateUser({
+                    where: {
+                        id: loadedService.owner
+                    },
+                    data: {
+                        agents: {
+                            connect: {
+                                id: persistedService.id
+                            }
+                        }
                     }
-                }
+                });
+                Helper.log(`   Registered service '${loadedService.name}' with owner '${persistedService.owner}'.`);
             }
-        });
 
-        Init._loginService = loginService;
-    }
-
-    private static async createVerifyEmailService() {
-        const verifyEmailServices = await prisma.agents({where: {name: "VerifyEmailService", type: "Service"}});
-        if (verifyEmailServices.length > 0) {
-            Init._verifyEmailService = verifyEmailServices[0];
-            return;
+            this.serviceHost.serviceImplementations[loadedService.name]
+                = (eventBroker: EventBroker, agent: Agent) => new implementation(eventBroker, agent);
         }
-
-        Helper.log(`Creating verifyEmail service`);
-        const verifyEmaulService = await prisma.createAgent({
-            owner: Init._systemUser.id,
-            createdBy: Init._systemUser.id,
-            name: "VerifyEmailService",
-            status: "Running",
-            type: "Service",
-            implementation: "VerifyEmailService",
-            serviceDescription: "Handles the login requests of anonymous profiles",
-            profileAvatar: "nologo.png"
-        });
-        await prisma.updateUser({
-            where: {
-                id: Init._systemUser.id
-            },
-            data: {
-                agents: {
-                    connect: {
-                        id: verifyEmaulService.id
-                    }
-                }
-            }
-        });
-
-        Init._verifyEmailService = verifyEmaulService;
     }
 
     private static async createCountryEntries() {
@@ -413,7 +366,7 @@ export class Init {
                 let obj = await require(`${dir}${o.name}`);
                 return {
                     path: `${dir}/${o.name}`,
-                    object: <ContentEncoding>obj.ContentEncoding
+                    object: <ContentEncoding>obj.Index
                 }
             });
 

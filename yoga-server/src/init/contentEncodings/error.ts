@@ -1,6 +1,6 @@
 import {ContentEncodingCreateInput} from "../../generated/prisma_client";
 
-export const ContentEncoding: ContentEncodingCreateInput = {
+export const Index: ContentEncodingCreateInput = {
     createdBy: "",
     maintainer: "",
     charset: "utf-8",

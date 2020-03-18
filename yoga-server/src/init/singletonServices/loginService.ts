@@ -1,14 +1,14 @@
-import {Init} from "../init";
-import {Entry, Group, prisma} from "../generated";
-import {UserQueries} from "../data/queries/user";
-import {UserCreate} from "../data/mutations/userCreate";
-import {config} from "../config";
-import {Helper} from "../helper/helper";
-import {RequestSynchronousService} from "./requestSynchronousService";
-import {UserOwns} from "../statements/userOwns";
-import {Channel} from "../api/types/channel";
+import {Init} from "../../init";
+import {DirectService} from "../../services/directService";
+import {Entry, Group, prisma} from "../../generated";
+import {Helper} from "../../helper/helper";
+import {UserQueries} from "../../data/queries/user";
+import {Channel} from "../../api/types/channel";
+import {UserOwns} from "../../statements/userOwns";
+import {config} from "../../config";
+import {UserCreate} from "../../data/mutations/userCreate";
 
-export class LoginService extends RequestSynchronousService {
+class Implementation extends DirectService {
     private static readonly bcrypt = require('bcrypt');
 
     get welcomeMessageContentEncodingId(): string {
@@ -38,7 +38,7 @@ export class LoginService extends RequestSynchronousService {
             (<any>foundUser) = {passwordHash: ""};
         }
 
-        const passwordsMatch = await LoginService.bcrypt.compare(loginEntryContent.password, foundUser.passwordHash);
+        const passwordsMatch = await Implementation.bcrypt.compare(loginEntryContent.password, foundUser.passwordHash);
 
         if (!foundUser || !passwordsMatch) {
             const validationErrors = [];
@@ -66,3 +66,14 @@ export class LoginService extends RequestSynchronousService {
         });
     }
 }
+
+export const Index = {
+    owner: Init.systemUser.id,
+    createdBy: Init.systemUser.id,
+    name: "LoginService",
+    status: "Running",
+    type: "Service",
+    serviceDescription: "Handles the login requests of anonymous profiles",
+    profileAvatar: "nologo.png",
+    implementation: Implementation
+};

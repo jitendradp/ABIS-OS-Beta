@@ -1,10 +1,10 @@
-import {Init} from "../init";
-import {Entry, Group, prisma} from "../generated";
-import {DirectService} from "./directService";
-import {UserQueries} from "../data/queries/user";
-import {Helper} from "../helper/helper";
+import {Init} from "../../init";
+import {DirectService} from "../../services/directService";
+import {Entry, Group, prisma} from "../../generated";
+import {Helper} from "../../helper/helper";
+import {UserQueries} from "../../data/queries/user";
 
-export class VerifyEmailService extends DirectService {
+class Implementation extends DirectService {
     get welcomeMessageContentEncodingId(): string {
         return Init.verifyEmailContentEncoding.id;
     }
@@ -15,7 +15,7 @@ export class VerifyEmailService extends DirectService {
             throw new Error(`No challenge with this code could be found.`);
         }
 
-        await VerifyEmailService.clearChallenge(foundUser.id);
+        await Implementation.clearChallenge(foundUser.id);
 
         await this.postContinueTo(Init.loginService.id, answerChannel.id);
     }
@@ -33,3 +33,14 @@ export class VerifyEmailService extends DirectService {
         Helper.log(`Cleared the challenge for user ${userId}.`);
     }
 }
+
+export const Index = {
+    owner: Init.systemUser.id,
+    createdBy: Init.systemUser.id,
+    name: "VerifyEmailService",
+    status: "Running",
+    type: "Service",
+    serviceDescription: "Handles the login requests of anonymous profiles",
+    profileAvatar: "nologo.png",
+    implementation: Implementation
+};

@@ -1,26 +1,18 @@
 import {EventBroker} from "./eventBroker";
 import {Service} from "./service";
-import {SignupService} from "./signupService";
 import {Agent, prisma} from "../generated/prisma_client";
-import {LoginService} from "./loginService";
 import {Helper} from "../helper/helper";
 import {ProfileService} from "./profileService";
 import {RoomInboxService} from "./roomInboxService";
-import {VerifyEmailService} from "./verifyEmailService";
-import {EchoService} from "./echoService";
 
-type ServiceFactory = (eventBroker: EventBroker, agent: Agent) => Service;
-
-const serviceImplementations: { [name: string]: ServiceFactory } = {
-    "SignupService": (eventBroker, agent) => new SignupService( eventBroker, agent),
-    "VerifyEmailService": (eventBroker, agent) => new VerifyEmailService(eventBroker, agent),
-    "LoginService": (eventBroker, agent) => new LoginService( eventBroker, agent),
-    "Profile": (eventBroker, agent) => new ProfileService( eventBroker, agent),
-    "RoomInbox":  (eventBroker, agent) => new RoomInboxService( eventBroker, agent),
-    "EchoService":  (eventBroker, agent) => new EchoService(eventBroker, agent)
-};
+export type ServiceFactory = (eventBroker: EventBroker, agent: Agent) => Service;
 
 export class AgentHost {
+    serviceImplementations: { [name: string]: ServiceFactory } = {
+        "Profile": (eventBroker, agent) => new ProfileService( eventBroker, agent),
+        "RoomInbox":  (eventBroker, agent) => new RoomInboxService( eventBroker, agent)
+    };
+
     get eventBroker() : EventBroker {
         return this._eventBroker;
     }
@@ -34,7 +26,7 @@ export class AgentHost {
 
     public loadAgent(agent:Agent) {
         Helper.log(`Starting ${agent.implementation} (${agent.id})`);
-        const serviceFactory = serviceImplementations[agent.implementation];
+        const serviceFactory = this.serviceImplementations[agent.implementation];
         this._services[agent.id] = serviceFactory(this._eventBroker, agent);
         this._services[agent.id].start();
     }

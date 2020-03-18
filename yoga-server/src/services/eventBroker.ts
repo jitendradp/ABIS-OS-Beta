@@ -24,22 +24,22 @@ export class EventBroker {
 
     /**
      * Creates a new topic and assigns it a unique name.
-     * @param namepsace A namespace
+     * @param namespace A namespace
      * @param name The unique topic name within the namespace
      */
-    public createTopic<T>(namepsace:string, name:string) : Topic<T> {
+    public createTopic<T>(namespace:string, name:string) : Topic<T> {
         if (this._topics[name]){
             throw new Error(`A topic with the name ${name} already exists.`)
         }
 
-        const topic = new Topic<T>(namepsace, name);
-        let ns = this._topics[namepsace];
+        const topic = new Topic<T>(namespace, name);
+        let ns = this._topics[namespace];
         if (!ns) {
-            ns = this._topics[namepsace] = {};
+            ns = this._topics[namespace] = {};
         }
         ns[name] = topic;
 
-        Helper.log(`Created topic '${name}' in namespace '${namepsace}'`);
+        Helper.log(`Created topic '${name}' in namespace '${namespace}'`);
 
         return topic;
     }

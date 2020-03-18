@@ -1,20 +1,16 @@
-import {EventBroker} from "./eventBroker";
-import {Init} from "../init";
-import {Agent, Entry, Group, prisma, User} from "../generated";
-import {DirectService} from "./directService";
-import {UserOwns} from "../statements/userOwns";
-import {Channel} from "../api/types/channel";
-import {Helper} from "../helper/helper";
-import {ActionResponse} from "../api/mutations/actionResponse";
-import {config} from "../config";
-import {Mailer} from "../helper/mailer";
-import {UserCreate} from "../data/mutations/userCreate";
+import {Init} from "../../init";
+import {DirectService} from "../../services/directService";
+import {EventBroker} from "../../services/eventBroker";
+import {Agent, Entry, Group, prisma, User} from "../../generated";
+import {Channel} from "../../api/types/channel";
+import {UserOwns} from "../../statements/userOwns";
+import {Helper} from "../../helper/helper";
+import {ActionResponse} from "../../api/mutations/actionResponse";
+import {config} from "../../config";
+import {Mailer} from "../../helper/mailer";
+import {UserCreate} from "../../data/mutations/userCreate";
 
-/**
- * Handles signup requests from anonymous profiles.
- */
-export class SignupService extends DirectService {
-
+class Implementation extends DirectService {
     constructor(eventBroker:EventBroker, agent:Agent) {
         super(eventBroker, agent);
     }
@@ -55,7 +51,7 @@ export class SignupService extends DirectService {
         // Try to create a new user with the provided data
         //
         try {
-            await SignupService.createUser(signupEntryContent.password, <User>{
+            await Implementation.createUser(signupEntryContent.password, <User>{
                 type: "Person",
                 email: signupEntryContent.email,
                 firstName: signupEntryContent.first_name,
@@ -123,3 +119,14 @@ export class SignupService extends DirectService {
         return UserCreate.profile(user.id, user.firstName, "avatar.png", "Available");
     }
 }
+
+export const Index = {
+    owner: Init.systemUser.id,
+    createdBy: Init.systemUser.id,
+    name: "SignupService",
+    status: "Running",
+    type: "Service",
+    serviceDescription: "Handles the signup requests of anonymous profiles",
+    profileAvatar: "nologo.png",
+    implementation: Implementation,
+};
