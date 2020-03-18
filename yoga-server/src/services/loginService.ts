@@ -1,4 +1,4 @@
-import {ServerInit} from "../serverInit";
+import {Init} from "../init";
 import {Entry, Group, prisma} from "../generated";
 import {UserQueries} from "../data/queries/user";
 import {UserCreate} from "../data/mutations/userCreate";
@@ -12,11 +12,11 @@ export class LoginService extends RequestSynchronousService {
     private static readonly bcrypt = require('bcrypt');
 
     get welcomeMessageContentEncodingId(): string {
-        return ServerInit.loginContentEncoding.id;
+        return Init.loginContentEncoding.id;
     }
 
     async onNewChannel(newChannel:Channel) {
-        if (!(await UserOwns.profile(ServerInit.anonymousUser.id, newChannel.owner))) {
+        if (!(await UserOwns.profile(Init.anonymousUser.id, newChannel.owner))) {
             throw new Error(`Only anonymous sessions can use this service.`);
         }
 
@@ -31,7 +31,7 @@ export class LoginService extends RequestSynchronousService {
         const loginEntryContent: {
             email: string,
             password: string
-        } = newEntry.content[ServerInit.loginContentEncoding.name];
+        } = newEntry.content[Init.loginContentEncoding.name];
 
         let foundUser = await UserQueries.findUserByEmail(loginEntryContent.email);
         if (!foundUser) {

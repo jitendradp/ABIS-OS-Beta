@@ -1,5 +1,5 @@
 import {EventBroker} from "./eventBroker";
-import {ServerInit} from "../serverInit";
+import {Init} from "../init";
 import {Agent, Entry, Group, prisma, User} from "../generated";
 import {DirectService} from "./directService";
 import {UserOwns} from "../statements/userOwns";
@@ -20,11 +20,11 @@ export class SignupService extends DirectService {
     }
 
     get welcomeMessageContentEncodingId(): string {
-        return ServerInit.signupContentEncoding.id;
+        return Init.signupContentEncoding.id;
     }
 
     async onNewChannel(newChannel:Channel) {
-        if (!(await UserOwns.profile(ServerInit.anonymousUser.id, newChannel.owner))) {
+        if (!(await UserOwns.profile(Init.anonymousUser.id, newChannel.owner))) {
             throw new Error(`Only anonymous sessions can use this service.`);
         }
 
@@ -41,7 +41,7 @@ export class SignupService extends DirectService {
             email:string,
             password:string,
             password_confirmation:string
-        } = newEntry.content[ServerInit.signupContentEncoding.name];
+        } = newEntry.content[Init.signupContentEncoding.name];
 
         // Check if the passwords match
         if (signupEntryContent.password != signupEntryContent.password_confirmation) {
@@ -73,7 +73,7 @@ export class SignupService extends DirectService {
         //
         // If all of the above was successful, tell the client to go to the 'VerifyEmail' service.
         //
-        await this.postContinueTo(ServerInit.verifyEmailService.id, answerChannel.id);
+        await this.postContinueTo(Init.verifyEmailService.id, answerChannel.id);
     }
 
     private static readonly bcrypt = require('bcrypt');

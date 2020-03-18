@@ -1,5 +1,5 @@
 import { GraphQLClient } from 'graphql-request';
-import { print } from '../graphql';
+import { print } from 'graphql';
 import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
 /** All built-in and custom scalars, mapped to their actual values */

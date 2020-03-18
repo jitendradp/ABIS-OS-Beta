@@ -45,6 +45,7 @@ export class AbisSession {
 
   private _url: string;
 
+  private _isNew: boolean = true;
   private _api: any;
   private _sessionStatusSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
@@ -54,11 +55,12 @@ export class AbisSession {
 
     // Self-subscribe to the session status and call "onSessionAvailable" when a session becomes available
     this._sessionStatusSubject.subscribe(status => {
-      if (!status) {
+      if (!status && !this._isNew) {
         this.onSessionNotAvailable();
       } else {
         this.onSessionAvailable();
       }
+      this._isNew = false;
     });
 
     // Check if there is an existing session or create a new one

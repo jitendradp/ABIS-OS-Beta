@@ -1,4 +1,4 @@
-import {ServerInit} from "../serverInit";
+import {Init} from "../init";
 import {Entry, Group, prisma} from "../generated";
 import {DirectService} from "./directService";
 import {UserQueries} from "../data/queries/user";
@@ -6,7 +6,7 @@ import {Helper} from "../helper/helper";
 
 export class VerifyEmailService extends DirectService {
     get welcomeMessageContentEncodingId(): string {
-        return ServerInit.verifyEmailContentEncoding.id;
+        return Init.verifyEmailContentEncoding.id;
     }
 
     async onNewEntry(newEntry:Entry, answerChannel:Group){
@@ -17,7 +17,7 @@ export class VerifyEmailService extends DirectService {
 
         await VerifyEmailService.clearChallenge(foundUser.id);
 
-        await this.postContinueTo(ServerInit.loginService.id, answerChannel.id);
+        await this.postContinueTo(Init.loginService.id, answerChannel.id);
     }
 
     private static async clearChallenge(userId: string) {

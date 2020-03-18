@@ -10,6 +10,6 @@ export class LoginComponent {
   loginServiceId: string;
 
   constructor(private userService: UserService) {
-    this.loginServiceId = this.userService.systemServices.find(o => o.name == "LoginService").id;
+    this.loginServiceId = this.userService.systemServices.find(o => o.name == "EchoService").id;
   }
 }

@@ -5,7 +5,7 @@ import {AgentCreate} from "../data/mutations/agentCreate";
 import {Helper} from "../helper/helper";
 import {ActionResponse} from "../api/mutations/actionResponse";
 import {prisma} from "../generated";
-import {ServerInit} from "../serverInit";
+import {Init} from "../init";
 import {AgentCanCreate} from "../statements/agentCanCreate";
 
 export const mutations = {
@@ -14,7 +14,7 @@ export const mutations = {
         // The new session, together with a temporary profile, will be created in the context of the "anonymous" system-user.
         // When the user authenticated with the Signup- or LoginService, a new session will be created
         // and sent to the user via his channel to the service.
-        const anonymousUserId = ServerInit.anonymousUser.id;
+        const anonymousUserId = Init.anonymousUser.id;
         const anonymousProfile = await UserCreate.profile(
             anonymousUserId,
             `anon_${new Date().getTime()}`,

@@ -128,10 +128,6 @@ export class Topic<T> {
 
         await Promise.all(promises);
 
-        if (promises.length > 0) {
-            Helper.log('Fulfilled all dependencies. Sending regular events..');
-        }
-
         // Then dispatch all fire-and-forget events
         if (!this._observer) {
             return; // If nobody subscribed -> leave

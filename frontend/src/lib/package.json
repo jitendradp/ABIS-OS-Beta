@@ -2,9 +2,8 @@
   "name": "abis-bootstrapper",
   "version": "1.0.0",
   "description": "Creates the initial anonymous session and provides basic interaction capabilities as base for applications",
-  "main": "../../../bootstrapper/abis.js",
   "scripts": {
-    "generate": "../../../bootstrapper/node_modules/.bin/graphql-codegen --config ../frontend/src/lib/codegen.yml"
+    "generate": "node_modules/.bin/graphql-codegen --config codegen.yml"
   },
   "author": "DBI Analytics GmbH",
   "license": "AGPL-3.0-or-later",
