@@ -2,7 +2,7 @@ import {GetAgentOf} from "../queries/getAgentOf";
 import {EventBroker, Topics} from "../services/eventBroker";
 import {Helper} from "../helper/helper";
 import {map} from "rxjs/operators";
-import {prisma} from "../generated";
+import {prisma} from "../generated/prisma_client";
 import {Observable} from "rxjs";
 
 async function getTopicForAgent(csrfToken:string, topicName:string) {

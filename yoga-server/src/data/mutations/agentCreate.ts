@@ -1,4 +1,4 @@
-import {Entry, EntryCreateInput, Group, prisma} from "../../generated";
+import {Entry, EntryCreateInput, prisma} from "../../generated/prisma_client";
 import {Helper} from "../../helper/helper";
 import {EventBroker, Topics} from "../../services/eventBroker";
 import {Channel} from "../../api/types/channel";

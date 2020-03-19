@@ -3,8 +3,8 @@ import {Topic, Topics} from "./eventBroker";
 import {Channel} from "../api/types/channel";
 import {Helper} from "../helper/helper";
 import {AgentCreate} from "../data/mutations/agentCreate";
-import {Entry, Group, prisma} from "../generated";
 import {Init} from "../init";
+import {Entry, Group, prisma} from "../generated/prisma_client";
 
 /**
  * This service waits for incoming channels from other agents

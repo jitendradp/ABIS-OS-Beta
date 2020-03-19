@@ -1,4 +1,4 @@
-import {GroupType, GroupWhereInput, prisma} from "../generated";
+import {GroupType, GroupWhereInput, prisma} from "../generated/prisma_client";
 
 /**
  * Contains methods to determine if an agent can see a particular object.

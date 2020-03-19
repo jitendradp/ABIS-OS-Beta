@@ -5,24 +5,20 @@ networks:
 
 services:
 
-#  frontend:
-#    container_name: frontend
-#    restart: always
-#    depends_on:
-#      - yoga
-#    build:
-#      context: frontend
-#      dockerfile: Dockerfile
-#    ports:
-#      - "80:80"
-#    networks:
-#      - abis
+  frontend:
+    image: gdhami/frontend
+    container_name: frontend
+    restart: always
+    depends_on:
+      - yoga
+    ports:
+      - "80:80"
+    networks:
+      - abis
 
   yoga:
+    image: gdhami/yoga
     container_name: yoga
-    build:
-      context: yoga-server
-      dockerfile: Dockerfile
     restart: always
     depends_on:
       - prisma
@@ -33,10 +29,8 @@ services:
 
 
   prisma:
+    image: gdhami/prisma
     container_name: prisma
-    build:
-      context: prisma
-      dockerfile: Dockerfile
     restart: always
     depends_on:
       - db
@@ -59,17 +53,15 @@ services:
             password: prisma
 
   pgadmin:
-    container_name: pgadmin
     image: dpage/pgadmin4
+    container_name: pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
       PGADMIN_DEFAULT_PASSWORD: test
     volumes:
       - ./pgadmin:/root/.pgadmin
-
     ports:
       - "8080:8080"
-
     networks:
       - abis
     depends_on:
@@ -78,10 +70,8 @@ services:
 
 
   db:
+    image: gdhami/db
     container_name: db
-    build:
-      context: db #restapiexample #postgresapp    # Use an image built from the specified dockerfile in the `api` directory.
-      dockerfile: Dockerfile
     ports:
       - "5432:5432"
     restart: always

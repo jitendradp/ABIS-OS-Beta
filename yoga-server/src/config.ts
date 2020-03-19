@@ -1,7 +1,7 @@
 export const config = {
     env: {
         systemId: "ce4b2352-7333-4820-9415-35a97b554d49",
-        domain: "local.abis-cloud.com",
+        domain: "yoga",
         systemUser: "system@ce4b2352-7333-4820-9415-35a97b554d49.abis",
         anonymousUser: "anonymous@ce4b2352-7333-4820-9415-35a97b554d49.abis",
         signupAgentName: "SignupService"

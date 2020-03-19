@@ -1,5 +1,5 @@
 overwrite: true
-schema: "http://local.abis-cloud.com:4000"
+schema: "http://yoga:4000"
 documents: "src/graphql/*.graphql"
 generates:
   src/generated/abis-api.ts:
