@@ -117,13 +117,22 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
   private async initChannel() {
     this.subscribeToChannelEvents();
 
+    if (!this.currentAgentId || this.currentAgentId === "") {
+      // Can be set to "" and should send the user to the startpage in that case.
+      this.router.navigate(['/']);
+      return;
+    }
+
     // Find or create a channel to the specified "serviceAgentId".
     const myChannels = (await this.myChannelsApi.fetch({csrfToken: this.userService.csrfToken}).toPromise()).data.myChannels;
     const myChannel = myChannels.find(o => o.receiver.id == this.currentAgentId);
 
+    if (myChannel) {
+      this._channelId = myChannel.id;
+    }
+
     if (myChannel && myChannel.reverse) {
       // Duplex channel already established
-      this._channelId = myChannel.id;
       this._reverseChannelId = myChannel.reverse.id;
       this.initDialog();
       return;
@@ -162,6 +171,10 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
             if (continuationContent.context && continuationContent.context.csrfToken) {
               // TODO: centralize the csrf-token handling
               this.clientState.set(UserService.CsrfTokenKey, continuationContent.context.csrfToken);
+            }
+            if (continuationContent.context && continuationContent.context.profileId) {
+              // TODO: centralize the profileId-token handling
+              this.clientState.set(UserService.ProfileKey, continuationContent.context.profileId);
             }
             // A empty agent id means -> navigate to the frontpage (at least for now)
             this.router.navigate(["/"]);

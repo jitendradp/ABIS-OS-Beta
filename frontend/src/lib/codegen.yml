@@ -1,0 +1,12 @@
+overwrite: true
+schema: "http://local.abis-cloud.com:4000"
+documents: "graphql/*.graphql"
+generates:
+  src/generated/abis-api.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-graphql-request"
+  src/generated/abis-api.schema.json:
+    plugins:
+      - "introspection"

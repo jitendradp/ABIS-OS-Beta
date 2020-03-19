@@ -12,7 +12,7 @@
             Switch your profile
           </mat-card-title>
           <mat-card-actions>
-            <app-button *ngFor="let profile of profiles" [text]="profile.name"></app-button>
+            <app-button *ngFor="let profile of profiles" (click)="switchToProfile(profile)" [text]="profile.name"></app-button>
           </mat-card-actions>
         </app-content>
       </mat-card>

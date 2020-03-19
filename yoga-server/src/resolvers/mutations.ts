@@ -5,7 +5,7 @@ import {AgentCreate} from "../data/mutations/agentCreate";
 import {Helper} from "../helper/helper";
 import {ActionResponse} from "../api/mutations/actionResponse";
 import {prisma} from "../generated";
-import {ServerInit} from "../serverInit";
+import {Init} from "../init";
 import {AgentCanCreate} from "../statements/agentCanCreate";
 
 export const mutations = {
@@ -14,7 +14,7 @@ export const mutations = {
         // The new session, together with a temporary profile, will be created in the context of the "anonymous" system-user.
         // When the user authenticated with the Signup- or LoginService, a new session will be created
         // and sent to the user via his channel to the service.
-        const anonymousUserId = ServerInit.anonymousUser.id;
+        const anonymousUserId = Init.anonymousUser.id;
         const anonymousProfile = await UserCreate.profile(
             anonymousUserId,
             `anon_${new Date().getTime()}`,
@@ -110,7 +110,23 @@ export const mutations = {
     },
 
     async createRoom(root, {csrfToken, createRoomInput}, ctx) {
-        throw new Error("Not implemented");
+        const userHasAuthenticatedSession = await UserHas.authenticatedSession(ctx.sessionToken, csrfToken, ctx.bearerToken);
+        if (!userHasAuthenticatedSession) {
+            throw new Error(`Invalid session`);
+        }
+
+        const agentId = await GetAgentOf.session(csrfToken, ctx.sessionToken);
+
+        // TODO: Implement AgentCanCreate.room()
+        /*if (!(await AgentCanCreate.room(agentId, createRoomInput.name))) {
+            throw new Error(`Agent ${agentId} cannot create a room with the name ${createRoomInput.name}`);
+        }*/
+
+        const room = await AgentCreate.room(agentId, createRoomInput.name, createRoomInput.logo, true);
+        (<any>room).isPrivate = !room.isPublic;
+        (<any>room).inbox = {id:""};
+        (<any>room).memberships = [];
+        return room;
     },
     async updateRoom(root, {csrfToken, updateRoomInput}, ctx) {
         throw new Error("Not implemented");

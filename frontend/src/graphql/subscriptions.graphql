@@ -26,3 +26,17 @@ subscription newChannel($csrfToken:String!) {
     }
   }
 }
+
+subscription newRoom($csrfToken:String!) {
+  newRoom(csrfToken: $csrfToken) {
+    id
+    createdAt
+    createdBy
+    owner
+    logo
+    name
+    title
+    description
+    banner
+  }
+}

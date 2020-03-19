@@ -2,8 +2,10 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
 import {MatTreeFlatDataSource, MatTreeFlattener} from "@angular/material";
 import {FlatTreeControl} from "@angular/cdk/tree";
-import {FindRoomsGQL} from "../../../generated/abis-api";
+import {FindRoomsGQL, NewRoomGQL} from "../../../generated/abis-api";
 import {UserService} from "../../services/user.service";
+import {LoginStateChanged} from "../../actions/user/LoginStateChanged";
+import {filterErrorsAndWarnings} from "@angular/compiler-cli";
 
 interface GroupNode {
   name: string;
@@ -24,42 +26,7 @@ let TREE_DATA: GroupNode[] = [
       {name: 'General', icon: 'lock_open'},
       {name: 'Customer Support', icon: 'lock_open'},
     ]
-  },
-  {
-    name: 'Favorite pizza place',
-    logo: 'https://images-platform.99static.com/Ng85_ZR79gbqye5j9TVlBB4uoqU=/500x500/top/smart/99designs-contests-attachments/38/38987/attachment_38987002',
-    channels: [
-      {name: 'Chaos', icon: 'lock_open'},
-      {name: 'General', icon: 'lock'},
-      {name: 'Customer Support', icon: 'lock'},
-      {name: 'Chaos', icon: 'lock'},
-      {name: 'General', icon: 'lock'},
-      {name: 'Customer Support', icon: 'lock'},
-    ]
-  },
-  {
-    name: 'Reiterhof Maier',
-    channels: [
-      {name: 'Chaos', icon: 'lock'},
-      {name: 'General', icon: 'lock_open'},
-      {name: 'Customer Support', icon: 'lock_open'},
-      {name: 'Chaos', icon: 'lock_open'},
-      {name: 'General', icon: 'lock_open'},
-      {name: 'Customer Support', icon: 'lock_open'},
-    ]
-  },
-  {
-    name: 'Dahoam is dahoam', logo: 'https://www.freelogodesign.org/Content/img/logo-samples/flooop.png',
-    channels: [
-      {name: 'Chaos', icon: 'lock'},
-      {name: 'General', icon: 'lock'},
-      {name: 'Customer Support', icon: 'lock_open'},
-      {name: 'Chaos', icon: 'lock_open'},
-      {name: 'General', icon: 'lock_open'},
-      {name: 'Customer Support', icon: 'lock_open'},
-    ]
-  },
-
+  }
 ];
 
 /** Flat node with expandable and level information */
@@ -107,6 +74,50 @@ export class ListGroupComponent implements OnInit {
   @Input()
   asDialogList: boolean = true;
 
+  constructor(
+    public actionDispatcher: ActionDispatcherService,
+    private findRoomsApi:FindRoomsGQL,
+    private newRoomSubscription: NewRoomGQL,
+    private userService:UserService) {
+
+    this.actionDispatcher.onAction.subscribe(async next => {
+      if (next.name == LoginStateChanged.Name) {
+        await this.refresh();
+      }
+    });
+
+    this.newRoomSubscription.subscribe({csrfToken: this.userService.csrfToken})
+      .subscribe(async newEntry => {
+        console.log(newEntry);
+        await this.refresh();
+      });
+  }
+
+  async ngOnInit() {
+    await this.refresh();
+  }
+
+  private async refresh() {
+    if (!this.userService.isLoggedOn) {
+      return;
+    }
+
+    const rooms = (await this.findRoomsApi.fetch({
+      csrfToken: this.userService.csrfToken,
+      searchText: ""
+    }).toPromise()).data.findRooms;
+
+    TREE_DATA[0].name = this.userService.accountInformation.personFirstName + " " + this.userService.accountInformation.personLastName;
+    TREE_DATA[0].channels = rooms.map(o => {
+      return {
+        name: o.name,
+        icon: o.logo
+      }
+    });
+
+    this.dataSource.data = TREE_DATA;
+  }
+
   private _transformer = (node: GroupNode, level: number) => {
     return {
       expandable: !!node.channels && node.channels.length > 0,
@@ -125,12 +136,6 @@ export class ListGroupComponent implements OnInit {
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-  constructor(
-    public actionDispatcher: ActionDispatcherService,
-    private findRoomsApi:FindRoomsGQL,
-    private userService:UserService) {
-    this.dataSource.data = TREE_DATA;
-  }
 
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
@@ -215,8 +220,5 @@ export class ListGroupComponent implements OnInit {
       description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
     },
   ];
-
-  ngOnInit(): void {
-  }
 
 }

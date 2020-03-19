@@ -1,7 +1,7 @@
 import {EventBroker} from "./eventBroker";
 import {Agent} from "../generated/prisma_client";
 import {Entry} from "../generated";
-import {ServerInit} from "../serverInit";
+import {Init} from "../init";
 
 var SchemaValidator = require('ajv');
 var schemaValidator = SchemaValidator({ allErrors: true });
@@ -63,7 +63,7 @@ export abstract class Service {
      * @param newEntry
      */
     protected validateEntry(newEntry: Entry) : {key:string, value:string}[] {
-        const contentEncoding = ServerInit.contentEncodings.find(o => o.id == (<any>newEntry.contentEncoding).id);
+        const contentEncoding = Init.contentEncodings.find(o => o.id == (<any>newEntry.contentEncoding).id);
         if (!contentEncoding) {
             throw new Error(`Entry '${newEntry.id}' doesn't have a 'contentEncoding' value and cannot be validated.`);
         }

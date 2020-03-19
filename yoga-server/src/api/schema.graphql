@@ -505,10 +505,6 @@ enum EncodingType {
     Owl
 }
 
-type NewEntrySubscription {
-    newEntry: Entry!
-}
-
 type Account {
     id: ID!
     type: UserType!
@@ -642,4 +638,5 @@ type Mutation {
 type Subscription {
     newEntry(csrfToken:String!): NewEntry #TODO: Let the client request a special subscriptionToken first and don't use the csrfToken
     newChannel(csrfToken:String!): Channel #TODO: Let the client request a special subscriptionToken first and don't use the csrfToken
+    newRoom(csrfToken:String!): Room #TODO: Let the client request a special subscriptionToken first and don't use the csrfToken
 }
