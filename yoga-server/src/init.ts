@@ -319,6 +319,7 @@ export class Init {
         let persistedContentEncoding: ContentEncoding = null;
         if (existingContentEncoding.length > 0) {
             persistedContentEncoding = existingContentEncoding[0];
+            Helper.log(`   Content encoding '${contentEncoding.name}' is already registered.`);
         } else {
             Helper.log(`   Content encoding '${contentEncoding.name}' is new. Creating in prisma ..`);
             persistedContentEncoding = await prisma.createContentEncoding(contentEncoding);
