@@ -39,7 +39,7 @@ export class EventBroker {
         }
         ns[name] = topic;
 
-        Helper.log(`Created topic '${name}' in namespace '${namespace}'`);
+        Helper.log(`   Created topic '${name}' in namespace '${namespace}'`);
 
         return topic;
     }

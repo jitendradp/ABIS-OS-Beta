@@ -17,7 +17,7 @@ class Implementation extends DirectService {
 
         await Implementation.clearChallenge(foundUser.id);
 
-        await this.postContinueTo(Init.loginService.id, answerChannel.id);
+        await this.postContinueTo(Init.loginServiceId, answerChannel.id);
     }
 
     private static async clearChallenge(userId: string) {

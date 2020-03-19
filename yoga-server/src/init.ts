@@ -7,6 +7,7 @@ import {AgentHost, ServiceFactory} from "./services/agentHost";
 import {Channel} from "./api/types/channel";
 import {UserCreate} from "./data/mutations/userCreate";
 import {AgentCreate} from "./data/mutations/agentCreate";
+import {Service} from "./services/service";
 
 export class Init {
     static get serviceHost(): AgentHost {
@@ -21,16 +22,16 @@ export class Init {
         return this._anonymousUser;
     }
 
-    static get signupService(): Agent {
-        return this._signupService;
+    static get signupService(): string {
+        return this._serviceNameMap["SignupService"].id;
     }
 
-    static get loginService(): Agent {
-        return this._loginService;
+    static get loginServiceId(): string {
+        return this._serviceNameMap["LoginService"].id;
     }
 
-    static get verifyEmailService(): Agent {
-        return this._verifyEmailService;
+    static get verifyEmailServiceId(): string {
+        return this._serviceNameMap["VerifyEmailService"].id;
     }
 
     static get datenDieterSystemAgent(): Agent {
@@ -85,9 +86,6 @@ export class Init {
 
     private static _systemUser: User;
     private static _anonymousUser: User;
-    private static _signupService: Agent;
-    private static _loginService: Agent;
-    private static _verifyEmailService: Agent;
     private static _datenDieterSystemAgent: Agent;
     private static _newChannelTopic: Topic<Channel>;
     private static _newEntryTopic: Topic<Entry>;
@@ -96,6 +94,9 @@ export class Init {
 
     private static _contentEncodingsNameMap: {[name:string]:ContentEncoding} = {};
     private static _contentEncodingsIdMap: {[id:string]:ContentEncoding} = {};
+
+    private static _serviceNameMap: {[name:string]:Service} = {};
+    private static _serviceIdMap: {[id:string]:Service} = {};
 
     private static _serviceHost = new AgentHost(EventBroker.instance);
 
@@ -118,9 +119,9 @@ export class Init {
     }
 
     private static async createSystemAgents() {
-        const existingDatenDieter = await prisma.agents({where:{owner:Init._systemUser.id, name: "DatenDieter"}});
+        const existingDatenDieter = await prisma.agents({where:{owner:Init._systemUser.id, name: "Daten Dieter"}});
         if (existingDatenDieter.length == 0) {
-            Init._datenDieterSystemAgent = await UserCreate.profile(Init._systemUser.id, "DatenDieter", "avatar.png", "Available");
+            Init._datenDieterSystemAgent = await UserCreate.profile(Init._systemUser.id, "Daten Dieter", "avatar.png", "Available");
         } else {
             Init._datenDieterSystemAgent = existingDatenDieter[0];
         }
@@ -286,12 +287,15 @@ export class Init {
             loadedService.implementation = loadedService.name; // TODO: Deprecated!?
 
             const existingService = await prisma.agents({where: {name: loadedService.name, type: "Service"}});
+            let persistedService = null;
+
             if (existingService.length > 0) {
                 Helper.log(`   Service '${loadedService.name}' is already registered.`);
+                persistedService = existingService[0];
             } else {
                 Helper.log(`   Registering service '${loadedService.name}' ..`);
 
-                const persistedService = await prisma.createAgent(loadedService);
+                persistedService = await prisma.createAgent(loadedService);
                 await prisma.updateUser({
                     where: {
                         id: loadedService.owner
@@ -309,6 +313,9 @@ export class Init {
 
             this.serviceHost.serviceImplementations[loadedService.name]
                 = (eventBroker: EventBroker, agent: Agent) => new implementation(eventBroker, agent);
+
+            this._serviceIdMap[loadedService.id] = persistedService;
+            this._serviceNameMap[loadedService.name] = persistedService;
         }
     }
 

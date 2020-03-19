@@ -69,7 +69,7 @@ class Implementation extends DirectService {
         //
         // If all of the above was successful, tell the client to go to the 'VerifyEmail' service.
         //
-        await this.postContinueTo(Init.verifyEmailService.id, answerChannel.id);
+        await this.postContinueTo(Init.verifyEmailServiceId, answerChannel.id);
     }
 
     private static readonly bcrypt = require('bcrypt');

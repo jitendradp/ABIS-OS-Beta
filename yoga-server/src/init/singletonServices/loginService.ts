@@ -7,8 +7,9 @@ import {Channel} from "../../api/types/channel";
 import {UserOwns} from "../../statements/userOwns";
 import {config} from "../../config";
 import {UserCreate} from "../../data/mutations/userCreate";
+import {RequestSynchronousService} from "../../services/requestSynchronousService";
 
-class Implementation extends DirectService {
+class Implementation extends RequestSynchronousService {
     private static readonly bcrypt = require('bcrypt');
 
     get welcomeMessageContentEncodingId(): string {
