@@ -3,7 +3,7 @@ import {config} from "./config";
 import {EventBroker, Topic, Topics} from "./services/eventBroker";
 import {Helper} from "./helper/helper";
 import {FindAgentsThatSeeThis} from "./queries/findAgentsThatSeeThis";
-import {AgentHost, ServiceFactory} from "./services/agentHost";
+import {AgentHost} from "./services/agentHost";
 import {Channel} from "./api/types/channel";
 import {UserCreate} from "./data/mutations/userCreate";
 import {AgentCreate} from "./data/mutations/agentCreate";
@@ -189,6 +189,7 @@ export class Init {
     }
 
     private static async createSystemTopics() {
+        Helper.log(`Creating system topics ...`);
         Init._newChannelTopic = EventBroker.instance.createTopic<Channel>("system", Topics.NewChannel);
         Init._newEntryTopic = EventBroker.instance.createTopic<Entry>("system", Topics.NewEntry);
         Init._newRoomTopic = EventBroker.instance.createTopic<Group>("system", Topics.NewRoom);
@@ -257,66 +258,94 @@ export class Init {
     }
 
     private static async createServices() {
-        const {readdirSync} = require('fs');
         const path = require('path');
-
         const dir = path.join(__dirname, "init", "singletonServices") + "/";
 
-        Helper.log(`Trying to load the services from '${dir}' ...`);
+        await Promise.all(Init.loadModules(dir).map(Init.insertAgentIfNotExisting));
+    }
 
-        const loadedServices = await readdirSync(dir, {withFileTypes: true})
-            .filter(o => o.isFile() && o.name.endsWith(".js"))
-            .map(async o => {
+    private static async insertAgentIfNotExisting(agent:any) {
+        const implementation = agent.implementation;
 
-                Helper.log(`Trying to load service '${o.name}' ...`);
+        delete agent.implementation;
+        agent.implementation = agent.name; // TODO: Deprecated!?
 
-                const obj = await require(`${dir}${o.name}`);
-                return {
-                    path: `${dir}/${o.name}`,
-                    object: obj.Index
-                }
-            });
+        const existingService = await prisma.agents({where: {name: agent.name, type: "Service"}});
+        let persistedService = null;
 
-        for (const file of loadedServices) {
-            const loadedService = (await file).object;
-            const implementation = loadedService.implementation;
+        if (existingService.length > 0) {
+            Helper.log(`   Service '${agent.name}' is already registered.`);
+            persistedService = existingService[0];
+        } else {
+            Helper.log(`   Registering service '${agent.name}' ..`);
 
-            Helper.log(`Loaded service '${loadedService.name}'. Registering if necessary and starting up ..`);
-
-            delete loadedService.implementation;
-            loadedService.implementation = loadedService.name; // TODO: Deprecated!?
-
-            const existingService = await prisma.agents({where: {name: loadedService.name, type: "Service"}});
-            let persistedService = null;
-
-            if (existingService.length > 0) {
-                Helper.log(`   Service '${loadedService.name}' is already registered.`);
-                persistedService = existingService[0];
-            } else {
-                Helper.log(`   Registering service '${loadedService.name}' ..`);
-
-                persistedService = await prisma.createAgent(loadedService);
-                await prisma.updateUser({
-                    where: {
-                        id: loadedService.owner
-                    },
-                    data: {
-                        agents: {
-                            connect: {
-                                id: persistedService.id
-                            }
+            persistedService = await prisma.createAgent(agent);
+            await prisma.updateUser({
+                where: {
+                    id: agent.owner
+                },
+                data: {
+                    agents: {
+                        connect: {
+                            id: persistedService.id
                         }
                     }
-                });
-                Helper.log(`   Registered service '${loadedService.name}' with owner '${persistedService.owner}'.`);
-            }
-
-            this.serviceHost.serviceImplementations[loadedService.name]
-                = (eventBroker: EventBroker, agent: Agent) => new implementation(eventBroker, agent);
-
-            this._serviceIdMap[loadedService.id] = persistedService;
-            this._serviceNameMap[loadedService.name] = persistedService;
+                }
+            });
+            Helper.log(`   Registered service '${agent.name}' with owner '${persistedService.owner}'.`);
         }
+
+        Init.serviceHost.serviceImplementations[agent.name]
+            = (eventBroker: EventBroker, agent: Agent) => new implementation(eventBroker, agent);
+
+        Init._serviceIdMap[agent.id] = persistedService;
+        Init._serviceNameMap[agent.name] = persistedService;
+    }
+
+    private static async createContentEncodings() {
+        const path = require('path');
+        const dir = path.join(__dirname, "init", "contentEncodings") + "/";
+
+        await Promise.all(Init.loadModules(dir).map(Init.insertContentEncodingIfNotExisting));
+
+        if (Object.keys(this._contentEncodingsIdMap).length != Object.keys(this._contentEncodingsNameMap).length) {
+            throw new Error(`ContentEncoding names must be unique: ${this.contentEncodings.map(o => o.name).join(", ")}`);
+        }
+    }
+
+    private static async insertContentEncodingIfNotExisting(contentEncoding:ContentEncoding) {
+        const existingContentEncoding = await prisma.contentEncodings({where: {name: contentEncoding.name}});
+
+        let persistedContentEncoding: ContentEncoding = null;
+        if (existingContentEncoding.length > 0) {
+            persistedContentEncoding = existingContentEncoding[0];
+        } else {
+            Helper.log(`   Content encoding '${contentEncoding.name}' is new. Creating in prisma ..`);
+            persistedContentEncoding = await prisma.createContentEncoding(contentEncoding);
+        }
+
+        Init._contentEncodingsNameMap[persistedContentEncoding.name] = persistedContentEncoding;
+        Init._contentEncodingsIdMap[persistedContentEncoding.id] = persistedContentEncoding;
+    }
+
+    private static loadModules(path:string) {
+        const {readdirSync} = require('fs');
+
+        Helper.log(`Trying to load modules from '${path}' ...`);
+
+        return readdirSync(path, {withFileTypes: true})
+            .filter(fsItem => fsItem.isFile()
+                && fsItem.name.length > 3
+                && fsItem.name.substr (fsItem.name.length - 3, 3).toLowerCase() == ".js")
+            .map(fsItem => {
+                try {
+                    Helper.log(`   Loading '${path}${fsItem.name}' ...`);
+                    return require(`${path}${fsItem.name}`).Index;
+                } catch (e) {
+                    Helper.log(`   Error: ${e}`);
+                }
+            })
+            .filter(mod => mod !== undefined);
     }
 
     private static async createCountryEntries() {
@@ -354,52 +383,5 @@ export class Init {
                 console.log("Created entry for country: " + countryName);
             });
         });
-    }
-
-    private static async createContentEncodings() {
-        const {readdirSync} = require('fs');
-        const path = require('path');
-
-        const dir = path.join(__dirname, "init", "contentEncodings") + "/";
-
-        Helper.log(`Trying to load the content encodings from '${dir}' ...`);
-
-        const loadedEncodings = await readdirSync(dir, {withFileTypes: true})
-            .filter(o => o.isFile() && o.name.endsWith(".js"))
-            .map(async o => {
-
-                Helper.log(`Trying to load content encoding '${o.name}' ...`);
-
-                let obj = await require(`${dir}${o.name}`);
-                return {
-                    path: `${dir}/${o.name}`,
-                    object: <ContentEncoding>obj.Index
-                }
-            });
-
-        for (const file of loadedEncodings) {
-            const loadedContentEncoding = (await file).object;
-
-            Helper.log(`Loaded content encoding '${loadedContentEncoding.name}'.`);
-
-            const existingContentEncoding = await prisma.contentEncodings({where:{name:loadedContentEncoding.name}});
-
-            let persistedContentEncoding:ContentEncoding = null;
-
-            if (existingContentEncoding.length > 0) {
-                persistedContentEncoding = existingContentEncoding[0];
-            } else {
-                Helper.log(`   Content encoding '${loadedContentEncoding.name}' is new. Creating in prisma ..`);
-                persistedContentEncoding = await prisma.createContentEncoding(loadedContentEncoding);
-                Helper.log(`   Created content encoding '${loadedContentEncoding.name}' in prisma.`);
-            }
-
-            this._contentEncodingsNameMap[persistedContentEncoding.name] = persistedContentEncoding;
-            this._contentEncodingsIdMap[persistedContentEncoding.id] = persistedContentEncoding;
-        }
-
-        if (Object.keys(this._contentEncodingsIdMap).length != Object.keys(this._contentEncodingsNameMap).length) {
-            throw new Error(`ContentEncoding names must be unique: ${this.contentEncodings.map(o => o.name).join(", ")}`);
-        }
     }
 }

@@ -32,7 +32,7 @@ export class MapComponent implements OnInit, OnChanges {
     , private findRooms: FindRoomsGQL
     , private actionDispatcher: ActionDispatcherService
     , private userService: UserService) {
-    this.datenDieterId = this.userService.systemServices.find(o => o.name == "DatenDieter").id;
+    this.datenDieterId = this.userService.systemServices.find(o => o.name == "Daten Dieter").id;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
