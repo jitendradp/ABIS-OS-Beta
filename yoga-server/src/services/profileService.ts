@@ -36,7 +36,7 @@ export class ProfileService extends Service {
     }
 
     onNewRoom(newRoom:Group) {
-        Helper.log(`ProfileService received a NewRRoom event: ${JSON.stringify(newRoom)}`);
+        Helper.log(`ProfileService received a NewRoom event: ${JSON.stringify(newRoom)}`);
     }
 
     stop(): void {

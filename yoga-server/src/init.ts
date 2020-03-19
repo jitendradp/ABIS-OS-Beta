@@ -11,77 +11,77 @@ import {Service} from "./services/service";
 
 export class Init {
     static get serviceHost(): AgentHost {
-        return this._serviceHost;
+        return Init._serviceHost;
     }
 
     static get systemUser(): User {
-        return this._systemUser;
+        return Init._systemUser;
     }
 
     static get anonymousUser(): User {
-        return this._anonymousUser;
+        return Init._anonymousUser;
     }
 
     static get signupService(): string {
-        return this._serviceNameMap["SignupService"].id;
+        return Init._serviceNameMap["SignupService"].id;
     }
 
     static get loginServiceId(): string {
-        return this._serviceNameMap["LoginService"].id;
+        return Init._serviceNameMap["LoginService"].id;
     }
 
     static get verifyEmailServiceId(): string {
-        return this._serviceNameMap["VerifyEmailService"].id;
+        return Init._serviceNameMap["VerifyEmailService"].id;
     }
 
     static get datenDieterSystemAgent(): Agent {
-        return this._datenDieterSystemAgent;
+        return Init._datenDieterSystemAgent;
     }
 
     static get newChannelTopic(): Topic<Channel> {
-        return this._newChannelTopic;
+        return Init._newChannelTopic;
     }
 
     static get newEntryTopic(): Topic<Entry> {
-        return this._newEntryTopic;
+        return Init._newEntryTopic;
     }
 
     static get newRoomTopic(): Topic<Group> {
-        return this._newRoomTopic;
+        return Init._newRoomTopic;
     }
 
     static get signupContentEncoding(): ContentEncoding {
-        return this.contentEncodingsNameMap["Signup"];
+        return Init.contentEncodingsNameMap["Signup"];
     }
 
     static get verifyEmailContentEncoding(): ContentEncoding {
-        return this.contentEncodingsNameMap["VerifyEmail"];
+        return Init.contentEncodingsNameMap["VerifyEmail"];
     }
 
     static get loginContentEncoding(): ContentEncoding {
-        return this.contentEncodingsNameMap["Login"];
+        return Init.contentEncodingsNameMap["Login"];
     }
 
     static get errorContentEncoding(): ContentEncoding {
-        return this.contentEncodingsNameMap["Error"];
+        return Init.contentEncodingsNameMap["Error"];
     }
 
     static get continuationContentEncoding(): ContentEncoding {
-        return this.contentEncodingsNameMap["Continuation"];
+        return Init.contentEncodingsNameMap["Continuation"];
     }
 
     static get geoJsonFeatureContentEncoding(): ContentEncoding {
-        return this.contentEncodingsNameMap["GeoJsonFeature"];
+        return Init.contentEncodingsNameMap["GeoJsonFeature"];
     }
 
     static get contentEncodings(): ContentEncoding[] {
-        return Object.keys(this._contentEncodingsIdMap).map(id => this._contentEncodingsIdMap[id]);
+        return Object.keys(Init._contentEncodingsIdMap).map(id => Init._contentEncodingsIdMap[id]);
     }
     static get contentEncodingsNameMap(): {[name:string]:ContentEncoding} {
-        return this._contentEncodingsNameMap;
+        return Init._contentEncodingsNameMap;
     }
     static get contentEncodingsIdMap(): {[name:string]:ContentEncoding} {
-        return this._contentEncodingsIdMap;
+        return Init._contentEncodingsIdMap;
     }
 
     private static _systemUser: User;
@@ -308,7 +308,7 @@ export class Init {
 
         await Promise.all(Init.loadModules(dir).map(Init.insertContentEncodingIfNotExisting));
 
-        if (Object.keys(this._contentEncodingsIdMap).length != Object.keys(this._contentEncodingsNameMap).length) {
+        if (Object.keys(Init._contentEncodingsIdMap).length != Object.keys(Init._contentEncodingsNameMap).length) {
             throw new Error(`ContentEncoding names must be unique: ${this.contentEncodings.map(o => o.name).join(", ")}`);
         }
     }
@@ -326,6 +326,42 @@ export class Init {
 
         Init._contentEncodingsNameMap[persistedContentEncoding.name] = persistedContentEncoding;
         Init._contentEncodingsIdMap[persistedContentEncoding.id] = persistedContentEncoding;
+    }
+
+    private static async createCountryEntries() {
+        const path = require('path');
+        const dir = path.join(__dirname, "init", "systemEntries", "countriesGeoJson") + "/";
+
+        await Promise.all(Init.loadModules(dir).map(Init.insertCountryEntryIfNotExisting));
+    }
+
+    private static async insertCountryEntryIfNotExisting(geojson:any) {
+        const countryName = geojson.properties.sovereignt;
+
+        const existingContentEncoding = await prisma.group({id:Init._countriesSystemRoom.id}).entries({
+            where: {
+                name: countryName
+            }
+        });
+
+        if (existingContentEncoding.length > 0) {
+            console.log(`   Country '${countryName}' already exists.`);
+            return;
+        }
+
+        const newEntry = await AgentCreate.entry(
+            Init.datenDieterSystemAgent.id,
+            Init._countriesSystemRoom.id,
+            {
+                contentEncoding: Init.geoJsonFeatureContentEncoding.id,
+                createdBy: Init.systemUser.id,
+                owner: Init.systemUser.id,
+                type: "Json",
+                name: countryName,
+                content: geojson
+            });
+
+        console.log(`   Created entry '${newEntry.id}' for country '${countryName}' in group system room '${Init._countriesSystemRoom.id}'.`);
     }
 
     private static loadModules(path:string) {
@@ -346,42 +382,5 @@ export class Init {
                 }
             })
             .filter(mod => mod !== undefined);
-    }
-
-    private static async createCountryEntries() {
-        const fs = require('fs');
-        const {readdirSync} = require('fs');
-        const path = require('path');
-
-        const dir = path.join(__dirname, "..", "src", "init", "systemEntries", "countriesGeoJson") + "/";
-
-        Helper.log(`Trying to create the system entries from directory '${dir}' ...`);
-
-        const files = readdirSync(dir, {withFileTypes: true})
-            .filter(o => o.isFile())
-            .map(o => {
-                return {path: `${dir}/${o.name}`, name: o.name}
-            });
-
-        files.forEach(file => {
-            fs.readFile(file.path, async (err, data) => {
-                if (err) {
-                    console.error(err);
-                    return
-                }
-
-                const countryName = file.name.replace(".json", "");
-                await AgentCreate.entry(Init._datenDieterSystemAgent.id, Init._countriesSystemRoom.id, {
-                    contentEncoding: Init.geoJsonFeatureContentEncoding.id,
-                    createdBy: Init._systemUser.id,
-                    owner: Init._systemUser.id,
-                    type: "Json",
-                    name: countryName,
-                    content: JSON.parse(data)
-                });
-
-                console.log("Created entry for country: " + countryName);
-            });
-        });
     }
 }

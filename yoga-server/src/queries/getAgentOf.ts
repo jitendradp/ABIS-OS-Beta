@@ -16,8 +16,11 @@ export class GetAgentOf {
             queryParameters.where["sessionToken"] = sessionToken;
         }
         const session = await prisma.sessions(queryParameters);
-        if (session.length != 1) {
-            throw new Error(`No or multiple sessions where found for sessionToken '${sessionToken}'.`);
+        if (session.length == 0) {
+            throw new Error(`No sessions was found for sessionToken '${sessionToken}'.`);
+        }
+        if (session.length > 1) {
+            throw new Error(`Multiple sessions were found for sessionToken '${sessionToken}'.`);
         }
         const agent = await prisma.session({id:session[0].id}).agent();
         return agent.id;

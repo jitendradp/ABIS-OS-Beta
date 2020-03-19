@@ -21,6 +21,10 @@ async function getTopicForAgent(csrfToken:string, topicName:string) {
 export const subscriptions = {
     newEntry: {
         subscribe: async (root, {csrfToken}, ctx) => {
+            if (!csrfToken) {
+                throw new Error("Cannot create a subscription without a valid csrfToken");
+            }
+
             const topic = await getTopicForAgent(csrfToken, Topics.NewEntry);
 
             // TODO: Maybe that works with map() as well (rxjs/promise)?
@@ -47,12 +51,18 @@ export const subscriptions = {
     },
     newChannel: {
         subscribe: async (root, {csrfToken}, ctx) => {
+            if (!csrfToken) {
+                throw new Error("Cannot create a subscription without a valid csrfToken");
+            }
             const topic = await getTopicForAgent(csrfToken, Topics.NewChannel);
             return Helper.observableToAsyncIterable(topic.pipe(map(o => {return {newChannel:o}})));
         },
     },
     newRoom: {
         subscribe: async (root, {csrfToken}, ctx) => {
+            if (!csrfToken) {
+                throw new Error("Cannot create a subscription without a valid csrfToken");
+            }
             const topic = await getTopicForAgent(csrfToken, Topics.NewRoom);
             return Helper.observableToAsyncIterable(topic.pipe(map(o => {return {newRoom:o}})));
         },
