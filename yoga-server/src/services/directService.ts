@@ -3,8 +3,8 @@ import {Topic, Topics} from "./eventBroker";
 import {Channel} from "../api/types/channel";
 import {Helper} from "../helper/helper";
 import {AgentCreate} from "../data/mutations/agentCreate";
+import {Init} from "../init";
 import {Entry, Group, prisma} from "../generated/prisma_client";
-import {ServerInit} from "../serverInit";
 
 /**
  * This service waits for incoming channels from other agents
@@ -120,7 +120,7 @@ export abstract class DirectService extends Service {
             type: "Json",
             owner: this.id,
             createdBy: this.id,
-            contentEncoding: ServerInit.continuationContentEncoding.id,
+            contentEncoding: Init.continuationContentEncoding.id,
             content: {
                 Continuation: {
                     fromAgentId: this.id,
@@ -137,7 +137,7 @@ export abstract class DirectService extends Service {
             type: "Json",
             owner: this.id,
             createdBy: this.id,
-            contentEncoding: ServerInit.errorContentEncoding.id,
+            contentEncoding: Init.errorContentEncoding.id,
             content: {
                 summary: summary,
                 detail: validationErrors

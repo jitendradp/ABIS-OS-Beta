@@ -1,7 +1,8 @@
-import {Entry, EntryCreateInput, prisma} from "../../generated/prisma_client";
+import {Entry, EntryCreateInput, Group, prisma} from "../../generated/prisma_client";
 import {Helper} from "../../helper/helper";
 import {EventBroker, Topics} from "../../services/eventBroker";
 import {Channel} from "../../api/types/channel";
+import {Init} from "../../init";
 
 export class AgentCreate {
 
@@ -122,6 +123,10 @@ export class AgentCreate {
 
         Helper.log(`Created a new room (${newRoom.id}) with agent '${agentId}' as owner.`);
 
+        await EventBroker.instance
+            .getTopic<Group>("system", Topics.NewRoom)
+            .publish(newRoom);
+
         return newRoom;
     }
 
@@ -129,35 +134,41 @@ export class AgentCreate {
         entry.createdBy = agentId;
         entry.owner = agentId;
 
+        // TODO: No transactions..
+        const persistedEntry = await prisma.createEntry(entry);
+
         await prisma.updateGroup({
             where: {
                 id: groupId
             },
             data: {
                 entries: {
-                    create: entry
+                    connect: {
+                        id: persistedEntry.id
+                    }
                 }
             }
         });
 
-        // TODO: Stuff like this will fail miserably when executed in parallel. Find a different way to get the inserted ids.
-        const newEntry = await prisma.group({id: groupId}).entries({first: 1, orderBy: "createdAt_DESC"});
-        const contentEncoding = await prisma.contentEncoding({id:entry.contentEncoding});
+        const contentEncoding = Init.contentEncodingsIdMap[entry.contentEncoding];
+        if (!contentEncoding) {
+            throw new Error(`The content encoding with the id '${entry.contentEncoding}' is unknown.`);
+        }
 
         if (contentEncoding) {
-            (<any> newEntry[0]).contentEncoding = { // TODO: Fix cast
+            (<any> persistedEntry).contentEncoding = { // TODO: Fix cast
                 id: contentEncoding.id
             };
         }
 
-        (<any>newEntry[0]).__request = request; // TODO: Find a better way to set cookies
+        (<any>persistedEntry).__request = request; // TODO: Find a better way to set cookies
 
         // TODO: This can propagate the errors of services to this position
         await EventBroker.instance
             .getTopic<Entry>("system", Topics.NewEntry)
-            .publish(newEntry[0]);
+            .publish(persistedEntry);
 
-        return newEntry[0];
+        return persistedEntry;
     }
 
     public static async membership(agentId: string, groupId: string, inviteeAgentId: string) {

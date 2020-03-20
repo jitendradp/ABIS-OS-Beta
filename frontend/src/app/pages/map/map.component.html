@@ -1,49 +1,23 @@
 <!-- todo add a timeslider https://docs.mapbox.com/mapbox-gl-js/example/timeline-animation/ -->
 <!-- todo no reaction on the div container padding in the view of the map to push the controls more to the left -->
-<!--
 <mgl-map
-  [style]="'mapbox://styles/mapbox/streets-v9'"
-  [zoom]="[9]"
-  [center]="[11.5116141, 48.1541385]">
-
-  <div class="mapControlContainer">
-    <mgl-control
-      mglGeolocate>
-    </mgl-control>
-    <mgl-control
-      mglNavigation>
-    </mgl-control>
-    <mgl-control
-      mglScale
-      unit="metric"
-      position="bottom-right">
-    </mgl-control>
-  </div>
-</mgl-map>
--->
-<mgl-map
+  (click)="mapClick($event)"
   [style]="mapStyle"
-  [zoom]="[12]"
+  [zoom]="[3]"
   [center]="[10.27739, 47.41156]">
+
   <mgl-control position="bottom-left">
-    <div style="background-color: #e3ebf1">
-      <app-content>
-        <mat-slide-toggle (change)="mapStyleChanged($event)"><b>Switch to Hashtag Heatmap</b> - Category: Heimat
-          entdecken - Most posted Hashtags from this Region by Data from Instagram
-        </mat-slide-toggle>
-        <p>Most posted tags ( > 10 Mentions): <b>Top sorted desc.: 1. #oberstdorf 2. #allgäu Top 3. #mountains #berge </b> #bayern
-          #urlaub #nature #wandern #quarz #nebelhorn #heimatliebe
-          #bergliebe
-          #bayernistschön #glücklich </p>
-      </app-content>
-    </div>
+    <div style="background-color: #e3ebf1"> Hello ! :D </div>
   </mgl-control>
+
   <mgl-control
     mglGeolocate>
   </mgl-control>
+
   <mgl-control
     mglNavigation>
   </mgl-control>
+
   <mgl-control
     mglScale
     unit="metric"
@@ -54,7 +28,11 @@
     <mgl-layer id="{{entry.id}}_layer"
                type="fill"
                source="{{entry.id}}"
-               [paint]="{ 'fill-color': colorPalette[i % colorPalette.length], 'fill-opacity': 0.4 }">
+               (mouseMove)="layerMouseMove($event, entry)"
+               (mouseEnter)="layerMouseEnter($event, entry)"
+               (mouseLeave)="layerMouseLeave($event, entry)"
+               (click)="layerMouseClick($event, entry)"
+               [paint]="getPaint(entry)">
     </mgl-layer>
   </mgl-geojson-source>
 </mgl-map>

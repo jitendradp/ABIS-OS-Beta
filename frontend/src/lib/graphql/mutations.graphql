@@ -1,0 +1,47 @@
+mutation verifySession($csrfToken:String!) {
+  verifySession(csrfToken: $csrfToken) {
+    success
+    code
+    message
+    data
+  }
+}
+
+mutation createSession($clientTime:String!) {
+  createSession(clientTime: $clientTime) {
+    success
+    code
+    message
+    data
+  }
+}
+
+mutation createChannel($csrfToken:String! $toAgentId:ID!) {
+  createChannel(csrfToken: $csrfToken toAgentId:$toAgentId) {
+    id
+    name
+    createdAt
+    receiver {
+      id
+      name
+    }
+    reverse {
+      id
+    }
+  }
+}
+
+mutation createEntry($csrfToken:String! $createEntryInput:CreateEntryInput!) {
+  createEntry(csrfToken: $csrfToken createEntryInput:$createEntryInput) {
+    type
+    id
+    createdAt
+    createdBy
+    owner
+    name
+    contentEncoding {
+      id
+    }
+    content
+  }
+}

@@ -2,13 +2,11 @@ import {GraphQLServer} from 'graphql-yoga'
 import {prisma} from "./generated/prisma_client"
 import {ContextParameters} from "graphql-yoga/dist/types";
 import {config} from "./config";
-import {ServerInit} from "./serverInit";
+import {Init} from "./init";
 import {resolvers} from "./resolvers/all";
 import {Helper} from "./helper/helper";
-import {Observable} from "rxjs";
 
 const cookie = require('cookie');
-
 
 const server = new GraphQLServer({
     typeDefs: './src/api/schema.graphql',
@@ -50,20 +48,7 @@ server.start({
 }, async () => {
     Helper.log('Listening on ' + config.env.domain + ":4000");
 
-    await ServerInit.run();
+    await Init.run();
 
-/*
-    const obs = new Observable(subscriber => {
-        subscriber.next(1);
-        subscriber.next(2);
-        subscriber.next(3);
-    });
-    const iterable = Helper.observableToAsyncIterable(obs);
-
-    for await (const item of iterable) {
-        console.log("Sucker:", item);
-        // 1 2
-    }
-*/
     Helper.log('Server started.');
 });
