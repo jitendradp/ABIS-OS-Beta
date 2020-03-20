@@ -1,5 +1,3 @@
-import {Init} from "../../init";
-import {DirectService} from "../../services/directService";
 import {Entry, Group, prisma} from "../../generated";
 import {Helper} from "../../helper/helper";
 import {UserQueries} from "../../data/queries/user";
@@ -8,6 +6,7 @@ import {UserOwns} from "../../statements/userOwns";
 import {config} from "../../config";
 import {UserCreate} from "../../data/mutations/userCreate";
 import {RequestSynchronousService} from "../../services/requestSynchronousService";
+import {Init} from "../../init";
 
 class Implementation extends RequestSynchronousService {
     private static readonly bcrypt = require('bcrypt');
@@ -69,8 +68,6 @@ class Implementation extends RequestSynchronousService {
 }
 
 export const Index = {
-    owner: Init.systemUser.id,
-    createdBy: Init.systemUser.id,
     name: "LoginService",
     status: "Running",
     type: "Service",

@@ -1,4 +1,3 @@
-import {Init} from "../../init";
 import {DirectService} from "../../services/directService";
 import {EventBroker} from "../../services/eventBroker";
 import {Agent, Entry, Group, prisma, User} from "../../generated";
@@ -9,6 +8,7 @@ import {ActionResponse} from "../../api/mutations/actionResponse";
 import {config} from "../../config";
 import {Mailer} from "../../helper/mailer";
 import {UserCreate} from "../../data/mutations/userCreate";
+import {Init} from "../../init";
 
 class Implementation extends DirectService {
     constructor(eventBroker:EventBroker, agent:Agent) {
@@ -121,8 +121,6 @@ class Implementation extends DirectService {
 }
 
 export const Index = {
-    owner: Init.systemUser.id,
-    createdBy: Init.systemUser.id,
     name: "SignupService",
     status: "Running",
     type: "Service",

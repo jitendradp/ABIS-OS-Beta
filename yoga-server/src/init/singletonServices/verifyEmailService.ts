@@ -1,8 +1,8 @@
-import {Init} from "../../init";
 import {DirectService} from "../../services/directService";
 import {Entry, Group, prisma} from "../../generated";
 import {Helper} from "../../helper/helper";
 import {UserQueries} from "../../data/queries/user";
+import {Init} from "../../init";
 
 class Implementation extends DirectService {
     get welcomeMessageContentEncodingId(): string {
@@ -35,8 +35,6 @@ class Implementation extends DirectService {
 }
 
 export const Index = {
-    owner: Init.systemUser.id,
-    createdBy: Init.systemUser.id,
     name: "VerifyEmailService",
     status: "Running",
     type: "Service",
