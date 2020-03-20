@@ -34,7 +34,7 @@ CMD dockerize -wait http://yoga:4000
 
 # copy artifact build from the 'build environment'
 COPY --from=build /frontend/dist /usr/share/nginx/html
-
+COPY ./wait-for-it.sh wait-for-it.sh
 # expose port 80
 EXPOSE 80
 
@@ -42,8 +42,8 @@ EXPOSE 80
 #CMD ["nginx", "-g", "daemon off;"]
 
 # Add wait-for-it
-COPY wait-for-it.sh wait-for-it.sh
 RUN chmod +x wait-for-it.sh
 
 #ENTRYPOINT [ "/bin/sh", "-c" ]
-CMD ["sh", "-c", "./wait-for-it.sh" , "yoga:4000" , "--strict" , "--timeout=300" , "--" , "nginx", "-g", "daemon off;"]
+#CMD ["sh", "-c", "./wait-for-it.sh" , "yoga:4000" , "--strict" , "--timeout=300" , "--" , "nginx", "-g", "daemon off;"]
+CMD ["sh", "-c", "./wait-for-it.sh yoga:4000 -s -t 30 -- nginx -g daemon off;"]

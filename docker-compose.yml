@@ -5,18 +5,18 @@ networks:
 
 services:
 
-#  frontend:
-#    container_name: frontend
-#    restart: always
-#    depends_on:
-#      - yoga
-#    build:
-#      context: frontend
-#      dockerfile: Dockerfile
-#    ports:
-#      - "80:80"
-#    networks:
-#      - abis
+  frontend:
+    container_name: frontend
+    restart: always
+    depends_on:
+      - yoga
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    networks:
+      - abis
 
   yoga:
     container_name: yoga

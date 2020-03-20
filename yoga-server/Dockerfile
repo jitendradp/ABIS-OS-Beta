@@ -21,7 +21,7 @@ EXPOSE 4000
 
 # Add wait-for-it
 COPY wait-for-it.sh wait-for-it.sh
-#RUN chmod +x wait-for-it.sh
+RUN chmod +x wait-for-it.sh
 
 #ENTRYPOINT [ "/bin/sh", "-c" ]
 CMD ["sh", "-c", "./wait-for-it.sh prisma:4466 -s -t 30 -- node dist/index.js"]
