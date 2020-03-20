@@ -25,25 +25,18 @@ RUN ng build --prod --output-path=dist
 # base image
 FROM nginx:1.16.0-alpine
 
-RUN apk update && apk add wget
-ENV DOCKERIZE_VERSION v0.6.1
-RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-    && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-    && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
-CMD dockerize -wait http://yoga:4000
-
 # copy artifact build from the 'build environment'
 COPY --from=build /frontend/dist /usr/share/nginx/html
+
+# Add wait-for-it
 COPY ./wait-for-it.sh wait-for-it.sh
+RUN chmod +x wait-for-it.sh
+
 # expose port 80
 EXPOSE 80
 
 # run nginx
 #CMD ["nginx", "-g", "daemon off;"]
 
-# Add wait-for-it
-RUN chmod +x wait-for-it.sh
-
 #ENTRYPOINT [ "/bin/sh", "-c" ]
-#CMD ["sh", "-c", "./wait-for-it.sh" , "yoga:4000" , "--strict" , "--timeout=300" , "--" , "nginx", "-g", "daemon off;"]
 CMD ["sh", "-c", "./wait-for-it.sh yoga:4000 -s -t 30 -- nginx -g daemon off;"]
