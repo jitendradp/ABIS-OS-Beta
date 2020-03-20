@@ -39,4 +39,5 @@ EXPOSE 80
 #CMD ["nginx", "-g", "daemon off;"]
 
 #ENTRYPOINT [ "/bin/sh", "-c" ]
-CMD ["sh", "-c", "./wait-for-it.sh yoga:4000 -s -t 30 -- nginx -g", "daemon off;"]
+CMD ["sh", "-c", "./wait-for-it.sh yoga:4000 -s -t 300 -- nginx"]
+#, "-g", "daemon off;"]

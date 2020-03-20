@@ -20,4 +20,4 @@ EXPOSE 4000
 
 #CMD ["node", "dist/index.js"]
 
-CMD ["sh", "-c", "./wait-for-it.sh prisma:4466 -s -t 30 -- node dist/index.js"]
+CMD ["sh", "-c", "./wait-for-it.sh prisma:4466 -s -t 300 -- node dist/index.js"]
