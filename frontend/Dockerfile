@@ -39,4 +39,11 @@ COPY --from=build /frontend/dist /usr/share/nginx/html
 EXPOSE 80
 
 # run nginx
-CMD ["nginx", "-g", "daemon off;"]
+#CMD ["nginx", "-g", "daemon off;"]
+
+# Add wait-for-it
+COPY wait-for-it.sh wait-for-it.sh
+RUN chmod +x wait-for-it.sh
+
+#ENTRYPOINT [ "/bin/sh", "-c" ]
+CMD ["sh", "-c", "./wait-for-it.sh" , "yoga:4000" , "--strict" , "--timeout=300" , "--" , "nginx", "-g", "daemon off;"]
