@@ -442,6 +442,8 @@ export type TagOrderByInput =
   | "id_DESC"
   | "type_ASC"
   | "type_DESC"
+  | "isPrivate_ASC"
+  | "isPrivate_DESC"
   | "owner_ASC"
   | "owner_DESC"
   | "createdBy_ASC"
@@ -734,6 +736,8 @@ export interface TagWhereInput {
   type_not_starts_with?: Maybe<String>;
   type_ends_with?: Maybe<String>;
   type_not_ends_with?: Maybe<String>;
+  isPrivate?: Maybe<Boolean>;
+  isPrivate_not?: Maybe<Boolean>;
   owner?: Maybe<ID_Input>;
   owner_not?: Maybe<ID_Input>;
   owner_in?: Maybe<ID_Input[] | ID_Input>;
@@ -2117,6 +2121,7 @@ export interface TagCreateManyInput {
 export interface TagCreateInput {
   id?: Maybe<ID_Input>;
   type: String;
+  isPrivate: Boolean;
   owner: ID_Input;
   createdBy: ID_Input;
   value: String;
@@ -2193,6 +2198,7 @@ export interface TagUpdateWithWhereUniqueNestedInput {
 
 export interface TagUpdateDataInput {
   type?: Maybe<String>;
+  isPrivate?: Maybe<Boolean>;
   owner?: Maybe<ID_Input>;
   createdBy?: Maybe<ID_Input>;
   value?: Maybe<String>;
@@ -2233,6 +2239,8 @@ export interface TagScalarWhereInput {
   type_not_starts_with?: Maybe<String>;
   type_ends_with?: Maybe<String>;
   type_not_ends_with?: Maybe<String>;
+  isPrivate?: Maybe<Boolean>;
+  isPrivate_not?: Maybe<Boolean>;
   owner?: Maybe<ID_Input>;
   owner_not?: Maybe<ID_Input>;
   owner_in?: Maybe<ID_Input[] | ID_Input>;
@@ -2295,6 +2303,7 @@ export interface TagUpdateManyWithWhereNestedInput {
 
 export interface TagUpdateManyDataInput {
   type?: Maybe<String>;
+  isPrivate?: Maybe<Boolean>;
   owner?: Maybe<ID_Input>;
   createdBy?: Maybe<ID_Input>;
   value?: Maybe<String>;
@@ -3198,6 +3207,7 @@ export interface SessionUpdateManyMutationInput {
 
 export interface TagUpdateInput {
   type?: Maybe<String>;
+  isPrivate?: Maybe<Boolean>;
   owner?: Maybe<ID_Input>;
   createdBy?: Maybe<ID_Input>;
   value?: Maybe<String>;
@@ -3205,6 +3215,7 @@ export interface TagUpdateInput {
 
 export interface TagUpdateManyMutationInput {
   type?: Maybe<String>;
+  isPrivate?: Maybe<Boolean>;
   owner?: Maybe<ID_Input>;
   createdBy?: Maybe<ID_Input>;
   value?: Maybe<String>;
@@ -3798,6 +3809,7 @@ export interface LocationNullablePromise
 export interface Tag {
   id: ID_Output;
   type: String;
+  isPrivate: Boolean;
   owner: ID_Output;
   createdBy: ID_Output;
   createdAt: DateTimeOutput;
@@ -3807,6 +3819,7 @@ export interface Tag {
 export interface TagPromise extends Promise<Tag>, Fragmentable {
   id: () => Promise<ID_Output>;
   type: () => Promise<String>;
+  isPrivate: () => Promise<Boolean>;
   owner: () => Promise<ID_Output>;
   createdBy: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
@@ -3818,6 +3831,7 @@ export interface TagSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   type: () => Promise<AsyncIterator<String>>;
+  isPrivate: () => Promise<AsyncIterator<Boolean>>;
   owner: () => Promise<AsyncIterator<ID_Output>>;
   createdBy: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -3827,6 +3841,7 @@ export interface TagSubscription
 export interface TagNullablePromise extends Promise<Tag | null>, Fragmentable {
   id: () => Promise<ID_Output>;
   type: () => Promise<String>;
+  isPrivate: () => Promise<Boolean>;
   owner: () => Promise<ID_Output>;
   createdBy: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
@@ -5462,6 +5477,7 @@ export interface TagSubscriptionPayloadSubscription
 export interface TagPreviousValues {
   id: ID_Output;
   type: String;
+  isPrivate: Boolean;
   owner: ID_Output;
   createdBy: ID_Output;
   createdAt: DateTimeOutput;
@@ -5473,6 +5489,7 @@ export interface TagPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   type: () => Promise<String>;
+  isPrivate: () => Promise<Boolean>;
   owner: () => Promise<ID_Output>;
   createdBy: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
@@ -5484,6 +5501,7 @@ export interface TagPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   type: () => Promise<AsyncIterator<String>>;
+  isPrivate: () => Promise<AsyncIterator<Boolean>>;
   owner: () => Promise<AsyncIterator<ID_Output>>;
   createdBy: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -5597,14 +5615,14 @@ The `Float` scalar type represents signed double-precision fractional values as 
 export type Float = number;
 
 /*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
-*/
-export type Int = number;
-
-/*
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
+
+/*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+*/
+export type Int = number;
 
 export type Json = any;
 
