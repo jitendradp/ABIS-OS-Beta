@@ -106,11 +106,12 @@ export class Server {
     private _serviceIdMap: {[id:string]:Service} = {};
     private _serviceHost: AgentHost;
 
+    constructor() {
+        this._eventBroker = new EventBroker();
+        this._serviceHost = new AgentHost(this);
+    }
 
     public async run() {
-        this._eventBroker = new EventBroker();
-        this._serviceHost = new AgentHost(this._eventBroker);
-
         await this.createSystemUser();
         await this.createAnonymousUser();
 
@@ -270,14 +271,12 @@ export class Server {
     async createServices(fromPath?:string) { // TODO: Not nicely testable. Should be private.
         const path = require('path');
         let dir = path.join(fromPath ?? __dirname, "init", "singletonServices") + "/";
-        if (isInTest) {
+        /*if (isInTest) {
             dir += "../../../dist/init/singletonServices/";
-        }
+        }*/
 
         const self = this;
-        await Promise.all(this.loadModules(dir).map((loadedService) => {
-            self.insertAgentIfNotExisting(loadedService)
-        }));
+        await Promise.all(this.loadModules(dir).map((loadedService) => self.insertAgentIfNotExisting(loadedService)));
     }
 
     private async insertAgentIfNotExisting(agent:any) {
@@ -315,7 +314,7 @@ export class Server {
         }
 
         this.serviceHost.serviceImplementations[agent.name]
-            = (server: Server, eventBroker: EventBroker, agent: Agent) => new implementation(server, eventBroker, agent);
+            = (server: Server, agent: Agent) => new implementation(server, agent);
 
         this._serviceIdMap[persistedService.id] = persistedService;
         this._serviceNameMap[persistedService.name] = persistedService;

@@ -6,6 +6,7 @@ import {UserCreate} from "../../data/mutations/userCreate";
 import {mutations} from "../../resolvers/mutations";
 import {Init} from "../../init";
 import {Topics} from "../../services/eventBroker";
+import {AgentCanSee} from "../../statements/agentCanSee";
 
 const context = {
     // Environment
@@ -23,76 +24,22 @@ const context = {
     continuationEncoding: null,
     signupService: null,
     signupChannel: null,
-    signupReverseChannel: null
+    signupReverseChannel: null,
+    signupWelcomeMessage: null
 };
 
 describe('From anonymous user to signed-up user with authenticated session', () => {
-    describe('To sign-up, ..',
-        () => {
-            before(async () => {
-                await Init.run();
-            });
 
+
+    describe('To create an anonymous session, ..',
+        () => {
             it('.. the "Anonymous" system-user must exist', async () => {
-                //await Init.createAnonymousUser();
+                await Init.createAnonymousUser();
 
                 context.anonymousUser = await prisma.user({email: config.env.anonymousUser});
 
                 expect(context.anonymousUser)
                     .to.be.not.null;
-            });
-
-            it('.. the Signup, Error- and Continuation-ContentEncodings must exist', async () => {
-                //await Init.createContentEncodings(context.runtimePath);
-
-                context.signupEncoding = Init.contentEncodingsNameMap["Signup"];
-                expect(context.signupEncoding)
-                    .not.null.not.undefined;
-
-                context.errorEncoding = Init.contentEncodingsNameMap["Error"];
-                expect(context.errorEncoding)
-                    .not.null.not.undefined;
-
-                context.continuationEncoding = Init.contentEncodingsNameMap["Continuation"];
-                expect(context.continuationEncoding)
-                    .not.null.not.undefined;
-            });
-
-            it('.. the "System" system-user must exist', async () => {
-                //await Init.createSystemUser();
-
-                context.systemUser = await prisma.user({email: config.env.systemUser});
-
-                expect(context.systemUser)
-                    .not.null.not.undefined;
-
-                expect(Init.systemUser.id)
-                    .not.null.not.undefined;
-
-                expect(Init.systemUser.id)
-                    .to.equal(context.systemUser.id);
-            });
-
-            it('.. the system topics must exist', async () => {
-                //await Init.createSystemTopics();
-            });
-
-            it('.. the SignupService must exist', async () => {
-                //await Init.createServices(context.runtimePath);
-                //await Init.loadAgents();
-
-                context.signupService = (await prisma.agents({
-                    where: {
-                        name: "SignupService",
-                        owner: context.systemUser.id
-                    }
-                }))[0];
-
-                expect(context.signupService)
-                    .not.null.not.undefined;
-
-                expect(context.signupService.id)
-                    .to.equal(Init.signupServiceId);
             });
 
             it('.. the anonymous system-user must create a new anonymous profile', async () => {
@@ -163,6 +110,63 @@ describe('From anonymous user to signed-up user with authenticated session', () 
                 expect(response.success)
                     .to.be.true;
             });
+        });
+
+    describe('To sign-up, ..',
+        () => {
+
+            it('.. the Signup, Error- and Continuation-ContentEncodings must exist', async () => {
+                await Init.createContentEncodings(context.runtimePath);
+
+                context.signupEncoding = Init.contentEncodingsNameMap["Signup"];
+                expect(context.signupEncoding)
+                    .not.null.not.undefined;
+
+                context.errorEncoding = Init.contentEncodingsNameMap["Error"];
+                expect(context.errorEncoding)
+                    .not.null.not.undefined;
+
+                context.continuationEncoding = Init.contentEncodingsNameMap["Continuation"];
+                expect(context.continuationEncoding)
+                    .not.null.not.undefined;
+            });
+
+            it('.. the "System" system-user must exist', async () => {
+                await Init.createSystemUser();
+
+                context.systemUser = await prisma.user({email: config.env.systemUser});
+
+                expect(context.systemUser)
+                    .not.null.not.undefined;
+
+                expect(Init.systemUser.id)
+                    .not.null.not.undefined;
+
+                expect(Init.systemUser.id)
+                    .to.equal(context.systemUser.id);
+            });
+
+            it('.. the system topics must exist', async () => {
+                await Init.createSystemTopics();
+            });
+
+            it('.. the SignupService must exist', async () => {
+                await Init.createServices(context.runtimePath);
+                await Init.loadAgents();
+
+                context.signupService = (await prisma.agents({
+                    where: {
+                        name: "SignupService",
+                        owner: context.systemUser.id
+                    }
+                }))[0];
+
+                expect(context.signupService)
+                    .not.null.not.undefined;
+
+                expect(context.signupService.id)
+                    .to.equal(Init.signupServiceId);
+            });
 
             it('.. the anonymous session must create a channel to the SignupService', async () => {
                 const result = await mutations.createChannel(null, {
@@ -181,44 +185,56 @@ describe('From anonymous user to signed-up user with authenticated session', () 
                 expect((<any>result).receiver.id)
                     .equals(Init.signupServiceId);
 
-                return new Promise(async (outerResolve) => {
+                // First we want to be notified about the reverse channel ..
+                await new Promise(async (resolve) => {
+                    Init.eventBroker.getTopic(context.anonymousProfile.id, Topics.NewChannel).observable.subscribe(async (event: any) => {
 
-                    // First we want to be notified about the reverse channell ..
-                    await new Promise(async (resolve) => {
-                        const eventReceived = Init.eventBroker.getTopic(context.anonymousProfile.id, Topics.NewChannel).observable.subscribe((event: any) => {
+                        // Verify that we got notified about the reverse channel
+                        expect(event.owner)
+                            .eq(Init.signupServiceId);
 
-                            // Verify that we got notified about the reverse channel
-                            expect(event.owner)
-                                .eq(Init.signupServiceId);
+                        expect(event.receiver.id)
+                            .eq(context.anonymousProfile.id);
 
-                            expect(event.receiver.id)
-                                .eq(context.anonymousProfile.id);
+                        context.signupReverseChannel = event;
 
-                            resolve();
-                        });
+                        // Verify that we can access the channel
+                        const canSeeChannel = await AgentCanSee.channel(context.anonymousProfile.id, event.id);
+                        expect(canSeeChannel)
+                            .to.be.true;
+
+                        resolve();
                     });
-
-                    // .. then about the new Welcome entry
-                    await new Promise(async (resolve) => {
-                        const eventReceived = Init.eventBroker.getTopic(context.anonymousProfile.id, Topics.NewEntry).observable.subscribe((event: any) => {
-
-                            // Verify that we got a message notification for
-                            expect(event.owner)
-                                .eq(Init.signupServiceId);
-
-                            expect(event.name)
-                                .eq("Welcome");
-
-                            expect(event.contentEncoding.id)
-                                .eq(Init.contentEncodingsNameMap["Signup"].id);
-
-                            resolve();
-                        });
-                    });
-
-                    // If both have been received, resolve the promise
-                    outerResolve();
                 });
-            })
+
+                // .. then about the new Welcome entry
+                await new Promise(async (resolve) => {
+                    Init.eventBroker.getTopic(context.anonymousProfile.id, Topics.NewEntry).observable.subscribe(async (event: any) => {
+
+                        // Verify that we got a message notification for the service's welcome message
+                        expect(event.owner)
+                            .eq(Init.signupServiceId);
+
+                        expect(event.name)
+                            .eq("Welcome");
+
+                        expect(event.contentEncoding.id)
+                            .eq(Init.contentEncodingsNameMap["Signup"].id);
+
+                        context.signupWelcomeMessage = event;
+
+                        // Verify that we can access the entry
+                        const canSeeChannel = await AgentCanSee.entry(context.anonymousProfile.id, event.id);
+                        expect(canSeeChannel)
+                            .to.be.true;
+
+                        resolve();
+                    });
+                });
+            });
+
+            it('.. the anonymous session must fill-in the welcome message and send it back to the SignupService', async () => {
+
+            });
         });
 });

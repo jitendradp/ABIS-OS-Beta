@@ -17,13 +17,13 @@ export class ProfileService extends Service {
     start(): void {
         // The profile wants to be notified when a new channel to it was created
         // or when a new entry was posted to a group in which the profile is member.
-        this._newChannel = this.eventBroker.createTopic(this.id, Topics.NewChannel);
+        this._newChannel = this.server.eventBroker.createTopic(this.id, Topics.NewChannel);
         this._newChannel.observable.subscribe(this.onNewChannel);
 
-        this._newEntry = this.eventBroker.createTopic(this.id, Topics.NewEntry);
+        this._newEntry = this.server.eventBroker.createTopic(this.id, Topics.NewEntry);
         this._newEntry.observable.subscribe(this.onNewEntry);
 
-        this._newRoom = this.eventBroker.createTopic(this.id, Topics.NewRoom);
+        this._newRoom = this.server.eventBroker.createTopic(this.id, Topics.NewRoom);
         this._newRoom.observable.subscribe(this.onNewRoom);
     }
 
@@ -40,8 +40,8 @@ export class ProfileService extends Service {
     }
 
     stop(): void {
-        this.eventBroker.removeTopic(this.id, this._newEntry.name);
-        this.eventBroker.removeTopic(this.id, this._newChannel.name);
-        this.eventBroker.removeTopic(this.id, this._newRoom.name);
+        this.server.eventBroker.removeTopic(this.id, this._newEntry.name);
+        this.server.eventBroker.removeTopic(this.id, this._newChannel.name);
+        this.server.eventBroker.removeTopic(this.id, this._newRoom.name);
     }
 }

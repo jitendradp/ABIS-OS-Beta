@@ -17,16 +17,16 @@ export abstract class DirectService extends Service {
     start(): void {
         const self = this;
 
-        this._newChannel = this.eventBroker.createTopic(this.id, Topics.NewChannel);
+        this._newChannel = this.server.eventBroker.createTopic(this.id, Topics.NewChannel);
         this._newChannel.observable.subscribe(next => this.onNewChannel.call(self, next));
 
-        this._newEntry = this.eventBroker.createTopic(this.id, Topics.NewEntry);
+        this._newEntry = this.server.eventBroker.createTopic(this.id, Topics.NewEntry);
         this._newEntry.observable.subscribe(next => this.onNewEntryInternal.call(self, next, next.__request));
     }
 
     stop(): void {
-        this.eventBroker.removeTopic(this.id, this._newEntry.name);
-        this.eventBroker.removeTopic(this.id, this._newChannel.name);
+        this.server.eventBroker.removeTopic(this.id, this._newEntry.name);
+        this.server.eventBroker.removeTopic(this.id, this._newChannel.name);
     }
 
     /**

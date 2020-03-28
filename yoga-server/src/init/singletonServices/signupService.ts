@@ -1,5 +1,4 @@
 import {DirectService} from "../../services/directService";
-import {EventBroker} from "../../services/eventBroker";
 import {Agent, Entry, Group, prisma, User} from "../../generated";
 import {Channel} from "../../api/types/channel";
 import {UserOwns} from "../../statements/userOwns";
@@ -11,8 +10,8 @@ import {UserCreate} from "../../data/mutations/userCreate";
 import {Server} from "../../init";
 
 class Implementation extends DirectService {
-    constructor(server:Server, eventBroker:EventBroker, agent:Agent) {
-        super(server, eventBroker, agent);
+    constructor(server:Server, agent:Agent) {
+        super(server, agent);
     }
 
     get welcomeMessageContentEncodingId(): string {

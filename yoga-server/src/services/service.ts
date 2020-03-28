@@ -33,14 +33,6 @@ export abstract class Service {
     }
 
     /**
-     * The injected EventBroker.
-     */
-    public get eventBroker():EventBroker {
-        return this._eventBroker;
-    }
-    protected _eventBroker: EventBroker;
-
-    /**
      * The injected Server environment object.
      */
     public get server():Server {
@@ -48,9 +40,8 @@ export abstract class Service {
     }
     protected _server: Server;
 
-    constructor(server: Server, eventBroker: EventBroker, agent:Agent) {
+    constructor(server: Server, agent:Agent) {
         this._server = server;
-        this._eventBroker = eventBroker;
         this._agent = agent;
     }
 

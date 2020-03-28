@@ -6,29 +6,29 @@ import {ProfileService} from "./profileService";
 import {RoomInboxService} from "./roomInboxService";
 import {Init, Server} from "../init";
 
-export type ServiceFactory = (server:Server, eventBroker: EventBroker, agent: Agent) => Service;
+export type ServiceFactory = (server:Server, agent: Agent) => Service;
 
 export class AgentHost {
     serviceImplementations: { [name: string]: ServiceFactory } = {
-        "Profile": (server:Server, eventBroker, agent) => new ProfileService(server,  eventBroker, agent),
-        "RoomInbox":  (server:Server, eventBroker, agent) => new RoomInboxService(server,  eventBroker, agent)
+        "Profile": (server:Server, agent) => new ProfileService(server, agent),
+        "RoomInbox":  (server:Server, agent) => new RoomInboxService(server, agent)
     };
 
-    get eventBroker() : EventBroker {
-        return this._eventBroker;
+    get server() : Server {
+        return this._server;
     }
-    private _eventBroker: EventBroker;
+    private _server: Server;
 
     private _services:{[id:string]:Service} = {};
 
-    constructor(eventBroker:EventBroker) {
-        this._eventBroker = eventBroker;
+    constructor(server: Server) {
+        this._server = server;
     }
 
     public loadAgent(agent:Agent) {
         Helper.log(`Starting ${agent.implementation} (${agent.id})`);
         const serviceFactory = this.serviceImplementations[agent.implementation];
-        this._services[agent.id] = serviceFactory(Init, this._eventBroker, agent);
+        this._services[agent.id] = serviceFactory(this._server, agent);
         this._services[agent.id].start();
     }
 
