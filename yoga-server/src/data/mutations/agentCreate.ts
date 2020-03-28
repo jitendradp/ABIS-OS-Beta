@@ -2,7 +2,7 @@ import {Entry, EntryCreateInput, Group, prisma} from "../../generated";
 import {Helper} from "../../helper/helper";
 import {EventBroker, Topics} from "../../services/eventBroker";
 import {Channel} from "../../api/types/channel";
-import {Init} from "../../init";
+import {Init, Server} from "../../init";
 
 export class AgentCreate {
 
@@ -30,7 +30,7 @@ export class AgentCreate {
         return newStash;
     }
 
-    public static async channel(fromAgentId: string, toAgentId: string, name: string, logo: string) {
+    public static async channel(server:Server, fromAgentId: string, toAgentId: string, name: string, logo: string) {
         const fromAgent = await prisma.agent({id: fromAgentId});
         if (!fromAgent) {
             throw new Error(`Couldn't create a Channel from agent '${fromAgentId}' to agent '${toAgentId}'. The specified fromAgentId does not exist.`);
@@ -95,14 +95,14 @@ export class AgentCreate {
             reverse: reverseApiChannel
         };
 
-        EventBroker.instance
+        server.eventBroker
             .getTopic<Channel>("system", Topics.NewChannel)
             .publish(apiChannel);
 
         return newChannel;
     }
 
-    public static async room(agentId: string, name: string, logo: string, isPublic: boolean) {
+    public static async room(server: Server, agentId: string, name: string, logo: string, isPublic: boolean) {
         const agent = await prisma.agent({id: agentId});
         if (!agent) {
             throw new Error(`Couldn't create a Room. The specified agentId does not exist: ${agentId}`);
@@ -123,14 +123,14 @@ export class AgentCreate {
 
         Helper.log(`Created a new room (${newRoom.id}) with agent '${agentId}' as owner.`);
 
-        await EventBroker.instance
+        await server.eventBroker
             .getTopic<Group>("system", Topics.NewRoom)
             .publish(newRoom);
 
         return newRoom;
     }
 
-    public static async entry(agentId: string, groupId: string, entry: EntryCreateInput, request?:any) {
+    public static async entry(server: Server, agentId: string, groupId: string, entry: EntryCreateInput, request?:any) {
         entry.createdBy = agentId;
         entry.owner = agentId;
 
@@ -150,7 +150,7 @@ export class AgentCreate {
             }
         });
 
-        const contentEncoding = Init.contentEncodingsIdMap[entry.contentEncoding];
+        const contentEncoding = server.contentEncodingsIdMap[entry.contentEncoding];
         if (!contentEncoding) {
             throw new Error(`The content encoding with the id '${entry.contentEncoding}' is unknown.`);
         }
@@ -164,7 +164,7 @@ export class AgentCreate {
         (<any>persistedEntry).__request = request; // TODO: Find a better way to set cookies
 
         // TODO: This can propagate the errors of services to this position
-        await EventBroker.instance
+        await server.eventBroker
             .getTopic<Entry>("system", Topics.NewEntry)
             .publish(persistedEntry);
 

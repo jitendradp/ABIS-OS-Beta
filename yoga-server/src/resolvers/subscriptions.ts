@@ -4,13 +4,14 @@ import {Helper} from "../helper/helper";
 import {map} from "rxjs/operators";
 import {prisma} from "../generated";
 import {Observable} from "rxjs";
+import {Init, Server} from "../init";
 
-async function getTopicForAgent(csrfToken:string, topicName:string) {
+async function getTopicForAgent(server:Server, csrfToken:string, topicName:string) {
     const agentId = await GetAgentOf.session(csrfToken);
     if (!agentId) {
         throw new Error("Couldn't find an agent for this session.");
     }
-    const topic = EventBroker.instance.tryGetTopic(agentId, topicName).observable;
+    const topic = server.eventBroker.tryGetTopic(agentId, topicName).observable;
     if (!topic) {
         throw new Error("Couldn't find a namespace or topic for the subscribing agent: " + agentId);
     }
@@ -25,7 +26,7 @@ export const subscriptions = {
                 throw new Error("Cannot create a subscription without a valid csrfToken");
             }
 
-            const topic = await getTopicForAgent(csrfToken, Topics.NewEntry);
+            const topic = await getTopicForAgent(Init, csrfToken, Topics.NewEntry);
 
             // TODO: Maybe that works with map() as well (rxjs/promise)?
             const augmentedTopic = new Observable(subscriber => {
@@ -54,7 +55,7 @@ export const subscriptions = {
             if (!csrfToken) {
                 throw new Error("Cannot create a subscription without a valid csrfToken");
             }
-            const topic = await getTopicForAgent(csrfToken, Topics.NewChannel);
+            const topic = await getTopicForAgent(Init, csrfToken, Topics.NewChannel);
             return Helper.observableToAsyncIterable(topic.pipe(map(o => {return {newChannel:o}})));
         },
     },
@@ -63,7 +64,7 @@ export const subscriptions = {
             if (!csrfToken) {
                 throw new Error("Cannot create a subscription without a valid csrfToken");
             }
-            const topic = await getTopicForAgent(csrfToken, Topics.NewRoom);
+            const topic = await getTopicForAgent(Init, csrfToken, Topics.NewRoom);
             return Helper.observableToAsyncIterable(topic.pipe(map(o => {return {newRoom:o}})));
         },
     }

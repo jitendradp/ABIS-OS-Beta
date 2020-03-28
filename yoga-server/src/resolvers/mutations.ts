@@ -7,6 +7,7 @@ import {ActionResponse} from "../api/mutations/actionResponse";
 import {prisma} from "../generated";
 import {Init} from "../init";
 import {AgentCanCreate} from "../statements/agentCanCreate";
+import {EventBroker} from "../services/eventBroker";
 
 export const mutations = {
     async createSession(root, {clientTime}, ctx) {
@@ -66,7 +67,7 @@ export const mutations = {
         }
 
         const agentId = await GetAgentOf.session(csrfToken, ctx.sessionToken);
-        const newChannel = await AgentCreate.channel(agentId, toAgentId, "New Channel", "channel.png");
+        const newChannel = await AgentCreate.channel(Init, agentId, toAgentId, "New Channel", "channel.png");
 
         (<any>newChannel).receiver = await prisma.agent({id:toAgentId});
 
@@ -101,7 +102,7 @@ export const mutations = {
             content: createEntryInput.content
         };
 
-        const entry = await AgentCreate.entry(agentId, groupId, newEntryInput, ctx.request);
+        const entry = await AgentCreate.entry(Init, agentId, groupId, newEntryInput, ctx.request);
         return entry;
     },
 
@@ -122,7 +123,7 @@ export const mutations = {
             throw new Error(`Agent ${agentId} cannot create a room with the name ${createRoomInput.name}`);
         }*/
 
-        const room = await AgentCreate.room(agentId, createRoomInput.name, createRoomInput.logo, true);
+        const room = await AgentCreate.room(Init, agentId, createRoomInput.name, createRoomInput.logo, true);
         (<any>room).isPrivate = !room.isPublic;
         (<any>room).inbox = {id:""};
         (<any>room).memberships = [];

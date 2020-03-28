@@ -12,6 +12,9 @@ import {Service} from "./services/service";
 const isInTest = typeof global.it === 'function';
 
 export class Server {
+    get eventBroker(): EventBroker {
+        return this._eventBroker;
+    };
 
     get serviceHost(): AgentHost {
         return this._serviceHost;
@@ -94,16 +97,20 @@ export class Server {
     private _newEntryTopic: Topic<Entry>;
     private _newRoomTopic: Topic<Group>;
     private _countriesSystemRoom: Group;
+    private _eventBroker: EventBroker;
 
     private _contentEncodingsNameMap: {[name:string]:ContentEncoding} = {};
     private _contentEncodingsIdMap: {[id:string]:ContentEncoding} = {};
 
     private _serviceNameMap: {[name:string]:Service} = {};
     private _serviceIdMap: {[id:string]:Service} = {};
+    private _serviceHost: AgentHost;
 
-    private _serviceHost = new AgentHost(EventBroker.instance);
 
     public async run() {
+        this._eventBroker = new EventBroker();
+        this._serviceHost = new AgentHost(this._eventBroker);
+
         await this.createSystemUser();
         await this.createAnonymousUser();
 
@@ -133,7 +140,7 @@ export class Server {
     private async createSystemGroups() {
         const existingCountriesSystemRoom = await prisma.groups({where:{owner:this._datenDieterSystemAgent.id, type:"Room", name:"Countries"}});
         if (existingCountriesSystemRoom.length == 0) {
-            this._countriesSystemRoom = await AgentCreate.room(this._datenDieterSystemAgent.id, "Countries", "logo.png", true);
+            this._countriesSystemRoom = await AgentCreate.room(this, this._datenDieterSystemAgent.id, "Countries", "logo.png", true);
             await this.createCountryEntries();
         } else {
             this._countriesSystemRoom = existingCountriesSystemRoom[0];
@@ -193,13 +200,13 @@ export class Server {
 
     async createSystemTopics() {
         Helper.log(`Creating system topics ...`);
-        this._newChannelTopic = EventBroker.instance.createTopic<Channel>("system", Topics.NewChannel);
-        this._newEntryTopic = EventBroker.instance.createTopic<Entry>("system", Topics.NewEntry);
-        this._newRoomTopic = EventBroker.instance.createTopic<Group>("system", Topics.NewRoom);
+        this._newChannelTopic = this.eventBroker.createTopic<Channel>("system", Topics.NewChannel);
+        this._newEntryTopic = this.eventBroker.createTopic<Entry>("system", Topics.NewEntry);
+        this._newRoomTopic = this.eventBroker.createTopic<Group>("system", Topics.NewRoom);
 
         this._newChannelTopic.observable.subscribe(newChannel => {
             // Notify the receiving end of the channel (every agent uses its own namespace and provides some default topics)
-            const newChannelTopic = EventBroker.instance.tryGetTopic<Channel>(newChannel.receiver.id, Topics.NewChannel);
+            const newChannelTopic = this.eventBroker.tryGetTopic<Channel>(newChannel.receiver.id, Topics.NewChannel);
             if (newChannelTopic) {
                 newChannelTopic.publish(newChannel);
             }
@@ -210,7 +217,7 @@ export class Server {
             const subscribers = await FindAgentsThatSeeThis.room(newRoom.id);
 
             for (let subscriber of subscribers) {
-                const newRoomTopic = EventBroker.instance.tryGetTopic<Group>(subscriber, Topics.NewRoom);
+                const newRoomTopic = this.eventBroker.tryGetTopic<Group>(subscriber, Topics.NewRoom);
                 if (newRoomTopic) {
                     newRoomTopic.publish(newRoom);
                 }
@@ -222,7 +229,7 @@ export class Server {
             const subscribers = await FindAgentsThatSeeThis.entry(newEntry.id);
 
             for (let subscriber of subscribers) {
-                const newEntryTopic = EventBroker.instance.tryGetTopic<Entry>(subscriber, Topics.NewEntry);
+                const newEntryTopic = this.eventBroker.tryGetTopic<Entry>(subscriber, Topics.NewEntry);
                 if (newEntryTopic) {
                     // TODO: This can propagate the errors of services to this position
                     // TODO: Monitor performance
@@ -368,6 +375,7 @@ export class Server {
         }
 
         const newEntry = await AgentCreate.entry(
+            this,
             this.datenDieterSystemAgent.id,
             this._countriesSystemRoom.id,
             {

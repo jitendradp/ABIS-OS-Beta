@@ -52,6 +52,7 @@ export abstract class DirectService extends Service {
         Helper.log(`${this.name} (${this.id}): establishing a reverse channel ..`);
 
         const reverseChannel = await AgentCreate.channel(
+            this.server,
             this.id,
             newChannel.owner,
             `${this.id}->${newChannel.owner}`,
@@ -60,7 +61,7 @@ export abstract class DirectService extends Service {
         Helper.log(`${this.name} (${this.id}): reverse channel created. Id: ${reverseChannel.id}`);
         Helper.log(`${this.name} (${this.id}): posting welcome message ..`);
 
-        const welcomeEntry = await AgentCreate.entry(reverseChannel.owner, reverseChannel.id, {
+        const welcomeEntry = await AgentCreate.entry(this.server, reverseChannel.owner, reverseChannel.id, {
             type: "Empty",
             owner: this.id,
             createdBy: this.id,
@@ -116,7 +117,7 @@ export abstract class DirectService extends Service {
     }
 
     protected postContinueTo(agentId:string, inChannelId:string, context?:any) {
-        return AgentCreate.entry(this.id, inChannelId, {
+        return AgentCreate.entry(this.server, this.id, inChannelId, {
             type: "Json",
             owner: this.id,
             createdBy: this.id,
@@ -133,7 +134,7 @@ export abstract class DirectService extends Service {
     }
 
     protected postError(summary:string, validationErrors:{key:string,value:string}[], inChannelId:string) {
-        return AgentCreate.entry(this.id, inChannelId, {
+        return AgentCreate.entry(this.server, this.id, inChannelId, {
             type: "Json",
             owner: this.id,
             createdBy: this.id,

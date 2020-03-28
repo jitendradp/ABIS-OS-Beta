@@ -1,35 +1,35 @@
 import 'mocha';
-import { expect } from 'chai';
+import {expect} from 'chai';
 import {prisma} from "../../generated";
 import {config} from "../../config";
 import {UserCreate} from "../../data/mutations/userCreate";
 import {mutations} from "../../resolvers/mutations";
 import {Init} from "../../init";
-import {EventBroker, Topics} from "../../services/eventBroker";
+import {Topics} from "../../services/eventBroker";
 
 const context = {
     // Environment
-    runtimePath:__dirname + "/../../../dist",
+    runtimePath: __dirname + "/../../../dist",
 
     // To create an anonymous session
-    anonymousUser:null,
-    anonymousProfile:null,
-    session:null,
+    anonymousUser: null,
+    anonymousProfile: null,
+    session: null,
 
     // To sign-up
-    systemUser:null,
-    signupEncoding:null,
-    errorEncoding:null,
-    continuationEncoding:null,
-    signupService:null,
-    signupChannel:null,
-    signupReverseChannel:null
+    systemUser: null,
+    signupEncoding: null,
+    errorEncoding: null,
+    continuationEncoding: null,
+    signupService: null,
+    signupChannel: null,
+    signupReverseChannel: null
 };
 
 describe('From anonymous user to signed-up user with authenticated session', () => {
     describe('To sign-up, ..',
         () => {
-            before(async ( ) => {
+            before(async () => {
                 await Init.run();
             });
 
@@ -98,9 +98,9 @@ describe('From anonymous user to signed-up user with authenticated session', () 
             it('.. the anonymous system-user must create a new anonymous profile', async () => {
                 context.anonymousProfile = await UserCreate.profile(
                     context.anonymousUser.id
-                    ,`anon_${new Date().getTime()}`
-                    ,"anon.png"
-                    ,"Available");
+                    , `anon_${new Date().getTime()}`
+                    , "anon.png"
+                    , "Available");
 
                 expect(context.anonymousProfile)
                     .to.be.not.null;
@@ -165,8 +165,6 @@ describe('From anonymous user to signed-up user with authenticated session', () 
             });
 
             it('.. the anonymous session must create a channel to the SignupService', async () => {
-                const eventReceived = EventBroker.instance.getTopic(context.anonymousProfile.id, Topics.NewChannel).observable.toPromise();
-
                 const result = await mutations.createChannel(null, {
                     csrfToken: context.session.csrfToken,
                     toAgentId: Init.signupServiceId
@@ -183,9 +181,17 @@ describe('From anonymous user to signed-up user with authenticated session', () 
                 expect((<any>result).receiver.id)
                     .equals(Init.signupServiceId);
 
-                const res = await eventReceived;
+                return new Promise((async (resolve, reject) => {
+                    const eventReceived = Init.eventBroker.getTopic(context.anonymousProfile.id, Topics.NewChannel).observable.subscribe((event:any) => {
 
-                console.log(res)
+                        expect(event.owner)
+                            .eq(Init.signupServiceId);
+                        expect(event.receiver.id)
+                            .eq(context.anonymousProfile.id);
+
+                        resolve();
+                    });
+                }));
             });
         });
 });
