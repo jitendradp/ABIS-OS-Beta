@@ -181,17 +181,44 @@ describe('From anonymous user to signed-up user with authenticated session', () 
                 expect((<any>result).receiver.id)
                     .equals(Init.signupServiceId);
 
-                return new Promise((async (resolve, reject) => {
-                    const eventReceived = Init.eventBroker.getTopic(context.anonymousProfile.id, Topics.NewChannel).observable.subscribe((event:any) => {
+                return new Promise(async (outerResolve) => {
 
-                        expect(event.owner)
-                            .eq(Init.signupServiceId);
-                        expect(event.receiver.id)
-                            .eq(context.anonymousProfile.id);
+                    // First we want to be notified about the reverse channell ..
+                    await new Promise(async (resolve) => {
+                        const eventReceived = Init.eventBroker.getTopic(context.anonymousProfile.id, Topics.NewChannel).observable.subscribe((event: any) => {
 
-                        resolve();
+                            // Verify that we got notified about the reverse channel
+                            expect(event.owner)
+                                .eq(Init.signupServiceId);
+
+                            expect(event.receiver.id)
+                                .eq(context.anonymousProfile.id);
+
+                            resolve();
+                        });
                     });
-                }));
-            });
+
+                    // .. then about the new Welcome entry
+                    await new Promise(async (resolve) => {
+                        const eventReceived = Init.eventBroker.getTopic(context.anonymousProfile.id, Topics.NewEntry).observable.subscribe((event: any) => {
+
+                            // Verify that we got a message notification for
+                            expect(event.owner)
+                                .eq(Init.signupServiceId);
+
+                            expect(event.name)
+                                .eq("Welcome");
+
+                            expect(event.contentEncoding.id)
+                                .eq(Init.contentEncodingsNameMap["Signup"].id);
+
+                            resolve();
+                        });
+                    });
+
+                    // If both have been received, resolve the promise
+                    outerResolve();
+                });
+            })
         });
 });
