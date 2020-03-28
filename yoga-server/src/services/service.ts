@@ -1,7 +1,7 @@
 import {EventBroker} from "./eventBroker";
 import {Agent} from "../generated/prisma_client";
 import {Entry} from "../generated";
-import {Init} from "../init";
+import {Init, Server} from "../init";
 
 var SchemaValidator = require('ajv');
 var schemaValidator = SchemaValidator({ allErrors: true });
@@ -40,7 +40,16 @@ export abstract class Service {
     }
     protected _eventBroker: EventBroker;
 
-    constructor(eventBroker: EventBroker, agent:Agent) {
+    /**
+     * The injected Server environment object.
+     */
+    public get server():Server {
+        return this._server;
+    }
+    protected _server: Server;
+
+    constructor(server: Server, eventBroker: EventBroker, agent:Agent) {
+        this._server = server;
         this._eventBroker = eventBroker;
         this._agent = agent;
     }

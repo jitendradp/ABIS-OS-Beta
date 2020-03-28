@@ -9,7 +9,9 @@ import {UserCreate} from "./data/mutations/userCreate";
 import {AgentCreate} from "./data/mutations/agentCreate";
 import {Service} from "./services/service";
 
-class Server {
+const isInTest = typeof global.it === 'function';
+
+export class Server {
 
     get serviceHost(): AgentHost {
         return this._serviceHost;
@@ -260,17 +262,20 @@ class Server {
 
     async createServices(fromPath?:string) { // TODO: Not nicely testable. Should be private.
         const path = require('path');
-        const dir = path.join(fromPath ?? __dirname, "init", "singletonServices") + "/";
+        let dir = path.join(fromPath ?? __dirname, "init", "singletonServices") + "/";
+        if (isInTest) {
+            dir += "../../../dist/init/singletonServices/";
+        }
 
         const self = this;
-        await Promise.all(this.loadModules(dir).map((loadedService) => self.insertAgentIfNotExisting(loadedService)));
+        await Promise.all(this.loadModules(dir).map((loadedService) => {
+            self.insertAgentIfNotExisting(loadedService)
+        }));
     }
 
     private async insertAgentIfNotExisting(agent:any) {
         const implementation = agent.implementation;
 
-        delete agent.implementation;
-        agent.implementation = agent.name; // TODO: Deprecated!?
         agent.owner = Init.systemUser.id;
         agent.createdBy = Init.systemUser.id;
 
@@ -282,6 +287,9 @@ class Server {
             persistedService = existingService[0];
         } else {
             Helper.log(`   Registering service '${agent.name}' ..`);
+
+            delete agent.implementation;
+            agent.implementation = agent.name; // TODO: Deprecated!?
 
             persistedService = await prisma.createAgent(agent);
             await prisma.updateUser({
@@ -300,7 +308,7 @@ class Server {
         }
 
         this.serviceHost.serviceImplementations[agent.name]
-            = (eventBroker: EventBroker, agent: Agent) => new implementation(eventBroker, agent);
+            = (server: Server, eventBroker: EventBroker, agent: Agent) => new implementation(server, eventBroker, agent);
 
         this._serviceIdMap[persistedService.id] = persistedService;
         this._serviceNameMap[persistedService.name] = persistedService;
@@ -308,7 +316,10 @@ class Server {
 
     async createContentEncodings(fromPath?:string) { // TODO: Not nicely testable. Should be private.
         const path = require('path');
-        const dir = path.join(fromPath ?? __dirname, "init", "contentEncodings") + "/";
+        let dir = path.join(fromPath ?? __dirname, "init", "contentEncodings") + "/";
+        if (isInTest) {
+            dir += "../../../dist/init/contentEncodings/";
+        }
 
         const self = this;
         await Promise.all(this.loadModules(dir).map(loadedContentEncoding => self.insertContentEncodingIfNotExisting(loadedContentEncoding)));
@@ -383,7 +394,8 @@ class Server {
             .map(fsItem => {
                 try {
                     Helper.log(`   Loading '${path}${fsItem.name}' ...`);
-                    return require(`${path}${fsItem.name}`).Index;
+                    const required = require(`${path}${fsItem.name}`);
+                    return required.Index;
                 } catch (e) {
                     Helper.log(`   Error: ${e}`);
                 }

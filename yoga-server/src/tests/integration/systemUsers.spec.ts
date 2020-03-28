@@ -27,15 +27,72 @@ const context = {
 };
 
 describe('From anonymous user to signed-up user with authenticated session', () => {
-    describe('To create an anonymous session, ..',
+    describe('To sign-up, ..',
         () => {
+            before(async ( ) => {
+                await Init.run();
+            });
+
             it('.. the "Anonymous" system-user must exist', async () => {
-                await Init.createAnonymousUser();
+                //await Init.createAnonymousUser();
 
                 context.anonymousUser = await prisma.user({email: config.env.anonymousUser});
 
                 expect(context.anonymousUser)
                     .to.be.not.null;
+            });
+
+            it('.. the Signup, Error- and Continuation-ContentEncodings must exist', async () => {
+                //await Init.createContentEncodings(context.runtimePath);
+
+                context.signupEncoding = Init.contentEncodingsNameMap["Signup"];
+                expect(context.signupEncoding)
+                    .not.null.not.undefined;
+
+                context.errorEncoding = Init.contentEncodingsNameMap["Error"];
+                expect(context.errorEncoding)
+                    .not.null.not.undefined;
+
+                context.continuationEncoding = Init.contentEncodingsNameMap["Continuation"];
+                expect(context.continuationEncoding)
+                    .not.null.not.undefined;
+            });
+
+            it('.. the "System" system-user must exist', async () => {
+                //await Init.createSystemUser();
+
+                context.systemUser = await prisma.user({email: config.env.systemUser});
+
+                expect(context.systemUser)
+                    .not.null.not.undefined;
+
+                expect(Init.systemUser.id)
+                    .not.null.not.undefined;
+
+                expect(Init.systemUser.id)
+                    .to.equal(context.systemUser.id);
+            });
+
+            it('.. the system topics must exist', async () => {
+                //await Init.createSystemTopics();
+            });
+
+            it('.. the SignupService must exist', async () => {
+                //await Init.createServices(context.runtimePath);
+                //await Init.loadAgents();
+
+                context.signupService = (await prisma.agents({
+                    where: {
+                        name: "SignupService",
+                        owner: context.systemUser.id
+                    }
+                }))[0];
+
+                expect(context.signupService)
+                    .not.null.not.undefined;
+
+                expect(context.signupService.id)
+                    .to.equal(Init.signupServiceId);
             });
 
             it('.. the anonymous system-user must create a new anonymous profile', async () => {
@@ -106,69 +163,13 @@ describe('From anonymous user to signed-up user with authenticated session', () 
                 expect(response.success)
                     .to.be.true;
             });
-        });
-
-    describe('To sign-up, ..',
-        () => {
-            it('.. the Signup, Error- and Continuation-ContentEncodings must exist', async () => {
-                await Init.createContentEncodings(context.runtimePath);
-
-                context.signupEncoding = Init.contentEncodingsNameMap["Signup"];
-                expect(context.signupEncoding)
-                    .not.null.not.undefined;
-
-                context.errorEncoding = Init.contentEncodingsNameMap["Error"];
-                expect(context.errorEncoding)
-                    .not.null.not.undefined;
-
-                context.continuationEncoding = Init.contentEncodingsNameMap["Continuation"];
-                expect(context.continuationEncoding)
-                    .not.null.not.undefined;
-            });
-
-            it('.. the "System" system-user must exist', async () => {
-                await Init.createSystemUser();
-
-                context.systemUser = await prisma.user({email: config.env.systemUser});
-
-                expect(context.systemUser)
-                    .not.null.not.undefined;
-
-                expect(Init.systemUser.id)
-                    .not.null.not.undefined;
-
-                expect(Init.systemUser.id)
-                    .to.equal(context.systemUser.id);
-            });
-
-            it('.. the system topics must exist', async () => {
-                await Init.createSystemTopics();
-            });
-
-            it('.. the SignupService must exist', async () => {
-                await Init.createServices(context.runtimePath);
-                await Init.loadAgents();
-
-                context.signupService = (await prisma.agents({
-                    where: {
-                        name: "SignupService",
-                        owner: context.systemUser.id
-                    }
-                }))[0];
-
-                expect(context.signupService)
-                    .not.null.not.undefined;
-
-                expect(context.signupService.id)
-                    .to.equal(Init.signupServiceId);
-            });
 
             it('.. the anonymous session must create a channel to the SignupService', async () => {
                 const eventReceived = EventBroker.instance.getTopic(context.anonymousProfile.id, Topics.NewChannel).observable.toPromise();
 
                 const result = await mutations.createChannel(null, {
                     csrfToken: context.session.csrfToken,
-                    toAgentId:context.signupService.id
+                    toAgentId: Init.signupServiceId
                 }, {
                     sessionToken: context.session.sessionToken
                 });
@@ -180,7 +181,7 @@ describe('From anonymous user to signed-up user with authenticated session', () 
                     .not.null.not.undefined;
 
                 expect((<any>result).receiver.id)
-                    .equals(context.signupService.id);
+                    .equals(Init.signupServiceId);
 
                 const res = await eventReceived;
 

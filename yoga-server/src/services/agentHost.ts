@@ -4,13 +4,14 @@ import {Agent, prisma} from "../generated/prisma_client";
 import {Helper} from "../helper/helper";
 import {ProfileService} from "./profileService";
 import {RoomInboxService} from "./roomInboxService";
+import {Init, Server} from "../init";
 
-export type ServiceFactory = (eventBroker: EventBroker, agent: Agent) => Service;
+export type ServiceFactory = (server:Server, eventBroker: EventBroker, agent: Agent) => Service;
 
 export class AgentHost {
     serviceImplementations: { [name: string]: ServiceFactory } = {
-        "Profile": (eventBroker, agent) => new ProfileService( eventBroker, agent),
-        "RoomInbox":  (eventBroker, agent) => new RoomInboxService( eventBroker, agent)
+        "Profile": (server:Server, eventBroker, agent) => new ProfileService(server,  eventBroker, agent),
+        "RoomInbox":  (server:Server, eventBroker, agent) => new RoomInboxService(server,  eventBroker, agent)
     };
 
     get eventBroker() : EventBroker {
@@ -27,7 +28,7 @@ export class AgentHost {
     public loadAgent(agent:Agent) {
         Helper.log(`Starting ${agent.implementation} (${agent.id})`);
         const serviceFactory = this.serviceImplementations[agent.implementation];
-        this._services[agent.id] = serviceFactory(this._eventBroker, agent);
+        this._services[agent.id] = serviceFactory(Init, this._eventBroker, agent);
         this._services[agent.id].start();
     }
 

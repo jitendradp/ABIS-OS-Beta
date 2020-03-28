@@ -2,11 +2,10 @@ import {DirectService} from "../../services/directService";
 import {Entry, Group, prisma} from "../../generated";
 import {Helper} from "../../helper/helper";
 import {UserQueries} from "../../data/queries/user";
-import {Init} from "../../init";
 
 class Implementation extends DirectService {
     get welcomeMessageContentEncodingId(): string {
-        return Init.verifyEmailContentEncoding.id;
+        return this.server.verifyEmailContentEncoding.id;
     }
 
     async onNewEntry(newEntry:Entry, answerChannel:Group){
@@ -17,7 +16,7 @@ class Implementation extends DirectService {
 
         await Implementation.clearChallenge(foundUser.id);
 
-        await this.postContinueTo(Init.loginServiceId, answerChannel.id);
+        await this.postContinueTo(this.server.loginServiceId, answerChannel.id);
     }
 
     private static async clearChallenge(userId: string) {
