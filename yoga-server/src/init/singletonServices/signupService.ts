@@ -1,7 +1,5 @@
-import {Init} from "../../init";
 import {DirectService} from "../../services/directService";
-import {EventBroker} from "../../services/eventBroker";
-import {Agent, Entry, Group, prisma, User} from "../../generated/prisma_client";
+import {Agent, Entry, Group, prisma, User} from "../../generated";
 import {Channel} from "../../api/types/channel";
 import {UserOwns} from "../../statements/userOwns";
 import {Helper} from "../../helper/helper";
@@ -9,18 +7,19 @@ import {ActionResponse} from "../../api/mutations/actionResponse";
 import {config} from "../../config";
 import {Mailer} from "../../helper/mailer";
 import {UserCreate} from "../../data/mutations/userCreate";
+import {Server} from "../../init";
 
 class Implementation extends DirectService {
-    constructor(eventBroker:EventBroker, agent:Agent) {
-        super(eventBroker, agent);
+    constructor(server:Server, agent:Agent) {
+        super(server, agent);
     }
 
     get welcomeMessageContentEncodingId(): string {
-        return Init.signupContentEncoding.id;
+        return this.server.signupContentEncoding.id;
     }
 
     async onNewChannel(newChannel:Channel) {
-        if (!(await UserOwns.profile(Init.anonymousUser.id, newChannel.owner))) {
+        if (!(await UserOwns.profile(this.server.anonymousUser.id, newChannel.owner))) {
             throw new Error(`Only anonymous sessions can use this service.`);
         }
 
@@ -37,7 +36,7 @@ class Implementation extends DirectService {
             email:string,
             password:string,
             password_confirmation:string
-        } = newEntry.content[Init.signupContentEncoding.name];
+        } = newEntry.content[this.server.signupContentEncoding.name];
 
         // Check if the passwords match
         if (signupEntryContent.password != signupEntryContent.password_confirmation) {
@@ -69,7 +68,7 @@ class Implementation extends DirectService {
         //
         // If all of the above was successful, tell the client to go to the 'VerifyEmail' service.
         //
-        await this.postContinueTo(Init.verifyEmailServiceId, answerChannel.id);
+        await this.postContinueTo(this.server.verifyEmailServiceId, answerChannel.id);
     }
 
     private static readonly bcrypt = require('bcrypt');
@@ -121,8 +120,6 @@ class Implementation extends DirectService {
 }
 
 export const Index = {
-    owner: Init.systemUser.id,
-    createdBy: Init.systemUser.id,
     name: "SignupService",
     status: "Running",
     type: "Service",

@@ -9,135 +9,146 @@ import {UserCreate} from "./data/mutations/userCreate";
 import {AgentCreate} from "./data/mutations/agentCreate";
 import {Service} from "./services/service";
 
-export class Init {
-    static get serviceHost(): AgentHost {
-        return Init._serviceHost;
+const isInTest = typeof global.it === 'function';
+
+export class Server {
+    get eventBroker(): EventBroker {
+        return this._eventBroker;
+    };
+
+    get serviceHost(): AgentHost {
+        return this._serviceHost;
     }
 
-    static get systemUser(): User {
-        return Init._systemUser;
+    get systemUser(): User {
+        return this._systemUser;
     }
 
-    static get anonymousUser(): User {
-        return Init._anonymousUser;
+    get anonymousUser(): User {
+        return this._anonymousUser;
     }
 
-    static get signupService(): string {
-        return Init._serviceNameMap["SignupService"].id;
+    get signupServiceId(): string {
+        return this._serviceNameMap["SignupService"].id;
     }
 
-    static get loginServiceId(): string {
-        return Init._serviceNameMap["LoginService"].id;
+    get loginServiceId(): string {
+        return this._serviceNameMap["LoginService"].id;
     }
 
-    static get verifyEmailServiceId(): string {
-        return Init._serviceNameMap["VerifyEmailService"].id;
+    get verifyEmailServiceId(): string {
+        return this._serviceNameMap["VerifyEmailService"].id;
     }
 
-    static get datenDieterSystemAgent(): Agent {
-        return Init._datenDieterSystemAgent;
+    get datenDieterSystemAgent(): Agent {
+        return this._datenDieterSystemAgent;
     }
 
-    static get newChannelTopic(): Topic<Channel> {
-        return Init._newChannelTopic;
+    get newChannelTopic(): Topic<Channel> {
+        return this._newChannelTopic;
     }
 
-    static get newEntryTopic(): Topic<Entry> {
-        return Init._newEntryTopic;
+    get newEntryTopic(): Topic<Entry> {
+        return this._newEntryTopic;
     }
 
-    static get newRoomTopic(): Topic<Group> {
-        return Init._newRoomTopic;
+    get newRoomTopic(): Topic<Group> {
+        return this._newRoomTopic;
     }
 
-    static get signupContentEncoding(): ContentEncoding {
-        return Init.contentEncodingsNameMap["Signup"];
+    get signupContentEncoding(): ContentEncoding {
+        return this.contentEncodingsNameMap["Signup"];
     }
 
-    static get verifyEmailContentEncoding(): ContentEncoding {
-        return Init.contentEncodingsNameMap["VerifyEmail"];
+    get verifyEmailContentEncoding(): ContentEncoding {
+        return this.contentEncodingsNameMap["VerifyEmail"];
     }
 
-    static get loginContentEncoding(): ContentEncoding {
-        return Init.contentEncodingsNameMap["Login"];
+    get loginContentEncoding(): ContentEncoding {
+        return this.contentEncodingsNameMap["Login"];
     }
 
-    static get errorContentEncoding(): ContentEncoding {
-        return Init.contentEncodingsNameMap["Error"];
+    get errorContentEncoding(): ContentEncoding {
+        return this.contentEncodingsNameMap["Error"];
     }
 
-    static get continuationContentEncoding(): ContentEncoding {
-        return Init.contentEncodingsNameMap["Continuation"];
+    get continuationContentEncoding(): ContentEncoding {
+        return this.contentEncodingsNameMap["Continuation"];
     }
 
-    static get geoJsonFeatureContentEncoding(): ContentEncoding {
-        return Init.contentEncodingsNameMap["GeoJsonFeature"];
+    get geoJsonFeatureContentEncoding(): ContentEncoding {
+        return this.contentEncodingsNameMap["GeoJsonFeature"];
     }
 
-    static get contentEncodings(): ContentEncoding[] {
-        return Object.keys(Init._contentEncodingsIdMap).map(id => Init._contentEncodingsIdMap[id]);
+    get contentEncodings(): ContentEncoding[] {
+        return Object.keys(this._contentEncodingsIdMap).map(id => this._contentEncodingsIdMap[id]);
     }
-    static get contentEncodingsNameMap(): {[name:string]:ContentEncoding} {
-        return Init._contentEncodingsNameMap;
+    get contentEncodingsNameMap(): {[name:string]:ContentEncoding} {
+        return this._contentEncodingsNameMap;
     }
-    static get contentEncodingsIdMap(): {[name:string]:ContentEncoding} {
-        return Init._contentEncodingsIdMap;
-    }
-
-    private static _systemUser: User;
-    private static _anonymousUser: User;
-    private static _datenDieterSystemAgent: Agent;
-    private static _newChannelTopic: Topic<Channel>;
-    private static _newEntryTopic: Topic<Entry>;
-    private static _newRoomTopic: Topic<Group>;
-    private static _countriesSystemRoom: Group;
-
-    private static _contentEncodingsNameMap: {[name:string]:ContentEncoding} = {};
-    private static _contentEncodingsIdMap: {[id:string]:ContentEncoding} = {};
-
-    private static _serviceNameMap: {[name:string]:Service} = {};
-    private static _serviceIdMap: {[id:string]:Service} = {};
-
-    private static _serviceHost = new AgentHost(EventBroker.instance);
-
-    public static async run() {
-        await Init.createSystemUser();
-        await Init.createAnonymousUser();
-
-        await Init.clearAnonymousProfilesAndSessions();
-
-        await Init.createContentEncodings();
-
-        await Init.createSystemAgents();
-
-        await Init.createServices();
-        await Init.createSystemTopics();
-
-        await Init.loadAgents();
-
-        await Init.createSystemGroups();
+    get contentEncodingsIdMap(): {[name:string]:ContentEncoding} {
+        return this._contentEncodingsIdMap;
     }
 
-    private static async createSystemAgents() {
-        const existingDatenDieter = await prisma.agents({where:{owner:Init._systemUser.id, name: "Daten Dieter"}});
+    private _systemUser: User;
+    private _anonymousUser: User;
+    private _datenDieterSystemAgent: Agent;
+    private _newChannelTopic: Topic<Channel>;
+    private _newEntryTopic: Topic<Entry>;
+    private _newRoomTopic: Topic<Group>;
+    private _countriesSystemRoom: Group;
+    private _eventBroker: EventBroker;
+
+    private _contentEncodingsNameMap: {[name:string]:ContentEncoding} = {};
+    private _contentEncodingsIdMap: {[id:string]:ContentEncoding} = {};
+
+    private _serviceNameMap: {[name:string]:Service} = {};
+    private _serviceIdMap: {[id:string]:Service} = {};
+    private _serviceHost: AgentHost;
+
+    constructor() {
+        this._eventBroker = new EventBroker();
+        this._serviceHost = new AgentHost(this);
+    }
+
+    public async run() {
+        await this.createSystemUser();
+        await this.createAnonymousUser();
+
+        await this.clearAnonymousProfilesAndSessions();
+
+        await this.createContentEncodings();
+
+        await this.createSystemAgents();
+
+        await this.createServices();
+        await this.createSystemTopics();
+
+        await this.loadAgents();
+
+        await this.createSystemGroups();
+    }
+
+    private async createSystemAgents() {
+        const existingDatenDieter = await prisma.agents({where:{owner:this._systemUser.id, name: "Daten Dieter"}});
         if (existingDatenDieter.length == 0) {
-            Init._datenDieterSystemAgent = await UserCreate.profile(Init._systemUser.id, "Daten Dieter", "avatar.png", "Available");
+            this._datenDieterSystemAgent = await UserCreate.profile(this._systemUser.id, "Daten Dieter", "avatar.png", "Available");
         } else {
-            Init._datenDieterSystemAgent = existingDatenDieter[0];
+            this._datenDieterSystemAgent = existingDatenDieter[0];
         }
     }
 
-    private static async createSystemGroups() {
-        const existingCountriesSystemRoom = await prisma.groups({where:{owner:Init._datenDieterSystemAgent.id, type:"Room", name:"Countries"}});
+    private async createSystemGroups() {
+        const existingCountriesSystemRoom = await prisma.groups({where:{owner:this._datenDieterSystemAgent.id, type:"Room", name:"Countries"}});
         if (existingCountriesSystemRoom.length == 0) {
-            Init._countriesSystemRoom = await AgentCreate.room(Init._datenDieterSystemAgent.id, "Countries", "logo.png", true);
-            await Init.createCountryEntries();
+            this._countriesSystemRoom = await AgentCreate.room(this, this._datenDieterSystemAgent.id, "Countries", "logo.png", true);
+            await this.createCountryEntries();
         } else {
-            Init._countriesSystemRoom = existingCountriesSystemRoom[0];
+            this._countriesSystemRoom = existingCountriesSystemRoom[0];
         }
     }
 
-    private static async clearAnonymousProfilesAndSessions() {
+    private async clearAnonymousProfilesAndSessions() {
 
         /*
         The anonymous profiles and all their artifacts should be deleted on every server restart
@@ -179,47 +190,47 @@ export class Init {
     /**
      * Loads all agents from the database and creates an instance of their implementation in the service host
      */
-    private static async loadAgents() {
+    async loadAgents() {
         // Find all agents in the db and create a instance of their implementation
         const agents = await prisma.agents();
 
         for (let agent of agents) {
-            Init.serviceHost.loadAgent(agent);
+            this.serviceHost.loadAgent(agent);
         }
     }
 
-    private static async createSystemTopics() {
+    async createSystemTopics() {
         Helper.log(`Creating system topics ...`);
-        Init._newChannelTopic = EventBroker.instance.createTopic<Channel>("system", Topics.NewChannel);
-        Init._newEntryTopic = EventBroker.instance.createTopic<Entry>("system", Topics.NewEntry);
-        Init._newRoomTopic = EventBroker.instance.createTopic<Group>("system", Topics.NewRoom);
+        this._newChannelTopic = this.eventBroker.createTopic<Channel>("system", Topics.NewChannel);
+        this._newEntryTopic = this.eventBroker.createTopic<Entry>("system", Topics.NewEntry);
+        this._newRoomTopic = this.eventBroker.createTopic<Group>("system", Topics.NewRoom);
 
-        Init._newChannelTopic.observable.subscribe(newChannel => {
+        this._newChannelTopic.observable.subscribe(newChannel => {
             // Notify the receiving end of the channel (every agent uses its own namespace and provides some default topics)
-            const newChannelTopic = EventBroker.instance.tryGetTopic<Channel>(newChannel.receiver.id, Topics.NewChannel);
+            const newChannelTopic = this.eventBroker.tryGetTopic<Channel>(newChannel.receiver.id, Topics.NewChannel);
             if (newChannelTopic) {
                 newChannelTopic.publish(newChannel);
             }
         });
 
-        Init._newRoomTopic.observable.subscribe(async newRoom => {
+        this._newRoomTopic.observable.subscribe(async newRoom => {
             // Find everyone who may be concerned by the message and who is allowed to see it
             const subscribers = await FindAgentsThatSeeThis.room(newRoom.id);
 
             for (let subscriber of subscribers) {
-                const newRoomTopic = EventBroker.instance.tryGetTopic<Group>(subscriber, Topics.NewRoom);
+                const newRoomTopic = this.eventBroker.tryGetTopic<Group>(subscriber, Topics.NewRoom);
                 if (newRoomTopic) {
                     newRoomTopic.publish(newRoom);
                 }
             }
         });
 
-        Init._newEntryTopic.depend(async newEntry => {
+        this._newEntryTopic.depend(async newEntry => {
             // Find everyone who may be concerned by the message and who is allowed to see it
             const subscribers = await FindAgentsThatSeeThis.entry(newEntry.id);
 
             for (let subscriber of subscribers) {
-                const newEntryTopic = EventBroker.instance.tryGetTopic<Entry>(subscriber, Topics.NewEntry);
+                const newEntryTopic = this.eventBroker.tryGetTopic<Entry>(subscriber, Topics.NewEntry);
                 if (newEntryTopic) {
                     // TODO: This can propagate the errors of services to this position
                     // TODO: Monitor performance
@@ -229,46 +240,50 @@ export class Init {
         });
     }
 
-    private static async createSystemUser() {
-        Init._systemUser = await prisma.user({email: config.env.systemUser});
-        if (Init._systemUser) {
+    async createSystemUser() {  // TODO: Not nicely testable. Should be private.
+        this._systemUser = await prisma.user({email: config.env.systemUser});
+        if (this._systemUser) {
             return;
         }
 
         Helper.log(`Creating system user`);
-        Init._systemUser = await prisma.createUser({
+        this._systemUser = await prisma.createUser({
             type: "System",
             email: config.env.systemUser,
             timezone: "GMT"
         });
     }
 
-    private static async createAnonymousUser() {
-        Init._anonymousUser = await prisma.user({email: config.env.anonymousUser});
-        if (Init._anonymousUser) {
+    async createAnonymousUser() {  // TODO: Not nicely testable. Should be private.
+        this._anonymousUser = await prisma.user({email: config.env.anonymousUser});
+        if (this._anonymousUser) {
             return;
         }
 
         Helper.log(`Creating anonymous user`);
-        Init._anonymousUser = await prisma.createUser({
+        this._anonymousUser = await prisma.createUser({
             type: "System",
             email: config.env.anonymousUser,
             timezone: "GMT"
         });
     }
 
-    private static async createServices() {
+    async createServices(fromPath?:string) { // TODO: Not nicely testable. Should be private.
         const path = require('path');
-        const dir = path.join(__dirname, "init", "singletonServices") + "/";
+        let dir = path.join(fromPath ?? __dirname, "init", "singletonServices") + "/";
+        /*if (isInTest) {
+            dir += "../../../dist/init/singletonServices/";
+        }*/
 
-        await Promise.all(Init.loadModules(dir).map(Init.insertAgentIfNotExisting));
+        const self = this;
+        await Promise.all(this.loadModules(dir).map((loadedService) => self.insertAgentIfNotExisting(loadedService)));
     }
 
-    private static async insertAgentIfNotExisting(agent:any) {
+    private async insertAgentIfNotExisting(agent:any) {
         const implementation = agent.implementation;
 
-        delete agent.implementation;
-        agent.implementation = agent.name; // TODO: Deprecated!?
+        agent.owner = Init.systemUser.id;
+        agent.createdBy = Init.systemUser.id;
 
         const existingService = await prisma.agents({where: {name: agent.name, type: "Service"}});
         let persistedService = null;
@@ -278,6 +293,9 @@ export class Init {
             persistedService = existingService[0];
         } else {
             Helper.log(`   Registering service '${agent.name}' ..`);
+
+            delete agent.implementation;
+            agent.implementation = agent.name; // TODO: Deprecated!?
 
             persistedService = await prisma.createAgent(agent);
             await prisma.updateUser({
@@ -295,25 +313,29 @@ export class Init {
             Helper.log(`   Registered service '${agent.name}' with owner '${persistedService.owner}'.`);
         }
 
-        Init.serviceHost.serviceImplementations[agent.name]
-            = (eventBroker: EventBroker, agent: Agent) => new implementation(eventBroker, agent);
+        this.serviceHost.serviceImplementations[agent.name]
+            = (server: Server, agent: Agent) => new implementation(server, agent);
 
-        Init._serviceIdMap[agent.id] = persistedService;
-        Init._serviceNameMap[agent.name] = persistedService;
+        this._serviceIdMap[persistedService.id] = persistedService;
+        this._serviceNameMap[persistedService.name] = persistedService;
     }
 
-    private static async createContentEncodings() {
+    async createContentEncodings(fromPath?:string) { // TODO: Not nicely testable. Should be private.
         const path = require('path');
-        const dir = path.join(__dirname, "init", "contentEncodings") + "/";
+        let dir = path.join(fromPath ?? __dirname, "init", "contentEncodings") + "/";
+        if (isInTest) {
+            dir += "../../../dist/init/contentEncodings/";
+        }
 
-        await Promise.all(Init.loadModules(dir).map(Init.insertContentEncodingIfNotExisting));
+        const self = this;
+        await Promise.all(this.loadModules(dir).map(loadedContentEncoding => self.insertContentEncodingIfNotExisting(loadedContentEncoding)));
 
-        if (Object.keys(Init._contentEncodingsIdMap).length != Object.keys(Init._contentEncodingsNameMap).length) {
+        if (Object.keys(this._contentEncodingsIdMap).length != Object.keys(this._contentEncodingsNameMap).length) {
             throw new Error(`ContentEncoding names must be unique: ${this.contentEncodings.map(o => o.name).join(", ")}`);
         }
     }
 
-    private static async insertContentEncodingIfNotExisting(contentEncoding:ContentEncoding) {
+    private async insertContentEncodingIfNotExisting(contentEncoding:ContentEncoding) {
         const existingContentEncoding = await prisma.contentEncodings({where: {name: contentEncoding.name}});
 
         let persistedContentEncoding: ContentEncoding = null;
@@ -325,21 +347,22 @@ export class Init {
             persistedContentEncoding = await prisma.createContentEncoding(contentEncoding);
         }
 
-        Init._contentEncodingsNameMap[persistedContentEncoding.name] = persistedContentEncoding;
-        Init._contentEncodingsIdMap[persistedContentEncoding.id] = persistedContentEncoding;
+        this._contentEncodingsNameMap[persistedContentEncoding.name] = persistedContentEncoding;
+        this._contentEncodingsIdMap[persistedContentEncoding.id] = persistedContentEncoding;
     }
 
-    private static async createCountryEntries() {
+    private async createCountryEntries() {
         const path = require('path');
         const dir = path.join(__dirname, "init", "systemEntries", "countriesGeoJson") + "/";
 
-        await Promise.all(Init.loadModules(dir).map(Init.insertCountryEntryIfNotExisting));
+        const self = this;
+        await Promise.all(this.loadModules(dir).map(loadedCountry => self.insertCountryEntryIfNotExisting(loadedCountry)));
     }
 
-    private static async insertCountryEntryIfNotExisting(geojson:any) {
+    private async insertCountryEntryIfNotExisting(geojson:any) {
         const countryName = geojson.properties.sovereignt;
 
-        const existingContentEncoding = await prisma.group({id:Init._countriesSystemRoom.id}).entries({
+        const existingContentEncoding = await prisma.group({id:this._countriesSystemRoom.id}).entries({
             where: {
                 name: countryName
             }
@@ -351,21 +374,22 @@ export class Init {
         }
 
         const newEntry = await AgentCreate.entry(
-            Init.datenDieterSystemAgent.id,
-            Init._countriesSystemRoom.id,
+            this,
+            this.datenDieterSystemAgent.id,
+            this._countriesSystemRoom.id,
             {
-                contentEncoding: Init.geoJsonFeatureContentEncoding.id,
-                createdBy: Init.systemUser.id,
-                owner: Init.systemUser.id,
+                contentEncoding: this.geoJsonFeatureContentEncoding.id,
+                createdBy: this.systemUser.id,
+                owner: this.systemUser.id,
                 type: "Json",
                 name: countryName,
                 content: geojson
             });
 
-        console.log(`   Created entry '${newEntry.id}' for country '${countryName}' in group system room '${Init._countriesSystemRoom.id}'.`);
+        console.log(`   Created entry '${newEntry.id}' for country '${countryName}' in group system room '${this._countriesSystemRoom.id}'.`);
     }
 
-    private static loadModules(path:string) {
+    private loadModules(path:string) {
         const {readdirSync} = require('fs');
 
         Helper.log(`Trying to load modules from '${path}' ...`);
@@ -377,7 +401,8 @@ export class Init {
             .map(fsItem => {
                 try {
                     Helper.log(`   Loading '${path}${fsItem.name}' ...`);
-                    return require(`${path}${fsItem.name}`).Index;
+                    const required = require(`${path}${fsItem.name}`);
+                    return required.Index;
                 } catch (e) {
                     Helper.log(`   Error: ${e}`);
                 }
@@ -385,3 +410,5 @@ export class Init {
             .filter(mod => mod !== undefined);
     }
 }
+
+export const Init = new Server();

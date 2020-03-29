@@ -8,16 +8,7 @@ export class Topics {
 }
 
 export class EventBroker {
-
-    public static get instance() {
-        if (!this._instance) {
-            this._instance = new EventBroker();
-        }
-        return this._instance;
-    }
-    private static  _instance:EventBroker = null;
-
-    private constructor() {
+    public constructor() {
     }
 
     private _topics:{[namespace:string]: {[name:string]:Topic<any>}} = {};

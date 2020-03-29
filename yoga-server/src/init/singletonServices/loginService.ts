@@ -1,5 +1,4 @@
-import {Init} from "../../init";
-import {Entry, Group, prisma} from "../../generated/prisma_client";
+import {Entry, Group, prisma} from "../../generated";
 import {Helper} from "../../helper/helper";
 import {UserQueries} from "../../data/queries/user";
 import {Channel} from "../../api/types/channel";
@@ -12,11 +11,11 @@ class Implementation extends RequestSynchronousService {
     private static readonly bcrypt = require('bcrypt');
 
     get welcomeMessageContentEncodingId(): string {
-        return Init.loginContentEncoding.id;
+        return this.server.loginContentEncoding.id;
     }
 
     async onNewChannel(newChannel:Channel) {
-        if (!(await UserOwns.profile(Init.anonymousUser.id, newChannel.owner))) {
+        if (!(await UserOwns.profile(this.server.anonymousUser.id, newChannel.owner))) {
             throw new Error(`Only anonymous sessions can use this service.`);
         }
 
@@ -31,7 +30,7 @@ class Implementation extends RequestSynchronousService {
         const loginEntryContent: {
             email: string,
             password: string
-        } = newEntry.content[Init.loginContentEncoding.name];
+        } = newEntry.content[this.server.loginContentEncoding.name];
 
         let foundUser = await UserQueries.findUserByEmail(loginEntryContent.email);
         if (!foundUser) {
@@ -68,8 +67,6 @@ class Implementation extends RequestSynchronousService {
 }
 
 export const Index = {
-    owner: Init.systemUser.id,
-    createdBy: Init.systemUser.id,
     name: "LoginService",
     status: "Running",
     type: "Service",
