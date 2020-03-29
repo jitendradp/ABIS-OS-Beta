@@ -26,7 +26,7 @@ import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {RouteChanged} from "./actions/routes/RouteChanged";
 import {ListGroupComponent} from "./lists/list-group/list-group.component";
-import {InviteComponent} from "./widgets/chat/invite/invite.component";
+import {InviteComponent} from "./chat/invite/invite.component";
 import {Logout} from "./actions/routes/Logout";
 import {UserService} from "./services/user.service";
 import {CreateEntryGQL} from "../generated/abis-api";
