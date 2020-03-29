@@ -22,10 +22,13 @@
 }
 
 .body {
-  margin-top: 56px;
+  /* margin-top: 56px; */
   /* margin-bottom: 56px; */
   background-color: #eee;
-  height: calc(100vh - 56px);
+  height: 100vh;
+  width: calc(100% - 90px);
+  margin-left: 90px;
+  /*  height: calc(100vh - 56px); */
   /*  height: calc(100vh - 112px);*/
   overflow-y: auto;
   overflow-x: hidden;

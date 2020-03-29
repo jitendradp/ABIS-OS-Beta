@@ -2,7 +2,8 @@
   <mat-sidenav #left position="start" mode="over" class="sidebarLeft">
     <app-navigation></app-navigation>
   </mat-sidenav>
-  <app-header [actions]="actions" [title]="title"></app-header>
+  <!--<app-header [actions]="actions" [title]="title"></app-header>-->
+  <app-iconbar [onLeftSide]="true"></app-iconbar>
   <mat-drawer-container [hasBackdrop]="false">
     <mat-drawer position="end" #right mode="side" class="sidebarRight">
       <app-feed-notification></app-feed-notification>

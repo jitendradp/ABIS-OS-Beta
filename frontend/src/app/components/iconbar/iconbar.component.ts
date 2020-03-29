@@ -23,6 +23,10 @@ export class IconbarComponent {
   @Input()
   onCockpit: boolean;
 
+
+  @Input()
+  onLeftSide: boolean;
+
   @Input()
   membersCount: number;
 

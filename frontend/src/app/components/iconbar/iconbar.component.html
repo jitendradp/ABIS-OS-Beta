@@ -1,3 +1,10 @@
+<div class="sidebarWrapper" *ngIf="onLeftSide">
+  <div class="sidebar"></div>
+  hello
+  <!-- todo need a list of the icons with a click handler -->
+</div>
+
+
 <div *ngIf="onCockpit">
   <mat-grid-list class="embeddableQuickButtons" cols="3" rowHeight="56px">
     <mat-grid-tile *ngFor="let icon of icons" [style.background]="icon.color">
@@ -10,6 +17,7 @@
     </mat-grid-tile>
   </mat-grid-list>
 </div>
+
 
 <div *ngIf="onMenu">
   <div class="subline"></div>
