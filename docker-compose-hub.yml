@@ -5,16 +5,16 @@ networks:
 
 services:
 
-  frontend:
-    image: gdhami/frontend
-    container_name: frontend
-    restart: always
-    depends_on:
-      - yoga
-    ports:
-      - "80:80"
-    networks:
-      - abis
+#  frontend:
+#    image: gdhami/frontend
+#    container_name: frontend
+#    restart: always
+#    depends_on:
+#      - yoga
+#    ports:
+#      - "80:80"
+#    networks:
+#      - abis
 
   yoga:
     image: gdhami/yoga
@@ -61,7 +61,7 @@ services:
     volumes:
       - ./pgadmin:/root/.pgadmin
     ports:
-      - "8080:8080"
+      - "8080:80"
     networks:
       - abis
     depends_on:
