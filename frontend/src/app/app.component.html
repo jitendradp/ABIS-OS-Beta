@@ -1,13 +1,15 @@
-<mat-sidenav-container>
-  <mat-sidenav #left position="start" mode="over" class="sidebarLeft">
-    <app-navigation></app-navigation>
-  </mat-sidenav>
+<mat-sidenav-container [hasBackdrop]="false">
+  <app-iconbar [onLeftSide]="true"></app-iconbar>
   <app-header [actions]="actions" [title]="title"></app-header>
   <mat-drawer-container [hasBackdrop]="false">
     <mat-drawer position="end" #right mode="side" class="sidebarRight">
       <app-feed-notification></app-feed-notification>
     </mat-drawer>
     <mat-drawer-content class="body">
+      <mat-sidenav #left position="start" mode="push" class="sidebarLeft">
+        <!--<app-navigation></app-navigation>-->
+        <app-chat-navigation></app-chat-navigation>
+      </mat-sidenav>
       <router-outlet></router-outlet>
     </mat-drawer-content>
   </mat-drawer-container>

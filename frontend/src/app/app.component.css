@@ -4,14 +4,14 @@
 }
 
 .sidebarRight {
-  width: 50%;
+  width: 25%;
   padding-top: 56px;
   background-color: #fff;
 }
 
 @media screen and (max-width: 735px) {
   .sidebarLeft {
-    width: 75%;
+    width: 50%;
     max-width: 300px;
   }
 
@@ -25,6 +25,9 @@
   margin-top: 56px;
   /* margin-bottom: 56px; */
   background-color: #eee;
+  /*  height: 100vh; */
+  width: calc(100% - 70px);
+  margin-left: 70px;
   height: calc(100vh - 56px);
   /*  height: calc(100vh - 112px);*/
   overflow-y: auto;
