@@ -107,6 +107,7 @@ import {CanActivateRoute} from "./services/routeGuard";
 import {MaterialDesignFrameworkModule} from "angular6-json-schema-form";
 import {ServiceDialogComponent} from "./services/service-dialog/service-dialog.component";
 import {GraphQLConfigModule} from "./apolloConfig";
+import {ListIconComponent} from './lists/list-icon/list-icon.component';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -263,6 +264,7 @@ const appRoutes: Routes = [
     EditorAccountComponent,
     EditorPasswordComponent,
     ServiceDialogComponent,
+    ListIconComponent,
   ],
   imports: [
     RouterModule.forRoot(

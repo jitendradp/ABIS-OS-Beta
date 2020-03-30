@@ -26,8 +26,8 @@
   /* margin-bottom: 56px; */
   background-color: #eee;
   /*  height: 100vh; */
-  width: calc(100% - 64px);
-  margin-left: 64px;
+  width: calc(100% - 70px);
+  margin-left: 70px;
   height: calc(100vh - 56px);
   /*  height: calc(100vh - 112px);*/
   overflow-y: auto;
