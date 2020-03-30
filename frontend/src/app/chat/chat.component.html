@@ -1,14 +1,6 @@
-<div fxLayout="row wrap"
-     fxLayout.lt-sm="column"
-     fxLayoutGap="0px"
-     fxLayoutAlign="left stretch">
-  <mat-card class="chatColumn" fxFlex>
-    <app-chat-navigation></app-chat-navigation>
-  </mat-card>
-  <mat-card class="chatColumn" fxFlex.md="75" fxFlex="67" fxShow fxHide.sm>
-    <app-card-chat [chatGroupDescription]="'Welcome to the future'" [chatGroupTitle]="'E.ON Solar'"
-                   [chatGroupSubtitle]="'Customer Support'" [chatGroupMembersCount]="345"
-                   [chatGroupLogo]="'https://seeklogo.com/images/E/E_ON-logo-30694E2407-seeklogo.com.png'">
-    </app-card-chat>
-  </mat-card>
-</div>
+<mat-card class="chatColumn">
+  <app-card-chat [chatGroupDescription]="'Welcome to the future'" [chatGroupTitle]="'E.ON Solar'"
+                 [chatGroupSubtitle]="'Customer Support'" [chatGroupMembersCount]="345"
+                 [chatGroupLogo]="'https://seeklogo.com/images/E/E_ON-logo-30694E2407-seeklogo.com.png'">
+  </app-card-chat>
+</mat-card>

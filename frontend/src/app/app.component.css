@@ -4,14 +4,14 @@
 }
 
 .sidebarRight {
-  width: 50%;
+  width: 25%;
   padding-top: 56px;
   background-color: #fff;
 }
 
 @media screen and (max-width: 735px) {
   .sidebarLeft {
-    width: 75%;
+    width: 50%;
     max-width: 300px;
   }
 
