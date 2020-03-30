@@ -3,14 +3,15 @@
   position: -webkit-sticky; /* For macOS/iOS Safari */
   left: 0; /* Sets the sticky toolbar to be on top */
   z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
-  width: 100%;
+  width: 64px;
   height: 100%;
+  margin-top: 56px;
 }
 
 .sidebar {
-  background: white;
+  background: #4c4c4c;
   height: 100%;
-  width: 90px;
+  width: 100%;
 }
 
 
