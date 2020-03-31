@@ -1,12 +1,13 @@
 import 'mocha';
 import {expect} from 'chai';
-import {prisma} from "../../generated";
+import {prisma} from "../../generated/prisma_client";
 import {config} from "../../config";
 import {UserCreate} from "../../data/mutations/userCreate";
 import {mutations} from "../../resolvers/mutations";
 import {Init} from "../../init";
 import {Topics} from "../../services/eventBroker";
 import {AgentCanSee} from "../../statements/agentCanSee";
+import {AgentCreate} from "../../data/mutations/agentCreate";
 
 const context = {
     // Environment
@@ -29,8 +30,6 @@ const context = {
 };
 
 describe('From anonymous user to signed-up user with authenticated session', () => {
-
-
     describe('To create an anonymous session, ..',
         () => {
             it('.. the "Anonymous" system-user must exist', async () => {
@@ -168,7 +167,7 @@ describe('From anonymous user to signed-up user with authenticated session', () 
                     .to.equal(Init.signupServiceId);
             });
 
-            it('.. the anonymous session must create a channel to the SignupService', async () => {
+            it('.. the anonymous session must establish a duplex channel with the SignupService and wait for the "Welcome" message', async () => {
                 const result = await mutations.createChannel(null, {
                     csrfToken: context.session.csrfToken,
                     toAgentId: Init.signupServiceId
@@ -234,7 +233,39 @@ describe('From anonymous user to signed-up user with authenticated session', () 
             });
 
             it('.. the anonymous session must fill-in the welcome message and send it back to the SignupService', async () => {
+                await AgentCreate.entry(Init, context.anonymousProfile.id, context.signupReverseChannel.id, <any>{
+                    contentEncoding: {
+                        id: context.signupEncoding.id
+                    },
+                    type: "Json",
+                    content: {
+                        Signup: {
+                            first_name: "Max",
+                            last_name: "Mustermann",
+                            email: "max@mustermann.gibtsnicht",
+                            password: "12345678",
+                            password_confirmation: "12345678"
+                        }
+                    }
+                });
 
+                // We expect the service to answer with a 'Continuation' entry
+                await new Promise(async (resolve) => {
+                    Init.eventBroker.getTopic(context.anonymousProfile.id, Topics.NewEntry).observable.subscribe(async (event: any) => {
+
+                        // Verify that we got a message notification for the service's welcome message
+                        expect(event.owner)
+                            .eq(Init.signupServiceId);
+
+                        expect(event.name)
+                            .eq("Continuation");
+
+                        expect(event.contentEncoding.id)
+                            .eq(Init.contentEncodingsNameMap["Continuation"].id);
+
+                        resolve();
+                    });
+                });
             });
         });
 });

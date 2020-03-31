@@ -1,6 +1,6 @@
 import {CommonQueries} from "../commonQueries";
 import {Profile, Service} from "../../Profile";
-import {prisma} from "../../../generated";
+import {prisma} from "../../../generated/prisma_client";
 import {Helper} from "../../../helper/helper";
 import {ActionResponse} from "../../mutations/actionResponse";
 

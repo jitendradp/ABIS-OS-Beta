@@ -1,4 +1,4 @@
-import {Agent, ContentEncoding, Entry, Group, prisma, User} from "./generated";
+import {Agent, ContentEncoding, Entry, Group, prisma, User} from "./generated/prisma_client";
 import {config} from "./config";
 import {EventBroker, Topic, Topics} from "./services/eventBroker";
 import {Helper} from "./helper/helper";
@@ -271,9 +271,6 @@ export class Server {
     async createServices(fromPath?:string) { // TODO: Not nicely testable. Should be private.
         const path = require('path');
         let dir = path.join(fromPath ?? __dirname, "init", "singletonServices") + "/";
-        /*if (isInTest) {
-            dir += "../../../dist/init/singletonServices/";
-        }*/
 
         const self = this;
         await Promise.all(this.loadModules(dir).map((loadedService) => self.insertAgentIfNotExisting(loadedService)));

@@ -1,5 +1,5 @@
 import {CommonQueries} from "../commonQueries";
-import {EntryWhereInput, prisma} from "../../../generated";
+import {EntryWhereInput, prisma} from "../../../generated/prisma_client";
 import {Helper} from "../../../helper/helper";
 import {ActionResponse} from "../../mutations/actionResponse";
 import {AgentCanSee} from "../../../statements/agentCanSee";
