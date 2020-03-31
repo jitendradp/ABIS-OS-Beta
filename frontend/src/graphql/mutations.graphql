@@ -117,7 +117,3 @@ mutation deleteEntry($csrfToken:String! $id:ID!) {
 # mutation createStash
 # mutation updateStash
 # mutation deleteStash
-
-
-
-

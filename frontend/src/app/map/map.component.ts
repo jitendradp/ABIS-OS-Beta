@@ -1,8 +1,8 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {Entry, FindRoomsGQL, GetEntriesGQL} from "../../../generated/abis-api";
-import {UserService} from "../../services/user.service";
-import {SetVisibility} from "../../actions/ui/sidebar/SetVisibility";
-import {ActionDispatcherService} from "../../services/action-dispatcher.service";
+import {Entry, FindRoomsGQL, GetEntriesGQL} from "../../generated/abis-api";
+import {UserService} from "../services/user.service";
+import {SetVisibility} from "../actions/ui/sidebar/SetVisibility";
+import {ActionDispatcherService} from "../services/action-dispatcher.service";
 
 @Component({
   selector: 'app-map',
