@@ -1,11 +1,21 @@
 <div class="sidebarWrapper" *ngIf="onLeftSide">
-  <app-list-icon></app-list-icon>
+  <div class="topIcon">
+    <div style="padding: 12px">
+      <app-avatar></app-avatar>
+    </div>
+  </div>
+  <div class="iconList">
+    <app-list-icon></app-list-icon>
+  </div>
   <!-- todo need a list of the icons with a click handler -->
-  <div style="position: absolute; bottom: 0; height: 56px; width: 100%; background-color: red">
-
+  <div class="bottomIcon">
+    <div style="padding: 12px">
+      <button mat-icon-button>
+        <app-logo [url]="'./assets/logos/abis-logo.png'"></app-logo>
+      </button>
+    </div>
   </div>
 </div>
-
 
 <div *ngIf="onCockpit">
   <mat-grid-list class="embeddableQuickButtons" cols="3" rowHeight="56px">
@@ -19,7 +29,6 @@
     </mat-grid-tile>
   </mat-grid-list>
 </div>
-
 
 <div *ngIf="onMenu">
   <div class="subline"></div>

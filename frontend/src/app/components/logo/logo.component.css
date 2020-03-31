@@ -1,7 +1,7 @@
 .logo {
-  width: 32px;
-  height: 32px;
+  width: calc(100% - 6px);
+  height: calc(100% - 6px);
   background-color: white;
   border-radius: 10%;
-  padding: 1px;
+  padding: 3px;
 }
