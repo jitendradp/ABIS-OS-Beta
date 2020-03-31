@@ -22,7 +22,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {LogEntry} from "./services/logger.service";
 import {Back} from "./actions/routes/Back";
 import {EditorGroupComponent} from "./dialogs/editor-group/editor-group.component";
-import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
+import {SetSidebarVisibility} from "./actions/ui/SetSidebarVisibility";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {RouteChanged} from "./actions/routes/RouteChanged";
 import {ListGroupComponent} from "./lists/list-group/list-group.component";
@@ -80,10 +80,10 @@ export class AppComponent implements AfterViewInit {
         }
 
         if (this.deviceService.isMobile() && this.right.opened) {
-          this.actionDispatcher.dispatch(new SetVisibility("right", "invisible"));
+          this.actionDispatcher.dispatch(new SetSidebarVisibility("right", "invisible"));
         }
         break;
-      case SetVisibility.Name:
+      case SetSidebarVisibility.Name:
         let visibility: boolean = false;
         switch (action.state) {
           case "visible":

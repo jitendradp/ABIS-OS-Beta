@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {SetVisibility} from "../actions/ui/sidebar/SetVisibility";
+import {SetSidebarVisibility} from "../actions/ui/SetSidebarVisibility";
 import {ActionDispatcherService} from "../services/action-dispatcher.service";
 
 @Component({
@@ -15,6 +15,6 @@ export class NavigationComponent {
   }
 
   close() {
-    this.actionDispatcher.dispatch(new SetVisibility("left", "invisible"));
+    this.actionDispatcher.dispatch(new SetSidebarVisibility("left", "invisible"));
   }
 }

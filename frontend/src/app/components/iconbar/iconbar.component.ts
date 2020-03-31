@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {MatBottomSheet} from "@angular/material";
 import {SearchComponent} from "../../search/search.component";
-import {SetVisibility} from "../../actions/ui/sidebar/SetVisibility";
+import {SetSidebarVisibility} from "../../actions/ui/SetSidebarVisibility";
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
 import {Logout} from "../../actions/routes/Logout";
 
@@ -76,7 +76,7 @@ export class IconbarComponent {
   }
 
   close() {
-    this.actionDispatcher.dispatch(new SetVisibility("left", "invisible"));
+    this.actionDispatcher.dispatch(new SetSidebarVisibility("left", "invisible"));
   }
 
   logout() {

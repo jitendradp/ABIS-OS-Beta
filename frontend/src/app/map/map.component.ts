@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Entry, FindRoomsGQL, GetEntriesGQL} from "../../generated/abis-api";
 import {UserService} from "../services/user.service";
-import {SetVisibility} from "../actions/ui/sidebar/SetVisibility";
+import {SetSidebarVisibility} from "../actions/ui/SetSidebarVisibility";
 import {ActionDispatcherService} from "../services/action-dispatcher.service";
 
 @Component({
@@ -86,7 +86,7 @@ export class MapComponent implements OnInit, OnChanges {
   }
 
   layerMouseClick($event: mapboxgl.MapLayerMouseEvent, entry: Entry) {
-    const setSidebarVisibility = new SetVisibility("right", "visible");
+    const setSidebarVisibility = new SetSidebarVisibility("right", "visible");
     this.actionDispatcher.dispatch(setSidebarVisibility);
   }
 

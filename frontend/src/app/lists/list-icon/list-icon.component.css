@@ -2,6 +2,11 @@
   padding-top: unset;
 }
 
+/* todo use center content instead */
+.mat-icon {
+  padding-left: 5px;
+}
+
 
 .mat-list-item {
   height: 56px;

@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
 import {IAction} from "../../actions/IAction";
-import {SetVisibility} from "../../actions/ui/sidebar/SetVisibility";
+import {SetSidebarVisibility} from "../../actions/ui/SetSidebarVisibility";
 
 @Component({
   selector: 'app-header',
@@ -20,15 +20,15 @@ export class HeaderComponent {
   actions: IAction[] = [];
 
   get leftActions(): IAction[] {
-    return this.actions.filter((o: IAction) => o.name == SetVisibility.Name).filter((o: SetVisibility) => o.side == "left");
+    return this.actions.filter((o: IAction) => o.name == SetSidebarVisibility.Name).filter((o: SetSidebarVisibility) => o.side == "left");
   }
 
   get midActions(): IAction[] {
-    return this.actions.filter((o: IAction) => o.name == SetVisibility.Name).filter((o: SetVisibility) => o.side == "middle");
+    return this.actions.filter((o: IAction) => o.name == SetSidebarVisibility.Name).filter((o: SetSidebarVisibility) => o.side == "middle");
   }
 
   get rightActions(): IAction[] {
-    return this.actions.filter((o: IAction) => o.name == SetVisibility.Name).filter((o: SetVisibility) => o.side == "right");
+    return this.actions.filter((o: IAction) => o.name == SetSidebarVisibility.Name).filter((o: SetSidebarVisibility) => o.side == "right");
   }
 
   @Output()
