@@ -5,8 +5,8 @@ export class SetSidebarContent implements IAction {
   name: string = SetSidebarContent.Name;
 
 /* todo define the concept
-  body:
-  header:
-  backButton:
+  title:
+  action:
+  widget:
 */
 }

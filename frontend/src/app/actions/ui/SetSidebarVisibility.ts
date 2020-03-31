@@ -2,6 +2,7 @@ import {IAction} from "../IAction";
 
 export type SidebarSide = "right" | "middle" | "left";
 export type VisibilityState = "visible" | "invisible" | "toggle";
+/* todo elevation state to show or hide it? For more information see material design documentation */
 export type ElevationState = "z1" | "z2";
 
 export class SetSidebarVisibility implements IAction {
