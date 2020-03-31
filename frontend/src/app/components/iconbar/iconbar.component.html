@@ -1,7 +1,10 @@
 <div class="sidebarWrapper" *ngIf="onLeftSide">
-  <app-list-icon></app-list-icon>
+  <div class="topIcon"></div>
+  <div class="iconList">
+    <app-list-icon></app-list-icon>
+  </div>
   <!-- todo need a list of the icons with a click handler -->
-  <div style="position: absolute; bottom: 0; height: 56px; width: 100%; background-color: red"></div>
+  <div class="bottomIcon"></div>
 </div>
 
 <div *ngIf="onCockpit">

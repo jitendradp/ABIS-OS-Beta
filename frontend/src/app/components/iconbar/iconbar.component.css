@@ -1,3 +1,29 @@
+
+/* Wrapper for the top icon or picture */
+.topIcon {
+  position: absolute;
+  top: 0;
+  height: 56px;
+  width: 100%;
+  background-color: red
+}
+
+/* Wrapper for the bottom icon or picture */
+.bottomIcon {
+  position: absolute;
+  bottom: 0;
+  height: 56px;
+  width: 100%;
+  background-color: red
+}
+
+
+/* Wrapper for the icons */
+.iconList {
+  margin-top: 56px;
+}
+
+
 .sidebarWrapper {
   position: fixed;
   position: -webkit-sticky; /* For macOS/iOS Safari */
