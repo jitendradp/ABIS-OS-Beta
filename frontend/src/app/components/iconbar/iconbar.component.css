@@ -3,9 +3,8 @@
 .topIcon {
   position: absolute;
   top: 0;
-  height: 56px;
+  height: 70px;
   width: 100%;
-  background-color: red
 }
 
 /* Wrapper for the bottom icon or picture */
@@ -20,7 +19,7 @@
 
 /* Wrapper for the icons */
 .iconList {
-  margin-top: 56px;
+  margin-top: 70px;
 }
 
 
