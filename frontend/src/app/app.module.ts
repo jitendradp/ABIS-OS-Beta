@@ -120,7 +120,8 @@ const defaultActions: IAction[] =
       label: "Open/Close Menu",
       icon: "menu",
       side: "left",
-      state: "toggle"
+      state: "toggle",
+      elevation: "z1"
     },
 
     // todo show/hide when user is logged in or not
@@ -129,7 +130,8 @@ const defaultActions: IAction[] =
       label: "Open/Close Chat",
       icon: "chat",
       side: "right",
-      state: "toggle"
+      state: "toggle",
+      elevation: "z1"
     }
   ];
 

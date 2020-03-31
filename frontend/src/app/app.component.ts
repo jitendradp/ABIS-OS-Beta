@@ -80,7 +80,7 @@ export class AppComponent implements AfterViewInit {
         }
 
         if (this.deviceService.isMobile() && this.right.opened) {
-          this.actionDispatcher.dispatch(new SetSidebarVisibility("right", "invisible"));
+          this.actionDispatcher.dispatch(new SetSidebarVisibility("right", "invisible", "z1"));
         }
         break;
       case SetSidebarVisibility.Name:

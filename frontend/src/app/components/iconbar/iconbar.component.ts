@@ -76,7 +76,7 @@ export class IconbarComponent {
   }
 
   close() {
-    this.actionDispatcher.dispatch(new SetSidebarVisibility("left", "invisible"));
+    this.actionDispatcher.dispatch(new SetSidebarVisibility("left", "invisible", "z1"));
   }
 
   logout() {

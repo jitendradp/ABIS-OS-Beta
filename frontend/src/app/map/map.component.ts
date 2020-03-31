@@ -86,7 +86,7 @@ export class MapComponent implements OnInit, OnChanges {
   }
 
   layerMouseClick($event: mapboxgl.MapLayerMouseEvent, entry: Entry) {
-    const setSidebarVisibility = new SetSidebarVisibility("right", "visible");
+    const setSidebarVisibility = new SetSidebarVisibility("right", "visible", "z1");
     this.actionDispatcher.dispatch(setSidebarVisibility);
   }
 
