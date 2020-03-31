@@ -8,6 +8,8 @@ import {Init} from "../../init";
 import {Topics} from "../../services/eventBroker";
 import {AgentCanSee} from "../../statements/agentCanSee";
 import {AgentCreate} from "../../data/mutations/agentCreate";
+import {AgentOwns} from "../../statements/agentOwns";
+import {UserOwns} from "../../statements/userOwns";
 
 const context = {
     // Environment
@@ -26,7 +28,13 @@ const context = {
     signupService: null,
     signupChannel: null,
     signupReverseChannel: null,
-    signupWelcomeMessage: null
+    signupWelcomeMessage: null,
+    signupContinuation: null,
+    verifyEmailEncoding: null,
+    verifyEmailChannel: null,
+    verifyEmailReverseChannel: null,
+    verifyEmailWelcomeMessage: null,
+    verifyEmailContinuation: null
 };
 
 describe('From anonymous user to signed-up user with authenticated session', () => {
@@ -115,7 +123,7 @@ describe('From anonymous user to signed-up user with authenticated session', () 
     describe('To sign-up, ..',
         () => {
 
-            it('.. the Signup, Error- and Continuation-ContentEncodings must exist', async () => {
+            it('.. the Signup, VerifyEmail, Error- and Continuation-ContentEncodings must exist', async () => {
                 await Init.createContentEncodings(context.runtimePath);
 
                 context.signupEncoding = Init.contentEncodingsNameMap["Signup"];
@@ -127,6 +135,10 @@ describe('From anonymous user to signed-up user with authenticated session', () 
                     .not.null.not.undefined;
 
                 context.continuationEncoding = Init.contentEncodingsNameMap["Continuation"];
+                expect(context.continuationEncoding)
+                    .not.null.not.undefined;
+
+                context.verifyEmailEncoding = Init.contentEncodingsNameMap["VerifyEmail"];
                 expect(context.continuationEncoding)
                     .not.null.not.undefined;
             });
@@ -185,13 +197,15 @@ describe('From anonymous user to signed-up user with authenticated session', () 
                 expect((<any>result).receiver.id)
                     .equals(Init.signupServiceId);
 
+                context.signupChannel = result;
+
                 // First we want to be notified about the reverse channel ..
                 await new Promise(async (resolve) => {
                     var done = false;
 
                     Init.eventBroker.getTopic(context.anonymousProfile.id, Topics.NewChannel).observable.subscribe(async (event: any) => {
 
-                        if (done){
+                        if (done) {
                             return;
                         }
                         done = true;
@@ -220,7 +234,7 @@ describe('From anonymous user to signed-up user with authenticated session', () 
 
                     Init.eventBroker.getTopic(context.anonymousProfile.id, Topics.NewEntry).observable.subscribe(async (event: any) => {
 
-                        if (done){
+                        if (done) {
                             return;
                         }
                         done = true;
@@ -249,7 +263,7 @@ describe('From anonymous user to signed-up user with authenticated session', () 
 
             it('.. the anonymous session must fill-in the welcome message and send it back to the SignupService', async () => {
                 await AgentCreate.entry(Init, context.anonymousProfile.id, context.signupReverseChannel.id, <any>{
-                    contentEncoding:  context.signupEncoding.id,
+                    contentEncoding: context.signupEncoding.id,
                     type: "Json",
                     content: {
                         Signup: {
@@ -262,17 +276,12 @@ describe('From anonymous user to signed-up user with authenticated session', () 
                     }
                 });
 
-                // We expect the service to answer with a 'Continuation' entry
+                // We expect the service to answer with a 'Continuation' entry that sends us to the VerifyEmail service
                 await new Promise(async (resolve) => {
                     var done = false;
                     Init.eventBroker.getTopic(context.anonymousProfile.id, Topics.NewEntry).observable.subscribe(async (event: any) => {
 
-                        if (event.owner == context.anonymousProfile.id) {
-                            // Ignore our own messages
-                            return;
-                        }
-
-                        if (done){
+                        if (done) {
                             return;
                         }
                         done = true;
@@ -286,6 +295,145 @@ describe('From anonymous user to signed-up user with authenticated session', () 
 
                         expect(event.contentEncoding.id)
                             .eq(Init.contentEncodingsNameMap["Continuation"].id);
+
+                        expect(event.content.Continuation.fromAgentId)
+                            .eq(Init.signupServiceId);
+
+                        expect(event.content.Continuation.toAgentId)
+                            .eq(Init.verifyEmailServiceId);
+
+                        context.signupContinuation = event;
+
+                        resolve();
+                    });
+                });
+            });
+
+            it('.. the anonymous session must establish a duplex channel with the VerifyEmail service and wait for the "Welcome" message.', async () => {
+                const result = await mutations.createChannel(null, {
+                    csrfToken: context.session.csrfToken,
+                    toAgentId: Init.verifyEmailServiceId
+                }, {
+                    sessionToken: context.session.sessionToken
+                });
+
+                expect(result)
+                    .not.null.not.undefined;
+
+                expect((<any>result).receiver)
+                    .not.null.not.undefined;
+
+                expect((<any>result).receiver.id)
+                    .equals(Init.verifyEmailServiceId);
+
+                context.verifyEmailChannel = result;
+
+                // First we want to be notified about the reverse channel ..
+                await new Promise(async (resolve) => {
+                    var done = false;
+
+                    Init.eventBroker.getTopic(context.anonymousProfile.id, Topics.NewChannel).observable.subscribe(async (event: any) => {
+
+                        if (done) {
+                            return;
+                        }
+                        done = true;
+
+                        // Verify that we got notified about the reverse channel
+                        expect(event.owner)
+                            .eq(Init.verifyEmailServiceId);
+
+                        expect(event.receiver.id)
+                            .eq(context.anonymousProfile.id);
+
+                        context.verifyEmailReverseChannel = event;
+
+                        // Verify that we can access the channel
+                        const canSeeChannel = await AgentCanSee.channel(context.anonymousProfile.id, event.id);
+                        expect(canSeeChannel)
+                            .to.be.true;
+
+                        resolve();
+                    });
+                });
+
+                // .. then about the new Welcome entry
+                await new Promise(async (resolve) => {
+                    var done = false;
+
+                    Init.eventBroker.getTopic(context.anonymousProfile.id, Topics.NewEntry).observable.subscribe(async (event: any) => {
+
+                        if (done) {
+                            return;
+                        }
+                        done = true;
+
+                        // Verify that we got a message notification for the service's welcome message
+                        expect(event.owner)
+                            .eq(Init.verifyEmailServiceId);
+
+                        expect(event.name)
+                            .eq("Welcome");
+
+                        expect(event.contentEncoding.id)
+                            .eq(Init.contentEncodingsNameMap["VerifyEmail"].id);
+
+                        context.verifyEmailWelcomeMessage = event;
+
+                        // Verify that we can access the entry
+                        const canSeeChannel = await AgentCanSee.entry(context.anonymousProfile.id, event.id);
+                        expect(canSeeChannel)
+                            .to.be.true;
+
+                        resolve();
+                    });
+                });
+            });
+
+            it('.. the anonymous session must fill-in the welcome message and send it back to the VerifyEmail service', async () => {
+                const usersWithChallenge = await prisma.users({where:{challenge_not: null}});
+                const profileOwner = usersWithChallenge.filter(async o => await UserOwns.profile(o.id, context.anonymousProfile.id));
+
+                expect(profileOwner.length)
+                    .eq(1);
+
+                await AgentCreate.entry(Init, context.anonymousProfile.id, context.verifyEmailReverseChannel.id, <any>{
+                    contentEncoding: context.verifyEmailEncoding.id,
+                    type: "Json",
+                    content: {
+                        VerifyEmail: {
+                            code: profileOwner[0].challenge
+                        }
+                    }
+                });
+
+                // We expect the service to answer with a 'Continuation' entry that sends us to the Login service
+                await new Promise(async (resolve) => {
+                    var done = false;
+                    Init.eventBroker.getTopic(context.anonymousProfile.id, Topics.NewEntry).observable.subscribe(async (event: any) => {
+
+                        if (done) {
+                            return;
+                        }
+                        done = true;
+
+                        // Verify that we got a message notification for the service's welcome message
+                        expect(event.owner)
+                            .eq(Init.verifyEmailServiceId);
+
+                        expect(event.name)
+                            .eq("Continuation");
+
+                        expect(event.contentEncoding.id)
+                            .eq(Init.contentEncodingsNameMap["Continuation"].id);
+
+                        expect(event.content.Continuation.fromAgentId)
+                            .eq(Init.verifyEmailServiceId);
+
+                        expect(event.content.Continuation.toAgentId)
+                            .eq(Init.loginServiceId);
+
+                        context.verifyEmailContinuation = event;
 
                         resolve();
                     });
