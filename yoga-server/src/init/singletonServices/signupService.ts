@@ -56,7 +56,7 @@ class Implementation extends DirectService {
                 firstName: signupEntryContent.first_name,
                 lastName: signupEntryContent.last_name,
                 timezone: "GMT"
-            });
+            }, this.server);
         } catch (e) {
             Helper.log(e);
             const validationErrors = [];
@@ -73,7 +73,7 @@ class Implementation extends DirectService {
 
     private static readonly bcrypt = require('bcrypt');
 
-    private static async createUser(password: string, newUser: User): Promise<ActionResponse> {
+    private static async createUser(password: string, newUser: User, server:Server): Promise<ActionResponse> {
         // fact "U.P.1 Alle Benutzer müssen mind. ein Profil besitzen"
         const existingUser = await prisma.user({email: newUser.email});
         if (existingUser) {
@@ -96,7 +96,7 @@ class Implementation extends DirectService {
 
         // Create the first profile and send the e-mail verification code
         await Promise.all([
-            this.createFirstProfile(newUser),
+            this.createFirstProfile(newUser, server),
             Mailer.sendEmailVerificationCode(newUser)
         ]);
 
@@ -110,12 +110,12 @@ class Implementation extends DirectService {
      * Creates the first Profile-Agent for the supplied User.
      * @param user
      */
-    private static async createFirstProfile(user: User): Promise<Agent> {
+    private static async createFirstProfile(user: User, server:Server): Promise<Agent> {
         if ((await prisma.user({id:user.id}).agents({where:{type:"Profile"}})).length > 0) {
             throw new Error(`This is not the first Profile of user ${user.id}.`);
         }
 
-        return UserCreate.profile(user.id, user.firstName, "avatar.png", "Available");
+        return UserCreate.profile(user.id, user.firstName, "avatar.png", "Available", server);
     }
 }
 

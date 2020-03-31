@@ -20,7 +20,8 @@ export const mutations = {
             anonymousUserId,
             `anon_${new Date().getTime()}`,
             "anon.png",
-            "Available");
+            "Available",
+            Init);
 
         const session = await UserCreate.session(anonymousUserId, anonymousProfile.id, null, clientTime);
 

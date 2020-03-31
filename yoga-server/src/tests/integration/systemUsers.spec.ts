@@ -46,7 +46,8 @@ describe('From anonymous user to signed-up user with authenticated session', () 
                     context.anonymousUser.id
                     , `anon_${new Date().getTime()}`
                     , "anon.png"
-                    , "Available");
+                    , "Available"
+                    , Init);
 
                 expect(context.anonymousProfile)
                     .to.be.not.null;
@@ -186,7 +187,14 @@ describe('From anonymous user to signed-up user with authenticated session', () 
 
                 // First we want to be notified about the reverse channel ..
                 await new Promise(async (resolve) => {
+                    var done = false;
+
                     Init.eventBroker.getTopic(context.anonymousProfile.id, Topics.NewChannel).observable.subscribe(async (event: any) => {
+
+                        if (done){
+                            return;
+                        }
+                        done = true;
 
                         // Verify that we got notified about the reverse channel
                         expect(event.owner)
@@ -208,7 +216,14 @@ describe('From anonymous user to signed-up user with authenticated session', () 
 
                 // .. then about the new Welcome entry
                 await new Promise(async (resolve) => {
+                    var done = false;
+
                     Init.eventBroker.getTopic(context.anonymousProfile.id, Topics.NewEntry).observable.subscribe(async (event: any) => {
+
+                        if (done){
+                            return;
+                        }
+                        done = true;
 
                         // Verify that we got a message notification for the service's welcome message
                         expect(event.owner)
@@ -234,9 +249,7 @@ describe('From anonymous user to signed-up user with authenticated session', () 
 
             it('.. the anonymous session must fill-in the welcome message and send it back to the SignupService', async () => {
                 await AgentCreate.entry(Init, context.anonymousProfile.id, context.signupReverseChannel.id, <any>{
-                    contentEncoding: {
-                        id: context.signupEncoding.id
-                    },
+                    contentEncoding:  context.signupEncoding.id,
                     type: "Json",
                     content: {
                         Signup: {
@@ -251,7 +264,18 @@ describe('From anonymous user to signed-up user with authenticated session', () 
 
                 // We expect the service to answer with a 'Continuation' entry
                 await new Promise(async (resolve) => {
+                    var done = false;
                     Init.eventBroker.getTopic(context.anonymousProfile.id, Topics.NewEntry).observable.subscribe(async (event: any) => {
+
+                        if (event.owner == context.anonymousProfile.id) {
+                            // Ignore our own messages
+                            return;
+                        }
+
+                        if (done){
+                            return;
+                        }
+                        done = true;
 
                         // Verify that we got a message notification for the service's welcome message
                         expect(event.owner)

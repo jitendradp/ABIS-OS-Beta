@@ -132,7 +132,7 @@ export class Server {
     private async createSystemAgents() {
         const existingDatenDieter = await prisma.agents({where:{owner:this._systemUser.id, name: "Daten Dieter"}});
         if (existingDatenDieter.length == 0) {
-            this._datenDieterSystemAgent = await UserCreate.profile(this._systemUser.id, "Daten Dieter", "avatar.png", "Available");
+            this._datenDieterSystemAgent = await UserCreate.profile(this._systemUser.id, "Daten Dieter", "avatar.png", "Available", this);
         } else {
             this._datenDieterSystemAgent = existingDatenDieter[0];
         }
