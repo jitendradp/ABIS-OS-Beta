@@ -1,1 +1,7 @@
-<img  class="logo" src="{{url}}" onError="this.src='./assets/error-images/picture.png';">
+<!-- todo show menu item depending on current user session state -->
+<img class="logo" src="{{url}}" onError="this.src='./assets/error-images/picture.png';"
+     [matMenuTriggerFor]="statusMenu">
+<mat-menu #statusMenu="matMenu">
+  <button mat-menu-item routerLink="/access">Access</button>
+  <button mat-menu-item>Logout</button>
+</mat-menu>

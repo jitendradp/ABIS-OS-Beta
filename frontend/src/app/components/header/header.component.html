@@ -10,8 +10,6 @@
       <mat-icon>{{action.icon}}</mat-icon>
     </button>
     <span class="fill-remaining-space"></span>
-    <button mat-flat-button color="primary">Access</button>
-    <span>CHAT</span>
     <button *ngFor="let action of rightActions" mat-icon-button (click)="actionDispatcher.dispatch(action);">
       <mat-icon matBadge="15" matBadgePosition="after" matBadgeColor="warn">{{action.icon}}</mat-icon>
     </button>

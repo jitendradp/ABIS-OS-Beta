@@ -8,7 +8,13 @@
     <app-list-icon></app-list-icon>
   </div>
   <!-- todo need a list of the icons with a click handler -->
-  <div class="bottomIcon"></div>
+  <div class="bottomIcon">
+    <div style="padding: 12px">
+      <button mat-icon-button>
+        <app-logo [url]="'./assets/logos/abis-logo.png'"></app-logo>
+      </button>
+    </div>
+  </div>
 </div>
 
 <div *ngIf="onCockpit">
