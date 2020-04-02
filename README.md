@@ -1,3 +1,4 @@
+https://user-images.githubusercontent.com/19590434/78272083-51770280-750d-11ea-813f-376ce370f98a.png
 # Quickstart (run pre-build docker images)
 **Prerequisites**
 You will need at least version 19.03 of Docker Desktop installed
