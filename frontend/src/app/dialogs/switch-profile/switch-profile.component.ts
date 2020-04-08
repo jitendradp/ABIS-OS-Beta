@@ -32,6 +32,7 @@ export class SwitchProfileComponent implements OnInit, AfterViewInit {
      */
   }
 /*
+
   switchToProfile(profile: Profile) {
     this.userService.setSessionProfile(profile.id)
       .catch(error => {
