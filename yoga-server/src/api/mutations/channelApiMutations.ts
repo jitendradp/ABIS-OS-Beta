@@ -6,7 +6,7 @@ import {config} from "../../config";
 
 export class ChannelApiMutations {
 
-    static async createChannelInternal(fromAgentId: string, toAgentId: string) {
+    static async createChannelInternal(fromAgentId: string, toAgentId: string, isMemory:boolean) {
         try {
             const myAgent = await prisma.agent({id: fromAgentId});
             const otherAgent = await prisma.agent({id: toAgentId});
@@ -32,6 +32,7 @@ export class ChannelApiMutations {
                 name: otherAgent.name,
                 logo: otherAgent.profileAvatar,
                 isPublic: false,
+                isMemory: isMemory,
                 description: `A direct conversation with ${otherAgent.name}`,
                 memberships: {
                     create: {
@@ -63,7 +64,7 @@ export class ChannelApiMutations {
         // fact "C.M.3 Es gibt keine zwei Channels mit derselben owner/member-Kombination"
         try {
             const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
-            return this.createChannelInternal(myAgent.id, toAgentId);
+            return this.createChannelInternal(myAgent.id, toAgentId, false);
         } catch (e) {
             const errorId = Helper.logId(`An error occurred during the creation of a channel: ${JSON.stringify(e)}`);
             return <ActionResponse>{

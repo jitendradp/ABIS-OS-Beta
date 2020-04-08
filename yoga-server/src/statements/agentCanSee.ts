@@ -1,4 +1,5 @@
-import {GroupType, GroupWhereInput, prisma} from "../generated";
+import {Group, GroupType, GroupWhereInput, prisma} from "../generated/prisma_client";
+import {Server} from "../init";
 
 /**
  * Contains methods to determine if an agent can see a particular object.
@@ -45,8 +46,8 @@ export class AgentCanSee {
         return AgentCanSee.group(agentId, stashId, "Stash");
     }
 
-    public static async entry(agentId:string, entryId:string) {
-        const group = await prisma.groups({
+    public static async entry(server:Server, agentId:string, entryId:string) {
+        let groups = await prisma.groups({
             where:{
                 entries_some:{
                     id: entryId
@@ -58,6 +59,21 @@ export class AgentCanSee {
                 }
             }
         });
-        return group.length == 1;
+
+        if (groups.length == 0) {
+            const memoryGroupId = server.memoryEntries.getGroup(entryId);
+            groups = await prisma.groups({
+                where: {
+                    id: memoryGroupId,
+                    memberships_some: {
+                        member: {
+                            id: agentId
+                        }
+                    }
+                }
+            });
+        }
+
+        return groups.length == 1;
     }
 }

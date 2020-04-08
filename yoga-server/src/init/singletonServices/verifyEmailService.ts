@@ -1,5 +1,5 @@
 import {DirectService} from "../../services/directService";
-import {Entry, Group, prisma} from "../../generated";
+import {Entry, Group, prisma} from "../../generated/prisma_client";
 import {Helper} from "../../helper/helper";
 import {UserQueries} from "../../data/queries/user";
 

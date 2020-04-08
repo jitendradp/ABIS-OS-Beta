@@ -1,4 +1,13 @@
-import {Agent, ContentEncoding, Entry, Group, prisma, User} from "./generated";
+import {
+    Agent,
+    ContentEncoding,
+    Entry,
+    EntryCreateInput,
+    EntryWhereInput,
+    Group,
+    prisma,
+    User
+} from "./generated/prisma_client";
 import {config} from "./config";
 import {EventBroker, Topic, Topics} from "./services/eventBroker";
 import {Helper} from "./helper/helper";
@@ -11,7 +20,63 @@ import {Service} from "./services/service";
 
 const isInTest = typeof global.it === 'function';
 
+export class MemoryEntryStore {
+
+    private _store:{[groupId:string]:{[entryId:string]:Entry}} = {};
+    private _entryIdGroupIdLookup:{[entryId:string]:string} = {};
+
+    store(groupId:string, entry:EntryCreateInput) : Promise<Entry> {
+        if (!this._store[groupId]){
+            this._store[groupId] = {};
+        }
+
+        entry.id = Helper.getRandomBase64String(32);
+
+        const persistedEntry = <Entry>{
+            id: entry.id,
+            content: entry.content,
+            owner: entry.owner,
+            contentEncoding: entry.contentEncoding,
+            createdBy: entry.createdBy,
+            createdAt: new Date().toISOString(),
+            type: entry.type,
+            name: entry.name,
+        };
+
+        this._store[groupId][entry.id] = persistedEntry;
+        this._entryIdGroupIdLookup[entry.id] = groupId;
+
+        return Promise.resolve(persistedEntry);
+    }
+
+    getEntry(entryId:string) {
+        return this._store[this._entryIdGroupIdLookup[entryId]][entryId];
+    }
+
+    read(groupId:string, where:EntryWhereInput) : Entry[] {
+        return Object.keys(this._store[groupId]).map(key => this._store[groupId][key]);
+    }
+
+    getGroup(entryId:string) {
+        return this._entryIdGroupIdLookup[entryId];
+    }
+
+    clear(groupId:string) {
+        delete this._store[groupId];
+    }
+
+    clearAll() {
+        this._store = {};
+    }
+}
+
 export class Server {
+
+    get memoryEntries() : MemoryEntryStore {
+        return this._memoryEntries;
+    }
+    private _memoryEntries:MemoryEntryStore = new MemoryEntryStore();
+
     get eventBroker(): EventBroker {
         return this._eventBroker;
     };
@@ -132,7 +197,7 @@ export class Server {
     private async createSystemAgents() {
         const existingDatenDieter = await prisma.agents({where:{owner:this._systemUser.id, name: "Daten Dieter"}});
         if (existingDatenDieter.length == 0) {
-            this._datenDieterSystemAgent = await UserCreate.profile(this._systemUser.id, "Daten Dieter", "avatar.png", "Available");
+            this._datenDieterSystemAgent = await UserCreate.profile(this._systemUser.id, "Daten Dieter", "avatar.png", "Available", this);
         } else {
             this._datenDieterSystemAgent = existingDatenDieter[0];
         }
@@ -227,7 +292,8 @@ export class Server {
 
         this._newEntryTopic.depend(async newEntry => {
             // Find everyone who may be concerned by the message and who is allowed to see it
-            const subscribers = await FindAgentsThatSeeThis.entry(newEntry.id);
+            // TODO: Handle memory entries
+            const subscribers = await FindAgentsThatSeeThis.entry(this, newEntry.id);
 
             for (let subscriber of subscribers) {
                 const newEntryTopic = this.eventBroker.tryGetTopic<Entry>(subscriber, Topics.NewEntry);
@@ -271,9 +337,6 @@ export class Server {
     async createServices(fromPath?:string) { // TODO: Not nicely testable. Should be private.
         const path = require('path');
         let dir = path.join(fromPath ?? __dirname, "init", "singletonServices") + "/";
-        /*if (isInTest) {
-            dir += "../../../dist/init/singletonServices/";
-        }*/
 
         const self = this;
         await Promise.all(this.loadModules(dir).map((loadedService) => self.insertAgentIfNotExisting(loadedService)));

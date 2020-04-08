@@ -4,7 +4,7 @@ import {GetAgentOf} from "../queries/getAgentOf";
 import {AgentCreate} from "../data/mutations/agentCreate";
 import {Helper} from "../helper/helper";
 import {ActionResponse} from "../api/mutations/actionResponse";
-import {prisma} from "../generated";
+import {prisma} from "../generated/prisma_client";
 import {Init} from "../init";
 import {AgentCanCreate} from "../statements/agentCanCreate";
 import {EventBroker} from "../services/eventBroker";
@@ -20,7 +20,8 @@ export const mutations = {
             anonymousUserId,
             `anon_${new Date().getTime()}`,
             "anon.png",
-            "Available");
+            "Available",
+            Init);
 
         const session = await UserCreate.session(anonymousUserId, anonymousProfile.id, null, clientTime);
 
@@ -67,7 +68,17 @@ export const mutations = {
         }
 
         const agentId = await GetAgentOf.session(csrfToken, ctx.sessionToken);
-        const newChannel = await AgentCreate.channel(Init, agentId, toAgentId, "New Channel", "channel.png");
+        let newChannel: any;
+
+        // TODO: find a nicer method to determine if a channel should be a memory channel or not
+        if (toAgentId == Init.loginServiceId
+        || toAgentId == Init.signupServiceId
+        || toAgentId == Init.verifyEmailServiceId)
+        {
+            newChannel = await AgentCreate.channel(Init, agentId, toAgentId, true, "New Channel", "channel.png");
+        } else {
+            newChannel = await AgentCreate.channel(Init, agentId, toAgentId, false, "New Channel", "channel.png");
+        }
 
         (<any>newChannel).receiver = await prisma.agent({id:toAgentId});
 

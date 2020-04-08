@@ -3,8 +3,7 @@ import {Topic, Topics} from "./eventBroker";
 import {Channel} from "../api/types/channel";
 import {Helper} from "../helper/helper";
 import {AgentCreate} from "../data/mutations/agentCreate";
-import {Entry, Group, prisma} from "../generated";
-import {Init} from "../init";
+import {Entry, Group, prisma} from "../generated/prisma_client";
 
 /**
  * This service waits for incoming channels from other agents
@@ -51,10 +50,13 @@ export abstract class DirectService extends Service {
         Helper.log(`${this.name} (${this.id}): received a NewChannel event from '${newChannel.owner}'. Content: ${JSON.stringify(newChannel)}`);
         Helper.log(`${this.name} (${this.id}): establishing a reverse channel ..`);
 
+        const forwardChannel = await prisma.group({id: newChannel.id});
+
         const reverseChannel = await AgentCreate.channel(
             this.server,
             this.id,
             newChannel.owner,
+            forwardChannel.isMemory,
             `${this.id}->${newChannel.owner}`,
             "channel.png");
 
@@ -121,7 +123,7 @@ export abstract class DirectService extends Service {
             type: "Json",
             owner: this.id,
             createdBy: this.id,
-            contentEncoding: Init.continuationContentEncoding.id,
+            contentEncoding: this.server.continuationContentEncoding.id,
             content: {
                 Continuation: {
                     fromAgentId: this.id,
@@ -138,7 +140,7 @@ export abstract class DirectService extends Service {
             type: "Json",
             owner: this.id,
             createdBy: this.id,
-            contentEncoding: Init.errorContentEncoding.id,
+            contentEncoding: this.server.errorContentEncoding.id,
             content: {
                 summary: summary,
                 detail: validationErrors

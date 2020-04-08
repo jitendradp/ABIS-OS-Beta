@@ -1,5 +1,5 @@
 import {GraphQLServer} from 'graphql-yoga'
-import {prisma} from './generated'
+import {prisma} from './generated/prisma_client'
 import {ContextParameters} from "graphql-yoga/dist/types";
 import {config} from "./config";
 import {Init} from "./init";
