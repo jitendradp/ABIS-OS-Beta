@@ -607,7 +607,9 @@ export type GroupOrderByInput =
   | "banner_ASC"
   | "banner_DESC"
   | "inbox_ASC"
-  | "inbox_DESC";
+  | "inbox_DESC"
+  | "isMemory_ASC"
+  | "isMemory_DESC";
 
 export type LocationOrderByInput =
   | "id_ASC"
@@ -1723,6 +1725,8 @@ export interface GroupWhereInput {
   tags_every?: Maybe<TagWhereInput>;
   tags_some?: Maybe<TagWhereInput>;
   tags_none?: Maybe<TagWhereInput>;
+  isMemory?: Maybe<Boolean>;
+  isMemory_not?: Maybe<Boolean>;
   AND?: Maybe<GroupWhereInput[] | GroupWhereInput>;
   OR?: Maybe<GroupWhereInput[] | GroupWhereInput>;
   NOT?: Maybe<GroupWhereInput[] | GroupWhereInput>;
@@ -2415,6 +2419,7 @@ export interface GroupCreateInput {
   entries?: Maybe<EntryCreateManyInput>;
   inbox?: Maybe<ID_Input>;
   tags?: Maybe<TagCreateManyInput>;
+  isMemory: Boolean;
 }
 
 export interface MembershipCreateManyInput {
@@ -2456,6 +2461,7 @@ export interface GroupUpdateInput {
   entries?: Maybe<EntryUpdateManyInput>;
   inbox?: Maybe<ID_Input>;
   tags?: Maybe<TagUpdateManyInput>;
+  isMemory?: Maybe<Boolean>;
 }
 
 export interface MembershipUpdateManyInput {
@@ -2790,6 +2796,7 @@ export interface GroupUpdateManyMutationInput {
   logo?: Maybe<String>;
   banner?: Maybe<String>;
   inbox?: Maybe<ID_Input>;
+  isMemory?: Maybe<Boolean>;
 }
 
 export interface LocationUpdateInput {
@@ -4195,6 +4202,7 @@ export interface Group {
   logo: String;
   banner?: String;
   inbox?: ID_Output;
+  isMemory: Boolean;
 }
 
 export interface GroupPromise extends Promise<Group>, Fragmentable {
@@ -4239,6 +4247,7 @@ export interface GroupPromise extends Promise<Group>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
+  isMemory: () => Promise<Boolean>;
 }
 
 export interface GroupSubscription
@@ -4285,6 +4294,7 @@ export interface GroupSubscription
     first?: Int;
     last?: Int;
   }) => T;
+  isMemory: () => Promise<AsyncIterator<Boolean>>;
 }
 
 export interface GroupNullablePromise
@@ -4331,6 +4341,7 @@ export interface GroupNullablePromise
     first?: Int;
     last?: Int;
   }) => T;
+  isMemory: () => Promise<Boolean>;
 }
 
 export interface Membership {
@@ -5190,6 +5201,7 @@ export interface GroupPreviousValues {
   logo: String;
   banner?: String;
   inbox?: ID_Output;
+  isMemory: Boolean;
 }
 
 export interface GroupPreviousValuesPromise
@@ -5209,6 +5221,7 @@ export interface GroupPreviousValuesPromise
   logo: () => Promise<String>;
   banner: () => Promise<String>;
   inbox: () => Promise<ID_Output>;
+  isMemory: () => Promise<Boolean>;
 }
 
 export interface GroupPreviousValuesSubscription
@@ -5228,6 +5241,7 @@ export interface GroupPreviousValuesSubscription
   logo: () => Promise<AsyncIterator<String>>;
   banner: () => Promise<AsyncIterator<String>>;
   inbox: () => Promise<AsyncIterator<ID_Output>>;
+  isMemory: () => Promise<AsyncIterator<Boolean>>;
 }
 
 export interface LocationSubscriptionPayload {

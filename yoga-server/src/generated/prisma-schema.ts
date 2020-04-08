@@ -1446,6 +1446,7 @@ type Group {
   entries(where: EntryWhereInput, orderBy: EntryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Entry!]
   inbox: ID
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
+  isMemory: Boolean!
 }
 
 type GroupConnection {
@@ -1470,6 +1471,7 @@ input GroupCreateInput {
   entries: EntryCreateManyInput
   inbox: ID
   tags: TagCreateManyInput
+  isMemory: Boolean!
 }
 
 type GroupEdge {
@@ -1506,6 +1508,8 @@ enum GroupOrderByInput {
   banner_DESC
   inbox_ASC
   inbox_DESC
+  isMemory_ASC
+  isMemory_DESC
 }
 
 type GroupPreviousValues {
@@ -1523,6 +1527,7 @@ type GroupPreviousValues {
   logo: String!
   banner: String
   inbox: ID
+  isMemory: Boolean!
 }
 
 type GroupSubscriptionPayload {
@@ -1564,6 +1569,7 @@ input GroupUpdateInput {
   entries: EntryUpdateManyInput
   inbox: ID
   tags: TagUpdateManyInput
+  isMemory: Boolean
 }
 
 input GroupUpdateManyMutationInput {
@@ -1578,6 +1584,7 @@ input GroupUpdateManyMutationInput {
   logo: String
   banner: String
   inbox: ID
+  isMemory: Boolean
 }
 
 input GroupWhereInput {
@@ -1752,6 +1759,8 @@ input GroupWhereInput {
   tags_every: TagWhereInput
   tags_some: TagWhereInput
   tags_none: TagWhereInput
+  isMemory: Boolean
+  isMemory_not: Boolean
   AND: [GroupWhereInput!]
   OR: [GroupWhereInput!]
   NOT: [GroupWhereInput!]

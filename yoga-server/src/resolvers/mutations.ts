@@ -68,7 +68,17 @@ export const mutations = {
         }
 
         const agentId = await GetAgentOf.session(csrfToken, ctx.sessionToken);
-        const newChannel = await AgentCreate.channel(Init, agentId, toAgentId, "New Channel", "channel.png");
+        let newChannel: any;
+
+        // TODO: find a nicer method to determine if a channel should be a memory channel or not
+        if (toAgentId == Init.loginServiceId
+        || toAgentId == Init.signupServiceId
+        || toAgentId == Init.verifyEmailServiceId)
+        {
+            newChannel = await AgentCreate.channel(Init, agentId, toAgentId, true, "New Channel", "channel.png");
+        } else {
+            newChannel = await AgentCreate.channel(Init, agentId, toAgentId, false, "New Channel", "channel.png");
+        }
 
         (<any>newChannel).receiver = await prisma.agent({id:toAgentId});
 

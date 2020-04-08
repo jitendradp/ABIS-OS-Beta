@@ -50,10 +50,13 @@ export abstract class DirectService extends Service {
         Helper.log(`${this.name} (${this.id}): received a NewChannel event from '${newChannel.owner}'. Content: ${JSON.stringify(newChannel)}`);
         Helper.log(`${this.name} (${this.id}): establishing a reverse channel ..`);
 
+        const forwardChannel = await prisma.group({id: newChannel.id});
+
         const reverseChannel = await AgentCreate.channel(
             this.server,
             this.id,
             newChannel.owner,
+            forwardChannel.isMemory,
             `${this.id}->${newChannel.owner}`,
             "channel.png");
 

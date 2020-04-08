@@ -1,13 +1,19 @@
 import {Entry, prisma} from "../../generated/prisma_client";
 import {AgentCanSee} from "../../statements/agentCanSee";
+import {Server} from "../../init";
 
 export class EntryQueries {
-    public static async getEntries(agentId:string, groupId:string, from?:Date, to?:Date) : Promise<Entry[]> {
+    public static async getEntries(server:Server, agentId:string, groupId:string, from?:Date, to?:Date) : Promise<Entry[]> {
         if (!(await AgentCanSee.group(agentId, groupId))) {
             return [];
         }
 
-        // TODO: Add the date filter
-        return prisma.group({id:groupId}).entries();
+        const group = await prisma.group({id:groupId});
+        if (group.isMemory) {
+            server.memoryEntries.read(groupId, {});
+        } else {
+            // TODO: Add the date filter
+            return prisma.group({id:groupId}).entries();
+        }
     }
 }

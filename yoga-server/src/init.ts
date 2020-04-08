@@ -1,4 +1,13 @@
-import {Agent, ContentEncoding, Entry, Group, prisma, User} from "./generated/prisma_client";
+import {
+    Agent,
+    ContentEncoding,
+    Entry,
+    EntryCreateInput,
+    EntryWhereInput,
+    Group,
+    prisma,
+    User
+} from "./generated/prisma_client";
 import {config} from "./config";
 import {EventBroker, Topic, Topics} from "./services/eventBroker";
 import {Helper} from "./helper/helper";
@@ -11,7 +20,53 @@ import {Service} from "./services/service";
 
 const isInTest = typeof global.it === 'function';
 
+export class MemoryEntryStore {
+
+    private _store:{[groupId:string]:{[entryId:string]:Entry}} = {};
+
+    store(groupId:string, entry:EntryCreateInput) : Promise<Entry> {
+        if (!this._store[groupId]){
+            this._store[groupId] = {};
+        }
+
+        entry.id = Helper.getRandomBase64String(32);
+
+        const persistedEntry = <Entry>{
+            id: entry.id,
+            content: entry.content,
+            owner: entry.owner,
+            contentEncoding: entry.contentEncoding,
+            createdBy: entry.createdBy,
+            createdAt: new Date().toISOString(),
+            type: entry.type,
+            name: entry.name,
+        };
+
+        this._store[groupId][entry.id] = persistedEntry;
+
+        return Promise.resolve(persistedEntry);
+    }
+
+    read(groupId:string, where:EntryWhereInput) : Entry[] {
+        return Object.keys(this._store[groupId]).map(key => this._store[groupId][key]);
+    }
+
+    clear(groupId:string) {
+        delete this._store[groupId];
+    }
+
+    clearAll() {
+        this._store = {};
+    }
+}
+
 export class Server {
+
+    get memoryEntries() : MemoryEntryStore {
+        return this._memoryEntries;
+    }
+    private _memoryEntries:MemoryEntryStore = new MemoryEntryStore();
+
     get eventBroker(): EventBroker {
         return this._eventBroker;
     };
@@ -227,6 +282,7 @@ export class Server {
 
         this._newEntryTopic.depend(async newEntry => {
             // Find everyone who may be concerned by the message and who is allowed to see it
+            // TODO: Handle memory entries
             const subscribers = await FindAgentsThatSeeThis.entry(newEntry.id);
 
             for (let subscriber of subscribers) {

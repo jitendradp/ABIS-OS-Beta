@@ -1,8 +1,9 @@
 import {CommonQueries} from "../commonQueries";
-import {EntryWhereInput, prisma} from "../../../generated/prisma_client";
+import {Entry, EntryWhereInput, prisma} from "../../../generated/prisma_client";
 import {Helper} from "../../../helper/helper";
 import {ActionResponse} from "../../mutations/actionResponse";
 import {AgentCanSee} from "../../../statements/agentCanSee";
+import {Init} from "../../../init";
 
 export class GroupQueries2 {
 
@@ -35,11 +36,17 @@ export class GroupQueries2 {
                 };
             }
 
-            const entries = await prisma.group({id: groupId})
-                                  .entries({
-                                      where: entriesWhereInput,
-                                      orderBy: "createdAt_ASC"
-                                  });
+            const group = await prisma.group({id:groupId});
+            let entries:Entry[];
+            if (group.isMemory) {
+                entries = Init.memoryEntries.read(groupId, entriesWhereInput);
+            } else {
+                entries = await prisma.group({id: groupId})
+                    .entries({
+                        where: entriesWhereInput,
+                        orderBy: "createdAt_ASC"
+                    });
+            }
 
             return entries.map(async o => {
                 (<any>o).tagAggregate = [];

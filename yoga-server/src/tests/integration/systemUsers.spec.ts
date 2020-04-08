@@ -9,7 +9,7 @@ import {Topics} from "../../services/eventBroker";
 import {AgentCanSee} from "../../statements/agentCanSee";
 import {AgentCreate} from "../../data/mutations/agentCreate";
 import {UserOwns} from "../../statements/userOwns";
-import {animationFrame} from "rxjs/internal/scheduler/animationFrame";
+import {Helper} from "../../helper/helper";
 
 const context = {
     // Environment
@@ -587,6 +587,41 @@ describe('From anonymous user to signed-up user with authenticated session', () 
             });
 
             it('.. the anonymous session must fill-in the welcome message and send it back to the LoginService', async () => {
+                const dummyRequest = {
+                    res: {
+                        cookie: function(name, val, options) {
+                            Helper.log(`Set cookie ${name}: ${val} - Options: ${JSON.stringify(options)}`);
+                        }
+                    }
+                };
+
+                var done = false;
+                Init.eventBroker.getTopic(context.anonymousProfile.id, Topics.NewEntry).observable.subscribe(async (event: any) => {
+
+                    if (done) {
+                        return;
+                    }
+                    done = true;
+
+                    // Verify that we got a continuation
+                    expect(event.owner)
+                        .eq(context.loginService.id);
+
+                    expect(event.name)
+                        .eq("Continuation");
+
+                    expect(event.contentEncoding.id)
+                        .eq(Init.contentEncodingsNameMap["Continuation"].id);
+
+                    expect(event.content.Continuation.fromAgentId)
+                        .eq(Init.loginServiceId);
+
+                    expect(event.content.Continuation.toAgentId)
+                        .eq(undefined);
+
+                    context.loginContinuation = event;
+                });
+
                 await AgentCreate.entry(Init, context.anonymousProfile.id, context.loginReverseChannel.id, <any>{
                     contentEncoding: context.loginEncoding.id,
                     type: "Json",
@@ -596,39 +631,7 @@ describe('From anonymous user to signed-up user with authenticated session', () 
                             password: "12345678"
                         }
                     }
-                });
-
-                // We expect the service to answer with a 'Continuation' entry that sends us to the VerifyEmail service
-                await new Promise(async (resolve) => {
-                    var done = false;
-                    Init.eventBroker.getTopic(context.anonymousProfile.id, Topics.NewEntry).observable.subscribe(async (event: any) => {
-
-                        if (done) {
-                            return;
-                        }
-                        done = true;
-
-                        // Verify that we got a continuation
-                        expect(event.owner)
-                            .eq(Init.loginServiceId);
-
-                        expect(event.name)
-                            .eq("Continuation");
-
-                        expect(event.contentEncoding.id)
-                            .eq(Init.contentEncodingsNameMap["Continuation"].id);
-
-                        expect(event.content.Continuation.fromAgentId)
-                            .eq(Init.loginServiceId);
-
-                        expect(event.content.Continuation.toAgentId)
-                            .eq(undefined);
-
-                        context.loginContinuation = event;
-
-                        resolve();
-                    });
-                });
+                }, dummyRequest);
             });
         });
 });

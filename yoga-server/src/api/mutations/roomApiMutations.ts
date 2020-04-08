@@ -47,6 +47,7 @@ export class RoomApiMutations {
                 createdBy: myAgent.id,
                 owner: myAgent.id,
                 isPublic: isPublic,
+                isMemory: false,
                 name: name,
                 title: title,
                 description: description,
