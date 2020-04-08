@@ -279,8 +279,8 @@ describe('From anonymous user to signed-up user with authenticated session', () 
                         context.signupWelcomeMessage = event;
 
                         // Verify that we can access the entry
-                        const canSeeChannel = await AgentCanSee.entry(context.anonymousProfile.id, event.id);
-                        expect(canSeeChannel)
+                        const canSeeEntry = await AgentCanSee.entry(Init, context.anonymousProfile.id, event.id);
+                        expect(canSeeEntry)
                             .to.be.true;
 
                         resolve();
@@ -408,7 +408,7 @@ describe('From anonymous user to signed-up user with authenticated session', () 
                         context.verifyEmailWelcomeMessage = event;
 
                         // Verify that we can access the entry
-                        const canSeeChannel = await AgentCanSee.entry(context.anonymousProfile.id, event.id);
+                        const canSeeChannel = await AgentCanSee.entry(Init, context.anonymousProfile.id, event.id);
                         expect(canSeeChannel)
                             .to.be.true;
 
@@ -577,7 +577,7 @@ describe('From anonymous user to signed-up user with authenticated session', () 
                         context.loginWelcomeMessage = event;
 
                         // Verify that we can access the entry
-                        const canSeeChannel = await AgentCanSee.entry(context.anonymousProfile.id, event.id);
+                        const canSeeChannel = await AgentCanSee.entry(Init, context.anonymousProfile.id, event.id);
                         expect(canSeeChannel)
                             .to.be.true;
 
@@ -605,7 +605,7 @@ describe('From anonymous user to signed-up user with authenticated session', () 
 
                     // Verify that we got a continuation
                     expect(event.owner)
-                        .eq(context.loginService.id);
+                        .eq(Init.loginServiceId);
 
                     expect(event.name)
                         .eq("Continuation");

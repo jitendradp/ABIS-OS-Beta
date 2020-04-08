@@ -23,6 +23,7 @@ const isInTest = typeof global.it === 'function';
 export class MemoryEntryStore {
 
     private _store:{[groupId:string]:{[entryId:string]:Entry}} = {};
+    private _entryIdGroupIdLookup:{[entryId:string]:string} = {};
 
     store(groupId:string, entry:EntryCreateInput) : Promise<Entry> {
         if (!this._store[groupId]){
@@ -43,12 +44,21 @@ export class MemoryEntryStore {
         };
 
         this._store[groupId][entry.id] = persistedEntry;
+        this._entryIdGroupIdLookup[entry.id] = groupId;
 
         return Promise.resolve(persistedEntry);
     }
 
+    getEntry(entryId:string) {
+        return this._store[this._entryIdGroupIdLookup[entryId]][entryId];
+    }
+
     read(groupId:string, where:EntryWhereInput) : Entry[] {
         return Object.keys(this._store[groupId]).map(key => this._store[groupId][key]);
+    }
+
+    getGroup(entryId:string) {
+        return this._entryIdGroupIdLookup[entryId];
     }
 
     clear(groupId:string) {
@@ -283,7 +293,7 @@ export class Server {
         this._newEntryTopic.depend(async newEntry => {
             // Find everyone who may be concerned by the message and who is allowed to see it
             // TODO: Handle memory entries
-            const subscribers = await FindAgentsThatSeeThis.entry(newEntry.id);
+            const subscribers = await FindAgentsThatSeeThis.entry(this, newEntry.id);
 
             for (let subscriber of subscribers) {
                 const newEntryTopic = this.eventBroker.tryGetTopic<Entry>(subscriber, Topics.NewEntry);
