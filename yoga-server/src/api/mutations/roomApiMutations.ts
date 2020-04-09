@@ -1,6 +1,6 @@
 import {Helper} from "../../helper/helper";
 import {ActionResponse} from "./actionResponse";
-import {prisma} from "../../generated";
+import {prisma} from "../../generated/prisma_client";
 import {CommonQueries} from "../queries/commonQueries";
 import {AgentOwns} from "../../statements/agentOwns";
 
@@ -47,6 +47,7 @@ export class RoomApiMutations {
                 createdBy: myAgent.id,
                 owner: myAgent.id,
                 isPublic: isPublic,
+                isMemory: false,
                 name: name,
                 title: title,
                 description: description,

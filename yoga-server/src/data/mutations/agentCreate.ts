@@ -1,4 +1,4 @@
-import {Entry, EntryCreateInput, Group, prisma} from "../../generated";
+import {Entry, EntryCreateInput, Group, prisma} from "../../generated/prisma_client";
 import {Helper} from "../../helper/helper";
 import {EventBroker, Topics} from "../../services/eventBroker";
 import {Channel} from "../../api/types/channel";
@@ -23,6 +23,7 @@ export class AgentCreate {
             name: name,
             logo: logo,
             isPublic: false,
+            isMemory: false
         });
 
         Helper.log(`Created a new stash (${newStash.id}) for agent '${agentId}'.`);
@@ -30,7 +31,16 @@ export class AgentCreate {
         return newStash;
     }
 
-    public static async channel(server:Server, fromAgentId: string, toAgentId: string, name: string, logo: string) {
+    /**
+     * Creates a new directional channel from one agent to another.
+     * @param server The environment
+     * @param fromAgentId The owner agent
+     * @param toAgentId The receiver agent
+     * @param isMemory If the channel should store its entries only in memory
+     * @param name The name of the channel
+     * @param logo The logo of the channel
+     */
+    public static async channel(server:Server, fromAgentId: string, toAgentId: string, isMemory:boolean, name: string, logo: string) {
         const fromAgent = await prisma.agent({id: fromAgentId});
         if (!fromAgent) {
             throw new Error(`Couldn't create a Channel from agent '${fromAgentId}' to agent '${toAgentId}'. The specified fromAgentId does not exist.`);
@@ -61,6 +71,7 @@ export class AgentCreate {
             name: name,
             logo: logo,
             isPublic: false,
+            isMemory: isMemory,
             memberships: {
                 create: {
                     createdBy: fromAgentId,
@@ -75,7 +86,7 @@ export class AgentCreate {
             }
         });
 
-        Helper.log(`Created a Channel from agent '${fromAgentId}' to agent '${toAgentId}'.`);
+        Helper.log(`Created a ${isMemory ? "Memory" : ""}Channel from agent '${fromAgentId}' to agent '${toAgentId}'.`);
 
         // Augment the created channel with its reverse channel (if any)
         const reverseChannel = await prisma.groups({where:{owner: toAgentId, memberships_every:{member:{id:fromAgentId}}}});
@@ -118,7 +129,8 @@ export class AgentCreate {
             type: "Room",
             name: name,
             logo: logo,
-            isPublic: isPublic
+            isPublic: isPublic,
+            isMemory: false
         });
 
         Helper.log(`Created a new room (${newRoom.id}) with agent '${agentId}' as owner.`);
@@ -130,10 +142,46 @@ export class AgentCreate {
         return newRoom;
     }
 
-    public static async entry(server: Server, agentId: string, groupId: string, entry: EntryCreateInput, request?:any) {
+    public static async entry(server: Server, agentId: string, groupId: string, entry: EntryCreateInput, request?:any) : Promise<Entry> {
         entry.createdBy = agentId;
         entry.owner = agentId;
 
+        // TODO: Check if the entry is written to a memory channel. If so, don't create the entry in the db.
+        const group = await prisma.group({id: groupId});
+        let createdEntry:Entry = null;
+        if (group.isMemory) {
+            createdEntry = await this.memoryEntry(entry, groupId, server, request);
+        } else {
+            createdEntry = await this.persistedEntry(entry, groupId, server, request);
+        }
+
+        const contentEncoding = server.contentEncodingsIdMap[entry.contentEncoding];
+        if (!contentEncoding) {
+            throw new Error(`The content encoding with the id '${entry.contentEncoding}' is unknown.`);
+        }
+
+        if (contentEncoding) {
+            (<any>createdEntry).contentEncoding = { // TODO: Fix cast
+                id: contentEncoding.id
+            };
+        }
+
+        (<any>createdEntry).__request = request; // TODO: Find a better way to set cookies
+
+        // TODO: This can propagate the errors of services to this position
+        await server.eventBroker
+            .getTopic<Entry>("system", Topics.NewEntry)
+            .publish(createdEntry);
+
+        return createdEntry;
+    }
+
+    private static async memoryEntry(entry: EntryCreateInput, groupId: string, server: Server, request: any) : Promise<Entry> {
+        const memoryPersistedEntry = await server.memoryEntries.store(groupId, entry);
+        return memoryPersistedEntry;
+    }
+
+    private static async persistedEntry(entry: EntryCreateInput, groupId: string, server: Server, request: any) {
         // TODO: No transactions..
         const persistedEntry = await prisma.createEntry(entry);
 
@@ -149,24 +197,6 @@ export class AgentCreate {
                 }
             }
         });
-
-        const contentEncoding = server.contentEncodingsIdMap[entry.contentEncoding];
-        if (!contentEncoding) {
-            throw new Error(`The content encoding with the id '${entry.contentEncoding}' is unknown.`);
-        }
-
-        if (contentEncoding) {
-            (<any> persistedEntry).contentEncoding = { // TODO: Fix cast
-                id: contentEncoding.id
-            };
-        }
-
-        (<any>persistedEntry).__request = request; // TODO: Find a better way to set cookies
-
-        // TODO: This can propagate the errors of services to this position
-        await server.eventBroker
-            .getTopic<Entry>("system", Topics.NewEntry)
-            .publish(persistedEntry);
 
         return persistedEntry;
     }

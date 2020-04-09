@@ -27,6 +27,12 @@ export class AgentHost {
 
     public loadAgent(agent:Agent) {
         Helper.log(`Starting ${agent.implementation} (${agent.id})`);
+
+        if (this._services[agent.id]) {
+            Helper.log(`   ${agent.implementation} (${agent.id}) is already running.`);
+            return;
+        }
+
         const serviceFactory = this.serviceImplementations[agent.implementation];
         this._services[agent.id] = serviceFactory(this._server, agent);
         this._services[agent.id].start();

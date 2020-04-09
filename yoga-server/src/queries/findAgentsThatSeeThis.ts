@@ -1,24 +1,38 @@
-import {prisma} from "../generated";
+import {Group, prisma} from "../generated/prisma_client";
+import {Init, Server} from "../init";
 
 export class FindAgentsThatSeeThis {
-    public static async entry(entryId:string) {
-        const entry = await prisma.entry({id:entryId});
+    public static async entry(server:Server, entryId:string) {
+        let entry = await prisma.entry({id:entryId});
+        if (!entry) {
+            // Check memory entries
+            entry = server.memoryEntries.getEntry(entryId);
+        }
         if (!entry) {
             return [];
         }
 
-        const group = await prisma.groups({
+        let groups = await prisma.groups({
             where: {
                 entries_some: {
                     id: entryId
                 }
             }
         });
+
+        let group:Group;
+        if (groups.length > 0) {
+            group = groups[0];
+        }
+        if (!group) {
+            const memoryGroupId = server.memoryEntries.getGroup(entryId);
+            group = await prisma.group({id:memoryGroupId});
+        }
         if (!group) {
             return [];
         }
 
-        const memberships = await prisma.group({id: group[0].id}).memberships();
+        const memberships = await prisma.group({id: group.id}).memberships();
 
         const members = [];
         for (let membership of memberships) {
@@ -27,8 +41,8 @@ export class FindAgentsThatSeeThis {
         }
 
         let owners = [entry.owner];
-        if (entry.owner != group[0].owner) {
-            owners.push(group[0].owner);
+        if (entry.owner != group.owner) {
+            owners.push(group.owner);
         }
 
         return owners.concat(members);
