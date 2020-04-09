@@ -2,7 +2,6 @@ import {IChangeAction} from "./IChangeAction";
 
 export class ChangeAction<T> implements IChangeAction<T> {
   public name: string;
-
   public oldValue: T;
   public newValue: T;
 
