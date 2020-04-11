@@ -1,3 +1,4 @@
+<!-- todo: Make a general "horizontal" version for this -->
 <div class="sidebarWrapper" *ngIf="onLeftSide">
   <div class="topIcon">
     <div style="padding: 12px">
@@ -16,6 +17,44 @@
     </div>
   </div>
 </div>
+
+<!-- todo: Make a general "horizontal" version for this -->
+<div *ngIf="onFooter">
+  <div class="subline"></div>
+  <mat-grid-list class="quickButtons" cols="5" rowHeight="53px">
+    <mat-grid-tile>
+      <button routerLink="cockpit" mat-button class="tileButton">
+        <mat-icon>bar_chart</mat-icon>
+        <span fxHide fxShow.gt-sm class="iconLabelSpacing">Cockpit</span>
+      </button>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <button routerLink="store" mat-button class="tileButton">
+        <mat-icon>apps</mat-icon>
+        <span fxHide fxShow.gt-sm class="iconLabelSpacing">Apps</span>
+      </button>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <button (click)="openBottomSheet()" mat-button class="tileButton">
+        <mat-icon>graphic_eq</mat-icon>
+        <span fxHide fxShow.gt-sm class="iconLabelSpacing">AI Search</span>
+      </button>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <button routerLink="map" mat-button class="tileButton">
+        <mat-icon>map</mat-icon>
+        <span fxHide fxShow.gt-sm class="iconLabelSpacing">Map</span>
+      </button>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <button routerLink="studio" mat-button class="tileButton">
+        <mat-icon>donut_small</mat-icon>
+        <span fxHide fxShow.gt-sm class="iconLabelSpacing">Studio</span>
+      </button>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
+
 
 <div *ngIf="onCockpit">
   <mat-grid-list class="embeddableQuickButtons" cols="3" rowHeight="56px">
@@ -59,38 +98,3 @@
   </div>
 </div>
 
-<div *ngIf="onFooter">
-  <div class="subline"></div>
-  <mat-grid-list class="quickButtons" cols="5" rowHeight="53px">
-    <mat-grid-tile>
-      <button routerLink="cockpit" mat-button class="tileButton">
-        <mat-icon>bar_chart</mat-icon>
-        <span fxHide fxShow.gt-sm class="iconLabelSpacing">Cockpit</span>
-      </button>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <button routerLink="store" mat-button class="tileButton">
-        <mat-icon>apps</mat-icon>
-        <span fxHide fxShow.gt-sm class="iconLabelSpacing">Apps</span>
-      </button>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <button (click)="openBottomSheet()" mat-button class="tileButton">
-        <mat-icon>graphic_eq</mat-icon>
-        <span fxHide fxShow.gt-sm class="iconLabelSpacing">AI Search</span>
-      </button>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <button routerLink="map" mat-button class="tileButton">
-        <mat-icon>map</mat-icon>
-        <span fxHide fxShow.gt-sm class="iconLabelSpacing">Map</span>
-      </button>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <button routerLink="studio" mat-button class="tileButton">
-        <mat-icon>donut_small</mat-icon>
-        <span fxHide fxShow.gt-sm class="iconLabelSpacing">Studio</span>
-      </button>
-    </mat-grid-tile>
-  </mat-grid-list>
-</div>

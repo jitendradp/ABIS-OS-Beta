@@ -17,7 +17,6 @@ import {MatDialog} from "@angular/material";
 import {EditorChannelComponent} from "./dialogs/editor-channel/editor-channel.component";
 import {Home} from "./actions/routes/Home";
 import {ShowNotification} from "./actions/ui/ShowNotification";
-import {SwitchProfile} from "./actions/routes/SwitchProfile";
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {LogEntry} from "./services/logger.service";
 import {Back} from "./actions/routes/Back";
@@ -136,9 +135,6 @@ export class AppComponent implements AfterViewInit {
           return;
         }
         history.back();
-        break;
-      case SwitchProfile.Name:
-        this._router.navigate(["/switch-profile"]);
         break;
       case Logout.Name:
         this._router.navigate(["/logout"]);
