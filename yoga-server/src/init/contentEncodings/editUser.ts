@@ -4,16 +4,20 @@ export const Index: ContentEncodingCreateInput = {
     createdBy: "",
     maintainer: "",
     charset: "utf-8",
-    name: "VerifyEmail",
+    name: "EditUser",
     type: "JsonSchema",
     data: JSON.stringify({
-        VerifyEmail: {
+        EditUser: {
             "type": "object",
             "properties": {
-                "code": {"type": "string"}
+                "first_name": { "type": "string" , "minLength": 2},
+                "last_name": { "type": "string", "minLength": 3 },
+                "email": { "type": "string", "minLength": 6 }
             },
             "required": [
-                "code"
+                "first_name",
+                "last_name",
+                "email"
             ]
         }
     })

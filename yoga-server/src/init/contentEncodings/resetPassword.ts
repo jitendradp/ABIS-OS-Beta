@@ -4,16 +4,16 @@ export const Index: ContentEncodingCreateInput = {
     createdBy: "",
     maintainer: "",
     charset: "utf-8",
-    name: "VerifyEmail",
+    name: "ResetPassword",
     type: "JsonSchema",
     data: JSON.stringify({
-        VerifyEmail: {
+        ResetPassword: {
             "type": "object",
             "properties": {
-                "code": {"type": "string"}
+                "email": {"type": "string"}
             },
             "required": [
-                "code"
+                "email"
             ]
         }
     })
