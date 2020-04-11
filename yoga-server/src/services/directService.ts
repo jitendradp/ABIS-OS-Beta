@@ -70,7 +70,10 @@ export abstract class DirectService extends Service {
             contentEncoding: this.welcomeMessageContentEncodingId,
             content:null,
             name: "Welcome"
-        });
+        },
+            null,
+            null,
+            null);
 
         Helper.log(`${this.name} (${this.id}): posted welcome message ${welcomeEntry.id} to agent '${newChannel.owner}' via channel '${reverseChannel.id}'.`);
     }
@@ -132,7 +135,10 @@ export abstract class DirectService extends Service {
                 }
             },
             name: "Continuation"
-        });
+        },
+            null,
+            null,
+            null);
     }
 
     protected postError(summary:string, validationErrors:{key:string,value:string}[], inChannelId:string) {
@@ -146,6 +152,9 @@ export abstract class DirectService extends Service {
                 detail: validationErrors
             },
             name: "Validation error"
-        });
+        },
+            null,
+            null,
+            null);
     }
 }

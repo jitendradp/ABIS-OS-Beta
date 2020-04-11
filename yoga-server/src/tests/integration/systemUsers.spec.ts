@@ -301,7 +301,10 @@ describe('From anonymous user to signed-up user with authenticated session', () 
                             password_confirmation: "12345678"
                         }
                     }
-                });
+                },
+                    null,
+                    null,
+                    null);
 
                 // We expect the service to answer with a 'Continuation' entry that sends us to the VerifyEmail service
                 await new Promise(async (resolve) => {
@@ -432,7 +435,10 @@ describe('From anonymous user to signed-up user with authenticated session', () 
                             code: profileOwner[0].challenge
                         }
                     }
-                });
+                },
+                    null,
+                    null,
+                    null);
 
                 // We expect the service to answer with a 'Continuation' entry that sends us to the Login service
                 await new Promise(async (resolve) => {
@@ -631,7 +637,9 @@ describe('From anonymous user to signed-up user with authenticated session', () 
                             password: "12345678"
                         }
                     }
-                }, dummyRequest);
+                }, dummyRequest,
+                    null,
+                    null);
             });
         });
 });

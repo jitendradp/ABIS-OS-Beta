@@ -68,6 +68,12 @@ export class MemoryEntryStore {
     clearAll() {
         this._store = {};
     }
+
+    addGroup(groupId: string) {
+        if (!this._store[groupId]) {
+            this._store[groupId] = {};
+        }
+    }
 }
 
 export class Server {
@@ -127,6 +133,10 @@ export class Server {
 
     get verifyEmailContentEncoding(): ContentEncoding {
         return this.contentEncodingsNameMap["VerifyEmail"];
+    }
+
+    get getChangePasswordContentEncoding(): ContentEncoding {
+        return this.contentEncodingsNameMap["ChangePassword"];
     }
 
     get loginContentEncoding(): ContentEncoding {
@@ -447,7 +457,10 @@ export class Server {
                 type: "Json",
                 name: countryName,
                 content: geojson
-            });
+            },
+            null,
+            null,
+            null);
 
         console.log(`   Created entry '${newEntry.id}' for country '${countryName}' in group system room '${this._countriesSystemRoom.id}'.`);
     }

@@ -57,7 +57,6 @@ import {EditorChannelComponent} from './dialogs/editor-channel/editor-channel.co
 import {HttpClientModule} from '@angular/common/http';
 import {CardIntroComponent} from "./cards/card-intro/card-intro.component";
 import {NavigationComponent} from "./navigation/navigation.component";
-import {SwitchProfileComponent} from './dialogs/switch-profile/switch-profile.component';
 import {LogoutComponent} from './pages/system/logout/logout.component';
 import {IAction} from "./actions/IAction";
 import {EditorGroupComponent} from "./dialogs/editor-group/editor-group.component";
@@ -108,6 +107,7 @@ import {MaterialDesignFrameworkModule} from "angular6-json-schema-form";
 import {ServiceDialogComponent} from "./services/service-dialog/service-dialog.component";
 import {GraphQLConfigModule} from "./apolloConfig";
 import {ListIconComponent} from './lists/list-icon/list-icon.component';
+import {ChangePasswordComponent} from "./pages/system/change-password/change-password.component";
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -159,6 +159,13 @@ const appRoutes: Routes = [
     , canActivate: [CanActivateRoute]
   },
   {
+    path: 'change-password', component: ChangePasswordComponent, data: {
+      "title": "Change password",
+      "actions": defaultActions
+    }
+    , canActivate: [CanActivateRoute]
+  },
+  {
     path: '', component: MapComponent, data: {
       "title": "Map",
       "actions": defaultActions
@@ -175,13 +182,6 @@ const appRoutes: Routes = [
   {
     path: 'editor-channel', component: EditorChannelComponent, data: {
       "title": "Create new channel",
-      "actions": defaultActions
-    }
-    , canActivate: [CanActivateRoute]
-  },
-  {
-    path: 'switch-profile', component: SwitchProfileComponent, data: {
-      "title": "Switch profile",
       "actions": defaultActions
     }
     , canActivate: [CanActivateRoute]
@@ -228,7 +228,6 @@ const appRoutes: Routes = [
     EditorChannelComponent,
     CardIntroComponent,
     NavigationComponent,
-    SwitchProfileComponent,
     LogoutComponent,
     EditorGroupComponent,
     CardMessageComponent,
@@ -243,6 +242,7 @@ const appRoutes: Routes = [
     ChartLineComponent,
     ChartMapComponent,
     ChartSankeyComponent,
+    ChangePasswordComponent,
     ChartTableComponent,
     MaterialElevationDirective,
     ChatNavigationComponent,
