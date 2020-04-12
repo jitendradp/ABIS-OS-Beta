@@ -18,7 +18,7 @@ export class CardProfileComponent {
   }
 
   close() {
-    this.actionDispatcher.dispatch(new SetSidebarVisibility("left", "invisible", "z1"));
+    this.actionDispatcher.dispatch(new SetSidebarVisibility("left", "invisible", "base"));
   }
 
   @Input()

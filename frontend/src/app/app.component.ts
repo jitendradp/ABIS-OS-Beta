@@ -49,8 +49,6 @@ export class AppComponent implements AfterViewInit {
 
   actions: IEvent[] = [];
 
-  sidebarMode:string = "Small";
-
   constructor(
     private userService: UserService,
     private _router: Router,
@@ -81,7 +79,7 @@ export class AppComponent implements AfterViewInit {
         }
 
         if (this.deviceService.isMobile() && this.right.opened) {
-          this.actionDispatcher.dispatch(new SetSidebarVisibility("right", "invisible", "z1"));
+          this.actionDispatcher.dispatch(new SetSidebarVisibility("right", "invisible", "base"));
         }
         break;
       case SetSidebarVisibility.Name:

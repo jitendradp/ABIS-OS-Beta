@@ -1,5 +1,5 @@
 import {Type} from "@angular/core";
-import {SidebarSide} from "./SetSidebarVisibility";
+import {Elevation, SidebarSide} from "./SetSidebarVisibility";
 import {IEvent} from "../IEvent";
 
 export class SetSidebarContent<T> implements IEvent {
@@ -8,9 +8,11 @@ export class SetSidebarContent<T> implements IEvent {
 
   side: SidebarSide;
   component: Type<T>;
+  elevation:Elevation;
 
-  constructor(side:SidebarSide, component: Type<T>) {
+  constructor(side:SidebarSide, component: Type<T>, elevation:Elevation) {
     this.side = side;
     this.component = component;
+    this.elevation = elevation;
   }
 }

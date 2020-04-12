@@ -6,11 +6,8 @@
       <app-feed-notification></app-feed-notification>
     </mat-drawer>
     <mat-drawer-content class="body">
-      <mat-sidenav position="start" mode="push" class="sidebarLeft_full" *ngIf='sidebarMode == "Full"'>
-        <app-chat-navigation [mode]="sidebarMode"></app-chat-navigation>
-      </mat-sidenav>
-      <mat-sidenav #left position="start" mode="push" class="sidebarLeft_small" *ngIf="sidebarMode == 'Small'">
-        <app-chat-navigation [mode]="sidebarMode"></app-chat-navigation>
+      <mat-sidenav #left position="start" mode="push" class="sidebarLeft" >
+        <app-chat-navigation></app-chat-navigation>
       </mat-sidenav>
       <router-outlet></router-outlet>
       <app-iconbar [orientation]='"Horizontal"' class="footer"></app-iconbar>

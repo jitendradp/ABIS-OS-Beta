@@ -56,31 +56,31 @@ export class IconbarComponent {
 
   public get entries() : IAction[] {
     if (!this._entries) {
-      const setGroupList = new SetSidebarContent("left", ListGroupComponent);
-      const setContactList = new SetSidebarContent("left", ListContactComponent);
-      const setChat = new SetSidebarContent("left", ListChatComponent);
-      const openLeftSidebar = new SetSidebarVisibility("left", "visible", "z1");
+      const profileList = new SetSidebarContent("left", ListGroupComponent, "base");
+      const contactList = new SetSidebarContent("left", ListContactComponent, "base");
+      const roomList = new SetSidebarContent("left", ListChatComponent, "level1");
+      const openLeftSidebar = new SetSidebarVisibility("left", "visible", "base");
 
       this._entries = [
         new NestedAction(
           "group",
           "Groups",
           [
-            <IEvent>setGroupList,
+            <IEvent>profileList,
             <IEvent>openLeftSidebar
           ]),
         new NestedAction(
           "contacts",
           "Contacts",
           [
-            <IEvent>setContactList,
+            <IEvent>contactList,
             <IEvent>openLeftSidebar
           ]),
         new NestedAction(
           "group",
           "Groups",
           [
-            <IEvent>setChat,
+            <IEvent>roomList,
             <IEvent>openLeftSidebar
           ])
       ];
@@ -99,7 +99,7 @@ export class IconbarComponent {
   }
 
   close() {
-    this.actionDispatcher.dispatch(new SetSidebarVisibility("left", "invisible", "z1"));
+    this.actionDispatcher.dispatch(new SetSidebarVisibility("left", "invisible", "base"));
   }
 
   logout() {

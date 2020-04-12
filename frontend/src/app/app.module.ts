@@ -124,7 +124,7 @@ const defaultActions: IAction[] =
       icon: "chevron_left",
       side: "left",
       state: "toggle",
-      elevation: "z1"
+      elevation: "base"
     },
 
     // todo show/hide when user is logged in or not
@@ -134,7 +134,7 @@ const defaultActions: IAction[] =
       icon: "more_vert",
       side: "right",
       state: "toggle",
-      elevation: "z1"
+      elevation: "base"
     }
   ];
 

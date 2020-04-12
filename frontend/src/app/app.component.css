@@ -1,9 +1,4 @@
-.sidebarLeft_full {
-  width: 67%;
-  background-color: #fff;
-}
-
-.sidebarLeft_small {
+.sidebarLeft {
    width: 33%;
    background-color: #fff;
  }
@@ -15,11 +10,7 @@
 }
 
 @media screen and (max-width: 735px) {
-  .sidebarLeft_full {
-    width: 50%;
-    min-width: 300px;
-  }
-  .sidebarLeft_small {
+  .sidebarLeft {
     width: 25%;
     min-width: 300px;
   }

@@ -3,7 +3,7 @@ import {IAction} from "../IAction";
 export type SidebarSide = "right" | "left" | "middle";
 export type VisibilityState = "visible" | "invisible" | "toggle";
 /* todo elevation state to show or hide it? For more information see material design documentation */
-export type ElevationState = "z1" | "z2";
+export type Elevation = "base" | "level1";
 
 export class SetSidebarVisibility implements IAction {
   public static readonly Name: string = "Abis.UI.Sidebar.SetSidebarVisibility";
@@ -11,12 +11,12 @@ export class SetSidebarVisibility implements IAction {
 
   side: SidebarSide;
   state: VisibilityState;
-  elevation: ElevationState;
+  elevation: Elevation;
 
   constructor(
     side: SidebarSide,
     state: VisibilityState,
-    elevation: ElevationState
+    elevation: Elevation
   ) {
     this.side = side;
     this.state = state;
