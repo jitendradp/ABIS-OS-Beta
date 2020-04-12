@@ -16,15 +16,6 @@ import {
 import {ClientStateService} from "./client-state.service";
 import {Logger, LoggerService} from "./logger.service";
 import {SessionCreated} from "../actions/user/SessionCreated";
-import {IAction} from "../actions/IAction";
-import {INestedEvent} from "../actions/INestedEvent";
-import {IEvent} from "../actions/IEvent";
-import {SetSidebarContent} from "../actions/ui/SetSidebarContent";
-import {ListContactComponent} from "../list-items/list-contact/list-contact.component";
-import {ListGroupComponent} from "../list-items/list-group/list-group.component";
-import {ListChatComponent} from "../list-items/list-chat/list-chat.component";
-import {SetSidebarVisibility} from "../actions/ui/SetSidebarVisibility";
-import {NestedAction} from "../actions/NestedAction";
 
 @Injectable({
   providedIn: 'root'

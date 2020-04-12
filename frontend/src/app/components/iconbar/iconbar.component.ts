@@ -57,10 +57,10 @@ export class IconbarComponent {
 
   public get entries() : IAction[] {
     if (!this._entries) {
-      const profileList = new SetSidebarContent("left", ListGroupComponent, "base");
-      const contactList = new SetSidebarContent("left", ListContactComponent, "base");
-      const roomList = new SetSidebarContent("left", ListChatComponent, "level1");
-      const chat = new SetSidebarContent("left", ChatComponent, "level1");
+      const profileList = new SetSidebarContent("Groups", "left", ListGroupComponent, "base");
+      const contactList = new SetSidebarContent("Contacts", "left", ListContactComponent, "base");
+      const roomList = new SetSidebarContent("Rooms", "left", ListChatComponent, "base");
+      const chat = new SetSidebarContent("Chat", "left", ChatComponent, "level1");
       const openLeftSidebarBase = new SetSidebarVisibility("left", "visible", "base");
       const openLeftSidebarLevel1 = new SetSidebarVisibility("left", "visible", "level1");
 

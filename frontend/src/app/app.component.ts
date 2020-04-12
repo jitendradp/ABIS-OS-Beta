@@ -29,6 +29,7 @@ import {Logout} from "./actions/routes/Logout";
 import {UserService} from "./services/user.service";
 import {CreateEntryGQL} from "../generated/abis-api";
 import {NestedAction} from "./actions/NestedAction";
+import {SetApplicationTitle} from "./actions/ui/SetApplicationTitle";
 
 @Component({
   selector: 'app-root',
@@ -67,11 +68,15 @@ export class AppComponent implements AfterViewInit {
   ngAfterViewInit(): void {
   }
 
+  private _routeTitle:string;
+
   private handleAction(action) {
     switch (action.name) {
       case RouteChanged.Name:
         // set the title on the header bar
         this.title = action.data.title;
+        this._routeTitle = this.title;
+
         if (action.data.actions) {
           this.actions = action.data.actions;
         } else {
@@ -81,6 +86,9 @@ export class AppComponent implements AfterViewInit {
         if (this.deviceService.isMobile() && this.right.opened) {
           this.actionDispatcher.dispatch(new SetSidebarVisibility("right", "invisible", "base"));
         }
+        break;
+      case SetApplicationTitle.Name:
+        this.title = (<SetApplicationTitle>action).title;
         break;
       case SetSidebarVisibility.Name:
         let visibility: boolean = false;
@@ -96,7 +104,13 @@ export class AppComponent implements AfterViewInit {
             break;
         }
         if (action.side == "left") {
-          this.left.toggle(visibility);
+          // Every time when the sidebar is hidden, show the route's title in the header.
+          this.left.toggle(visibility).then(o => {
+            if (o != "close"){
+              return;
+            }
+            this.title = this._routeTitle;
+          });
         } else if (action.side == "right") {
           this.right.toggle(visibility);
         }

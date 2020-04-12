@@ -9,7 +9,7 @@
   </div>
   <div class="leftIconList">
     <mat-nav-list>
-      <a mat-list-item matTooltip="Activities" *ngFor="let action of entries" (click)="onIconClick($event, action)">
+      <a mat-list-item [matTooltip]="action.label" *ngFor="let action of entries" (click)="onIconClick($event, action)">
         <mat-icon class="iconSpacer">{{action.icon}}</mat-icon>
       </a>
     </mat-nav-list>
