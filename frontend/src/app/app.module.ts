@@ -47,7 +47,6 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {NgxEchartsModule} from "ngx-echarts";
 import {MapComponent} from './map/map.component';
-import {InviteComponent} from './chat/invite/invite.component';
 import {LogoComponent} from './components/logo/logo.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HeaderComponent} from './components/header/header.component';
@@ -111,6 +110,7 @@ import {SetPasswordComponent} from "./pages/system/set-password/set-password.com
 import {ResetPasswordComponent} from "./pages/system/reset-password/reset-password.component";
 import {CreateProfileComponent} from "./pages/system/create-profile/create-profile.component";
 import {CreateRoomComponent} from "./pages/system/create-room/create-room.component";
+import {InviteComponent} from "./pages/system/invite/invite.component";
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -157,6 +157,13 @@ const appRoutes: Routes = [
   {
     path: 'register', component: SignupComponent, data: {
       "title": "Sign up",
+      "actions": defaultActions
+    }
+    , canActivate: [CanActivateRoute]
+  },
+  {
+    path: 'invite', component: InviteComponent, data: {
+      "title": "Invite",
       "actions": defaultActions
     }
     , canActivate: [CanActivateRoute]
@@ -244,7 +251,6 @@ const appRoutes: Routes = [
     LoginComponent,
     IconbarComponent,
     MapComponent,
-    InviteComponent,
     LogoComponent,
     HeaderComponent,
     InputComponent,
@@ -271,6 +277,7 @@ const appRoutes: Routes = [
     ChangePasswordComponent,
     ChartTableComponent,
     MaterialElevationDirective,
+    InviteComponent,
     ChatNavigationComponent,
     ChatComponent,
     ChipComponent,

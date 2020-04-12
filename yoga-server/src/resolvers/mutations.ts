@@ -28,7 +28,7 @@ export const mutations = {
         Helper.setSessionTokenCookie(session.sessionToken, ctx.request);
         Helper.clearBearerTokenCookie(ctx.request);
 
-        return <ActionResponse> {
+        return <ActionResponse>{
             success: true,
             code: session.csrfToken,
             data: anonymousProfile.id,
@@ -38,9 +38,9 @@ export const mutations = {
 
     async verifySession(root, {csrfToken}, ctx) {
         const sessions = await prisma.sessions({
-            where:{
-                csrfToken:csrfToken,
-                sessionToken:ctx.sessionToken
+            where: {
+                csrfToken: csrfToken,
+                sessionToken: ctx.sessionToken
             }
         });
         if (sessions.length != 1) {
@@ -56,7 +56,7 @@ export const mutations = {
             && Date.parse(session.validTo) > Date.now();
 
         return <ActionResponse>{
-           success: isValid
+            success: isValid
         };
     },
 
@@ -72,15 +72,16 @@ export const mutations = {
 
         // TODO: find a nicer method to determine if a channel should be a memory channel or not
         if (toAgentId == Init.loginServiceId
-        || toAgentId == Init.signupServiceId
-        || toAgentId == Init.verifyEmailServiceId)
-        {
+            || toAgentId == Init.signupServiceId
+            || toAgentId == Init.verifyEmailServiceId
+            || toAgentId == Init.setPasswordServiceId
+            || toAgentId == Init.resetPasswordServiceId) {
             newChannel = await AgentCreate.channel(Init, agentId, toAgentId, true, "New Channel", "channel.png");
         } else {
             newChannel = await AgentCreate.channel(Init, agentId, toAgentId, false, "New Channel", "channel.png");
         }
 
-        (<any>newChannel).receiver = await prisma.agent({id:toAgentId});
+        (<any>newChannel).receiver = await prisma.agent({id: toAgentId});
 
         return newChannel;
     },
@@ -94,7 +95,7 @@ export const mutations = {
         const agentId = await GetAgentOf.session(csrfToken, ctx.sessionToken);
         const groupId = createEntryInput.roomId;
 
-        const group = await prisma.group({id:groupId});
+        const group = await prisma.group({id: groupId});
         if (!group) {
             throw new Error(`The specified group doesn't exist: ${createEntryInput.roomId}`)
         }
@@ -136,7 +137,7 @@ export const mutations = {
 
         const room = await AgentCreate.room(Init, agentId, createRoomInput.name, createRoomInput.logo, true);
         (<any>room).isPrivate = !room.isPublic;
-        (<any>room).inbox = {id:""};
+        (<any>room).inbox = {id: ""};
         (<any>room).memberships = [];
         return room;
     },

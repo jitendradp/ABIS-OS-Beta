@@ -11,7 +11,7 @@ class Implementation extends DirectService {
     private readonly bcrypt = require('bcrypt');
 
     get welcomeMessageContentEncodingId(): string {
-        return this.server.getResetPasswordContentEncoding.id;
+        return this.server.resetPasswordContentEncoding.id;
     }
 
     async onNewEntry(newEntry:Entry, answerChannel:Group){

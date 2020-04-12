@@ -25,7 +25,6 @@ import {SetSidebarVisibility} from "./actions/ui/SetSidebarVisibility";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {RouteChanged} from "./actions/routes/RouteChanged";
 import {ListGroupComponent} from "./lists/list-group/list-group.component";
-import {InviteComponent} from "./chat/invite/invite.component";
 import {Logout} from "./actions/routes/Logout";
 import {UserService} from "./services/user.service";
 import {CreateEntryGQL} from "../generated/abis-api";
@@ -182,6 +181,7 @@ export class AppComponent implements AfterViewInit {
   }
 
   public openContactInviteDialog(): void {
+    /*
     const dialogRef = this._dialog.open(InviteComponent, {
       width: '50%',
       minWidth: '300px'
@@ -190,5 +190,6 @@ export class AppComponent implements AfterViewInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
+     */
   }
 }

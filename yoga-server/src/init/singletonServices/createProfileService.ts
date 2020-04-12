@@ -22,10 +22,10 @@ class Implementation extends DirectService {
     }
 
     async onNewEntry(newEntry:Entry, answerChannel:Group) {
-        var profile_name = newEntry.content.CreateProfile.profile_name;
-        var csrfToken = (<any>newEntry).__csrfToken;
-        var sessionToken = (<any>newEntry).__sessionToken;
-        var bearerToken = (<any>newEntry).__bearerToken;
+        const profile_name = newEntry.content.CreateProfile.profile_name;
+        const csrfToken = (<any>newEntry).__csrfToken;
+        const sessionToken = (<any>newEntry).__sessionToken;
+        const bearerToken = (<any>newEntry).__bearerToken;
 
         const userHasAuthenticatedSession = await UserHas.authenticatedSession(sessionToken, csrfToken, bearerToken);
         if (!userHasAuthenticatedSession) {

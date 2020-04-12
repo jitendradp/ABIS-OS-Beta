@@ -24,12 +24,12 @@ class Implementation extends DirectService {
     }
 
     async onNewEntry(newEntry:Entry, answerChannel:Group) {
-        var name = newEntry.content.CreateRoom.name;
-        var logo = !newEntry.content.CreateRoom.icon ? "" : newEntry.content.CreateRoom.icon;
-        var isPublic = newEntry.content.CreateRoom.visibility == "Public";
-        var csrfToken = (<any>newEntry).__csrfToken;
-        var sessionToken = (<any>newEntry).__sessionToken;
-        var bearerToken = (<any>newEntry).__bearerToken;
+        const name = newEntry.content.CreateRoom.name;
+        const logo = !newEntry.content.CreateRoom.icon ? "" : newEntry.content.CreateRoom.icon;
+        const isPublic = newEntry.content.CreateRoom.visibility == "Public";
+        const csrfToken = (<any>newEntry).__csrfToken;
+        const sessionToken = (<any>newEntry).__sessionToken;
+        const bearerToken = (<any>newEntry).__bearerToken;
 
         const userHasAuthenticatedSession = await UserHas.authenticatedSession(sessionToken, csrfToken, bearerToken);
         if (!userHasAuthenticatedSession) {

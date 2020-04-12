@@ -111,6 +111,10 @@ export class Server {
         return this._serviceNameMap["SetPasswordService"].id;
     }
 
+    get inviteServiceId() : string {
+        return this._serviceNameMap["InviteService"].id;
+    }
+
     get resetPasswordServiceId(): string {
         return this._serviceNameMap["ResetPasswordService"].id;
     }
@@ -143,6 +147,10 @@ export class Server {
         return this.contentEncodingsNameMap["CreateProfile"];
     }
 
+    get inviteContentEncoding(): ContentEncoding {
+        return this.contentEncodingsNameMap["Invite"];
+    }
+
     get createRoomContentEncoding(): ContentEncoding {
         return this.contentEncodingsNameMap["CreateRoom"];
     }
@@ -151,15 +159,15 @@ export class Server {
         return this.contentEncodingsNameMap["VerifyEmail"];
     }
 
-    get getSetPasswordContentEncoding(): ContentEncoding {
+    get setPasswordContentEncoding(): ContentEncoding {
         return this.contentEncodingsNameMap["SetPassword"];
     }
 
-    get getResetPasswordContentEncoding(): ContentEncoding {
+    get resetPasswordContentEncoding(): ContentEncoding {
         return this.contentEncodingsNameMap["ResetPassword"];
     }
 
-    get getChangePasswordContentEncoding(): ContentEncoding {
+    get changePasswordContentEncoding(): ContentEncoding {
         return this.contentEncodingsNameMap["ChangePassword"];
     }
 
