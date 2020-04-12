@@ -6,6 +6,17 @@
   width: calc(100% - 70px);
 }
 
+.searchWrapper {
+  min-width: 300px;
+  width: 100%;
+  padding-left: 23px;
+  color: white;
+}
+
+.full-width {
+  width: 100%;
+}
+
 .header {
   color: white;
   background: #222;
