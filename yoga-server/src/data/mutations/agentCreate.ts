@@ -3,6 +3,7 @@ import {Helper} from "../../helper/helper";
 import {EventBroker, Topics} from "../../services/eventBroker";
 import {Channel} from "../../api/types/channel";
 import {Init, Server} from "../../init";
+import {AgentCanCreate} from "../../statements/agentCanCreate";
 
 export class AgentCreate {
 
@@ -41,6 +42,9 @@ export class AgentCreate {
      * @param logo The logo of the channel
      */
     public static async channel(server:Server, fromAgentId: string, toAgentId: string, isMemory:boolean, name: string, logo: string) {
+        if (fromAgentId == toAgentId) {
+            throw new Error(`Cannot create a channel to self.`)
+        }
         const fromAgent = await prisma.agent({id: fromAgentId});
         if (!fromAgent) {
             throw new Error(`Couldn't create a Channel from agent '${fromAgentId}' to agent '${toAgentId}'. The specified fromAgentId does not exist.`);
@@ -150,8 +154,17 @@ export class AgentCreate {
         entry.createdBy = agentId;
         entry.owner = agentId;
 
-        // TODO: Check if the entry is written to a memory channel. If so, don't create the entry in the db.
         const group = await prisma.group({id: groupId});
+        if (!group) {
+            throw new Error(`The specified group doesn't exist: ${groupId}`)
+        }
+
+        let canPostTo = await AgentCanCreate.entry(agentId, groupId);
+        if (!canPostTo) {
+            throw new Error(`Agent '${agentId}' cannot post to group ${groupId}`);
+        }
+
+        // TODO: Check if the entry is written to a memory channel. If so, don't create the entry in the db.
         let createdEntry:Entry = null;
         if (group.isMemory) {
             createdEntry = await this.memoryEntry(entry, groupId, server, request);
@@ -208,8 +221,38 @@ export class AgentCreate {
         return persistedEntry;
     }
 
-    public static async membership(agentId: string, groupId: string, inviteeAgentId: string) {
-        // TODO: Check if the same user has multiple memberships in the same group, if yes change the existing membership to a MultiMembership.
-        throw new Error("Not implemented");
+    public static async membership(agentId: string, groupId: string, inviteeAgentId: string, showHistory:boolean) {
+        const group = await prisma.group({id: groupId});
+        if (!group) {
+            throw new Error(`The specified group doesn't exist: ${groupId}`)
+        }
+
+        let canPostTo = await AgentCanCreate.entry(agentId, groupId);
+        if (!canPostTo) {
+            throw new Error(`Agent '${agentId}' cannot post to group ${groupId}`);
+        }
+
+        const invitee = await prisma.agent({id:inviteeAgentId});
+        if (!invitee) {
+            throw new Error(`Couldn't find invitee '${invitee}'.`);
+        }
+
+        await prisma.updateGroup({
+            where:{id:group.id},
+            data:{
+                memberships: {
+                    create: {
+                        member:{
+                            connect: {
+                                id: invitee.id
+                            }
+                        },
+                        type: "Single",
+                        showHistory: showHistory,
+                        createdBy: agentId
+                    }
+                }
+            }
+        });
     }
 }

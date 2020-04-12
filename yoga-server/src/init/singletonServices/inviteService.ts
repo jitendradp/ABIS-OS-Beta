@@ -81,7 +81,7 @@ class Implementation extends DirectService {
                 return;
             }
 
-            await AgentCreate.membership(agentId, to_id, profile.id);
+            await AgentCreate.membership(agentId, to_id, profile.id, show_history);
         } else if (to_channel) {
             await AgentCreate.channel(Init, agentId, profile.id, false, profile.name, profile.profileAvatar);
             // TODO: Handle the 'onNewChannel' event in the profile service

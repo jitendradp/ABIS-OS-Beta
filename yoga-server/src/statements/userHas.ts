@@ -25,13 +25,13 @@ export class UserHas {
             where:{
                 sessionToken: sessionToken,
                 csrfToken: csrfToken,
-                bearerToken: bearerToken,
+                bearerToken_not: null,
                 createdAt_lt: now,
                 validTo_gt: now,
                 timedOut: null,
                 loggedOut: null
             }
         });
-        return session.length == 1;
+        return session.length == 1 && session[0].bearerToken === bearerToken;
     }
 }

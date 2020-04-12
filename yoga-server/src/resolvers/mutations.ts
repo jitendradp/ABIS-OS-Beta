@@ -87,23 +87,8 @@ export const mutations = {
     },
 
     async createEntry(root, {csrfToken, createEntryInput}, ctx) {
-        const userHasAuthenticatedSession = await UserHas.authenticatedSession(ctx.sessionToken, csrfToken, ctx.bearerToken);
-        if (!userHasAuthenticatedSession) {
-            throw new Error(`Invalid session`);
-        }
-
         const agentId = await GetAgentOf.session(csrfToken, ctx.sessionToken);
         const groupId = createEntryInput.roomId;
-
-        const group = await prisma.group({id: groupId});
-        if (!group) {
-            throw new Error(`The specified group doesn't exist: ${createEntryInput.roomId}`)
-        }
-
-        let canPostTo = await AgentCanCreate.entry(agentId, groupId);
-        if (!canPostTo) {
-            throw new Error(`Agent '${agentId}' cannot post to group ${groupId}`);
-        }
 
         const newEntryInput = {
             owner: agentId,
