@@ -1,19 +1,12 @@
 import {DirectService} from "../../services/directService";
-import {Agent, Entry, Group, prisma, User} from "../../generated/prisma_client";
-import {Channel} from "../../api/types/channel";
-import {UserOwns} from "../../statements/userOwns";
-import {Helper} from "../../helper/helper";
-import {ActionResponse} from "../../api/mutations/actionResponse";
-import {config} from "../../config";
-import {Mailer} from "../../helper/mailer";
+import {Agent, Entry, Group} from "../../generated/prisma_client";
 import {UserCreate} from "../../data/mutations/userCreate";
 import {Init, Server} from "../../init";
 import {UserHas} from "../../statements/userHas";
-import {UserQueries} from "../../data/queries/user";
 import {GetUserOf} from "../../queries/getUserOf";
 
 class Implementation extends DirectService {
-    constructor(server:Server, agent:Agent) {
+    constructor(server: Server, agent: Agent) {
         super(server, agent);
     }
 
@@ -21,7 +14,7 @@ class Implementation extends DirectService {
         return this.server.createProfileContentEncoding.id;
     }
 
-    async onNewEntry(newEntry:Entry, answerChannel:Group) {
+    async onNewEntry(newEntry: Entry, answerChannel: Group) {
         const profile_name = newEntry.content.CreateProfile.profile_name;
         const csrfToken = (<any>newEntry).__csrfToken;
         const sessionToken = (<any>newEntry).__sessionToken;
@@ -32,7 +25,7 @@ class Implementation extends DirectService {
             throw new Error(`Invalid session`);
         }
 
-        const userId = await  GetUserOf.session((<any>newEntry).__csrfToken, (<any>newEntry).__sessionToken);
+        const userId = await GetUserOf.session((<any>newEntry).__csrfToken, (<any>newEntry).__sessionToken);
         if (!userId) {
             throw new Error(`Couldn't authenticate the request.`);
         }

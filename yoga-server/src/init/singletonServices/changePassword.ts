@@ -1,8 +1,5 @@
 import {DirectService} from "../../services/directService";
 import {Entry, Group, prisma} from "../../generated/prisma_client";
-import {Helper} from "../../helper/helper";
-import {UserQueries} from "../../data/queries/user";
-import {GetAgentOf} from "../../queries/getAgentOf";
 import {GetUserOf} from "../../queries/getUserOf";
 import {config} from "../../config";
 
@@ -13,8 +10,8 @@ class Implementation extends DirectService {
         return this.server.changePasswordContentEncoding.id;
     }
 
-    async onNewEntry(newEntry:Entry, answerChannel:Group){
-        const userId = await  GetUserOf.session((<any>newEntry).__csrfToken, (<any>newEntry).__sessionToken);
+    async onNewEntry(newEntry: Entry, answerChannel: Group) {
+        const userId = await GetUserOf.session((<any>newEntry).__csrfToken, (<any>newEntry).__sessionToken);
         const user = await prisma.user({id: userId});
 
         const passwordsMatch = await this.bcrypt.compare(newEntry.content.ChangePassword.old_password, user.passwordHash);
@@ -26,16 +23,16 @@ class Implementation extends DirectService {
         }
         if (newEntry.content.ChangePassword.password != newEntry.content.ChangePassword.password_confirmation) {
             const validationErrors = [];
-            const summary = "Couldn't change the password. The confirmation doesn't match with the new password." ;
+            const summary = "Couldn't change the password. The confirmation doesn't match with the new password.";
             this.postError(summary, validationErrors, answerChannel.id);
             return;
         }
         user.passwordSalt = await this.bcrypt.genSalt(config.auth.bcryptRounds);
         user.passwordHash = await this.bcrypt.hash(newEntry.content.ChangePassword.password, user.passwordSalt);
 
-        await prisma.updateUser( {
-            where:{id:userId},
-            data:{
+        await prisma.updateUser({
+            where: {id: userId},
+            data: {
                 passwordSalt: user.passwordSalt,
                 passwordHash: user.passwordHash
             }

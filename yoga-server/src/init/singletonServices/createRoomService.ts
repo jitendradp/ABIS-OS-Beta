@@ -1,21 +1,12 @@
 import {DirectService} from "../../services/directService";
-import {Agent, Entry, Group, prisma, User} from "../../generated/prisma_client";
-import {Channel} from "../../api/types/channel";
-import {UserOwns} from "../../statements/userOwns";
-import {Helper} from "../../helper/helper";
-import {ActionResponse} from "../../api/mutations/actionResponse";
-import {config} from "../../config";
-import {Mailer} from "../../helper/mailer";
-import {UserCreate} from "../../data/mutations/userCreate";
+import {Agent, Entry, Group} from "../../generated/prisma_client";
 import {Init, Server} from "../../init";
 import {UserHas} from "../../statements/userHas";
-import {UserQueries} from "../../data/queries/user";
-import {GetUserOf} from "../../queries/getUserOf";
 import {GetAgentOf} from "../../queries/getAgentOf";
 import {AgentCreate} from "../../data/mutations/agentCreate";
 
 class Implementation extends DirectService {
-    constructor(server:Server, agent:Agent) {
+    constructor(server: Server, agent: Agent) {
         super(server, agent);
     }
 
@@ -23,7 +14,7 @@ class Implementation extends DirectService {
         return this.server.createRoomContentEncoding.id;
     }
 
-    async onNewEntry(newEntry:Entry, answerChannel:Group) {
+    async onNewEntry(newEntry: Entry, answerChannel: Group) {
         const name = newEntry.content.CreateRoom.name;
         const logo = !newEntry.content.CreateRoom.icon ? "" : newEntry.content.CreateRoom.icon;
         const isPublic = newEntry.content.CreateRoom.visibility == "Public";

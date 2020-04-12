@@ -1,10 +1,6 @@
 import {DirectService} from "../../services/directService";
 import {Entry, Group, prisma} from "../../generated/prisma_client";
 import {Helper} from "../../helper/helper";
-import {UserQueries} from "../../data/queries/user";
-import {GetAgentOf} from "../../queries/getAgentOf";
-import {GetUserOf} from "../../queries/getUserOf";
-import {config} from "../../config";
 import {Mailer} from "../../helper/mailer";
 
 class Implementation extends DirectService {
@@ -14,9 +10,9 @@ class Implementation extends DirectService {
         return this.server.resetPasswordContentEncoding.id;
     }
 
-    async onNewEntry(newEntry:Entry, answerChannel:Group){
+    async onNewEntry(newEntry: Entry, answerChannel: Group) {
         const email = newEntry.content.ResetPassword.email;
-        var user = await prisma.user({email:email});
+        var user = await prisma.user({email: email});
         if (!user) {
             Helper.log(`ResetPassword: Couldn't find a user with the email address $[email}.`);
             await this.postContinueTo("", answerChannel.id);
@@ -26,8 +22,8 @@ class Implementation extends DirectService {
         // Set a challenge that will be used by the email verification
         user.challenge = Helper.getRandomBase64String(8).toUpperCase();
         await prisma.updateUser({
-            where:{id:user.id},
-            data:{
+            where: {id: user.id},
+            data: {
                 challenge: "#" + user.challenge // TODO: Remove the StartsWith('#') hack. Its used to determine who created the challenge.
             }
         });

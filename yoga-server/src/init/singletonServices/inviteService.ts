@@ -1,20 +1,12 @@
 import {DirectService} from "../../services/directService";
-import {Agent, Entry, Group, prisma, User} from "../../generated/prisma_client";
+import {Agent, Entry, Group, prisma} from "../../generated/prisma_client";
 import {Channel} from "../../api/types/channel";
-import {UserOwns} from "../../statements/userOwns";
-import {Helper} from "../../helper/helper";
-import {ActionResponse} from "../../api/mutations/actionResponse";
-import {config} from "../../config";
 import {Mailer} from "../../helper/mailer";
-import {UserCreate} from "../../data/mutations/userCreate";
 import {Init, Server} from "../../init";
 import {UserHas} from "../../statements/userHas";
-import {UserQueries} from "../../data/queries/user";
-import {GetUserOf} from "../../queries/getUserOf";
 import {GetAgentOf} from "../../queries/getAgentOf";
 import {AgentCanSee} from "../../statements/agentCanSee";
 import {AgentCreate} from "../../data/mutations/agentCreate";
-import {Profile} from "../../api/Profile";
 
 class Implementation extends DirectService {
     constructor(server: Server, agent: Agent) {

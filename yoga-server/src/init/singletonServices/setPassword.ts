@@ -1,9 +1,6 @@
 import {DirectService} from "../../services/directService";
 import {Entry, Group, prisma} from "../../generated/prisma_client";
-import {Helper} from "../../helper/helper";
 import {UserQueries} from "../../data/queries/user";
-import {GetAgentOf} from "../../queries/getAgentOf";
-import {GetUserOf} from "../../queries/getUserOf";
 import {config} from "../../config";
 
 class Implementation extends DirectService {
@@ -13,7 +10,7 @@ class Implementation extends DirectService {
         return this.server.setPasswordContentEncoding.id;
     }
 
-    async onNewEntry(newEntry:Entry, answerChannel:Group){
+    async onNewEntry(newEntry: Entry, answerChannel: Group) {
         const user = await UserQueries.findUserByChallenge(newEntry.content.SetPassword.code);
         if (!user) {
             throw new Error(`No challenge with this code could be found.`);
@@ -21,7 +18,7 @@ class Implementation extends DirectService {
 
         if (newEntry.content.SetPassword.password != newEntry.content.SetPassword.password_confirmation) {
             const validationErrors = [];
-            const summary = "Couldn't change the password. The confirmation doesn't match with the new password." ;
+            const summary = "Couldn't change the password. The confirmation doesn't match with the new password.";
             this.postError(summary, validationErrors, answerChannel.id);
             return;
         }
@@ -29,9 +26,9 @@ class Implementation extends DirectService {
         user.passwordSalt = await this.bcrypt.genSalt(config.auth.bcryptRounds);
         user.passwordHash = await this.bcrypt.hash(newEntry.content.SetPassword.password, user.passwordSalt);
 
-        await prisma.updateUser( {
-            where:{id:user.id},
-            data:{
+        await prisma.updateUser({
+            where: {id: user.id},
+            data: {
                 passwordSalt: user.passwordSalt,
                 passwordHash: user.passwordHash
             }
