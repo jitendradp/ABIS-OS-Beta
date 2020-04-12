@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
   selector: 'app-input',
@@ -34,4 +34,10 @@ export class InputComponent {
   @Input ()
   showPlaceholderIconPrefix: boolean;
 
+  @Output()
+  click:EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
+
+  onClick($event: MouseEvent) {
+    this.click.emit($event);
+  }
 }

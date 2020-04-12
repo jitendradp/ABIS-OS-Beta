@@ -30,6 +30,9 @@ import {UserService} from "./services/user.service";
 import {CreateEntryGQL} from "../generated/abis-api";
 import {NestedAction} from "./actions/NestedAction";
 import {SetApplicationTitle} from "./actions/ui/SetApplicationTitle";
+import {MatBottomSheet} from "@angular/material/bottom-sheet";
+import {SetSidebarContent} from "./actions/ui/SetSidebarContent";
+import {SearchComponent} from "./search/search.component";
 
 @Component({
   selector: 'app-root',
@@ -52,6 +55,7 @@ export class AppComponent implements AfterViewInit {
 
   constructor(
     private userService: UserService,
+    private bottomSheet: MatBottomSheet,
     private _router: Router,
     private actionDispatcher: ActionDispatcherService,
     public _dialog: MatDialog,
@@ -90,6 +94,12 @@ export class AppComponent implements AfterViewInit {
         break;
       case SetApplicationTitle.Name:
         this.title = (<SetApplicationTitle>action).title;
+        break;
+      case SetSidebarContent.Name:
+        if ((<any>action).side != "bottom") {
+          return;
+        }
+        this.bottomSheet.open((<any>action).component);
         break;
       case SetSidebarVisibility.Name:
         let visibility: boolean = false;

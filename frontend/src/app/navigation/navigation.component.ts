@@ -27,6 +27,9 @@ export class NavigationComponent {
     switch (action.name) {
       case SetSidebarVisibility.Name:
         const a = <SetSidebarVisibility>action;
+        if (a.side == "bottom") {
+          return;
+        }
         if (a.state == "invisible" && !a.elevation) {
           // Close either the whole sidebar or only the higher layer
           if (this.elevation == "level1") {
