@@ -1,0 +1,12 @@
+<!-- todo change the current next-button to the component app-button -->
+<!-- todo unify all other forms in a form component -->
+<div fxLayout
+     fxLayout.xs="column"
+     fxLayoutAlign="center"
+     fxLayoutGap="0px"
+     fxLayoutGap.xs="0">
+  <div fxFlex='auto' fxFlex.gt-md='25' fxFlex.gt-sm='50' style="background:white; padding:15px;">
+    <app-whitespace></app-whitespace>
+    <app-service-dialog [currentAgentId]="createRoomService"></app-service-dialog>
+  </div>
+</div>

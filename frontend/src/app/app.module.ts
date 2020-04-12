@@ -110,6 +110,7 @@ import {ChangePasswordComponent} from "./pages/system/change-password/change-pas
 import {SetPasswordComponent} from "./pages/system/set-password/set-password.component";
 import {ResetPasswordComponent} from "./pages/system/reset-password/reset-password.component";
 import {CreateProfileComponent} from "./pages/system/create-profile/create-profile.component";
+import {CreateRoomComponent} from "./pages/system/create-room/create-room.component";
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -184,6 +185,13 @@ const appRoutes: Routes = [
   {
     path: 'create-profile', component: CreateProfileComponent, data: {
       "title": "Create profile",
+      "actions": defaultActions
+    }
+    , canActivate: [CanActivateRoute]
+  },
+  {
+    path: 'create-room', component: CreateRoomComponent, data: {
+      "title": "Create room",
       "actions": defaultActions
     }
     , canActivate: [CanActivateRoute]
@@ -270,6 +278,7 @@ const appRoutes: Routes = [
     ListGroupComponent,
     ListContactComponent,
     CreateProfileComponent,
+    CreateRoomComponent,
     AvatarComponent,
     ListChipComponent,
     ResetPasswordComponent,

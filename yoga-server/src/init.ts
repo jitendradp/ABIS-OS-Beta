@@ -143,6 +143,10 @@ export class Server {
         return this.contentEncodingsNameMap["CreateProfile"];
     }
 
+    get createRoomContentEncoding(): ContentEncoding {
+        return this.contentEncodingsNameMap["CreateRoom"];
+    }
+
     get verifyEmailContentEncoding(): ContentEncoding {
         return this.contentEncodingsNameMap["VerifyEmail"];
     }
