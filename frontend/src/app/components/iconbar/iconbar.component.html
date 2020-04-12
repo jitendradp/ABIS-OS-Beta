@@ -3,9 +3,7 @@
 <div class="sidebarWrapper" *ngIf="onLeftSide">
   <div class="topIcon">
     <div class="center">
-      <button mat-icon-button>
-        <app-logo [url]="'./assets/logos/abis-logo.png'"></app-logo>
-      </button>
+      <app-avatar [url]="'https://keenthemes.com/preview/metronic/theme/assets/pages/media/profile/profile_user.jpg'" [backgroundColor]="'white'"></app-avatar>
     </div>
   </div>
   <div class="leftIconList">
@@ -13,7 +11,7 @@
   </div>
   <div class="bottomIcon">
     <div class="center">
-      <app-avatar></app-avatar>
+      <app-logo [url]="'./assets/logos/abis-logo.png'"></app-logo>
     </div>
   </div>
 </div>

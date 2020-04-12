@@ -2,6 +2,6 @@
 .profilePicture {
   width: calc(100% - 6px);
   height: calc(100% - 6px);
-  background-color: #2ecc71;
-  border: solid #2ecc71 3px;
+  /*background-color: #2ecc71;*/
+  border: solid 3px;
 }

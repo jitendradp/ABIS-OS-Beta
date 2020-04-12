@@ -10,4 +10,9 @@ export class AvatarComponent {
   @Input()
   url: string;
 
+  @Input()
+  backgroundColor: string;
+
+
+
 }

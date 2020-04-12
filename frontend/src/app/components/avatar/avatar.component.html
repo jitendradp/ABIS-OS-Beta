@@ -2,7 +2,8 @@
 <!-- todo make status indicator flexible -->
 <img mat-card-avatar class="profilePicture mat-elevation-z10"
      src="{{url}}" onError="this.src='./assets/error-images/picture.png';"
-     [matMenuTriggerFor]="statusMenu">
+     [matMenuTriggerFor]="statusMenu" [style.background]="backgroundColor"
+     [style.border-color]="backgroundColor">
 <mat-menu #statusMenu="matMenu">
   <button mat-menu-item>Set my self away</button>
   <button mat-menu-item>Set my self busy</button>
