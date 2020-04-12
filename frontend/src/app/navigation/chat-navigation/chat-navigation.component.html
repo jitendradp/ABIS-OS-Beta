@@ -4,7 +4,7 @@
      fxLayoutGap="10px"
      fxLayoutGap.xs="0">
   <div #contentContainer1 fxFlex="{{(mode == 'Full' ? '50%' : '100%')}}">
-    <mat-tab-group class="chatNavWrapper">
+    <!--<mat-tab-group class="chatNavWrapper">
       <mat-tab label="GROUPS">
         <app-list-group [asTree]="true" [asDialogList]="false" [showActions]="true"></app-list-group>
       </mat-tab>
@@ -14,7 +14,7 @@
       <mat-tab label="CHATS">
         <app-list-chat [showActions]="true"></app-list-chat>
       </mat-tab>
-    </mat-tab-group>
+    </mat-tab-group>-->
   </div>
 
   <div #contentContainer2 fxFlex *ngIf="mode == 'Full'">

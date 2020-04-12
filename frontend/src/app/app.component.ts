@@ -28,7 +28,7 @@ import {ListGroupComponent} from "./lists/list-group/list-group.component";
 import {Logout} from "./actions/routes/Logout";
 import {UserService} from "./services/user.service";
 import {CreateEntryGQL} from "../generated/abis-api";
-import {SetSidebarContent} from "./actions/ui/SetSidebarContent";
+import {NestedAction} from "./actions/NestedAction";
 
 @Component({
   selector: 'app-root',
@@ -101,6 +101,11 @@ export class AppComponent implements AfterViewInit {
           this.left.toggle(visibility);
         } else if (action.side == "right") {
           this.right.toggle(visibility);
+        }
+        break;
+      case NestedAction.Name:
+        for(let a of (<NestedAction>action).events) {
+          this.actionDispatcher.dispatch(a);
         }
         break;
       case "Abis.Chat.Channel.Create":

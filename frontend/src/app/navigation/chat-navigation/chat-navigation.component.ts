@@ -12,10 +12,10 @@ export class ChatNavigationComponent {
   @Input()
   mode: string = "Small";
 
-  @ViewChild('contentContainer1', { static: false })
+  @ViewChild('contentContainer1', { static: false, read: ViewContainerRef })
   contentContainer1: ViewContainerRef;
 
-  @ViewChild('contentContainer2', { static: false })
+  @ViewChild('contentContainer2', { static: false, read: ViewContainerRef })
   contentContainer2: ViewContainerRef;
 
   constructor(private actionDispatcher: ActionDispatcherService
@@ -28,6 +28,7 @@ export class ChatNavigationComponent {
       case SetSidebarContent.Name:
         if (this.mode == "Small") {
           const factory = this.componentFactoryResolver.resolveComponentFactory((<any>action).component);
+          this.contentContainer1.clear();
           const ref = this.contentContainer1.createComponent(factory);
           ref.changeDetectorRef.detectChanges();
         }

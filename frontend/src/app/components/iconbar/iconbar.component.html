@@ -8,8 +8,8 @@
   </div>
   <div class="leftIconList">
     <mat-nav-list>
-      <a mat-list-item matTooltip="Activities" *ngFor="let action of userService.mainNavigationEntries" (click)="onIconClick($event)">
-        <mat-icon>{{action.icon}}</mat-icon>
+      <a mat-list-item matTooltip="Activities" *ngFor="let action of entries">
+        <mat-icon (click)="onIconClick($event, action)">{{action.icon}}</mat-icon>
       </a>
     </mat-nav-list>
   </div>
@@ -20,13 +20,12 @@
   </div>
 </div>
 
-
 <!-- todo: Make a general "horizontal" version for this  -->
 <div *ngIf='orientation == "Horizontal"'>
   <div class="subline"></div>
   <mat-grid-list class="footerWrapper" cols="5" rowHeight="53px">
-    <mat-grid-tile *ngFor="let action of userService.mainNavigationEntries" (click)="onIconClick($event)">
-      <button routerLink="cockpit" mat-button class="tileButton">
+    <mat-grid-tile *ngFor="let action of entries">
+      <button routerLink="cockpit" mat-button class="tileButton" (click)="onIconClick($event, action)">
         <mat-icon>{{action.icon}}</mat-icon>
         <span fxHide fxShow.gt-sm class="iconLabelSpacing">{{action.label}}</span>
       </button>

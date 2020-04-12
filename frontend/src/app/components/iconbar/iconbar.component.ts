@@ -5,6 +5,13 @@ import {SetSidebarVisibility} from "../../actions/ui/SetSidebarVisibility";
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
 import {Logout} from "../../actions/routes/Logout";
 import {UserService} from "../../services/user.service";
+import {IAction} from "../../actions/IAction";
+import {SetSidebarContent} from "../../actions/ui/SetSidebarContent";
+import {ListGroupComponent} from "../../lists/list-group/list-group.component";
+import {ListContactComponent} from "../../lists/list-contact/list-contact.component";
+import {ListChatComponent} from "../../lists/list-chat/list-chat.component";
+import {NestedAction} from "../../actions/NestedAction";
+import {IEvent} from "../../actions/IEvent";
 
 export interface IconList {
   name: string;
@@ -45,6 +52,42 @@ export class IconbarComponent {
   @Input()
   onChatHeader: boolean;
 
+  _entries:IAction[];
+
+  public get entries() : IAction[] {
+    if (!this._entries) {
+      const setGroupList = new SetSidebarContent("left", ListGroupComponent);
+      const setContactList = new SetSidebarContent("left", ListContactComponent);
+      const setChat = new SetSidebarContent("left", ListChatComponent);
+      const openLeftSidebar = new SetSidebarVisibility("left", "visible", "z1");
+
+      this._entries = [
+        new NestedAction(
+          "group",
+          "Groups",
+          [
+            <IEvent>setGroupList,
+            <IEvent>openLeftSidebar
+          ]),
+        new NestedAction(
+          "contacts",
+          "Contacts",
+          [
+            <IEvent>setContactList,
+            <IEvent>openLeftSidebar
+          ]),
+        new NestedAction(
+          "group",
+          "Groups",
+          [
+            <IEvent>setChat,
+            <IEvent>openLeftSidebar
+          ])
+      ];
+    }
+    return this._entries;
+  }
+
   constructor(
     private bottomSheet: MatBottomSheet,
     private actionDispatcher: ActionDispatcherService,
@@ -63,7 +106,7 @@ export class IconbarComponent {
     this.actionDispatcher.dispatch(new Logout());
   }
 
-  onIconClick($event: MouseEvent) {
-
+  onIconClick($event: MouseEvent, action:IAction) {
+    this.actionDispatcher.dispatch(action);
   }
 }
