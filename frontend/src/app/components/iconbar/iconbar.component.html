@@ -1,24 +1,24 @@
 <!-- todo: Make a general "horizontal" version for this -->
+
 <div class="sidebarWrapper" *ngIf="onLeftSide">
   <div class="topIcon">
-    <div style="padding: 12px">
+    <div class="center">
       <app-avatar></app-avatar>
     </div>
   </div>
-  <div class="iconList">
+  <div class="leftIconList">
     <app-list-icon></app-list-icon>
   </div>
   <!-- todo need a list of the icons with a click handler -->
   <div class="bottomIcon">
-    <div style="padding: 12px">
-      <button mat-icon-button>
-        <app-logo [url]="'./assets/logos/abis-logo.png'"></app-logo>
-      </button>
-    </div>
+    <button mat-icon-button class="center">
+      <app-logo [url]="'./assets/logos/abis-logo.png'"></app-logo>
+    </button>
   </div>
 </div>
 
-<!-- todo: Make a general "horizontal" version for this -->
+
+<!-- todo: Make a general "horizontal" version for this  -->
 <div *ngIf="onFooter">
   <div class="subline"></div>
   <mat-grid-list class="quickButtons" cols="5" rowHeight="53px">
