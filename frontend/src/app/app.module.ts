@@ -359,7 +359,7 @@ const appRoutes: Routes = [
     CalendarModule.forRoot({provide: DateAdapter, useFactory: momentAdapterFactory}),
   ],
   providers: [ProfileService, CanActivateRoute],
-  entryComponents: [SearchComponent, ListGroupComponent, ListContactComponent, ListChatComponent],
+  entryComponents: [SearchComponent, ListGroupComponent, ListContactComponent, ListChatComponent, ChatComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {
