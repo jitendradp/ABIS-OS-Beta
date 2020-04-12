@@ -38,8 +38,8 @@ export class IconbarComponent {
   @Input()
   onCockpit: boolean;
 
-   @Input()
-  orientation:IconBarOrientation;
+  @Input()
+  orientation: IconBarOrientation;
 
   @Input()
   membersCount: number;

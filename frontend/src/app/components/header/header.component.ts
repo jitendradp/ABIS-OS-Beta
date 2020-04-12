@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
 import {IAction} from "../../actions/IAction";
 import {SetSidebarVisibility} from "../../actions/ui/SetSidebarVisibility";
+import {IconBarOrientation} from "../iconbar/iconbar.component";
 
 @Component({
   selector: 'app-header',
@@ -12,6 +13,9 @@ export class HeaderComponent {
 
   @Input()
   icon: string;
+
+  @Input()
+  orientation:IconBarOrientation;
 
   @Input()
   title: string;
