@@ -12,6 +12,7 @@ import {ListContactComponent} from "../../list-items/list-contact/list-contact.c
 import {ListChatComponent} from "../../list-items/list-chat/list-chat.component";
 import {NestedAction} from "../../actions/NestedAction";
 import {IEvent} from "../../actions/IEvent";
+import {ChatComponent} from "../../chat/chat.component";
 
 export interface IconList {
   name: string;
@@ -59,7 +60,9 @@ export class IconbarComponent {
       const profileList = new SetSidebarContent("left", ListGroupComponent, "base");
       const contactList = new SetSidebarContent("left", ListContactComponent, "base");
       const roomList = new SetSidebarContent("left", ListChatComponent, "level1");
-      const openLeftSidebar = new SetSidebarVisibility("left", "visible", "base");
+      const chat = new SetSidebarContent("left", ChatComponent, "level1");
+      const openLeftSidebarBase = new SetSidebarVisibility("left", "visible", "base");
+      const openLeftSidebarLevel1 = new SetSidebarVisibility("left", "visible", "level1");
 
       this._entries = [
         new NestedAction(
@@ -67,21 +70,28 @@ export class IconbarComponent {
           "Groups",
           [
             <IEvent>profileList,
-            <IEvent>openLeftSidebar
+            <IEvent>openLeftSidebarBase
           ]),
         new NestedAction(
           "contacts",
           "Contacts",
           [
             <IEvent>contactList,
-            <IEvent>openLeftSidebar
+            <IEvent>openLeftSidebarBase
           ]),
         new NestedAction(
           "group",
           "Groups",
           [
             <IEvent>roomList,
-            <IEvent>openLeftSidebar
+            <IEvent>openLeftSidebarBase
+          ]),
+        new NestedAction(
+          "chat",
+          "Chat",
+          [
+            <IEvent>chat,
+            <IEvent>openLeftSidebarLevel1
           ])
       ];
     }
