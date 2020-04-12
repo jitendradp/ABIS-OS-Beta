@@ -61,9 +61,7 @@ export class IconbarComponent {
       const profileList = new SetSidebarContent("Groups", "left", ListGroupComponent, "base");
       const contactList = new SetSidebarContent("Contacts", "left", ListContactComponent, "base");
       const roomList = new SetSidebarContent("Rooms", "left", ListChatComponent, "base");
-      const chat = new SetSidebarContent("Chat", "left", ChatComponent, "level1");
       const openLeftSidebarBase = new SetSidebarVisibility("left", "visible", "base");
-      const openLeftSidebarLevel1 = new SetSidebarVisibility("left", "visible", "level1");
 
       this._entries = [
         new Home(),
@@ -87,13 +85,6 @@ export class IconbarComponent {
           [
             <IEvent>roomList,
             <IEvent>openLeftSidebarBase
-          ]),
-        new NestedAction(
-          "chat",
-          "Chat",
-          [
-            <IEvent>chat,
-            <IEvent>openLeftSidebarLevel1
           ])
       ];
     }
