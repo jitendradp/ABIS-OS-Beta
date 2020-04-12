@@ -73,6 +73,7 @@ export abstract class DirectService extends Service {
         },
             null,
             null,
+            null,
             null);
 
         Helper.log(`${this.name} (${this.id}): posted welcome message ${welcomeEntry.id} to agent '${newChannel.owner}' via channel '${reverseChannel.id}'.`);
@@ -138,6 +139,7 @@ export abstract class DirectService extends Service {
         },
             null,
             null,
+            null,
             null);
     }
 
@@ -153,6 +155,7 @@ export abstract class DirectService extends Service {
             },
             name: "Validation error"
         },
+            null,
             null,
             null,
             null);

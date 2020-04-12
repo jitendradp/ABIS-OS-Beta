@@ -113,7 +113,7 @@ export const mutations = {
             content: createEntryInput.content
         };
 
-        const entry = await AgentCreate.entry(Init, agentId, groupId, newEntryInput, ctx.request, ctx.sessionToken, csrfToken);
+        const entry = await AgentCreate.entry(Init, agentId, groupId, newEntryInput, ctx.request, ctx.sessionToken, csrfToken, ctx.bearerToken);
         return entry;
     },
 

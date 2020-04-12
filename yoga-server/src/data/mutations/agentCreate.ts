@@ -146,7 +146,7 @@ export class AgentCreate {
         return newRoom;
     }
 
-    public static async entry(server: Server, agentId: string, groupId: string, entry: EntryCreateInput, request:any, sessionToken:string, csrfToken:string) : Promise<Entry> {
+    public static async entry(server: Server, agentId: string, groupId: string, entry: EntryCreateInput, request:any, sessionToken:string, csrfToken:string, bearerToken:string) : Promise<Entry> {
         entry.createdBy = agentId;
         entry.owner = agentId;
 
@@ -173,6 +173,7 @@ export class AgentCreate {
         (<any>createdEntry).__request = request; // TODO: Find a better way to set cookies
         (<any>createdEntry).__sessionToken = sessionToken; // TODO: Find a better way to set the tokens
         (<any>createdEntry).__csrfToken = csrfToken; // TODO: Find a better way to set the tokens
+        (<any>createdEntry).__bearerToken = bearerToken; // TODO: Find a better way to set the tokens
 
         // TODO: This can propagate the errors of services to this position
         await server.eventBroker

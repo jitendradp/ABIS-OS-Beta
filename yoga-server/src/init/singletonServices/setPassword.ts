@@ -14,8 +14,10 @@ class Implementation extends DirectService {
     }
 
     async onNewEntry(newEntry:Entry, answerChannel:Group){
-        const userId = await  GetUserOf.session((<any>newEntry).__csrfToken, (<any>newEntry).__sessionToken);
-        const user = await prisma.user({id: userId});
+        const user = await UserQueries.findUserByChallenge(newEntry.content.SetPassword.code);
+        if (!user) {
+            throw new Error(`No challenge with this code could be found.`);
+        }
 
         if (newEntry.content.SetPassword.password != newEntry.content.SetPassword.password_confirmation) {
             const validationErrors = [];
@@ -28,14 +30,14 @@ class Implementation extends DirectService {
         user.passwordHash = await this.bcrypt.hash(newEntry.content.SetPassword.password, user.passwordSalt);
 
         await prisma.updateUser( {
-            where:{id:userId},
+            where:{id:user.id},
             data:{
                 passwordSalt: user.passwordSalt,
                 passwordHash: user.passwordHash
             }
         });
 
-        await this.postContinueTo("", answerChannel.id);
+        await this.postContinueTo(this.server.loginServiceId, answerChannel.id);
     }
 }
 

@@ -139,6 +139,10 @@ export class Server {
         return this.contentEncodingsNameMap["Signup"];
     }
 
+    get createProfileContentEncoding(): ContentEncoding {
+        return this.contentEncodingsNameMap["CreateProfile"];
+    }
+
     get verifyEmailContentEncoding(): ContentEncoding {
         return this.contentEncodingsNameMap["VerifyEmail"];
     }
@@ -474,6 +478,7 @@ export class Server {
                 name: countryName,
                 content: geojson
             },
+            null,
             null,
             null,
             null);

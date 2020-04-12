@@ -10,10 +10,12 @@ export const Index: ContentEncodingCreateInput = {
         SetPassword: {
             "type": "object",
             "properties": {
+                "code": {"type": "string"},
                 "password": {"type": "string"},
                 "password_confirmation": {"type": "string"}
             },
             "required": [
+                "code",
                 "password",
                 "password_confirmation"
             ]

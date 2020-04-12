@@ -304,6 +304,7 @@ describe('From anonymous user to signed-up user with authenticated session', () 
                 },
                     null,
                     null,
+                    null,
                     null);
 
                 // We expect the service to answer with a 'Continuation' entry that sends us to the VerifyEmail service
@@ -436,6 +437,7 @@ describe('From anonymous user to signed-up user with authenticated session', () 
                         }
                     }
                 },
+                    null,
                     null,
                     null,
                     null);
@@ -638,6 +640,7 @@ describe('From anonymous user to signed-up user with authenticated session', () 
                         }
                     }
                 }, dummyRequest,
+                    null,
                     null,
                     null);
             });

@@ -15,12 +15,7 @@ class Implementation extends DirectService {
         }
 
         await Implementation.clearChallenge(foundUser.id);
-
-        if (newEntry.content.VerifyEmail.code.startsWith('#')) {
-            await this.postContinueTo(this.server.setPasswordServiceId, answerChannel.id);
-        } else {
-            await this.postContinueTo(this.server.loginServiceId, answerChannel.id);
-        }
+        await this.postContinueTo(this.server.loginServiceId, answerChannel.id);
     }
 
     private static async clearChallenge(userId: string) {
