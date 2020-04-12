@@ -59,22 +59,6 @@ export interface groupItem {
   styleUrls: ['./list-group.component.css']
 })
 export class ListGroupComponent implements OnInit {
-
-  @Input()
-  collapsed: boolean;
-
-  @Input()
-  showSearch: boolean = true;
-
-  @Input()
-  showActions: boolean;
-
-  @Input()
-  asTree: boolean = true;
-
-  @Input()
-  asDialogList: boolean = true;
-
   constructor(
     public actionDispatcher: ActionDispatcherService,
     private findRoomsApi:FindRoomsGQL,
@@ -99,7 +83,7 @@ export class ListGroupComponent implements OnInit {
   }
 
   private async refresh() {
-    if (!this.userService.isLoggedOn) {
+    if (!this.userService.profileId) {
       return;
     }
 
@@ -108,124 +92,18 @@ export class ListGroupComponent implements OnInit {
       searchText: ""
     }).toPromise()).data.findRooms;
 
-    TREE_DATA[0].name = this.userService.accountInformation.personFirstName + " " + this.userService.accountInformation.personLastName;
-    TREE_DATA[0].channels = rooms.map(o => {
+    this.entries = rooms.map(o => {
       return {
+        type: "Room",
         name: o.name,
-        icon: o.logo
+        title: o.title,
+        description: o.description,
+        logo: o.logo,
+        banner: o.banner
       }
     });
-
-    this.dataSource.data = TREE_DATA;
   }
 
-  private _transformer = (node: GroupNode, level: number) => {
-    return {
-      expandable: !!node.channels && node.channels.length > 0,
-      name: node.name,
-      icon: node.icon,
-      level: level,
-      logo: node.logo
-    };
-  };
-
-  treeControl = new FlatTreeControl<ExampleFlatNode>(
-    node => node.level, node => node.expandable);
-
-  treeFlattener = new MatTreeFlattener(
-    this._transformer, node => node.level, node => node.expandable, node => node.channels);
-
-  dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-
-
-  hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
-
-
-  entries: any[] = [
-    {
-      type:"Group",
-      name: 'tum',
-      title: 'TU München',
-      tags: '#uni, #abis',
-      buttonLink: 'chat',
-      location: 'Dieselstr. 22b in 85551 Kirchheim (DE)',
-      membersLive: 39,
-      membersTotal: 89,
-      creator: 'Mr. Monkey',
-      createdAt: 'Friday, 2020-01-01 9:15 AM',
-      pictureLogo: 'https://picsum.photos/200',
-      description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-    },
-    {
-      type:"Group",
-      name: 'bcg',
-      title: 'Boston Group',
-      tags: '#uni, #abis',
-      buttonLink: 'chat',
-      location: 'Dieselstr. 22b in 85551 Kirchheim (DE)',
-      membersLive: 39,
-      membersTotal: 89,
-      creator: 'Simon Says',
-      createdAt: 'Friday, 2020-01-01 9:15 AM',
-      pictureLogo: 'https://source.unsplash.com/random',
-      description: 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English.',
-    },
-    {
-      type:"Group",
-      name: 'fhm',
-      title: 'Hochschule München',
-      tags: '#uni, #abis',
-      buttonLink: 'chat',
-      location: 'Dieselstr. 22b in 85551 Kirchheim (DE)',
-      membersLive: 39,
-      membersTotal: 89,
-      creator: 'Mr. Monkey',
-      createdAt: 'Friday, 2020-01-01 9:15 AM',
-      pictureLogo: 'https://loremflickr.com/320/240',
-      description: 'The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.',
-    },
-    {
-      type:"Group",
-      name: 'hit',
-      title: 'HIT Einkaufsladen',
-      tags: '#uni, #abis',
-      buttonLink: 'chat',
-      location: 'Dieselstr. 22b in 85551 Kirchheim (DE)',
-      membersLive: 39,
-      membersTotal: 89,
-      creator: 'Joe Mo',
-      createdAt: 'Friday, 2020-01-01 9:15 AM',
-      pictureLogo: 'http://www.funcage.com/photos/1156765521_28_podborka_35.jpg',
-      description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-    },
-    {
-      type:"Group",
-      name: 'fhm',
-      title: 'Hochschule München',
-      tags: '#uni, #abis',
-      buttonLink: 'chat',
-      location: 'Dieselstr. 22b in 85551 Kirchheim (DE)',
-      membersLive: 39,
-      membersTotal: 89,
-      creator: 'Mr. Monkey',
-      createdAt: 'Friday, 2020-01-01 9:15 AM',
-      pictureLogo: 'https://loremflickr.com/320/240',
-      description: 'The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.',
-    },
-    {
-      type:"Group",
-      name: 'hit',
-      title: 'HIT Einkaufsladen',
-      tags: '#uni, #abis',
-      buttonLink: 'chat',
-      location: 'Dieselstr. 22b in 85551 Kirchheim (DE)',
-      membersLive: 39,
-      membersTotal: 89,
-      creator: 'Joe Mo',
-      createdAt: 'Friday, 2020-01-01 9:15 AM',
-      pictureLogo: 'http://www.funcage.com/photos/1156765521_28_podborka_35.jpg',
-      description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-    },
-  ];
+  entries: any[] = [];
 
 }
