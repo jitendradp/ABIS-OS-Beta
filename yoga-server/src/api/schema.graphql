@@ -564,42 +564,14 @@ type Query {
 
 type Mutation {
     createSession(clientTime:String!) : ActionResponse!
-
-    #
-    # Signup
-    #
-    #signup(signupInput:SignupInput!) : ActionResponse!
-    #verifyEmail(code:String!) : ActionResponse!
-    #resetPassword(code:String!) : ActionResponse!
-
-    #
-    # Login, Logout, VerifySession
-    #
-    #login(email:String! password:String!) : ActionResponse!
-    #logout(csrfToken:String!) : ActionResponse!
-
     verifySession(csrfToken:String!) : ActionResponse!
-
-    #
-    # Agents
-    #
-    createProfile(csrfToken:String! createProfileInput:CreateProfileInput!) : Profile
-    updateProfile(csrfToken:String! updateProfileInput:UpdateProfileInput!) : Profile
-    deleteProfile(csrfToken:String! id:ID!) : ActionResponse!
 
     #
     # Groups
     #
-    createStash(csrfToken:String! createStashInput:CreateStashInput!) : Stash
-    updateStash(csrfToken:String! updateStashInput:UpdateStashInput!) : Stash
-    deleteStash(csrfToken:String! id:ID!) : ActionResponse!
 
     createChannel(csrfToken:String! toAgentId:ID!) : Channel
     deleteChannel(csrfToken:String! id:ID!) : ActionResponse!
-
-    createRoom(csrfToken:String! createRoomInput:CreateRoomInput!) : Room
-    updateRoom(csrfToken:String! updateRoomInput:UpdateRoomInput!) : Room
-    deleteRoom(csrfToken:String! id:ID!) : ActionResponse!
 
     #
     # Entries
@@ -609,30 +581,10 @@ type Mutation {
     deleteEntry(csrfToken:String! id:ID!) : ActionResponse!
 
     #
-    # Memberships
-    #
-    join(csrfToken:String! groupId:ID!) : Membership
-    leave(csrfToken:String! groupId:ID!) : ActionResponse!
-    invite(csrfToken:String! agentId:ID! toGroupId:ID!) : ActionResponse! # The invited agent receives the invite and can then "join" to accept the invite.
-    kick(csrfToken:String! agentId:ID! fromGroupId:ID!) : ActionResponse! # Group owners can kick agents from the group. (Removes the memebership)
-
-    #
     # Tags
     #
     addTag(csrfToken:String! to:ID! addTagInput:AddTagInput!) : Tag  # Adds a tag to an object and returns it. Locations, Groups and Entries can be tagged.
     removeTag(csrfToken:String! tagId:ID!) : ActionResponse!        # Removes a specific tag.
-
-    #
-    # Locations
-    #
-    createLocation(csrfToken:String! createLocationInput:CreateLocationInput!) : Location
-    updateLocation(csrfToken:String! updateLocationInput:UpdateLocationInput!) : Location
-    deleteLocation(csrfToken:String! id:ID!) : ActionResponse!
-
-    #
-    # Ownership
-    #
-    # giveOwnership(csrfToken:String! ofObjectId:ID! toAgentId:ID!) : ActionResponse!
 }
 
 type Subscription {

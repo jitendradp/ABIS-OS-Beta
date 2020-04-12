@@ -1,4 +1,4 @@
-import {Entry, Group, prisma} from "../../generated";
+import {Entry, Group, prisma} from "../../generated/prisma_client";
 import {Helper} from "../../helper/helper";
 import {UserQueries} from "../../data/queries/user";
 import {Channel} from "../../api/types/channel";

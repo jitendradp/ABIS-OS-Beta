@@ -6,8 +6,6 @@ import {Helper} from "../helper/helper";
 import {ActionResponse} from "../api/mutations/actionResponse";
 import {prisma} from "../generated/prisma_client";
 import {Init} from "../init";
-import {AgentCanCreate} from "../statements/agentCanCreate";
-import {EventBroker} from "../services/eventBroker";
 
 export const mutations = {
     async createSession(root, {clientTime}, ctx) {
@@ -20,14 +18,15 @@ export const mutations = {
             anonymousUserId,
             `anon_${new Date().getTime()}`,
             "anon.png",
-            "Available");
+            "Available",
+            Init);
 
         const session = await UserCreate.session(anonymousUserId, anonymousProfile.id, null, clientTime);
 
         Helper.setSessionTokenCookie(session.sessionToken, ctx.request);
         Helper.clearBearerTokenCookie(ctx.request);
 
-        return <ActionResponse> {
+        return <ActionResponse>{
             success: true,
             code: session.csrfToken,
             data: anonymousProfile.id,
@@ -37,9 +36,9 @@ export const mutations = {
 
     async verifySession(root, {csrfToken}, ctx) {
         const sessions = await prisma.sessions({
-            where:{
-                csrfToken:csrfToken,
-                sessionToken:ctx.sessionToken
+            where: {
+                csrfToken: csrfToken,
+                sessionToken: ctx.sessionToken
             }
         });
         if (sessions.length != 1) {
@@ -55,7 +54,7 @@ export const mutations = {
             && Date.parse(session.validTo) > Date.now();
 
         return <ActionResponse>{
-           success: isValid
+            success: isValid
         };
     },
 
@@ -67,31 +66,27 @@ export const mutations = {
         }
 
         const agentId = await GetAgentOf.session(csrfToken, ctx.sessionToken);
-        const newChannel = await AgentCreate.channel(Init, agentId, toAgentId, "New Channel", "channel.png");
+        let newChannel: any;
 
-        (<any>newChannel).receiver = await prisma.agent({id:toAgentId});
+        // TODO: find a nicer method to determine if a channel should be a memory channel or not
+        if (toAgentId == Init.loginServiceId
+            || toAgentId == Init.signupServiceId
+            || toAgentId == Init.verifyEmailServiceId
+            || toAgentId == Init.setPasswordServiceId
+            || toAgentId == Init.resetPasswordServiceId) {
+            newChannel = await AgentCreate.channel(Init, agentId, toAgentId, true, "New Channel", "channel.png");
+        } else {
+            newChannel = await AgentCreate.channel(Init, agentId, toAgentId, false, "New Channel", "channel.png");
+        }
+
+        (<any>newChannel).receiver = await prisma.agent({id: toAgentId});
 
         return newChannel;
     },
 
     async createEntry(root, {csrfToken, createEntryInput}, ctx) {
-        const userHasAuthenticatedSession = await UserHas.authenticatedSession(ctx.sessionToken, csrfToken, ctx.bearerToken);
-        if (!userHasAuthenticatedSession) {
-            throw new Error(`Invalid session`);
-        }
-
         const agentId = await GetAgentOf.session(csrfToken, ctx.sessionToken);
         const groupId = createEntryInput.roomId;
-
-        const group = await prisma.group({id:groupId});
-        if (!group) {
-            throw new Error(`The specified group doesn't exist: ${createEntryInput.roomId}`)
-        }
-
-        let canPostTo = await AgentCanCreate.entry(agentId, groupId);
-        if (!canPostTo) {
-            throw new Error(`Agent '${agentId}' cannot post to group ${groupId}`);
-        }
 
         const newEntryInput = {
             owner: agentId,
@@ -102,57 +97,11 @@ export const mutations = {
             content: createEntryInput.content
         };
 
-        const entry = await AgentCreate.entry(Init, agentId, groupId, newEntryInput, ctx.request);
+        const entry = await AgentCreate.entry(Init, agentId, groupId, newEntryInput, ctx.request, ctx.sessionToken, csrfToken, ctx.bearerToken);
         return entry;
     },
 
     async deleteChannel(root, {csrfToken, toAgentId}, ctx) {
-        throw new Error("Not implemented");
-    },
-
-    async createRoom(root, {csrfToken, createRoomInput}, ctx) {
-        const userHasAuthenticatedSession = await UserHas.authenticatedSession(ctx.sessionToken, csrfToken, ctx.bearerToken);
-        if (!userHasAuthenticatedSession) {
-            throw new Error(`Invalid session`);
-        }
-
-        const agentId = await GetAgentOf.session(csrfToken, ctx.sessionToken);
-
-        // TODO: Implement AgentCanCreate.room()
-        /*if (!(await AgentCanCreate.room(agentId, createRoomInput.name))) {
-            throw new Error(`Agent ${agentId} cannot create a room with the name ${createRoomInput.name}`);
-        }*/
-
-        const room = await AgentCreate.room(Init, agentId, createRoomInput.name, createRoomInput.logo, true);
-        (<any>room).isPrivate = !room.isPublic;
-        (<any>room).inbox = {id:""};
-        (<any>room).memberships = [];
-        return room;
-    },
-    async updateRoom(root, {csrfToken, updateRoomInput}, ctx) {
-        throw new Error("Not implemented");
-    },
-    async deleteRoom(root, {csrfToken, roomId}, ctx) {
-        throw new Error("Not implemented");
-    },
-
-    async createProfile(root, {csrfToken}, ctx) {
-        throw new Error("Not implemented");
-    },
-    async deleteProfile(root, {csrfToken}, ctx) {
-        throw new Error("Not implemented");
-    },
-    async updateProfile(root, {csrfToken}, ctx) {
-        throw new Error("Not implemented");
-    },
-
-    async createStash(root, {csrfToken}, ctx) {
-        throw new Error("Not implemented");
-    },
-    async updateStash(root, {csrfToken}, ctx) {
-        throw new Error("Not implemented");
-    },
-    async deleteStash(root, {csrfToken}, ctx) {
         throw new Error("Not implemented");
     },
 
@@ -168,15 +117,5 @@ export const mutations = {
     },
     async removeTag(root, {csrfToken}, ctx) {
         throw new Error("Not implemented");
-    },
-
-    async createLocation(root, {csrfToken}, ctx) {
-        throw new Error("Not implemented");
-    },
-    async updateLocation(root, {csrfToken}, ctx) {
-        throw new Error("Not implemented");
-    },
-    async deleteLocation(root, {csrfToken}, ctx) {
-        throw new Error("Not implemented");
-    },
+    }
 };

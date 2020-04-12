@@ -1,41 +1,50 @@
-/* Wrapper for the top icon or picture */
-.topIcon {
-  position: absolute;
-  top: 0;
-  height: 70px;
-  width: 100%;
-}
-
-/* Wrapper for the bottom icon or picture */
-.bottomIcon {
-  position: absolute;
-  bottom: 0;
-  height: 56px;
-  width: 100%;
-  background-color: #2b2b2b;
-}
-
-
-/* Wrapper for the icons */
-.iconList {
-  margin-top: 70px;
-}
-
-
+/* for the left sidebar on desktop view*/
 .sidebarWrapper {
   position: fixed;
   position: -webkit-sticky; /* For macOS/iOS Safari */
   left: 0; /* Sets the sticky toolbar to be on top */
   z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
   width: 70px;
-  height: calc(100% - 56px);
+  height: 100%;
+}
+
+.topIcon { /* Wrapper for the top icon or picture */
+  position: absolute;
+  top: 0;
+  height: 56px;
+  width: 100%;
+}
+
+.leftIconList { /* Wrapper for the icons */
   margin-top: 56px;
 }
 
-.quickButtons {
+.bottomIcon {/* Wrapper for the bottom icon or picture */
+  position: absolute;
+  bottom: 0;
+  height: 56px;
+  width: 100%;
+  background-color: #2b2b2b;
+}
+/* for the left sidebar on desktop view*/
+
+
+.center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+
+
+.footerWrapper {
   color: white;
   background: #333;
   bottom: 0;
+  width: calc(100% - 56px);
 }
 
 .subtitle {

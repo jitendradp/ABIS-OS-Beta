@@ -8,11 +8,11 @@ export const Index: ContentEncodingCreateInput = {
     type: "JsonSchema",
     data: JSON.stringify({
         VerifyEmail: {
-            type: "object",
-            properties: {
+            "type": "object",
+            "properties": {
                 "code": {"type": "string"}
             },
-            required: [
+            "required": [
                 "code"
             ]
         }

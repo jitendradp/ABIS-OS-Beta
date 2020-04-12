@@ -31,17 +31,21 @@ export const subscriptions = {
             // TODO: Maybe that works with map() as well (rxjs/promise)?
             const augmentedTopic = new Observable(subscriber => {
                 topic.subscribe(async (next:any) => {
-                    const containerGroup = (await prisma.groups({
-                        where:{
-                            entries_some:{
-                                id: next.id
+
+                    let containerGroupId = Init.memoryEntries.getGroup(next.id);
+                    if (!containerGroupId) {
+                        containerGroupId = (await prisma.groups({
+                            where: {
+                                entries_some: {
+                                    id: next.id
+                                }
                             }
-                        }
-                    }))[0];
+                        }))[0].id;
+                    }
                     subscriber.next({
                         newEntry:{
                             entry: next,
-                            containerId: containerGroup.id
+                            containerId: containerGroupId
                         }
                     });
                 });

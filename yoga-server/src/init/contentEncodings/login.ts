@@ -8,12 +8,13 @@ export const Index: ContentEncodingCreateInput = {
     type: "JsonSchema",
     data: JSON.stringify({
         Login: {
-            type: "object",
-            properties: {
+            "type": "object",
+            "properties": {
                 "email": {"type": "string"},
-                "password": {"type": "string"}
+                "password": {"type": "string"},
+                "remeber_me": {"type": "boolean"}
             },
-            required: [
+            "required": [
                 "email",
                 "password"
             ]

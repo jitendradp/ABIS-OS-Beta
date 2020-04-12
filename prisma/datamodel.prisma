@@ -96,6 +96,8 @@ type Group {
     inbox: ID # Only "Room"s have Agents of type 'Inbox'
 
     tags: [Tag!]!
+
+    isMemory: Boolean!
 }
 
 enum GroupType {

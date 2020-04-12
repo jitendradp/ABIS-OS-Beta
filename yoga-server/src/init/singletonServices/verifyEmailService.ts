@@ -8,14 +8,13 @@ class Implementation extends DirectService {
         return this.server.verifyEmailContentEncoding.id;
     }
 
-    async onNewEntry(newEntry:Entry, answerChannel:Group){
+    async onNewEntry(newEntry: Entry, answerChannel: Group) {
         const foundUser = await UserQueries.findUserByChallenge(newEntry.content.VerifyEmail.code);
         if (!foundUser) {
             throw new Error(`No challenge with this code could be found.`);
         }
 
         await Implementation.clearChallenge(foundUser.id);
-
         await this.postContinueTo(this.server.loginServiceId, answerChannel.id);
     }
 

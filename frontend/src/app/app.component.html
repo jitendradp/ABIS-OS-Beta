@@ -1,5 +1,5 @@
+<app-iconbar [onLeftSide]="true"></app-iconbar>
 <mat-sidenav-container [hasBackdrop]="false">
-  <app-iconbar [onLeftSide]="true"></app-iconbar>
   <app-header [actions]="actions" [title]="title"></app-header>
   <mat-drawer-container [hasBackdrop]="false">
     <mat-drawer position="end" #right mode="side" class="sidebarRight">
@@ -11,8 +11,7 @@
         <app-chat-navigation></app-chat-navigation>
       </mat-sidenav>
       <router-outlet></router-outlet>
+      <app-iconbar [onFooter]="true" class="footer"></app-iconbar>
     </mat-drawer-content>
   </mat-drawer-container>
-  <!--todo hide and show icon bar and or header when scrolling down or up especially on mobile view -->
-  <!--<app-iconbar [onFooter]="true" class="footer"></app-iconbar>-->
 </mat-sidenav-container>

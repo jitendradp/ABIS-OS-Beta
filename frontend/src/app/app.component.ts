@@ -17,16 +17,14 @@ import {MatDialog} from "@angular/material";
 import {EditorChannelComponent} from "./dialogs/editor-channel/editor-channel.component";
 import {Home} from "./actions/routes/Home";
 import {ShowNotification} from "./actions/ui/ShowNotification";
-import {SwitchProfile} from "./actions/routes/SwitchProfile";
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {LogEntry} from "./services/logger.service";
 import {Back} from "./actions/routes/Back";
 import {EditorGroupComponent} from "./dialogs/editor-group/editor-group.component";
-import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
+import {SetSidebarVisibility} from "./actions/ui/SetSidebarVisibility";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {RouteChanged} from "./actions/routes/RouteChanged";
 import {ListGroupComponent} from "./lists/list-group/list-group.component";
-import {InviteComponent} from "./chat/invite/invite.component";
 import {Logout} from "./actions/routes/Logout";
 import {UserService} from "./services/user.service";
 import {CreateEntryGQL} from "../generated/abis-api";
@@ -80,10 +78,10 @@ export class AppComponent implements AfterViewInit {
         }
 
         if (this.deviceService.isMobile() && this.right.opened) {
-          this.actionDispatcher.dispatch(new SetVisibility("right", "invisible"));
+          this.actionDispatcher.dispatch(new SetSidebarVisibility("right", "invisible", "z1"));
         }
         break;
-      case SetVisibility.Name:
+      case SetSidebarVisibility.Name:
         let visibility: boolean = false;
         switch (action.state) {
           case "visible":
@@ -137,9 +135,6 @@ export class AppComponent implements AfterViewInit {
         }
         history.back();
         break;
-      case SwitchProfile.Name:
-        this._router.navigate(["/switch-profile"]);
-        break;
       case Logout.Name:
         this._router.navigate(["/logout"]);
         break;
@@ -186,6 +181,7 @@ export class AppComponent implements AfterViewInit {
   }
 
   public openContactInviteDialog(): void {
+    /*
     const dialogRef = this._dialog.open(InviteComponent, {
       width: '50%',
       minWidth: '300px'
@@ -194,5 +190,6 @@ export class AppComponent implements AfterViewInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
+     */
   }
 }

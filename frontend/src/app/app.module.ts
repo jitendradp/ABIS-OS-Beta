@@ -47,7 +47,6 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {NgxEchartsModule} from "ngx-echarts";
 import {MapComponent} from './map/map.component';
-import {InviteComponent} from './chat/invite/invite.component';
 import {LogoComponent} from './components/logo/logo.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HeaderComponent} from './components/header/header.component';
@@ -57,7 +56,6 @@ import {EditorChannelComponent} from './dialogs/editor-channel/editor-channel.co
 import {HttpClientModule} from '@angular/common/http';
 import {CardIntroComponent} from "./cards/card-intro/card-intro.component";
 import {NavigationComponent} from "./navigation/navigation.component";
-import {SwitchProfileComponent} from './dialogs/switch-profile/switch-profile.component';
 import {LogoutComponent} from './pages/system/logout/logout.component';
 import {IAction} from "./actions/IAction";
 import {EditorGroupComponent} from "./dialogs/editor-group/editor-group.component";
@@ -67,7 +65,7 @@ import {CardFormComponent} from "./cards/card-form/card-form.component";
 import {SearchComponent} from "./search/search.component";
 import {NgxMapboxGLModule} from "ngx-mapbox-gl";
 import {CardComponent} from "./cards/card/card.component";
-import {SetVisibility} from "./actions/ui/sidebar/SetVisibility";
+import {SetSidebarVisibility} from "./actions/ui/SetSidebarVisibility";
 import {DeviceDetectorModule} from "ngx-device-detector";
 import {ClusterPopupComponent} from "./map/cluster-popup/cluster-popup.component";
 import {AgGridModule} from "ag-grid-angular";
@@ -87,7 +85,6 @@ import {ListContactComponent} from "./lists/list-contact/list-contact.component"
 import {AvatarComponent} from "./components/avatar/avatar.component";
 import {ListChipComponent} from "./lists/list-chip/list-chip.component";
 import {ChatComponent} from "./chat/chat.component";
-import {ResetPasswordComponent} from "./dialogs/reset-password/reset-password.component";
 import {ListMemberComponent} from "./lists/list-member/list-member.component";
 import {FeedNotificationComponent} from "./feeds/feed-notification/feed-notification.component";
 import {ListDataspaceComponent} from "./lists/list-dataspace/list-dataspace.component";
@@ -108,6 +105,12 @@ import {MaterialDesignFrameworkModule} from "angular6-json-schema-form";
 import {ServiceDialogComponent} from "./services/service-dialog/service-dialog.component";
 import {GraphQLConfigModule} from "./apolloConfig";
 import {ListIconComponent} from './lists/list-icon/list-icon.component';
+import {ChangePasswordComponent} from "./pages/system/change-password/change-password.component";
+import {SetPasswordComponent} from "./pages/system/set-password/set-password.component";
+import {ResetPasswordComponent} from "./pages/system/reset-password/reset-password.component";
+import {CreateProfileComponent} from "./pages/system/create-profile/create-profile.component";
+import {CreateRoomComponent} from "./pages/system/create-room/create-room.component";
+import {InviteComponent} from "./pages/system/invite/invite.component";
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -115,21 +118,23 @@ export function momentAdapterFactory() {
 
 const defaultActions: IAction[] =
   [
-    <SetVisibility>{
-      name: SetVisibility.Name,
+    <SetSidebarVisibility>{
+      name: SetSidebarVisibility.Name,
       label: "Open/Close Menu",
-      icon: "menu",
+      icon: "chevron_left",
       side: "left",
-      state: "toggle"
+      state: "toggle",
+      elevation: "z1"
     },
 
     // todo show/hide when user is logged in or not
-    <SetVisibility>{
-      name: SetVisibility.Name,
+    <SetSidebarVisibility>{
+      name: SetSidebarVisibility.Name,
       label: "Open/Close Chat",
-      icon: "chat",
+      icon: "more_vert",
       side: "right",
-      state: "toggle"
+      state: "toggle",
+      elevation: "z1"
     }
   ];
 
@@ -157,6 +162,20 @@ const appRoutes: Routes = [
     , canActivate: [CanActivateRoute]
   },
   {
+    path: 'invite', component: InviteComponent, data: {
+      "title": "Invite",
+      "actions": defaultActions
+    }
+    , canActivate: [CanActivateRoute]
+  },
+  {
+    path: 'change-password', component: ChangePasswordComponent, data: {
+      "title": "Change password",
+      "actions": defaultActions
+    }
+    , canActivate: [CanActivateRoute]
+  },
+  {
     path: '', component: MapComponent, data: {
       "title": "Map",
       "actions": defaultActions
@@ -171,15 +190,29 @@ const appRoutes: Routes = [
     , canActivate: [CanActivateRoute]
   },
   {
-    path: 'editor-channel', component: EditorChannelComponent, data: {
-      "title": "Create new channel",
+    path: 'create-profile', component: CreateProfileComponent, data: {
+      "title": "Create profile",
       "actions": defaultActions
     }
     , canActivate: [CanActivateRoute]
   },
   {
-    path: 'switch-profile', component: SwitchProfileComponent, data: {
-      "title": "Switch profile",
+    path: 'create-room', component: CreateRoomComponent, data: {
+      "title": "Create room",
+      "actions": defaultActions
+    }
+    , canActivate: [CanActivateRoute]
+  },
+  {
+    path: 'set-password', component: SetPasswordComponent, data: {
+      "title": "Set password",
+      "actions": defaultActions
+    }
+    , canActivate: [CanActivateRoute]
+  },
+  {
+    path: 'editor-channel', component: EditorChannelComponent, data: {
+      "title": "Create new channel",
       "actions": defaultActions
     }
     , canActivate: [CanActivateRoute]
@@ -218,7 +251,6 @@ const appRoutes: Routes = [
     LoginComponent,
     IconbarComponent,
     MapComponent,
-    InviteComponent,
     LogoComponent,
     HeaderComponent,
     InputComponent,
@@ -226,7 +258,6 @@ const appRoutes: Routes = [
     EditorChannelComponent,
     CardIntroComponent,
     NavigationComponent,
-    SwitchProfileComponent,
     LogoutComponent,
     EditorGroupComponent,
     CardMessageComponent,
@@ -238,17 +269,23 @@ const appRoutes: Routes = [
     CardProfileComponent,
     FeedMessageComponent,
     ChartGraphForceComponent,
+    ResetPasswordComponent,
     ChartLineComponent,
     ChartMapComponent,
     ChartSankeyComponent,
+    SetPasswordComponent,
+    ChangePasswordComponent,
     ChartTableComponent,
     MaterialElevationDirective,
+    InviteComponent,
     ChatNavigationComponent,
     ChatComponent,
     ChipComponent,
     CardContactComponent,
     ListGroupComponent,
     ListContactComponent,
+    CreateProfileComponent,
+    CreateRoomComponent,
     AvatarComponent,
     ListChipComponent,
     ResetPasswordComponent,

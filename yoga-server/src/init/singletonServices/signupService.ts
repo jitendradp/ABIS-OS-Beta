@@ -1,5 +1,5 @@
 import {DirectService} from "../../services/directService";
-import {Agent, Entry, Group, prisma, User} from "../../generated";
+import {Agent, Entry, Group, prisma, User} from "../../generated/prisma_client";
 import {Channel} from "../../api/types/channel";
 import {UserOwns} from "../../statements/userOwns";
 import {Helper} from "../../helper/helper";
@@ -10,7 +10,7 @@ import {UserCreate} from "../../data/mutations/userCreate";
 import {Server} from "../../init";
 
 class Implementation extends DirectService {
-    constructor(server:Server, agent:Agent) {
+    constructor(server: Server, agent: Agent) {
         super(server, agent);
     }
 
@@ -18,7 +18,7 @@ class Implementation extends DirectService {
         return this.server.signupContentEncoding.id;
     }
 
-    async onNewChannel(newChannel:Channel) {
+    async onNewChannel(newChannel: Channel) {
         if (!(await UserOwns.profile(this.server.anonymousUser.id, newChannel.owner))) {
             throw new Error(`Only anonymous sessions can use this service.`);
         }
@@ -26,21 +26,24 @@ class Implementation extends DirectService {
         return super.onNewChannel(newChannel);
     }
 
-    async onNewEntry(newEntry:Entry, answerChannel:Group) {
+    async onNewEntry(newEntry: Entry, answerChannel: Group) {
         //
         // Read the user-entry to a typed variable
         //
-        const signupEntryContent:{
-            first_name:string,
-            last_name:string,
-            email:string,
-            password:string,
-            password_confirmation:string
+        const signupEntryContent: {
+            first_name: string,
+            last_name: string,
+            email: string,
+            password: string,
+            password_confirmation: string
         } = newEntry.content[this.server.signupContentEncoding.name];
 
         // Check if the passwords match
         if (signupEntryContent.password != signupEntryContent.password_confirmation) {
-            const validationErrors = [{key: "password", value: "The password and the password confirmation fields do not match."}];
+            const validationErrors = [{
+                key: "password",
+                value: "The password and the password confirmation fields do not match."
+            }];
             const summary = "Some of the provided data was invalid. Please correct the data and re-send the form.";
             await this.postError(summary, validationErrors, answerChannel.id);
             return;
@@ -56,7 +59,7 @@ class Implementation extends DirectService {
                 firstName: signupEntryContent.first_name,
                 lastName: signupEntryContent.last_name,
                 timezone: "GMT"
-            });
+            }, this.server);
         } catch (e) {
             Helper.log(e);
             const validationErrors = [];
@@ -73,7 +76,7 @@ class Implementation extends DirectService {
 
     private static readonly bcrypt = require('bcrypt');
 
-    private static async createUser(password: string, newUser: User): Promise<ActionResponse> {
+    private static async createUser(password: string, newUser: User, server: Server): Promise<ActionResponse> {
         // fact "U.P.1 Alle Benutzer müssen mind. ein Profil besitzen"
         const existingUser = await prisma.user({email: newUser.email});
         if (existingUser) {
@@ -96,7 +99,7 @@ class Implementation extends DirectService {
 
         // Create the first profile and send the e-mail verification code
         await Promise.all([
-            this.createFirstProfile(newUser),
+            this.createFirstProfile(newUser, server),
             Mailer.sendEmailVerificationCode(newUser)
         ]);
 
@@ -110,12 +113,12 @@ class Implementation extends DirectService {
      * Creates the first Profile-Agent for the supplied User.
      * @param user
      */
-    private static async createFirstProfile(user: User): Promise<Agent> {
-        if ((await prisma.user({id:user.id}).agents({where:{type:"Profile"}})).length > 0) {
+    private static async createFirstProfile(user: User, server: Server): Promise<Agent> {
+        if ((await prisma.user({id: user.id}).agents({where: {type: "Profile"}})).length > 0) {
             throw new Error(`This is not the first Profile of user ${user.id}.`);
         }
 
-        return UserCreate.profile(user.id, user.firstName, "avatar.png", "Available");
+        return UserCreate.profile(user.id, user.firstName, "avatar.png", "Available", server);
     }
 }
 

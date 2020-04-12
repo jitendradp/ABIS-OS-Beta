@@ -3,7 +3,6 @@ import {Topic, Topics} from "./eventBroker";
 import {Channel} from "../api/types/channel";
 import {Helper} from "../helper/helper";
 import {AgentCreate} from "../data/mutations/agentCreate";
-import {Init} from "../init";
 import {Entry, Group, prisma} from "../generated/prisma_client";
 
 /**
@@ -51,10 +50,13 @@ export abstract class DirectService extends Service {
         Helper.log(`${this.name} (${this.id}): received a NewChannel event from '${newChannel.owner}'. Content: ${JSON.stringify(newChannel)}`);
         Helper.log(`${this.name} (${this.id}): establishing a reverse channel ..`);
 
+        const forwardChannel = await prisma.group({id: newChannel.id});
+
         const reverseChannel = await AgentCreate.channel(
             this.server,
             this.id,
             newChannel.owner,
+            forwardChannel.isMemory,
             `${this.id}->${newChannel.owner}`,
             "channel.png");
 
@@ -68,7 +70,11 @@ export abstract class DirectService extends Service {
             contentEncoding: this.welcomeMessageContentEncodingId,
             content:null,
             name: "Welcome"
-        });
+        },
+            null,
+            null,
+            null,
+            null);
 
         Helper.log(`${this.name} (${this.id}): posted welcome message ${welcomeEntry.id} to agent '${newChannel.owner}' via channel '${reverseChannel.id}'.`);
     }
@@ -121,7 +127,7 @@ export abstract class DirectService extends Service {
             type: "Json",
             owner: this.id,
             createdBy: this.id,
-            contentEncoding: Init.continuationContentEncoding.id,
+            contentEncoding: this.server.continuationContentEncoding.id,
             content: {
                 Continuation: {
                     fromAgentId: this.id,
@@ -130,7 +136,11 @@ export abstract class DirectService extends Service {
                 }
             },
             name: "Continuation"
-        });
+        },
+            null,
+            null,
+            null,
+            null);
     }
 
     protected postError(summary:string, validationErrors:{key:string,value:string}[], inChannelId:string) {
@@ -138,12 +148,16 @@ export abstract class DirectService extends Service {
             type: "Json",
             owner: this.id,
             createdBy: this.id,
-            contentEncoding: Init.errorContentEncoding.id,
+            contentEncoding: this.server.errorContentEncoding.id,
             content: {
                 summary: summary,
                 detail: validationErrors
             },
             name: "Validation error"
-        });
+        },
+            null,
+            null,
+            null,
+            null);
     }
 }
