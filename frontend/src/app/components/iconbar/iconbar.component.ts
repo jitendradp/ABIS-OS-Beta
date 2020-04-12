@@ -13,6 +13,7 @@ import {ListChatComponent} from "../../list-items/list-chat/list-chat.component"
 import {NestedAction} from "../../actions/NestedAction";
 import {IEvent} from "../../actions/IEvent";
 import {ChatComponent} from "../../chat/chat.component";
+import {Home} from "../../actions/routes/Home";
 
 export interface IconList {
   name: string;
@@ -65,6 +66,7 @@ export class IconbarComponent {
       const openLeftSidebarLevel1 = new SetSidebarVisibility("left", "visible", "level1");
 
       this._entries = [
+        new Home(),
         new NestedAction(
           "group",
           "Groups",

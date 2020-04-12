@@ -114,6 +114,16 @@ export class AppComponent implements AfterViewInit {
         } else if (action.side == "right") {
           this.right.toggle(visibility);
         }
+
+        if ((<SetSidebarVisibility>action).elevation == "base") {
+          if (this.actions.length > 0 && this.actions[0].name == Back.Name) {
+            this.actions.shift();
+          }
+        } else if ((<SetSidebarVisibility>action).elevation == "level1") {
+          if (this.actions && this.actions.length < 1 || (this.actions.length > 0 && this.actions[0].name != Back.Name)) {
+            this.actions.unshift(new Back());
+          }
+        }
         break;
       case NestedAction.Name:
         for(let a of (<NestedAction>action).events) {
