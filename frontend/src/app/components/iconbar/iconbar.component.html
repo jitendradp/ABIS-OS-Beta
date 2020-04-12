@@ -3,13 +3,14 @@
 <div class="sidebarWrapper" *ngIf='orientation == "Vertical"'>
   <div class="topIcon">
     <div class="center">
-      <app-avatar [url]="'https://keenthemes.com/preview/metronic/theme/assets/pages/media/profile/profile_user.jpg'" [backgroundColor]="'white'"></app-avatar>
+      <app-avatar [url]="'https://keenthemes.com/preview/metronic/theme/assets/pages/media/profile/profile_user.jpg'"
+                  [backgroundColor]="'white'"></app-avatar>
     </div>
   </div>
   <div class="leftIconList">
     <mat-nav-list>
       <a mat-list-item matTooltip="Activities" *ngFor="let action of entries" (click)="onIconClick($event, action)">
-        <mat-icon>{{action.icon}}</mat-icon>
+        <mat-icon class="iconSpacer">{{action.icon}}</mat-icon>
       </a>
     </mat-nav-list>
   </div>

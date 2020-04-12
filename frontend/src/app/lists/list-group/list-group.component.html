@@ -9,7 +9,7 @@
   </mat-toolbar>
   <app-whitespace [height]="'8px'"></app-whitespace>
   <div class="groupListWrapper">
-    <app-content *ngFor="let group of groups">
+    <div *ngFor="let group of groups">
       <app-card-group
         [title]="group.title"
         [name]="group.name"
@@ -22,7 +22,7 @@
         [description]="group.description"
         [buttonLink]="group.buttonLink">
       </app-card-group>
-    </app-content>
+    </div>
   </div>
 </div>
 
