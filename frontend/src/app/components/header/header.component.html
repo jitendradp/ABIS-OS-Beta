@@ -10,13 +10,9 @@
       <mat-icon>{{action.icon}}</mat-icon>
     </button>
 
-    <form class="searchWrapper">
-      <mat-form-field appearance="fill"
-                      [hideRequiredMarker]="hideRequiredControl.value"
-                      [floatLabel]="floatLabelControl.value">
-        <input matInput placeholder="Simple placeholder" required>
-      </mat-form-field>
-    </form>
+    <div class="searchWrapper">
+      <app-input></app-input>
+    </div>
 
     <span class="fill-remaining-space"></span>
     <button *ngFor="let action of rightActions" mat-icon-button (click)="actionDispatcher.dispatch(action);">
