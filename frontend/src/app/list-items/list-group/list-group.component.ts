@@ -6,6 +6,7 @@ import {FindRoomsGQL, NewRoomGQL} from "../../../generated/abis-api";
 import {UserService} from "../../services/user.service";
 import {LoginStateChanged} from "../../actions/user/LoginStateChanged";
 import {filterErrorsAndWarnings} from "@angular/compiler-cli";
+import {ITypedElement} from "../../list/ITypedElement";
 
 interface GroupNode {
   name: string;
@@ -69,7 +70,7 @@ export class ListGroupComponent implements OnInit {
   showActions: boolean;
 
   @Input()
-  asTree: boolean;
+  asTree: boolean = true;
 
   @Input()
   asDialogList: boolean = true;
@@ -140,8 +141,9 @@ export class ListGroupComponent implements OnInit {
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
 
-  groups: groupItem [] = [
+  entries: any[] = [
     {
+      type:"Group",
       name: 'tum',
       title: 'TU München',
       tags: '#uni, #abis',
@@ -155,6 +157,7 @@ export class ListGroupComponent implements OnInit {
       description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
     },
     {
+      type:"Group",
       name: 'bcg',
       title: 'Boston Group',
       tags: '#uni, #abis',
@@ -168,6 +171,7 @@ export class ListGroupComponent implements OnInit {
       description: 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English.',
     },
     {
+      type:"Group",
       name: 'fhm',
       title: 'Hochschule München',
       tags: '#uni, #abis',
@@ -181,6 +185,7 @@ export class ListGroupComponent implements OnInit {
       description: 'The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.',
     },
     {
+      type:"Group",
       name: 'hit',
       title: 'HIT Einkaufsladen',
       tags: '#uni, #abis',
@@ -194,6 +199,7 @@ export class ListGroupComponent implements OnInit {
       description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
     },
     {
+      type:"Group",
       name: 'fhm',
       title: 'Hochschule München',
       tags: '#uni, #abis',
@@ -207,6 +213,7 @@ export class ListGroupComponent implements OnInit {
       description: 'The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.',
     },
     {
+      type:"Group",
       name: 'hit',
       title: 'HIT Einkaufsladen',
       tags: '#uni, #abis',
