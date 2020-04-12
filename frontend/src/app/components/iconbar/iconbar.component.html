@@ -3,25 +3,26 @@
 <div class="sidebarWrapper" *ngIf="onLeftSide">
   <div class="topIcon">
     <div class="center">
-      <app-avatar></app-avatar>
+      <button mat-icon-button>
+        <app-logo [url]="'./assets/logos/abis-logo.png'"></app-logo>
+      </button>
     </div>
   </div>
   <div class="leftIconList">
     <app-list-icon></app-list-icon>
   </div>
-  <!-- todo only show when footer is disabled
-    <div class="bottomIcon">
-      <button mat-icon-button class="center">
-        <app-logo [url]="'./assets/logos/abis-logo.png'"></app-logo>
-      </button>
-    </div> -->
+  <div class="bottomIcon">
+    <div class="center">
+      <app-avatar></app-avatar>
+    </div>
+  </div>
 </div>
 
 
 <!-- todo: Make a general "horizontal" version for this  -->
 <div *ngIf="onFooter">
   <div class="subline"></div>
-  <mat-grid-list class="quickButtons" cols="5" rowHeight="53px">
+  <mat-grid-list class="footerWrapper" cols="5" rowHeight="53px">
     <mat-grid-tile>
       <button routerLink="cockpit" mat-button class="tileButton">
         <mat-icon>bar_chart</mat-icon>

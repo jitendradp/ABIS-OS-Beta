@@ -5,14 +5,13 @@
   left: 0; /* Sets the sticky toolbar to be on top */
   z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
   width: 70px;
-  height: calc(100% - 56px);
-  margin-top: 56px;
+  height: 100%;
 }
 
 .topIcon { /* Wrapper for the top icon or picture */
   position: absolute;
   top: 0;
-  height: 70px;
+  height: 56px;
   width: 100%;
 }
 
@@ -41,10 +40,11 @@
 
 
 
-.quickButtons {
+.footerWrapper {
   color: white;
   background: #333;
   bottom: 0;
+  width: calc(100% - 56px);
 }
 
 .subtitle {
