@@ -1,4 +1,10 @@
-<!-- todo combine the mat toolbar navigation to new component -->
+<!-- todo combine
+.fill-remaining-space {
+  /* This fills the remaining space, by using flexbox.
+     Every toolbar row uses a flexbox row layout. */
+  flex: 1 1 auto;
+}
+the mat toolbar navigation to new component -->
 <div *ngIf="showActions">
   <mat-toolbar class="chatNavToolbar">
     <button mat-flat-button color="primary" (click)="collapsed = !collapsed">

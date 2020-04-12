@@ -17,9 +17,10 @@
 
 .leftIconList { /* Wrapper for the icons  d*/
   margin-top: 56px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+}
+
+.iconSpacer {
+  padding-left: 7px;
 }
 
 .bottomIcon {/* Wrapper for the bottom icon or picture */
