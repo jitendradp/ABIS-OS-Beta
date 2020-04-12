@@ -25,7 +25,7 @@
   <div class="subline"></div>
   <mat-grid-list class="footerWrapper" cols="5" rowHeight="53px">
     <mat-grid-tile *ngFor="let action of entries">
-      <button routerLink="cockpit" mat-button class="tileButton" (click)="onIconClick($event, action)">
+      <button mat-button class="tileButton" (click)="onIconClick($event, action)">
         <mat-icon>{{action.icon}}</mat-icon>
         <span fxHide fxShow.gt-sm class="iconLabelSpacing">{{action.label}}</span>
       </button>
