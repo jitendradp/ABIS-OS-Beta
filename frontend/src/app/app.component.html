@@ -7,10 +7,10 @@
     </mat-drawer>
     <mat-drawer-content class="body">
       <mat-sidenav #left position="start" mode="push" class="sidebarLeft" >
-        <app-chat-navigation></app-chat-navigation>
+        <app-navigation></app-navigation>
       </mat-sidenav>
       <router-outlet></router-outlet>
-      <app-iconbar [orientation]='"Horizontal"' class="footer"></app-iconbar>
+      <!--<app-iconbar [orientation]='"Horizontal"' class="footer"></app-iconbar>-->
     </mat-drawer-content>
   </mat-drawer-container>
 </mat-sidenav-container>
