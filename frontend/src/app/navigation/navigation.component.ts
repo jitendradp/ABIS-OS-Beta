@@ -3,6 +3,7 @@ import {Elevation, SetSidebarVisibility} from "../actions/ui/SetSidebarVisibilit
 import {ActionDispatcherService} from "../services/action-dispatcher.service";
 import {IEvent} from "../actions/IEvent";
 import {SetSidebarContent} from "../actions/ui/SetSidebarContent";
+import {SetApplicationTitle} from "../actions/ui/SetApplicationTitle";
 
 @Component({
   selector: 'app-navigation',
@@ -32,7 +33,7 @@ export class NavigationComponent {
         }
         break;
       case SetSidebarContent.Name:
-        this.components[(<any>action).elevation] = (<any>action).component;
+        this.components[(<any>action).elevation] = { title: (<any>action).title, component: (<any>action).component };
 
         if (this.elevation.toString() === (<any>action).elevation.toString()) {
           this.setContent(action);
@@ -42,9 +43,10 @@ export class NavigationComponent {
   }
 
   setContent(action:any) {
-    const factory = this.componentFactoryResolver.resolveComponentFactory(this.components[action.elevation]);
+    const factory = this.componentFactoryResolver.resolveComponentFactory(this.components[action.elevation].component);
     this.contentContainer1.clear();
     const ref = this.contentContainer1.createComponent(factory);
+    this.actionDispatcher.dispatch(new SetApplicationTitle(this.components[action.elevation].title));
     ref.changeDetectorRef.detectChanges();
   }
 }
