@@ -8,8 +8,8 @@
   </div>
   <div class="leftIconList">
     <mat-nav-list>
-      <a mat-list-item matTooltip="Activities" *ngFor="let action of entries">
-        <mat-icon (click)="onIconClick($event, action)">{{action.icon}}</mat-icon>
+      <a mat-list-item matTooltip="Activities" *ngFor="let action of entries" (click)="onIconClick($event, action)">
+        <mat-icon>{{action.icon}}</mat-icon>
       </a>
     </mat-nav-list>
   </div>
