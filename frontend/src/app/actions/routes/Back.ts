@@ -6,4 +6,5 @@ export class Back implements IAction {
   name: string = Back.Name;
   icon:string = "chevron_left";
   label:string = "Back";
+  side: string = "left";
 }

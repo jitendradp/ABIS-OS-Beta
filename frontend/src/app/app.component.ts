@@ -69,6 +69,7 @@ export class AppComponent implements AfterViewInit {
   }
 
   private _routeTitle:string;
+  private _sidebarOpen:boolean;
 
   private handleAction(action) {
     switch (action.name) {
@@ -92,6 +93,19 @@ export class AppComponent implements AfterViewInit {
         break;
       case SetSidebarVisibility.Name:
         let visibility: boolean = false;
+
+        if ((<SetSidebarVisibility>action).elevation == "base") {
+          if (this.actions.length > 0 && this.actions[0].name == Back.Name) {
+            this.actions.shift();
+          }
+        } else if ((<SetSidebarVisibility>action).elevation == "level1") {
+          if (this.actions && this.actions.length < 1 || (this.actions.length > 0 && this.actions[0].name != Back.Name)) {
+            this.actions.unshift(new Back());
+          }
+        } else {
+          return;
+        }
+
         switch (action.state) {
           case "visible":
             visibility = true;
@@ -106,23 +120,14 @@ export class AppComponent implements AfterViewInit {
         if (action.side == "left") {
           // Every time when the sidebar is hidden, show the route's title in the header.
           this.left.toggle(visibility).then(o => {
-            if (o != "close"){
+            this._sidebarOpen = o != "close";
+            if (this._sidebarOpen){
               return;
             }
             this.title = this._routeTitle;
           });
         } else if (action.side == "right") {
           this.right.toggle(visibility);
-        }
-
-        if ((<SetSidebarVisibility>action).elevation == "base") {
-          if (this.actions.length > 0 && this.actions[0].name == Back.Name) {
-            this.actions.shift();
-          }
-        } else if ((<SetSidebarVisibility>action).elevation == "level1") {
-          if (this.actions && this.actions.length < 1 || (this.actions.length > 0 && this.actions[0].name != Back.Name)) {
-            this.actions.unshift(new Back());
-          }
         }
         break;
       case NestedAction.Name:
@@ -159,6 +164,14 @@ export class AppComponent implements AfterViewInit {
         this._router.navigate(["/"]);
         break;
       case Back.Name:
+        if (this._sidebarOpen) {
+          this.actionDispatcher.dispatch(new SetSidebarVisibility("left", "invisible", null));
+          if (this.actions.length > 0 && this.actions[0].name == Back.Name) {
+            this.actions.shift();
+          }
+          return;
+        }
+
         if (document.referrer == "") {
           this.actionDispatcher.dispatch(new Home());
           return;

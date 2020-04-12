@@ -27,26 +27,35 @@ export class NavigationComponent {
     switch (action.name) {
       case SetSidebarVisibility.Name:
         const a = <SetSidebarVisibility>action;
+        if (a.state == "invisible" && !a.elevation) {
+          // Close either the whole sidebar or only the higher layer
+          if (this.elevation == "level1") {
+            this.elevation = "base";
+            this.setElevationContent();
+          }
+          return;
+        }
         if (a.elevation != this.elevation) {
           this.elevation = a.elevation;
-          this.setContent(action);
+          this.setElevationContent();
         }
         break;
       case SetSidebarContent.Name:
         this.components[(<any>action).elevation] = { title: (<any>action).title, component: (<any>action).component };
 
         if (this.elevation.toString() === (<any>action).elevation.toString()) {
-          this.setContent(action);
+          this.setElevationContent();
         }
         break;
     }
   }
 
-  setContent(action:any) {
-    const factory = this.componentFactoryResolver.resolveComponentFactory(this.components[action.elevation].component);
+  setElevationContent() {
+    const level = this.components[this.elevation];
+    const factory = this.componentFactoryResolver.resolveComponentFactory(level.component);
     this.contentContainer1.clear();
     const ref = this.contentContainer1.createComponent(factory);
-    this.actionDispatcher.dispatch(new SetApplicationTitle(this.components[action.elevation].title));
+    this.actionDispatcher.dispatch(new SetApplicationTitle(level.title));
     ref.changeDetectorRef.detectChanges();
   }
 }

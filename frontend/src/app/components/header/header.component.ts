@@ -20,16 +20,16 @@ export class HeaderComponent {
   actions: IAction[] = [];
 
   get leftActions(): IAction[] {
-    return this.actions.filter((o: IAction) => o.name == SetSidebarVisibility.Name).filter((o: SetSidebarVisibility) => o.side == "left");
+    return this.actions.filter((o: SetSidebarVisibility) => o.side == "left");
   }
 
   get midActions(): IAction[] {
-    return this.actions.filter((o: IAction) => o.name == SetSidebarVisibility.Name).filter((o: SetSidebarVisibility) =>
+    return this.actions.filter((o: SetSidebarVisibility) =>
       o.side == "middle");
   }
 
   get rightActions(): IAction[] {
-    return this.actions.filter((o: IAction) => o.name == SetSidebarVisibility.Name).filter((o: SetSidebarVisibility) => o.side == "right");
+    return this.actions.filter((o: SetSidebarVisibility) => o.side == "right");
   }
 
   @Output()

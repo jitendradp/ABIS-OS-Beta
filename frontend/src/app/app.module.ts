@@ -118,6 +118,7 @@ export function momentAdapterFactory() {
 
 const defaultActions: IAction[] =
   [
+    /*
     <SetSidebarVisibility>{
       name: SetSidebarVisibility.Name,
       label: "Open/Close Menu",
@@ -125,7 +126,7 @@ const defaultActions: IAction[] =
       side: "left",
       state: "toggle",
       elevation: "base"
-    },
+    },*/
 
     // todo show/hide when user is logged in or not
     <SetSidebarVisibility>{
