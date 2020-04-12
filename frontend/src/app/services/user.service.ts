@@ -20,9 +20,9 @@ import {IAction} from "../actions/IAction";
 import {INestedEvent} from "../actions/INestedEvent";
 import {IEvent} from "../actions/IEvent";
 import {SetSidebarContent} from "../actions/ui/SetSidebarContent";
-import {ListContactComponent} from "../lists/list-contact/list-contact.component";
-import {ListGroupComponent} from "../lists/list-group/list-group.component";
-import {ListChatComponent} from "../lists/list-chat/list-chat.component";
+import {ListContactComponent} from "../list-items/list-contact/list-contact.component";
+import {ListGroupComponent} from "../list-items/list-group/list-group.component";
+import {ListChatComponent} from "../list-items/list-chat/list-chat.component";
 import {SetSidebarVisibility} from "../actions/ui/SetSidebarVisibility";
 import {NestedAction} from "../actions/NestedAction";
 

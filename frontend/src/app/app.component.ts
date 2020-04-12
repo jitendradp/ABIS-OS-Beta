@@ -24,7 +24,7 @@ import {EditorGroupComponent} from "./dialogs/editor-group/editor-group.componen
 import {SetSidebarVisibility} from "./actions/ui/SetSidebarVisibility";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {RouteChanged} from "./actions/routes/RouteChanged";
-import {ListGroupComponent} from "./lists/list-group/list-group.component";
+import {ListGroupComponent} from "./list-items/list-group/list-group.component";
 import {Logout} from "./actions/routes/Logout";
 import {UserService} from "./services/user.service";
 import {CreateEntryGQL} from "../generated/abis-api";

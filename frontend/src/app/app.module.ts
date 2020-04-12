@@ -80,22 +80,22 @@ import {MaterialElevationDirective} from "./directives/material-elevation.direct
 import {ChatNavigationComponent} from "./navigation/chat-navigation/chat-navigation.component";
 import {ChipComponent} from "./components/chip/chip.component";
 import {CardContactComponent} from "./cards/card-contact/card-contact.component";
-import {ListGroupComponent} from "./lists/list-group/list-group.component";
-import {ListContactComponent} from "./lists/list-contact/list-contact.component";
+import {ListGroupComponent} from "./list-items/list-group/list-group.component";
+import {ListContactComponent} from "./list-items/list-contact/list-contact.component";
 import {AvatarComponent} from "./components/avatar/avatar.component";
-import {ListChipComponent} from "./lists/list-chip/list-chip.component";
+import {ListChipComponent} from "./list-items/list-chip/list-chip.component";
 import {ChatComponent} from "./chat/chat.component";
-import {ListMemberComponent} from "./lists/list-member/list-member.component";
+import {ListMemberComponent} from "./list-items/list-member/list-member.component";
 import {FeedNotificationComponent} from "./feeds/feed-notification/feed-notification.component";
-import {ListDataspaceComponent} from "./lists/list-dataspace/list-dataspace.component";
-import {ListProfileComponent} from "./lists/list-profile/list-profile.component";
+import {ListDataspaceComponent} from "./list-items/list-dataspace/list-dataspace.component";
+import {ListProfileComponent} from "./list-items/list-profile/list-profile.component";
 import {FeedThreadComponent} from "./feeds/feed-thread/feed-thread.component";
 import {CardChatComponent} from "./cards/card-chat/card-chat.component";
 import {CalendarModule, DateAdapter} from 'angular-calendar';
 import {adapterFactory} from 'angular-calendar/date-adapters/moment';
 import * as moment from 'moment';
 import {FileUploadComponent} from "./components/file-upload/file-upload.component";
-import {ListChatComponent} from "./lists/list-chat/list-chat.component";
+import {ListChatComponent} from "./list-items/list-chat/list-chat.component";
 import {EditorProfileComponent} from "./dialogs/editor-profile/editor-profile.component";
 import {ProfileService} from "./services/profile.service";
 import {EditorAccountComponent} from "./dialogs/editor-account/editor-account.component";
@@ -104,13 +104,14 @@ import {CanActivateRoute} from "./services/routeGuard";
 import {MaterialDesignFrameworkModule} from "angular6-json-schema-form";
 import {ServiceDialogComponent} from "./services/service-dialog/service-dialog.component";
 import {GraphQLConfigModule} from "./apolloConfig";
-import {ListIconComponent} from './lists/list-icon/list-icon.component';
+import {ListIconComponent} from './list-items/list-icon/list-icon.component';
 import {ChangePasswordComponent} from "./pages/system/change-password/change-password.component";
 import {SetPasswordComponent} from "./pages/system/set-password/set-password.component";
 import {ResetPasswordComponent} from "./pages/system/reset-password/reset-password.component";
 import {CreateProfileComponent} from "./pages/system/create-profile/create-profile.component";
 import {CreateRoomComponent} from "./pages/system/create-room/create-room.component";
 import {InviteComponent} from "./pages/system/invite/invite.component";
+import { ListComponent } from './list/list.component';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -302,6 +303,7 @@ const appRoutes: Routes = [
     EditorPasswordComponent,
     ServiceDialogComponent,
     ListIconComponent,
+    ListComponent,
   ],
   imports: [
     RouterModule.forRoot(

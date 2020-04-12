@@ -7,9 +7,9 @@ import {Logout} from "../../actions/routes/Logout";
 import {UserService} from "../../services/user.service";
 import {IAction} from "../../actions/IAction";
 import {SetSidebarContent} from "../../actions/ui/SetSidebarContent";
-import {ListGroupComponent} from "../../lists/list-group/list-group.component";
-import {ListContactComponent} from "../../lists/list-contact/list-contact.component";
-import {ListChatComponent} from "../../lists/list-chat/list-chat.component";
+import {ListGroupComponent} from "../../list-items/list-group/list-group.component";
+import {ListContactComponent} from "../../list-items/list-contact/list-contact.component";
+import {ListChatComponent} from "../../list-items/list-chat/list-chat.component";
 import {NestedAction} from "../../actions/NestedAction";
 import {IEvent} from "../../actions/IEvent";
 
