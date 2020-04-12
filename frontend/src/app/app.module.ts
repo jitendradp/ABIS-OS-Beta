@@ -121,7 +121,7 @@ const defaultActions: IAction[] =
     <SetSidebarVisibility>{
       name: SetSidebarVisibility.Name,
       label: "Open/Close Menu",
-      icon: "menu",
+      icon: "chevron_left",
       side: "left",
       state: "toggle",
       elevation: "z1"
@@ -131,7 +131,7 @@ const defaultActions: IAction[] =
     <SetSidebarVisibility>{
       name: SetSidebarVisibility.Name,
       label: "Open/Close Chat",
-      icon: "chat",
+      icon: "notifications",
       side: "right",
       state: "toggle",
       elevation: "z1"

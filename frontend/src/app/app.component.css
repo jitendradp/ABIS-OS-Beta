@@ -1,5 +1,5 @@
 .sidebarLeft {
-  width: 300px;
+  width: 100%;
   background-color: #fff;
 }
 
@@ -12,7 +12,7 @@
 @media screen and (max-width: 735px) {
   .sidebarLeft {
     width: 50%;
-    max-width: 300px;
+    min-width: 300px;
   }
 
   /* todo change the mode from drawer push to over when in mobile view and I have no clue why 101 works */

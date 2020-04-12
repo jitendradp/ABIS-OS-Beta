@@ -1,11 +1,22 @@
-<mat-tab-group class="chatNavWrapper">
-  <mat-tab label="GROUPS">
-    <app-list-group [asTree]="true" [asDialogList]="false" [showActions]="true"></app-list-group>
-  </mat-tab>
-  <mat-tab label="CONTACTS">
-    <app-list-contact [showActions]="true"></app-list-contact>
-  </mat-tab>
-  <mat-tab label="CHATS">
-    <app-list-chat [showActions]="true"></app-list-chat>
-  </mat-tab>
-</mat-tab-group>
+<div fxLayout
+     fxLayout.xs="column"
+     fxLayoutAlign="center"
+     fxLayoutGap="10px"
+     fxLayoutGap.xs="0">
+  <div fxFlex="50%">
+    <mat-tab-group class="chatNavWrapper">
+      <mat-tab label="GROUPS">
+        <app-list-group [asTree]="true" [asDialogList]="false" [showActions]="true"></app-list-group>
+      </mat-tab>
+      <mat-tab label="CONTACTS">
+        <app-list-contact [showActions]="true"></app-list-contact>
+      </mat-tab>
+      <mat-tab label="CHATS">
+        <app-list-chat [showActions]="true"></app-list-chat>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  <div fxFlex>
+    <app-chat></app-chat>
+  </div>
+</div>
