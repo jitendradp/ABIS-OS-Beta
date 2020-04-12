@@ -43,7 +43,7 @@ export class NavigationComponent {
         }
         break;
       case SetSidebarContent.Name:
-        if (a.side == "bottom") {
+        if ((<any>action).side == "bottom") {
           return;
         }
         this.components[(<any>action).elevation] = { title: (<any>action).title, component: (<any>action).component };
