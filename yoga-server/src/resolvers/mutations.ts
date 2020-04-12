@@ -6,8 +6,6 @@ import {Helper} from "../helper/helper";
 import {ActionResponse} from "../api/mutations/actionResponse";
 import {prisma} from "../generated/prisma_client";
 import {Init} from "../init";
-import {AgentCanCreate} from "../statements/agentCanCreate";
-import {EventBroker} from "../services/eventBroker";
 
 export const mutations = {
     async createSession(root, {clientTime}, ctx) {
@@ -107,52 +105,6 @@ export const mutations = {
         throw new Error("Not implemented");
     },
 
-    async createRoom(root, {csrfToken, createRoomInput}, ctx) {
-        const userHasAuthenticatedSession = await UserHas.authenticatedSession(ctx.sessionToken, csrfToken, ctx.bearerToken);
-        if (!userHasAuthenticatedSession) {
-            throw new Error(`Invalid session`);
-        }
-
-        const agentId = await GetAgentOf.session(csrfToken, ctx.sessionToken);
-
-        // TODO: Implement AgentCanCreate.room()
-        /*if (!(await AgentCanCreate.room(agentId, createRoomInput.name))) {
-            throw new Error(`Agent ${agentId} cannot create a room with the name ${createRoomInput.name}`);
-        }*/
-
-        const room = await AgentCreate.room(Init, agentId, createRoomInput.name, createRoomInput.logo, true);
-        (<any>room).isPrivate = !room.isPublic;
-        (<any>room).inbox = {id: ""};
-        (<any>room).memberships = [];
-        return room;
-    },
-    async updateRoom(root, {csrfToken, updateRoomInput}, ctx) {
-        throw new Error("Not implemented");
-    },
-    async deleteRoom(root, {csrfToken, roomId}, ctx) {
-        throw new Error("Not implemented");
-    },
-
-    async createProfile(root, {csrfToken}, ctx) {
-        throw new Error("Not implemented");
-    },
-    async deleteProfile(root, {csrfToken}, ctx) {
-        throw new Error("Not implemented");
-    },
-    async updateProfile(root, {csrfToken}, ctx) {
-        throw new Error("Not implemented");
-    },
-
-    async createStash(root, {csrfToken}, ctx) {
-        throw new Error("Not implemented");
-    },
-    async updateStash(root, {csrfToken}, ctx) {
-        throw new Error("Not implemented");
-    },
-    async deleteStash(root, {csrfToken}, ctx) {
-        throw new Error("Not implemented");
-    },
-
     async updateEntry(root, {csrfToken}, ctx) {
         throw new Error("Not implemented");
     },
@@ -165,15 +117,5 @@ export const mutations = {
     },
     async removeTag(root, {csrfToken}, ctx) {
         throw new Error("Not implemented");
-    },
-
-    async createLocation(root, {csrfToken}, ctx) {
-        throw new Error("Not implemented");
-    },
-    async updateLocation(root, {csrfToken}, ctx) {
-        throw new Error("Not implemented");
-    },
-    async deleteLocation(root, {csrfToken}, ctx) {
-        throw new Error("Not implemented");
-    },
+    }
 };
