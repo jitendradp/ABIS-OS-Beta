@@ -12,17 +12,18 @@ import {
   Service,
   CreateSessionGQL,
   VerifySessionGQL,
-  NewEntryGQL,
-  NewChannelGQL,
-  CreateChannelGQL,
-  Channel,
-  CreateEntryGQL,
-  GetEntriesGQL, Entry, GetEntriesQuery, CreateEntryInput,
 } from "../../generated/abis-api";
 import {ClientStateService} from "./client-state.service";
 import {Logger, LoggerService} from "./logger.service";
 import {SessionCreated} from "../actions/user/SessionCreated";
-import {ApolloQueryResult} from "apollo-client";
+import {IAction} from "../actions/IAction";
+import {INestedEvent} from "../actions/INestedEvent";
+import {IEvent} from "../actions/IEvent";
+import {SetSidebarContent} from "../actions/ui/SetSidebarContent";
+import {ListContactComponent} from "../lists/list-contact/list-contact.component";
+import {ListGroupComponent} from "../lists/list-group/list-group.component";
+import {ListChatComponent} from "../lists/list-chat/list-chat.component";
+import {SetSidebarVisibility} from "../actions/ui/SetSidebarVisibility";
 
 @Injectable({
   providedIn: 'root'
@@ -66,6 +67,29 @@ export class UserService {
     return this.clientState.get<Service[]>(this.SystemServicesKey, null).data;
   }
 
+  public get mainNavigationEntries() : IAction[] {
+    const setGroupList = new SetSidebarContent("left", ListGroupComponent, "group", "Groups");
+    const setContactList = new SetSidebarContent("left", ListContactComponent, "contacts", "Contacts");
+    const setChat = new SetSidebarContent("left", ListChatComponent, "room", "Chat");
+    const openLeftSidebar = new SetSidebarVisibility("left", "visible", "z1");
+
+    return [<INestedEvent>{
+      events: [
+        <IEvent>setGroupList,
+        <IEvent>openLeftSidebar
+      ]
+    },<INestedEvent>{
+      events: [
+        <IEvent>setContactList,
+        <IEvent>openLeftSidebar
+      ]
+    },<INestedEvent>{
+      events: [
+        <IEvent>setChat,
+        <IEvent>openLeftSidebar
+      ]
+    }]
+  }
 
   public get isLoggedOn(): boolean {
     return this._isLoggedOn;

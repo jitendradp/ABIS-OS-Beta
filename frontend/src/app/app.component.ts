@@ -28,6 +28,7 @@ import {ListGroupComponent} from "./lists/list-group/list-group.component";
 import {Logout} from "./actions/routes/Logout";
 import {UserService} from "./services/user.service";
 import {CreateEntryGQL} from "../generated/abis-api";
+import {SetSidebarContent} from "./actions/ui/SetSidebarContent";
 
 @Component({
   selector: 'app-root',
@@ -36,9 +37,9 @@ import {CreateEntryGQL} from "../generated/abis-api";
 })
 export class AppComponent implements AfterViewInit {
 
-  @ViewChild("left", {static: true})
+  @ViewChild("left", {static: false})
   left: MatDrawer;
-  @ViewChild("right", {static: true})
+  @ViewChild("right", {static: false})
   right: MatDrawer;
 
   @Input()
@@ -47,6 +48,8 @@ export class AppComponent implements AfterViewInit {
   title = 'ABIS';
 
   actions: IEvent[] = [];
+
+  sidebarMode:string = "Small";
 
   constructor(
     private userService: UserService,

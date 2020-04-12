@@ -1,4 +1,4 @@
-<app-iconbar [onLeftSide]="true"></app-iconbar>
+<app-iconbar [orientation]='"Vertical"'></app-iconbar>
 <mat-sidenav-container [hasBackdrop]="false">
   <app-header [actions]="actions" [title]="title"></app-header>
   <mat-drawer-container [hasBackdrop]="false">
@@ -6,12 +6,14 @@
       <app-feed-notification></app-feed-notification>
     </mat-drawer>
     <mat-drawer-content class="body">
-      <mat-sidenav #left position="start" mode="push" class="sidebarLeft">
-        <!--<app-navigation></app-navigation>-->
-        <app-chat-navigation></app-chat-navigation>
+      <mat-sidenav #left position="start" mode="push" class="sidebarLeft_full" *ngIf='sidebarMode == "Full"'>
+        <app-chat-navigation [mode]="sidebarMode"></app-chat-navigation>
+      </mat-sidenav>
+      <mat-sidenav #left position="start" mode="push" class="sidebarLeft_small" *ngIf="sidebarMode == 'Small'">
+        <app-chat-navigation [mode]="sidebarMode"></app-chat-navigation>
       </mat-sidenav>
       <router-outlet></router-outlet>
-      <app-iconbar [onFooter]="true" class="footer"></app-iconbar>
+      <app-iconbar [orientation]='"Horizontal"' class="footer"></app-iconbar>
     </mat-drawer-content>
   </mat-drawer-container>
 </mat-sidenav-container>

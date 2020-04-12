@@ -24,7 +24,8 @@ export class HeaderComponent {
   }
 
   get midActions(): IAction[] {
-    return this.actions.filter((o: IAction) => o.name == SetSidebarVisibility.Name).filter((o: SetSidebarVisibility) => o.side == "middle");
+    return this.actions.filter((o: IAction) => o.name == SetSidebarVisibility.Name).filter((o: SetSidebarVisibility) =>
+      o.side == "middle");
   }
 
   get rightActions(): IAction[] {
@@ -36,5 +37,4 @@ export class HeaderComponent {
 
   constructor(public actionDispatcher: ActionDispatcherService) {
   }
-
 }

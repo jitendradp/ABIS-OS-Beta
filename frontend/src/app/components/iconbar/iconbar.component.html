@@ -1,13 +1,17 @@
 <!-- todo: Make a general "horizontal" version for this -->
 <!-- todo need a list of the icons with a click handler -->
-<div class="sidebarWrapper" *ngIf="onLeftSide">
+<div class="sidebarWrapper" *ngIf='orientation == "Vertical"'>
   <div class="topIcon">
     <div class="center">
       <app-avatar [url]="'https://keenthemes.com/preview/metronic/theme/assets/pages/media/profile/profile_user.jpg'" [backgroundColor]="'white'"></app-avatar>
     </div>
   </div>
   <div class="leftIconList">
-    <app-list-icon></app-list-icon>
+    <mat-nav-list>
+      <a mat-list-item matTooltip="Activities" *ngFor="let action of userService.mainNavigationEntries" (click)="onIconClick($event)">
+        <mat-icon>{{action.icon}}</mat-icon>
+      </a>
+    </mat-nav-list>
   </div>
   <div class="bottomIcon">
     <div class="center">
@@ -18,82 +22,14 @@
 
 
 <!-- todo: Make a general "horizontal" version for this  -->
-<div *ngIf="onFooter">
+<div *ngIf='orientation == "Horizontal"'>
   <div class="subline"></div>
   <mat-grid-list class="footerWrapper" cols="5" rowHeight="53px">
-    <mat-grid-tile>
+    <mat-grid-tile *ngFor="let action of userService.mainNavigationEntries" (click)="onIconClick($event)">
       <button routerLink="cockpit" mat-button class="tileButton">
-        <mat-icon>bar_chart</mat-icon>
-        <span fxHide fxShow.gt-sm class="iconLabelSpacing">Cockpit</span>
-      </button>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <button routerLink="store" mat-button class="tileButton">
-        <mat-icon>apps</mat-icon>
-        <span fxHide fxShow.gt-sm class="iconLabelSpacing">Apps</span>
-      </button>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <button (click)="openBottomSheet()" mat-button class="tileButton">
-        <mat-icon>graphic_eq</mat-icon>
-        <span fxHide fxShow.gt-sm class="iconLabelSpacing">AI Search</span>
-      </button>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <button routerLink="map" mat-button class="tileButton">
-        <mat-icon>map</mat-icon>
-        <span fxHide fxShow.gt-sm class="iconLabelSpacing">Map</span>
-      </button>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <button routerLink="studio" mat-button class="tileButton">
-        <mat-icon>donut_small</mat-icon>
-        <span fxHide fxShow.gt-sm class="iconLabelSpacing">Studio</span>
+        <mat-icon>{{action.icon}}</mat-icon>
+        <span fxHide fxShow.gt-sm class="iconLabelSpacing">{{action.label}}</span>
       </button>
     </mat-grid-tile>
   </mat-grid-list>
 </div>
-
-
-<div *ngIf="onCockpit">
-  <mat-grid-list class="embeddableQuickButtons" cols="3" rowHeight="56px">
-    <mat-grid-tile *ngFor="let icon of icons" [style.background]="icon.color">
-      <div matTooltip="{{icon.metric}} {{icon.label}}">
-        <button mat-button class="tileButton">
-          <mat-icon>{{icon.name}}</mat-icon>
-          <span fxHide fxShow.gt-sm class="iconLabelSpacing">{{icon.label}}</span>
-        </button>
-      </div>
-    </mat-grid-tile>
-  </mat-grid-list>
-</div>
-
-<div *ngIf="onMenu">
-  <div class="subline"></div>
-  <mat-grid-list class="quickButtons" cols="1" rowHeight="53px">
-    <!--<mat-grid-tile (click)="close()">
-      <button routerLink="settings" mat-button class="tileButton">
-        <mat-icon>settings_applications</mat-icon>
-        <span class="iconLabelSpacing">Settings</span>
-      </button>
-    </mat-grid-tile>-->
-    <mat-grid-tile (click)="close()">
-      <button routerLink="signin" mat-button class="tileButton" (click)="logout()">
-        <mat-icon>power_settings_new</mat-icon>
-        <span class="iconLabelSpacing">Logout</span>
-      </button>
-    </mat-grid-tile>
-  </mat-grid-list>
-</div>
-
-<div *ngIf="onChatHeader">
-  <div class="subtitle">
-    <mat-icon class="chatHeaderIcon">star_border</mat-icon>
-    <span class="extendedIconLabelSpacing">|</span>
-    <mat-icon class="chatHeaderIcon">person_outline</mat-icon>
-    <span class="iconLabelSpacing">{{membersCount}}</span>
-    <span class="extendedIconLabelSpacing" fxHide fxShow.gt-sm>|</span>
-    <span class="iconLabelSpacing" fxHide fxShow.gt-sm>{{description}}</span>
-  </div>
-</div>
-

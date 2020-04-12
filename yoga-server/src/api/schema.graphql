@@ -569,7 +569,6 @@ type Mutation {
     #
     # Groups
     #
-
     createChannel(csrfToken:String! toAgentId:ID!) : Channel
     deleteChannel(csrfToken:String! id:ID!) : ActionResponse!
 

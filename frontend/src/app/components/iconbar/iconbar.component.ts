@@ -4,6 +4,7 @@ import {SearchComponent} from "../../search/search.component";
 import {SetSidebarVisibility} from "../../actions/ui/SetSidebarVisibility";
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
 import {Logout} from "../../actions/routes/Logout";
+import {UserService} from "../../services/user.service";
 
 export interface IconList {
   name: string;
@@ -11,6 +12,12 @@ export interface IconList {
   label?: string;
   action?: string;
   color?: string;
+}
+
+
+export enum IconBarOrientation {
+  "Horizontal",
+  "Vertical"
 }
 
 @Component({
@@ -23,9 +30,8 @@ export class IconbarComponent {
   @Input()
   onCockpit: boolean;
 
-
-  @Input()
-  onLeftSide: boolean;
+   @Input()
+  orientation:IconBarOrientation;
 
   @Input()
   membersCount: number;
@@ -39,36 +45,10 @@ export class IconbarComponent {
   @Input()
   onChatHeader: boolean;
 
-  @Input()
-  onFooter: boolean;
-
-  icons: IconList [] = [
-    {
-      metric: 'Margin',
-      name: 'trending_down',
-      label: '-23% | -3.579 Euro',
-      action: '',
-      color: '#f44336',
-    },
-    {
-      metric: 'Revenue',
-      name: 'trending_up',
-      label: '+483% | +306.736 Euro',
-      action: '',
-      color: '#2ecc71',
-    },
-    {
-      metric: 'Costs',
-      name: 'trending_flat',
-      label: '+0,1% | +73 Euro',
-      action: '',
-      color: '#204AAB',
-    }
-  ];
-
   constructor(
     private bottomSheet: MatBottomSheet,
-    private actionDispatcher: ActionDispatcherService) {
+    private actionDispatcher: ActionDispatcherService,
+    public userService: UserService) {
   }
 
   openBottomSheet() {
@@ -81,5 +61,9 @@ export class IconbarComponent {
 
   logout() {
     this.actionDispatcher.dispatch(new Logout());
+  }
+
+  onIconClick($event: MouseEvent) {
+
   }
 }

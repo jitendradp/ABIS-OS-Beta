@@ -16,12 +16,12 @@ import {DefaultOptions} from "apollo-client";
 export class GraphQLConfigModule {
   constructor(apollo: Apollo, private httpClient: HttpClient) {
     const httpLink = new HttpLink(httpClient).create({
-      uri: 'http://yoga:4000',
+      uri: 'http://local.abis-cloud.com:4000',
       withCredentials: true
     });
 
     const subscriptionLink = new WebSocketLink({
-      uri: 'ws://yoga:4000/',
+      uri: 'ws://local.abis-cloud.com:4000/',
       options: {
         reconnect: true,
         connectionParams: {
