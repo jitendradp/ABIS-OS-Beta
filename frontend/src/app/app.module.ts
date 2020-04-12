@@ -86,7 +86,6 @@ import {ListContactComponent} from "./lists/list-contact/list-contact.component"
 import {AvatarComponent} from "./components/avatar/avatar.component";
 import {ListChipComponent} from "./lists/list-chip/list-chip.component";
 import {ChatComponent} from "./chat/chat.component";
-import {ResetPasswordComponent} from "./dialogs/reset-password/reset-password.component";
 import {ListMemberComponent} from "./lists/list-member/list-member.component";
 import {FeedNotificationComponent} from "./feeds/feed-notification/feed-notification.component";
 import {ListDataspaceComponent} from "./lists/list-dataspace/list-dataspace.component";
@@ -108,6 +107,8 @@ import {ServiceDialogComponent} from "./services/service-dialog/service-dialog.c
 import {GraphQLConfigModule} from "./apolloConfig";
 import {ListIconComponent} from './lists/list-icon/list-icon.component';
 import {ChangePasswordComponent} from "./pages/system/change-password/change-password.component";
+import {SetPasswordComponent} from "./pages/system/set-password/set-password.component";
+import {ResetPasswordComponent} from "./pages/system/reset-password/reset-password.component";
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -180,6 +181,13 @@ const appRoutes: Routes = [
     , canActivate: [CanActivateRoute]
   },
   {
+    path: 'set-password', component: SetPasswordComponent, data: {
+      "title": "Set password",
+      "actions": defaultActions
+    }
+    , canActivate: [CanActivateRoute]
+  },
+  {
     path: 'editor-channel', component: EditorChannelComponent, data: {
       "title": "Create new channel",
       "actions": defaultActions
@@ -239,9 +247,11 @@ const appRoutes: Routes = [
     CardProfileComponent,
     FeedMessageComponent,
     ChartGraphForceComponent,
+    ResetPasswordComponent,
     ChartLineComponent,
     ChartMapComponent,
     ChartSankeyComponent,
+    SetPasswordComponent,
     ChangePasswordComponent,
     ChartTableComponent,
     MaterialElevationDirective,

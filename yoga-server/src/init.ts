@@ -107,6 +107,14 @@ export class Server {
         return this._serviceNameMap["LoginService"].id;
     }
 
+    get setPasswordServiceId(): string {
+        return this._serviceNameMap["SetPasswordService"].id;
+    }
+
+    get resetPasswordServiceId(): string {
+        return this._serviceNameMap["ResetPasswordService"].id;
+    }
+
     get verifyEmailServiceId(): string {
         return this._serviceNameMap["VerifyEmailService"].id;
     }
@@ -133,6 +141,14 @@ export class Server {
 
     get verifyEmailContentEncoding(): ContentEncoding {
         return this.contentEncodingsNameMap["VerifyEmail"];
+    }
+
+    get getSetPasswordContentEncoding(): ContentEncoding {
+        return this.contentEncodingsNameMap["SetPassword"];
+    }
+
+    get getResetPasswordContentEncoding(): ContentEncoding {
+        return this.contentEncodingsNameMap["ResetPassword"];
     }
 
     get getChangePasswordContentEncoding(): ContentEncoding {
