@@ -9,6 +9,15 @@
     <button *ngFor="let action of midActions" mat-icon-button (click)="actionDispatcher.dispatch(action);">
       <mat-icon>{{action.icon}}</mat-icon>
     </button>
+
+    <form class="searchWrapper">
+      <mat-form-field appearance="fill"
+                      [hideRequiredMarker]="hideRequiredControl.value"
+                      [floatLabel]="floatLabelControl.value">
+        <input matInput placeholder="Simple placeholder" required>
+      </mat-form-field>
+    </form>
+
     <span class="fill-remaining-space"></span>
     <button *ngFor="let action of rightActions" mat-icon-button (click)="actionDispatcher.dispatch(action);">
       <mat-icon matBadge="15" matBadgePosition="after" matBadgeColor="warn">{{action.icon}}</mat-icon>

@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
 import {IAction} from "../../actions/IAction";
 import {SetSidebarVisibility} from "../../actions/ui/SetSidebarVisibility";
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-header',
@@ -9,6 +10,10 @@ import {SetSidebarVisibility} from "../../actions/ui/SetSidebarVisibility";
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
+
+  options: FormGroup;
+  hideRequiredControl = new FormControl(false);
+  floatLabelControl = new FormControl('auto');
 
   @Input()
   icon: string;
@@ -35,6 +40,10 @@ export class HeaderComponent {
   @Output()
   click: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(public actionDispatcher: ActionDispatcherService) {
+  constructor (fb: FormBuilder, public actionDispatcher: ActionDispatcherService) {
+    this.options = fb.group({
+      hideRequired: this.hideRequiredControl,
+      floatLabel: this.floatLabelControl,
+    });
   }
 }
