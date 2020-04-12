@@ -32,6 +32,8 @@ export class NavigationComponent {
           if (this.elevation == "level1") {
             this.elevation = "base";
             this.setElevationContent();
+          } else if (this.elevation == "base") {
+            this.actionDispatcher.dispatch(new SetSidebarVisibility("left", "invisible", "base"));
           }
           return;
         }

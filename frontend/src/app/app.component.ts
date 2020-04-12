@@ -94,15 +94,7 @@ export class AppComponent implements AfterViewInit {
       case SetSidebarVisibility.Name:
         let visibility: boolean = false;
 
-        if ((<SetSidebarVisibility>action).elevation == "base") {
-          if (this.actions.length > 0 && this.actions[0].name == Back.Name) {
-            this.actions.shift();
-          }
-        } else if ((<SetSidebarVisibility>action).elevation == "level1") {
-          if (this.actions && this.actions.length < 1 || (this.actions.length > 0 && this.actions[0].name != Back.Name)) {
-            this.actions.unshift(new Back());
-          }
-        } else {
+        if (!(<SetSidebarVisibility>action).elevation) {
           return;
         }
 
@@ -122,7 +114,14 @@ export class AppComponent implements AfterViewInit {
           this.left.toggle(visibility).then(o => {
             this._sidebarOpen = o != "close";
             if (this._sidebarOpen){
+              if (this.actions && this.actions.length < 1 || (this.actions.length > 0 && this.actions[0].name != Back.Name)) {
+                this.actions.unshift(new Back());
+              }
               return;
+            } else {
+              if (this.actions.length > 0 && this.actions[0].name == Back.Name) {
+                this.actions.shift();
+              }
             }
             this.title = this._routeTitle;
           });
@@ -166,9 +165,6 @@ export class AppComponent implements AfterViewInit {
       case Back.Name:
         if (this._sidebarOpen) {
           this.actionDispatcher.dispatch(new SetSidebarVisibility("left", "invisible", null));
-          if (this.actions.length > 0 && this.actions[0].name == Back.Name) {
-            this.actions.shift();
-          }
           return;
         }
 
