@@ -1,7 +1,4 @@
-.mat-list-base {
-  padding-top: unset;
-}
-
-.listItem {
-  height: 56px;
+.chatNavWrapper {
+  height: 100%;
+  overflow: hidden;
 }
