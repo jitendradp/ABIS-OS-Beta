@@ -11,13 +11,14 @@ import {
   GetSystemServicesGQL,
   Service,
   CreateSessionGQL,
-  VerifySessionGQL, NewEntryGQL, NewChannelGQL,
+  VerifySessionGQL, NewEntryGQL, NewChannelGQL, NewTagGQL,
 } from "../../generated/abis-api";
 import {ClientStateService} from "./client-state.service";
 import {Logger, LoggerService} from "./logger.service";
 import {SessionCreated} from "../actions/user/SessionCreated";
 import {NewEntryEvent} from "../actions/newEntryEvent";
 import {NewChannelEvent} from "../actions/newChannelEvent";
+import {NewTagEvent} from "../actions/newTagEvent";
 
 @Injectable({
   providedIn: 'root'
@@ -81,6 +82,7 @@ export class UserService {
     , private myChannelsApi: MyChannelsGQL
     , private newEntrySubscription: NewEntryGQL
     , private newChannelSubscription: NewChannelGQL
+    , private newTagSubscription: NewTagGQL
     , private verifySessionApi: VerifySessionGQL) {
 
     // TODO: this seems to be a bit hacky, does the service really need to subscribe to its own events to know that?
@@ -113,6 +115,10 @@ export class UserService {
         this.newChannelSubscription.subscribe({csrfToken: this.csrfToken})
           .subscribe((newChannel:any) => {
             this.actionDispatcher.dispatch(new NewChannelEvent(newChannel.data.newChannel));
+          });
+        this.newTagSubscription.subscribe({csrfToken: this.csrfToken})
+          .subscribe((newTag:any) => {
+            this.actionDispatcher.dispatch(new NewTagEvent(newTag.data.newTag));
           });
 
         return new Promise((resolve => resolve(new SessionCreated())));

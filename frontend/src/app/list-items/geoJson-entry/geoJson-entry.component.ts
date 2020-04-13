@@ -9,7 +9,7 @@ import {UserService} from "../../services/user.service";
   templateUrl: './geoJson-entry.component.html',
   styleUrls: ['./geoJson-entry.component.css']
 })
-export class GeoJsonEntryComponent implements AfterViewInit{
+export class GeoJsonEntryComponent implements AfterViewInit {
   mapStyle = "mapbox://styles/mapbox/dark-v9";
 
   colorPalette: string[] = [
@@ -26,7 +26,8 @@ export class GeoJsonEntryComponent implements AfterViewInit{
     };
   }
 
-  constructor(private actionDispatcher: ActionDispatcherService
+  constructor(
+    private actionDispatcher: ActionDispatcherService
   , private addTagApi:AddTagGQL
   , private userService:UserService) {
   }
@@ -55,6 +56,11 @@ export class GeoJsonEntryComponent implements AfterViewInit{
   @Input()
   entry:any;
 
+  get likes():number {
+    const likes = this.entry.tagAggregate.find(o => o.type == "thumbs-up");
+    return !likes ? 0 : likes.count;
+  }
+
   @Input()
   creator: string;
 
@@ -78,9 +84,6 @@ export class GeoJsonEntryComponent implements AfterViewInit{
 
   @Input()
   commentsCount: number;
-
-  @Input()
-  likesCount: number;
 
   @Input()
   sharesCount: number;

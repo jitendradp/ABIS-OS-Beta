@@ -40,3 +40,17 @@ subscription newRoom($csrfToken:String!) {
     banner
   }
 }
+
+
+subscription newTag($csrfToken:String!) {
+  newTag(csrfToken: $csrfToken) {
+    createdAt
+    createdBy
+    owner
+    isPrivate
+    tagType
+    forType
+    forId
+    value
+  }
+}

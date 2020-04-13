@@ -5,6 +5,7 @@ export class Topics {
     public static readonly NewChannel = "abis.system.new-channel";
     public static readonly NewEntry = "abis.system.new-entry";
     public static readonly NewRoom = "abis.system.new-room";
+    public static readonly NewTag = "abis.system.new-tag";
 }
 
 export class EventBroker {

@@ -7,7 +7,7 @@ import {Channel} from "./api/types/channel";
 import {UserCreate} from "./data/mutations/userCreate";
 import {AgentCreate} from "./data/mutations/agentCreate";
 import {Service} from "./services/service";
-import {Agent, ContentEncoding, Entry, EntryCreateInput, EntryWhereInput, Group, prisma, User} from "./generated";
+import {Agent, ContentEncoding, Entry, EntryCreateInput, EntryWhereInput, Group, prisma, Tag, User} from "./generated";
 
 const isInTest = typeof global.it === 'function';
 
@@ -194,6 +194,7 @@ export class Server {
     private _newChannelTopic: Topic<Channel>;
     private _newEntryTopic: Topic<Entry>;
     private _newRoomTopic: Topic<Group>;
+    private _newTagTopic: Topic<Tag>;
     private _countriesSystemRoom: Group;
     private _dachSystemRoom: Group;
     private _eventBroker: EventBroker;
@@ -310,9 +311,23 @@ export class Server {
         this._newChannelTopic = this.eventBroker.createTopic<Channel>("system", Topics.NewChannel);
         this._newEntryTopic = this.eventBroker.createTopic<Entry>("system", Topics.NewEntry);
         this._newRoomTopic = this.eventBroker.createTopic<Group>("system", Topics.NewRoom);
+        this._newTagTopic = this.eventBroker.createTopic<Tag>("system", Topics.NewTag);
+
+        this._newTagTopic.observable.subscribe(async newTag => {
+            // Notify the receiving end of the channel (every agent uses its own namespace and provides some default topics)
+            // TODO: Try to broadcast this for public entries
+            const subscribers = await FindAgentsThatSeeThis.entry(Init, newTag.forId);
+            subscribers.forEach(subscriber => {
+                const newTagTopic = this.eventBroker.tryGetTopic<Tag>(subscriber, Topics.NewTag);
+                if (newTagTopic) {
+                    newTagTopic.publish(newTag);
+                }
+            });
+        });
 
         this._newChannelTopic.observable.subscribe(newChannel => {
             // Notify the receiving end of the channel (every agent uses its own namespace and provides some default topics)
+            // TODO: Try to broadcast this for public channels
             const newChannelTopic = this.eventBroker.tryGetTopic<Channel>(newChannel.receiver.id, Topics.NewChannel);
             if (newChannelTopic) {
                 newChannelTopic.publish(newChannel);
@@ -321,6 +336,7 @@ export class Server {
 
         this._newRoomTopic.observable.subscribe(async newRoom => {
             // Find everyone who may be concerned by the message and who is allowed to see it
+            // TODO: Try to broadcast this for public rooms
             const subscribers = await FindAgentsThatSeeThis.room(newRoom.id);
 
             for (let subscriber of subscribers) {
@@ -334,6 +350,7 @@ export class Server {
         this._newEntryTopic.depend(async newEntry => {
             // Find everyone who may be concerned by the message and who is allowed to see it
             // TODO: Handle memory entries
+            // TODO: Try to broadcast this for public entries
             const subscribers = await FindAgentsThatSeeThis.entry(this, newEntry.id);
 
             for (let subscriber of subscribers) {

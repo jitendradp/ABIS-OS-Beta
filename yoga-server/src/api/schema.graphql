@@ -15,6 +15,7 @@ type Tag {
 
     owner: ID!
 
+    isPrivate:Boolean!
     tagType: String!           # reserved types are '#' (hashtag) and '@' (mention). Maybe more to follow..
     forType: String!
     forId:ID!
@@ -392,7 +393,6 @@ type NewEntry {
     containerId: ID!
 }
 
-
 type File {
     id: ID!
     path: String!
@@ -461,6 +461,7 @@ type Mutation {
 }
 
 type Subscription {
+    newTag(csrfToken:String!): Tag #TODO: Let the client request a special subscriptionToken first and don't use the csrfToken
     newEntry(csrfToken:String!): NewEntry #TODO: Let the client request a special subscriptionToken first and don't use the csrfToken
     newChannel(csrfToken:String!): Channel #TODO: Let the client request a special subscriptionToken first and don't use the csrfToken
     newRoom(csrfToken:String!): Room #TODO: Let the client request a special subscriptionToken first and don't use the csrfToken

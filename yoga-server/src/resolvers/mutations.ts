@@ -169,38 +169,7 @@ export const mutations = {
 
     async addTag(root, {csrfToken, to, addTagInput}, ctx) {
         const agentId = await GetAgentOf.session(csrfToken, ctx.sessionToken);
-        const entryId = to;
-
-        if (!(await AgentCanSee.entry(Init, agentId, entryId))) {
-            throw new Error(`Entry '${to}' was not found.`);
-        }
-
-        const tag = await prisma.createTag({
-            createdBy: agentId,
-            isPrivate: addTagInput.isPrivate,
-            forId: to,
-            forType: "Entry",
-            tagType: addTagInput.type,
-            value: addTagInput.value,
-            owner: agentId
-        });
-
-        /*
-        await prisma.updateEntry({
-            where:{
-                id: entryId
-            },
-            data:{
-                tags: {
-                    connect: {
-                        id: tag.id
-                    }
-                }
-            }
-        });
-         */
-
-        return tag;
+        return AgentCreate.tag(Init, agentId, "Entry", to, addTagInput.isPrivate, addTagInput.type, addTagInput.value);
     },
     async removeTag(root, {csrfToken, tagId}, ctx) {
         throw new Error("Not implemented");

@@ -3,9 +3,33 @@ import {Topics} from "../../services/eventBroker";
 import {Channel} from "../../api/types/channel";
 import {Init, Server} from "../../init";
 import {AgentCanCreate} from "../../statements/agentCanCreate";
-import {Entry, EntryCreateInput, Group, prisma} from "../../generated";
+import {Entry, EntryCreateInput, Group, prisma, Tag} from "../../generated";
+import {AgentCanSee} from "../../statements/agentCanSee";
 
 export class AgentCreate {
+
+    public static async tag(server:Server, agentId:string, forType:string, forId:string, isPrivate:boolean, tagType:string, value:string) {
+
+        if (!(await AgentCanSee.entry(Init, agentId, forId))) {
+            throw new Error(`Entry '${forId}' was not found.`);
+        }
+
+        const tag = await prisma.createTag({
+            createdBy: agentId,
+            isPrivate: isPrivate,
+            forId: forId,
+            forType: "Entry",
+            tagType: tagType,
+            value: value,
+            owner: agentId
+        });
+
+        server.eventBroker
+            .getTopic<Tag>("system", Topics.NewTag)
+            .publish(tag);
+
+        return tag;
+    }
 
     public static async stash(agentId: string, name: string, logo: string) {
         const agent = await prisma.agent({id: agentId});

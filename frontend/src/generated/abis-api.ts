@@ -462,9 +462,15 @@ export type Stash = Group & {
 
 export type Subscription = {
    __typename?: 'Subscription',
+  newTag?: Maybe<Tag>,
   newEntry?: Maybe<NewEntry>,
   newChannel?: Maybe<Channel>,
   newRoom?: Maybe<Room>,
+};
+
+
+export type SubscriptionNewTagArgs = {
+  csrfToken: Scalars['String']
 };
 
 
@@ -490,6 +496,7 @@ export type Tag = {
   updatedBy?: Maybe<Scalars['ID']>,
   updatedAt?: Maybe<Scalars['DateTime']>,
   owner: Scalars['ID'],
+  isPrivate: Scalars['Boolean'],
   tagType: Scalars['String'],
   forType: Scalars['String'],
   forId: Scalars['ID'],
@@ -924,6 +931,19 @@ export type NewRoomSubscription = (
   & { newRoom: Maybe<(
     { __typename?: 'Room' }
     & Pick<Room, 'id' | 'createdAt' | 'createdBy' | 'owner' | 'logo' | 'name' | 'title' | 'description' | 'banner'>
+  )> }
+);
+
+export type NewTagSubscriptionVariables = {
+  csrfToken: Scalars['String']
+};
+
+
+export type NewTagSubscription = (
+  { __typename?: 'Subscription' }
+  & { newTag: Maybe<(
+    { __typename?: 'Tag' }
+    & Pick<Tag, 'createdAt' | 'createdBy' | 'owner' | 'isPrivate' | 'tagType' | 'forType' | 'forId' | 'value'>
   )> }
 );
 
@@ -1442,5 +1462,27 @@ export const NewRoomDocument = gql`
   })
   export class NewRoomGQL extends Apollo.Subscription<NewRoomSubscription, NewRoomSubscriptionVariables> {
     document = NewRoomDocument;
+    
+  }
+export const NewTagDocument = gql`
+    subscription newTag($csrfToken: String!) {
+  newTag(csrfToken: $csrfToken) {
+    createdAt
+    createdBy
+    owner
+    isPrivate
+    tagType
+    forType
+    forId
+    value
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class NewTagGQL extends Apollo.Subscription<NewTagSubscription, NewTagSubscriptionVariables> {
+    document = NewTagDocument;
     
   }

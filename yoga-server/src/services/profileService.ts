@@ -3,7 +3,7 @@ import {Topic, Topics} from "./eventBroker";
 import {Helper} from "../helper/helper";
 import {NewChannel} from "./events/newChannel";
 import {NewEntry} from "./events/newEntry";
-import {Group} from "../generated";
+import {Group, Tag} from "../generated";
 
 /**
  * A service representation for a profile.
@@ -13,6 +13,7 @@ export class ProfileService extends Service {
     private _newChannel: Topic<any>;
     private _newEntry: Topic<any>;
     private _newRoom: Topic<any>;
+    private _newTag: Topic<any>;
 
     start(): void {
         // The profile wants to be notified when a new channel to it was created
@@ -25,6 +26,9 @@ export class ProfileService extends Service {
 
         this._newRoom = this.server.eventBroker.createTopic(this.id, Topics.NewRoom);
         this._newRoom.observable.subscribe(this.onNewRoom);
+
+        this._newTag = this.server.eventBroker.createTopic(this.id, Topics.NewTag);
+        this._newTag.observable.subscribe(this.onNewTag);
     }
 
     onNewChannel(newChannel:NewChannel) {
@@ -39,9 +43,14 @@ export class ProfileService extends Service {
         //Helper.log(`ProfileService received a NewRoom event: ${JSON.stringify(newRoom)}`);
     }
 
+    onNewTag(newTag:Tag) {
+        //Helper.log(`ProfileService received a NewRoom event: ${JSON.stringify(newRoom)}`);
+    }
+
     stop(): void {
         this.server.eventBroker.removeTopic(this.id, this._newEntry.name);
         this.server.eventBroker.removeTopic(this.id, this._newChannel.name);
         this.server.eventBroker.removeTopic(this.id, this._newRoom.name);
+        this.server.eventBroker.removeTopic(this.id, this._newTag.name);
     }
 }

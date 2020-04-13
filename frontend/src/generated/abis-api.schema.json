@@ -3662,6 +3662,22 @@
             "deprecationReason": null
           },
           {
+            "name": "isPrivate",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "tagType",
             "description": "",
             "args": [],
@@ -3736,6 +3752,33 @@
         "name": "Subscription",
         "description": "",
         "fields": [
+          {
+            "name": "newTag",
+            "description": "",
+            "args": [
+              {
+                "name": "csrfToken",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Tag",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "newEntry",
             "description": "",

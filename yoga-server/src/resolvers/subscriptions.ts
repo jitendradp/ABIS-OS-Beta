@@ -71,5 +71,16 @@ export const subscriptions = {
             const topic = await getTopicForAgent(Init, csrfToken, ctx.sessionToken, Topics.NewRoom);
             return Helper.observableToAsyncIterable(topic.pipe(map(o => {return {newRoom:o}})));
         },
+    },
+    newTag: {
+        subscribe: async (root, {csrfToken}, ctx) => {
+            if (!csrfToken) {
+                throw new Error("Cannot create a subscription without a valid csrfToken");
+            }
+            const topic = await getTopicForAgent(Init, csrfToken, ctx.sessionToken, Topics.NewTag);
+            return Helper.observableToAsyncIterable(topic.pipe(map(o => {
+                return {newTag:o}
+            })));
+        },
     }
 };
