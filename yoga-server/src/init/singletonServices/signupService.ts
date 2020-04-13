@@ -1,5 +1,4 @@
 import {DirectService} from "../../services/directService";
-import {Agent, Entry, Group, prisma, User} from "../../generated/prisma_client";
 import {Channel} from "../../api/types/channel";
 import {UserOwns} from "../../statements/userOwns";
 import {Helper} from "../../helper/helper";
@@ -8,6 +7,7 @@ import {config} from "../../config";
 import {Mailer} from "../../helper/mailer";
 import {UserCreate} from "../../data/mutations/userCreate";
 import {Server} from "../../init";
+import {Agent, Entry, Group, prisma, User} from "../../generated";
 
 class Implementation extends DirectService {
     constructor(server: Server, agent: Agent) {

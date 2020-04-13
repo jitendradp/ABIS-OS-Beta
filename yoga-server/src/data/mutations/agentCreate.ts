@@ -1,9 +1,9 @@
-import {Entry, EntryCreateInput, Group, prisma} from "../../generated/prisma_client";
 import {Helper} from "../../helper/helper";
-import {EventBroker, Topics} from "../../services/eventBroker";
+import {Topics} from "../../services/eventBroker";
 import {Channel} from "../../api/types/channel";
 import {Init, Server} from "../../init";
 import {AgentCanCreate} from "../../statements/agentCanCreate";
+import {Entry, EntryCreateInput, Group, prisma} from "../../generated";
 
 export class AgentCreate {
 

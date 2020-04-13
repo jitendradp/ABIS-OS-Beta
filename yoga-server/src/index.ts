@@ -1,10 +1,10 @@
 import {GraphQLServer} from 'graphql-yoga'
-import {prisma} from './generated/prisma_client'
 import {ContextParameters} from "graphql-yoga/dist/types";
 import {config} from "./config";
 import {Init} from "./init";
 import {resolvers} from "./resolvers/all";
 import {Helper} from "./helper/helper";
+import {prisma} from "./generated";
 
 const cookie = require('cookie');
 

@@ -1,4 +1,3 @@
-import {Entry, Group, prisma} from "../../generated/prisma_client";
 import {Helper} from "../../helper/helper";
 import {UserQueries} from "../../data/queries/user";
 import {Channel} from "../../api/types/channel";
@@ -7,6 +6,7 @@ import {config} from "../../config";
 import {UserCreate} from "../../data/mutations/userCreate";
 import {RequestSynchronousService} from "../../services/requestSynchronousService";
 import {GetAgentOf} from "../../queries/getAgentOf";
+import {Entry, Group, prisma} from "../../generated";
 
 class Implementation extends RequestSynchronousService {
     private static readonly bcrypt = require('bcrypt');
@@ -68,9 +68,10 @@ class Implementation extends RequestSynchronousService {
             csrfToken: session.csrfToken,
             profileId: userProfiles[0].id
         });
-
-        prisma.deleteManyGroups({owner:this.id, memberships_every:{member:{id:agentId}}});
-        prisma.deleteGroup({id:answerChannel.id});
+/*
+        await prisma.deleteManyGroups({owner:this.id, memberships_every:{member:{id:agentId}}});
+        await prisma.deleteManyGroups({owner:agentId, memberships_every:{member:{id:this.id}}});
+ */
     }
 }
 

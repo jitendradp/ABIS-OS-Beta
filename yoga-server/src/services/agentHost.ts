@@ -1,10 +1,9 @@
-import {EventBroker} from "./eventBroker";
 import {Service} from "./service";
-import {Agent, prisma} from "../generated/prisma_client";
 import {Helper} from "../helper/helper";
 import {ProfileService} from "./profileService";
 import {RoomInboxService} from "./roomInboxService";
 import {Init, Server} from "../init";
+import {Agent, prisma} from "../generated";
 
 export type ServiceFactory = (server:Server, agent: Agent) => Service;
 

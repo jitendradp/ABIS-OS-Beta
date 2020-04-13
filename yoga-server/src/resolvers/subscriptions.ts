@@ -1,10 +1,10 @@
 import {GetAgentOf} from "../queries/getAgentOf";
-import {EventBroker, Topics} from "../services/eventBroker";
+import {Topics} from "../services/eventBroker";
 import {Helper} from "../helper/helper";
 import {map} from "rxjs/operators";
-import {prisma} from "../generated/prisma_client";
 import {Observable} from "rxjs";
 import {Init, Server} from "../init";
+import {prisma} from "../generated";
 
 async function getTopicForAgent(server:Server, csrfToken:string, topicName:string) {
     const agentId = await GetAgentOf.session(csrfToken);

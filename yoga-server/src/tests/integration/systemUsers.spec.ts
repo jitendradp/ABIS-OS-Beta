@@ -1,6 +1,5 @@
 import 'mocha';
 import {expect} from 'chai';
-import {prisma} from "../../generated/prisma_client";
 import {config} from "../../config";
 import {UserCreate} from "../../data/mutations/userCreate";
 import {mutations} from "../../resolvers/mutations";
@@ -10,6 +9,7 @@ import {AgentCanSee} from "../../statements/agentCanSee";
 import {AgentCreate} from "../../data/mutations/agentCreate";
 import {UserOwns} from "../../statements/userOwns";
 import {Helper} from "../../helper/helper";
+import {prisma} from "../../generated";
 
 const context = {
     // Environment

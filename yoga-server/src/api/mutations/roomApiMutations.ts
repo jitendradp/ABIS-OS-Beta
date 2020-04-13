@@ -1,8 +1,8 @@
 import {Helper} from "../../helper/helper";
 import {ActionResponse} from "./actionResponse";
-import {prisma} from "../../generated/prisma_client";
 import {CommonQueries} from "../queries/commonQueries";
 import {AgentOwns} from "../../statements/agentOwns";
+import {prisma} from "../../generated";
 
 export class RoomApiMutations {
     static async createRoom(

@@ -1,6 +1,6 @@
 import {config} from "../config";
-import {User} from "../generated/prisma_client";
 import {Helper} from "./helper";
+import {User} from "../generated";
 
 var nodemailer = require('nodemailer');
 

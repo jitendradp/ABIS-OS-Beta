@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {UserService} from "../services/user.service";
 
 @Component({
   selector: 'app-list',
@@ -12,7 +13,7 @@ export class ListComponent implements OnInit {
   showActions: boolean;
   collapsed: boolean;
 
-  constructor() { }
+  constructor(public userService:UserService) { }
 
   ngOnInit() {
   }

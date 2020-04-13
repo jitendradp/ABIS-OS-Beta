@@ -1,9 +1,9 @@
-import {prisma, ProfileType} from "../../generated/prisma_client";
 import {Helper} from "../../helper/helper";
 import {ProfileStatus} from "../../api/Profile";
 import {AgentCreate} from "./agentCreate";
 import {config} from "../../config";
 import {Server} from "../../init";
+import {prisma, ProfileType} from "../../generated";
 
 export class UserCreate {
     public static async profile(userId: string, name: string, avatar: string, status?: ProfileStatus, server?:Server) {

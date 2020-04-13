@@ -3,7 +3,7 @@ import {Topic, Topics} from "./eventBroker";
 import {Helper} from "../helper/helper";
 import {NewChannel} from "./events/newChannel";
 import {NewEntry} from "./events/newEntry";
-import {Group} from "../generated/prisma_client";
+import {Group} from "../generated";
 
 /**
  * A service representation for a profile.

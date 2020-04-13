@@ -1,4 +1,4 @@
-import {Group, GroupWhereInput, prisma} from "../../generated/prisma_client";
+import {Group, prisma} from "../../generated";
 
 export class GroupQueries {
     public static async findStashesOfAgent(agentId: string): Promise<Group[]> {

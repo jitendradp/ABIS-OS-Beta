@@ -1,8 +1,8 @@
 import {DirectService} from "../../services/directService";
-import {Entry, Group, prisma} from "../../generated/prisma_client";
 import {Helper} from "../../helper/helper";
 import {Mailer} from "../../helper/mailer";
 import {GetAgentOf} from "../../queries/getAgentOf";
+import {Entry, Group, prisma} from "../../generated";
 
 class Implementation extends DirectService {
     private readonly bcrypt = require('bcrypt');
@@ -36,8 +36,8 @@ class Implementation extends DirectService {
         const agentId = await GetAgentOf.session(csrfToken, sessionToken);
 
         await this.postContinueTo(this.server.verifyEmailServiceId, answerChannel.id);
-        prisma.deleteManyGroups({owner:this.id, memberships_every:{member:{id:agentId}}});
-        prisma.deleteGroup({id:answerChannel.id});
+        await prisma.deleteManyGroups({owner:this.id, type:"Channel", memberships_every:{member:{id:agentId}}});
+        await prisma.deleteManyGroups({owner:agentId, type:"Channel", memberships_every:{member:{id:this.id}}});
     }
 }
 

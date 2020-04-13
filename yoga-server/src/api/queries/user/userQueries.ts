@@ -1,8 +1,8 @@
 import {CommonQueries} from "../commonQueries";
 import {Profile, Service} from "../../Profile";
-import {prisma} from "../../../generated/prisma_client";
 import {Helper} from "../../../helper/helper";
 import {ActionResponse} from "../../mutations/actionResponse";
+import {prisma} from "../../../generated";
 
 export class UserQueries {
     static async myAccount(csrfToken: string, bearerToken: string) {

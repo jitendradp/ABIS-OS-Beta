@@ -1,5 +1,5 @@
-import {Group, prisma} from "../generated/prisma_client";
 import {Init, Server} from "../init";
+import {Group, prisma} from "../generated";
 
 export class FindAgentsThatSeeThis {
     public static async entry(server:Server, entryId:string) {

@@ -4,8 +4,8 @@ import {GetAgentOf} from "../queries/getAgentOf";
 import {AgentCreate} from "../data/mutations/agentCreate";
 import {Helper} from "../helper/helper";
 import {ActionResponse} from "../api/mutations/actionResponse";
-import {prisma} from "../generated/prisma_client";
 import {Init} from "../init";
+import {prisma} from "../generated";
 
 export const mutations = {
     async createSession(root, {clientTime}, ctx) {

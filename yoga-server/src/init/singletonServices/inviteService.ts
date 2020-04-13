@@ -1,5 +1,4 @@
 import {DirectService} from "../../services/directService";
-import {Agent, Entry, Group, prisma} from "../../generated/prisma_client";
 import {Channel} from "../../api/types/channel";
 import {Mailer} from "../../helper/mailer";
 import {Init, Server} from "../../init";
@@ -7,6 +6,7 @@ import {UserHas} from "../../statements/userHas";
 import {GetAgentOf} from "../../queries/getAgentOf";
 import {AgentCanSee} from "../../statements/agentCanSee";
 import {AgentCreate} from "../../data/mutations/agentCreate";
+import {Agent, Entry, Group, prisma} from "../../generated";
 
 class Implementation extends DirectService {
     constructor(server: Server, agent: Agent) {
@@ -82,8 +82,8 @@ class Implementation extends DirectService {
         }
 
         await this.postContinueTo("", answerChannel.id);
-        prisma.deleteManyGroups({owner:this.id, memberships_every:{member:{id:agentId}}});
-        prisma.deleteGroup({id:answerChannel.id});
+        await prisma.deleteManyGroups({owner:this.id, type:"Channel", memberships_every:{member:{id:agentId}}});
+        await prisma.deleteManyGroups({owner:agentId, type:"Channel", memberships_every:{member:{id:this.id}}});
     }
 }
 

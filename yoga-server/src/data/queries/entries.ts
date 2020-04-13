@@ -1,6 +1,6 @@
-import {Entry, prisma} from "../../generated/prisma_client";
 import {AgentCanSee} from "../../statements/agentCanSee";
 import {Server} from "../../init";
+import {Entry, prisma} from "../../generated";
 
 export class EntryQueries {
     public static async getEntries(server:Server, agentId:string, groupId:string, from?:Date, to?:Date) : Promise<Entry[]> {

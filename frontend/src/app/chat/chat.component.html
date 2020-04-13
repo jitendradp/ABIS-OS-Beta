@@ -1,5 +1,17 @@
 <mat-card class="chatColumn">
-  <app-card-chat [groupId]="groupId" [chatGroupDescription]="'Welcome to the future'" [chatGroupTitle]="title" [chatGroupMembersCount]="345"
-                 [chatGroupLogo]="'https://seeklogo.com/images/E/E_ON-logo-30694E2407-seeklogo.com.png'">
-  </app-card-chat>
+  <mat-card class="chatContent">
+    <mat-card-header class="chatContentHeader">
+      <app-logo class="chatGroupLogo" mat-card-avatar
+                [url]="icon"></app-logo>
+      <mat-card-title class="chatGroupHeaderTitle"><span style="font-weight: 400; font-size: 0.9em">{{title}}</span>
+      </mat-card-title>
+      <mat-card-subtitle class="chatGroupHeaderSubtitle">
+        <app-iconbar [onChatHeader]="true" [description]="descritption"
+                     [membersCount]="memberCount"></app-iconbar>
+      </mat-card-subtitle>
+      <span class="fill-remaining-space"></span>
+      <app-list-member></app-list-member>
+    </mat-card-header>
+    <app-list [entries]="entries"></app-list>
+  </mat-card>
 </mat-card>

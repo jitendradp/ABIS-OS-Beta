@@ -1,7 +1,8 @@
 import {DirectService} from "../../services/directService";
-import {Entry, Group, prisma} from "../../generated/prisma_client";
 import {Helper} from "../../helper/helper";
 import {UserQueries} from "../../data/queries/user";
+import {Entry, Group, prisma} from "../../generated";
+import {GetAgentOf} from "../../queries/getAgentOf";
 
 class Implementation extends DirectService {
     get welcomeMessageContentEncodingId(): string {
@@ -16,6 +17,12 @@ class Implementation extends DirectService {
 
         await Implementation.clearChallenge(foundUser.id);
         await this.postContinueTo(this.server.loginServiceId, answerChannel.id);
+
+        const csrfToken = (<any>newEntry).__csrfToken;
+        const sessionToken = (<any>newEntry).__sessionToken;
+        const agentId = await GetAgentOf.session(csrfToken, sessionToken);
+        await prisma.deleteManyGroups({owner:this.id, type:"Channel", memberships_every:{member:{id:agentId}}});
+        await prisma.deleteManyGroups({owner:agentId, type:"Channel", memberships_every:{member:{id:this.id}}});
     }
 
     private static async clearChallenge(userId: string) {

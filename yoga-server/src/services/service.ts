@@ -1,7 +1,5 @@
-import {EventBroker} from "./eventBroker";
-import {Agent} from "../generated/prisma_client";
-import {Entry} from "../generated/prisma_client";
 import {Init, Server} from "../init";
+import {Agent, Entry} from "../generated";
 
 var SchemaValidator = require('ajv');
 var schemaValidator = SchemaValidator({ allErrors: true });

@@ -1,9 +1,9 @@
 import {CommonQueries} from "../commonQueries";
-import {Entry, EntryWhereInput, prisma} from "../../../generated/prisma_client";
 import {Helper} from "../../../helper/helper";
 import {ActionResponse} from "../../mutations/actionResponse";
 import {AgentCanSee} from "../../../statements/agentCanSee";
 import {Init} from "../../../init";
+import {Entry, EntryWhereInput, prisma} from "../../../generated";
 
 export class GroupQueries2 {
 

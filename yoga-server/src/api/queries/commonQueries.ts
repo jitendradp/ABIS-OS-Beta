@@ -1,4 +1,4 @@
-import {prisma, Agent, Session, User} from "../../generated/prisma_client";
+import {Agent, prisma, Session, User} from "../../generated";
 
 export class CommonQueries {
 

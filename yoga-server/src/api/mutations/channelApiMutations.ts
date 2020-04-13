@@ -1,8 +1,8 @@
 import {Helper} from "../../helper/helper";
 import {ActionResponse} from "./actionResponse";
 import {CommonQueries} from "../queries/commonQueries";
-import {prisma} from "../../generated/prisma_client";
 import {config} from "../../config";
+import {prisma} from "../../generated";
 
 export class ChannelApiMutations {
 

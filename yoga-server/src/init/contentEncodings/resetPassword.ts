@@ -1,4 +1,4 @@
-import {ContentEncodingCreateInput} from "../../generated/prisma_client";
+import {ContentEncodingCreateInput} from "../../generated";
 
 export const Index: ContentEncodingCreateInput = {
     createdBy: "",

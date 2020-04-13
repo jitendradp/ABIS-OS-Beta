@@ -1,4 +1,4 @@
-import {Agent} from "../../generated/prisma_client";
+import {Agent} from "../../generated";
 
 export type Channel = {
     id: string,
