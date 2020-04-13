@@ -41,7 +41,7 @@ export class AgentCreate {
      * @param name The name of the channel
      * @param logo The logo of the channel
      */
-    public static async channel(server:Server, fromAgentId: string, toAgentId: string, isMemory:boolean, name: string, logo: string) {
+    public static async channel(server:Server, fromAgentId: string, toAgentId: string, isMemory:boolean, name: string, logo: string, sessionToken:string, csrfToken:string, bearerToken:string) {
         if (fromAgentId == toAgentId) {
             throw new Error(`Cannot create a channel to self.`)
         }
@@ -89,6 +89,10 @@ export class AgentCreate {
                 }
             }
         });
+
+        (<any>newChannel).__sessionToken = sessionToken; // TODO: Find a better way to set the tokens
+        (<any>newChannel).__csrfToken = csrfToken; // TODO: Find a better way to set the tokens
+        (<any>newChannel).__bearerToken = bearerToken; // TODO: Find a better way to set the tokens
 
         Helper.log(`Created a ${isMemory ? "Memory" : ""}Channel from agent '${fromAgentId}' to agent '${toAgentId}'.`);
 

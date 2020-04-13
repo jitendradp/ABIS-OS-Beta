@@ -75,7 +75,7 @@ class Implementation extends DirectService {
 
             await AgentCreate.membership(agentId, to_id, profile.id, show_history);
         } else if (to_channel) {
-            await AgentCreate.channel(Init, agentId, profile.id, false, profile.name, profile.profileAvatar);
+            await AgentCreate.channel(Init, agentId, profile.id, false, profile.name, profile.profileAvatar, sessionToken, csrfToken, bearerToken);
             // TODO: Handle the 'onNewChannel' event in the profile service
         } else {
             throw new Error(`Undefined state.`);

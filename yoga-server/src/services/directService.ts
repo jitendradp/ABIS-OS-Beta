@@ -58,7 +58,11 @@ export abstract class DirectService extends Service {
             newChannel.owner,
             forwardChannel.isMemory,
             `${this.id}->${newChannel.owner}`,
-            "channel.png");
+            "channel.png", null, null, null);
+
+        if (!(await this.onAfterReverseChannelCreated(newChannel, reverseChannel))) {
+            return ;
+        }
 
         Helper.log(`${this.name} (${this.id}): reverse channel created. Id: ${reverseChannel.id}`);
         Helper.log(`${this.name} (${this.id}): posting welcome message ..`);
@@ -76,6 +80,14 @@ export abstract class DirectService extends Service {
             null,
             null);
 
+        await this.onAfterWelcomeEntryCreated(newChannel, reverseChannel, welcomeEntry);
+    }
+
+    protected async onAfterReverseChannelCreated(newChannel:Channel, reverseChannel: Group) : Promise<boolean> {
+        return true;
+    }
+
+    protected async onAfterWelcomeEntryCreated(newChannel:Channel, reverseChannel: Group, welcomeEntry:Entry) {
         Helper.log(`${this.name} (${this.id}): posted welcome message ${welcomeEntry.id} to agent '${newChannel.owner}' via channel '${reverseChannel.id}'.`);
     }
 
