@@ -14,7 +14,6 @@ import {IEvent} from "../../actions/IEvent";
 import {Home} from "../../actions/routes/Home";
 
 
-
 export enum IconBarOrientation {
   "Horizontal",
   "Vertical"
@@ -45,9 +44,9 @@ export class IconbarComponent {
   @Input()
   onChatHeader: boolean;
 
-  _entries:IAction[];
+  _entries: IAction[];
 
-  public get entries() : IAction[] {
+  public get entries(): IAction[] {
     if (!this._entries) {
       const profileList = new SetContent("Groups", "left", ListGroupComponent, "base");
       const contactList = new SetContent("Contacts", "left", ListContactComponent, "base");
@@ -55,7 +54,7 @@ export class IconbarComponent {
       const openLeftSidebarBase = new SetVisibility("left", "visible", "base");
 
       this._entries = [
-        new Home(),
+       /* new Home(),*/
         new NestedAction(
           "place",
           "Groups",
@@ -71,8 +70,8 @@ export class IconbarComponent {
             <IEvent>openLeftSidebarBase
           ]),
         new NestedAction(
-          "chat",
-          "Chats",
+          "weekend",
+          "Room",
           [
             <IEvent>roomList,
             <IEvent>openLeftSidebarBase
@@ -96,7 +95,7 @@ export class IconbarComponent {
     this.actionDispatcher.dispatch(new Logout());
   }
 
-  onIconClick($event: MouseEvent, action:IAction) {
+  onIconClick($event: MouseEvent, action: IAction) {
     this.actionDispatcher.dispatch(action);
   }
 }
