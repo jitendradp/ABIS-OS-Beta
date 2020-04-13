@@ -1,3 +1,12 @@
+<mat-button-toggle-group>
+  <mat-button-toggle class="split-button-2 drop-down-button" [matMenuTriggerFor]="dropdownMenuTwo">
+    <mat-icon>add_comment</mat-icon>
+  </mat-button-toggle>
+</mat-button-toggle-group>
+<mat-menu #dropdownMenuTwo="matMenu">
+  <button *ngFor="let contentEncoding of userService.contentEncodings" mat-menu-item (click)="newEntry(contentEncoding)">{{contentEncoding.name}}</button>
+</mat-menu>
+
 <mat-card class="chatColumn">
   <mat-card class="chatContent">
     <mat-card-header class="chatContentHeader">

@@ -1,6 +1,9 @@
 import {Component, Input} from '@angular/core';
-import {GetEntriesGQL} from "../../generated/abis-api";
+import {ContentEncoding, GetEntriesGQL} from "../../generated/abis-api";
 import {UserService} from "../services/user.service";
+import {ActionDispatcherService} from "../services/action-dispatcher.service";
+import {SetContent} from "../actions/ui/SetContent";
+import {CreateEntryEditorComponent} from "../components/create-entry-editor/create-entry-editor.component";
 
 @Component({
   selector: 'app-feed',
@@ -20,7 +23,8 @@ export class FeedComponent {
   icon: any;
 
   constructor(private getEntries: GetEntriesGQL
-            , private userService: UserService) {
+    , private userService: UserService
+    , private actionDispatcher: ActionDispatcherService) {
   }
 
 
@@ -42,4 +46,7 @@ export class FeedComponent {
     });
   }
 
+  async newEntry(contentEncoding: ContentEncoding) {
+    this.actionDispatcher.dispatch(new SetContent("New Entry", "dialog", CreateEntryEditorComponent, "base", {inGroupId:this.groupId, contentEncodingId:contentEncoding.id}));
+  }
 }
