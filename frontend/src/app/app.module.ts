@@ -77,15 +77,13 @@ import {ChartSankeyComponent} from "./components/charts/chart-sankey/chart-sanke
 import {ChartTableComponent} from "./components/charts/chart-table/chart-table.component";
 import {MaterialElevationDirective} from "./directives/material-elevation.directive";
 import {ChipComponent} from "./components/chip/chip.component";
-import {CardListEntryComponent} from "./cards/card-list-entry/card-list-entry.component";
+import {CardListEntryComponent} from "./list-items/card-list-entry/card-list-entry.component";
 import {ListGroupComponent} from "./lists/list-group/list-group.component";
 import {ListContactComponent} from "./lists/list-contact/list-contact.component";
 import {AvatarComponent} from "./components/avatar/avatar.component";
 import {ListChipComponent} from "./list-items/list-chip/list-chip.component";
 import {ChatComponent} from "./chat/chat.component";
 import {ListMemberComponent} from "./list-items/list-member/list-member.component";
-import {ListDataspaceComponent} from "./list-items/list-dataspace/list-dataspace.component";
-import {ListProfileComponent} from "./list-items/list-profile/list-profile.component";
 import {CalendarModule, DateAdapter} from 'angular-calendar';
 import {adapterFactory} from 'angular-calendar/date-adapters/moment';
 import * as moment from 'moment';
@@ -99,14 +97,13 @@ import {CanActivateRoute} from "./services/routeGuard";
 import {MaterialDesignFrameworkModule} from "angular6-json-schema-form";
 import {ServiceDialogComponent} from "./services/service-dialog/service-dialog.component";
 import {GraphQLConfigModule} from "./apolloConfig";
-import {ListIconComponent} from './list-items/list-icon/list-icon.component';
 import {ChangePasswordComponent} from "./pages/system/change-password/change-password.component";
 import {SetPasswordComponent} from "./pages/system/set-password/set-password.component";
 import {ResetPasswordComponent} from "./pages/system/reset-password/reset-password.component";
 import {CreateProfileComponent} from "./pages/system/create-profile/create-profile.component";
 import {CreateRoomComponent} from "./pages/system/create-room/create-room.component";
 import {InviteComponent} from "./pages/system/invite/invite.component";
-import { ListComponent } from './components/list/list.component';
+import {ListComponent} from './components/list/list.component';
 import {GeoJsonEntryComponent} from "./list-items/geoJson-entry/geoJson-entry.component";
 
 export function momentAdapterFactory() {
@@ -286,15 +283,12 @@ const appRoutes: Routes = [
     ListChipComponent,
     ResetPasswordComponent,
     ListMemberComponent,
-    ListDataspaceComponent,
-    ListProfileComponent,
     FileUploadComponent,
     ListChatComponent,
     EditorProfileComponent,
     EditorAccountComponent,
     EditorPasswordComponent,
     ServiceDialogComponent,
-    ListIconComponent,
     ListComponent,
     GeoJsonEntryComponent
   ],
