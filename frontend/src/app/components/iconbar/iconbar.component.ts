@@ -48,7 +48,7 @@ export class IconbarComponent {
 
   public get entries(): IAction[] {
     if (!this._entries) {
-      const profileList = new SetContent("Groups", "left", ListGroupComponent, "base");
+      const profileList = new SetContent("Locations", "left", ListGroupComponent, "base");
       const contactList = new SetContent("Contacts", "left", ListContactComponent, "base");
       const roomList = new SetContent("Rooms", "left", ListChatComponent, "base");
       const openLeftSidebarBase = new SetVisibility("left", "visible", "base");
@@ -57,7 +57,7 @@ export class IconbarComponent {
        /* new Home(),*/
         new NestedAction(
           "place",
-          "Groups",
+          "Locations",
           [
             <IEvent>profileList,
             <IEvent>openLeftSidebarBase
@@ -71,7 +71,7 @@ export class IconbarComponent {
           ]),
         new NestedAction(
           "weekend",
-          "Room",
+          "Rooms",
           [
             <IEvent>roomList,
             <IEvent>openLeftSidebarBase
