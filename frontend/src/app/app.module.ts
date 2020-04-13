@@ -78,7 +78,7 @@ import {ChartSankeyComponent} from "./components/charts/chart-sankey/chart-sanke
 import {ChartTableComponent} from "./components/charts/chart-table/chart-table.component";
 import {MaterialElevationDirective} from "./directives/material-elevation.directive";
 import {ChipComponent} from "./components/chip/chip.component";
-import {CardContactComponent} from "./cards/card-contact/card-contact.component";
+import {CardListEntryComponent} from "./cards/card-list-entry/card-list-entry.component";
 import {ListGroupComponent} from "./list-items/list-group/list-group.component";
 import {ListContactComponent} from "./list-items/list-contact/list-contact.component";
 import {AvatarComponent} from "./components/avatar/avatar.component";
@@ -282,7 +282,7 @@ const appRoutes: Routes = [
     InviteComponent,
     ChatComponent,
     ChipComponent,
-    CardContactComponent,
+    CardListEntryComponent,
     ListGroupComponent,
     ListContactComponent,
     CreateProfileComponent,
