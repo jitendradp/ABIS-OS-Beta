@@ -6,6 +6,11 @@
   width: calc(100% - 70px);
 }
 
+.fixedTitle {
+  position: fixed;
+  left: 160px;
+}
+
 .searchWrapper {
   min-width: 300px;
   width: 100%;
