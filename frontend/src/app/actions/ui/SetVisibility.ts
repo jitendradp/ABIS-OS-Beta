@@ -1,6 +1,6 @@
 import {IAction} from "../IAction";
 
-export type Target = "right" | "left" | "middle" | "bottom" | "dialog";
+export type Target = "right" | "left" | "middle" | "bottom" | "dialog" | "full";
 export type VisibilityState = "visible" | "invisible" | "toggle";
 /* todo elevation state to show or hide it? For more information see material design documentation */
 export type Elevation = "base" | "level1";

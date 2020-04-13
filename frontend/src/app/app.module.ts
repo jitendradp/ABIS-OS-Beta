@@ -101,6 +101,7 @@ import {InviteComponent} from "./pages/system/invite/invite.component";
 import {ListComponent} from './components/list/list.component';
 import {GeoJsonEntryComponent} from "./list-items/geoJson-entry/geoJson-entry.component";
 import { ProfileComponent } from './pages/profile/profile.component';
+import {DetailComponent} from "./pages/detail/detail.component";
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -141,6 +142,13 @@ const appRoutes: Routes = [
   {
     path: 'signin', component: LoginComponent, data: {
       "title": "Login",
+      "actions": defaultActions
+    }
+    , canActivate: [CanActivateRoute]
+  },
+  {
+    path: 'detail', component: DetailComponent, data: {
+      "title": "",
       "actions": defaultActions
     }
     , canActivate: [CanActivateRoute]
@@ -282,7 +290,8 @@ const appRoutes: Routes = [
     ServiceDialogComponent,
     ListComponent,
     GeoJsonEntryComponent,
-    ProfileComponent
+    ProfileComponent,
+    DetailComponent
   ],
   imports: [
     RouterModule.forRoot(

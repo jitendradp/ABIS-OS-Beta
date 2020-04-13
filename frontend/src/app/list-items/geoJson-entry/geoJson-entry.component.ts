@@ -18,8 +18,6 @@ export class GeoJsonEntryComponent implements AfterViewInit{
     , "#5588ff"
     , "#3366ff"];
 
-  entries:any[] = [];
-
   getPaint(entry: Entry) {
     return {
       'fill-color': this.colorPalette[Math.abs(this.getHashFromString(entry.id) % this.colorPalette.length)],
@@ -83,6 +81,7 @@ export class GeoJsonEntryComponent implements AfterViewInit{
 
   @Input()
   sharesCount: number;
+
   center: any;
 
   onClick($event: MouseEvent) {

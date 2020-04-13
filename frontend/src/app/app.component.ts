@@ -1,4 +1,5 @@
-import {AfterViewInit, Component, Input, ViewChild} from '@angular/core';
+// TODO: Remove all <any> casts
+import {AfterViewInit, Component, ComponentFactoryResolver, Input, ViewChild, ViewContainerRef} from '@angular/core';
 import {MatDrawer} from "@angular/material/sidenav";
 import {
   ActivationEnd,
@@ -30,6 +31,7 @@ import {NestedAction} from "./actions/NestedAction";
 import {SetApplicationTitle} from "./actions/ui/SetApplicationTitle";
 import {MatBottomSheet} from "@angular/material/bottom-sheet";
 import {SetContent} from "./actions/ui/SetContent";
+import {Detail} from "./actions/routes/Detail";
 
 @Component({
   selector: 'app-root',
@@ -53,9 +55,9 @@ export class AppComponent implements AfterViewInit {
   constructor(
     private userService: UserService,
     private bottomSheet: MatBottomSheet,
-    private _router: Router,
+    private router: Router,
     private actionDispatcher: ActionDispatcherService,
-    public _dialog: MatDialog,
+    public dialog: MatDialog,
     private createEntryApi: CreateEntryGQL,
     private deviceService: DeviceDetectorService,
     private _snackBar: MatSnackBar
@@ -63,7 +65,7 @@ export class AppComponent implements AfterViewInit {
     // Listen to actions ...
     actionDispatcher.onAction.subscribe(action => this.handleAction(action));
     // Listen to router events ...
-    _router.events.subscribe(o => this.handleRouterEvents(o));
+    router.events.subscribe(o => this.handleRouterEvents(o));
   }
 
   ngAfterViewInit(): void {
@@ -163,7 +165,10 @@ export class AppComponent implements AfterViewInit {
         }
         break;
       case Home.Name:
-        this._router.navigate(["/"]);
+        this.router.navigate(["/"]);
+        break;
+      case Detail.Name:
+        this.router.navigate(["/detail"]);
         break;
       case Back.Name:
         if (this._sidebarOpen) {
@@ -178,7 +183,7 @@ export class AppComponent implements AfterViewInit {
         history.back();
         break;
       case Logout.Name:
-        this._router.navigate(["/logout"]);
+        this.router.navigate(["/logout"]);
         break;
     }
   }
@@ -191,7 +196,7 @@ export class AppComponent implements AfterViewInit {
   }
 
   public openDialog(componentType:any, width:string, height: string): void {
-    const dialogRef = this._dialog.open(componentType, {
+    const dialogRef = this.dialog.open(componentType, {
       width: width,
       height: height
     });
@@ -203,7 +208,7 @@ export class AppComponent implements AfterViewInit {
 
 
   public openGroupExploreDialog(): void {
-    const dialogRef = this._dialog.open(ListGroupComponent, {
+    const dialogRef = this.dialog.open(ListGroupComponent, {
       width: '50%',
       minWidth: '300px'
     });
