@@ -28,15 +28,15 @@ export class ProfileService extends Service {
     }
 
     onNewChannel(newChannel:NewChannel) {
-        Helper.log(`ProfileService received a NewChannel event: ${JSON.stringify(newChannel)}`);
+        //Helper.log(`ProfileService received a NewChannel event: ${JSON.stringify(newChannel)}`);
     }
 
     onNewEntry(newEntry:NewEntry) {
-        Helper.log(`ProfileService received a NewEntry event: ${JSON.stringify(newEntry)}`);
+        //Helper.log(`ProfileService received a NewEntry event: ${JSON.stringify(newEntry)}`);
     }
 
     onNewRoom(newRoom:Group) {
-        Helper.log(`ProfileService received a NewRoom event: ${JSON.stringify(newRoom)}`);
+        //Helper.log(`ProfileService received a NewRoom event: ${JSON.stringify(newRoom)}`);
     }
 
     stop(): void {

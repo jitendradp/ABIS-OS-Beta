@@ -21,8 +21,10 @@ class Implementation extends DirectService {
         const csrfToken = (<any>newEntry).__csrfToken;
         const sessionToken = (<any>newEntry).__sessionToken;
         const agentId = await GetAgentOf.session(csrfToken, sessionToken);
+        /*
         await prisma.deleteManyGroups({owner:this.id, type:"Channel", memberships_every:{member:{id:agentId}}});
         await prisma.deleteManyGroups({owner:agentId, type:"Channel", memberships_every:{member:{id:this.id}}});
+         */
     }
 
     private static async clearChallenge(userId: string) {

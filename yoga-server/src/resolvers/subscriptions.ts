@@ -6,8 +6,8 @@ import {Observable} from "rxjs";
 import {Init, Server} from "../init";
 import {prisma} from "../generated";
 
-async function getTopicForAgent(server:Server, csrfToken:string, topicName:string) {
-    const agentId = await GetAgentOf.session(csrfToken);
+async function getTopicForAgent(server:Server, csrfToken:string, sessionToken:string, topicName:string) {
+    const agentId = await GetAgentOf.session(csrfToken, sessionToken);
     if (!agentId) {
         throw new Error("Couldn't find an agent for this session.");
     }
@@ -26,7 +26,7 @@ export const subscriptions = {
                 throw new Error("Cannot create a subscription without a valid csrfToken");
             }
 
-            const topic = await getTopicForAgent(Init, csrfToken, Topics.NewEntry);
+            const topic = await getTopicForAgent(Init, csrfToken, ctx.sessionToken, Topics.NewEntry);
 
             // TODO: Maybe that works with map() as well (rxjs/promise)?
             const augmentedTopic = new Observable(subscriber => {
@@ -59,7 +59,7 @@ export const subscriptions = {
             if (!csrfToken) {
                 throw new Error("Cannot create a subscription without a valid csrfToken");
             }
-            const topic = await getTopicForAgent(Init, csrfToken, Topics.NewChannel);
+            const topic = await getTopicForAgent(Init, csrfToken, ctx.sessionToken, Topics.NewChannel);
             return Helper.observableToAsyncIterable(topic.pipe(map(o => {return {newChannel:o}})));
         },
     },
@@ -68,7 +68,7 @@ export const subscriptions = {
             if (!csrfToken) {
                 throw new Error("Cannot create a subscription without a valid csrfToken");
             }
-            const topic = await getTopicForAgent(Init, csrfToken, Topics.NewRoom);
+            const topic = await getTopicForAgent(Init, csrfToken, ctx.sessionToken, Topics.NewRoom);
             return Helper.observableToAsyncIterable(topic.pipe(map(o => {return {newRoom:o}})));
         },
     }

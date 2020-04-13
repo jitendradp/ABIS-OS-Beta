@@ -97,6 +97,9 @@ export class AgentQueries {
 
     public static async findRooms(csrfToken: string, sessionToken: string, bearerToken: string, searchText:string) {
         try {
+            if (!sessionToken) {
+                throw new Error(`No sessionToken was supplied.`)
+            }
             const myAgent = await CommonQueries.findAgentBySession(csrfToken, sessionToken, bearerToken);
             if (!myAgent) {
                 throw new Error(`Invalid bearer- and/or csrf-token.`);

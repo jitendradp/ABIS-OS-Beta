@@ -7,7 +7,7 @@ export class CommonQueries {
     }
 
     public static async findSession(csrfToken: string, sessionToken:string, bearerToken?: string) : Promise<Session> {
-        const sessions = await prisma.sessions({where:{csrfToken, sessionToken, bearerToken, validTo_gt: new Date(), timedOut:null, loggedOut:null}});
+        const sessions = await prisma.sessions({where:{csrfToken, OR:[{sessionToken}, {bearerToken}], validTo_gt: new Date(), timedOut:null, loggedOut:null}});
         if (sessions.length == 1) {
             return sessions[0];
         } else if (sessions.length > 1) {

@@ -1,10 +1,11 @@
 import {prisma} from "../generated";
 
 export class GetAgentOf {
-    public static async session(csrfToken:string, sessionToken?:string) {
+    public static async session(csrfToken:string, sessionToken:string) {
         const now = new Date();
         const queryParameters = {
             where:{
+                sessionToken: sessionToken,
                 csrfToken: csrfToken,
                 createdAt_lt: now,
                 validTo_gt: now,
