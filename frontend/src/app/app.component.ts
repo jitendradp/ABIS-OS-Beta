@@ -32,6 +32,7 @@ import {SetApplicationTitle} from "./actions/ui/SetApplicationTitle";
 import {MatBottomSheet} from "@angular/material/bottom-sheet";
 import {SetContent} from "./actions/ui/SetContent";
 import {Detail} from "./actions/routes/Detail";
+import {MatDialogConfig} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-root',
@@ -100,7 +101,8 @@ export class AppComponent implements AfterViewInit {
           this.bottomSheet.open((<any>action).component);
         }
         if ((<any>action).side == "dialog") {
-          this.openDialog((<any>action).component, '50%', '50%');
+          // TODO: context
+          this.openDialog((<any>action).component, '50%', '50%', (<any>action).context);
         }
         if ((<any>action).side == "full") {
           if ((<any>action).title) {
@@ -207,14 +209,20 @@ export class AppComponent implements AfterViewInit {
     }
   }
 
-  public openDialog(componentType:any, width:string, height: string): void {
-    const dialogRef = this.dialog.open(componentType, {
-      width: width,
-      height: height
-    });
+  public openDialog(componentType:any, width:string, height: string, context?:any): void {
+
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = width;
+    dialogConfig.height = height;
+    dialogConfig.data = context;
+
+    const dialogRef = this.dialog.open(componentType, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      console.log('The dialog was closed:', result);
     });
   }
 

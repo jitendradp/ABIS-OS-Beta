@@ -49,8 +49,13 @@ export class UserService {
 
   private readonly ContentEncodingsKey = "UserService.contentEncodings";
 
-  private get contentEncodings(): ContentEncoding[] {
-    return this.clientState.get<ContentEncoding[]>(this.ContentEncodingsKey, null).data;
+  private _contentEncodings: ContentEncoding[];
+
+  public get contentEncodings(): ContentEncoding[] {
+    if (!this._contentEncodings) {
+      this._contentEncodings = this.clientState.get<ContentEncoding[]>(this.ContentEncodingsKey, null).data;
+    }
+    return this._contentEncodings;
   }
 
   private readonly SystemServicesKey = "UserService.systemServices";

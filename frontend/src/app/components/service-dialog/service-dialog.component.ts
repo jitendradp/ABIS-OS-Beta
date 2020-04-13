@@ -1,8 +1,8 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {FormBuilder} from "@angular/forms";
-import {ClientStateService} from "../client-state.service";
-import {UserService} from "../user.service";
-import {Logger, LoggerService} from "../logger.service";
+import {ClientStateService} from "../../services/client-state.service";
+import {UserService} from "../../services/user.service";
+import {Logger, LoggerService} from "../../services/logger.service";
 import {
   ContentEncoding,
   CreateChannelGQL,

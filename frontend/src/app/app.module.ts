@@ -90,7 +90,7 @@ import {ListChatComponent} from "./lists/list-chat/list-chat.component";
 import {ProfileService} from "./services/profile.service";
 import {CanActivateRoute} from "./services/routeGuard";
 import {MaterialDesignFrameworkModule} from "angular6-json-schema-form";
-import {ServiceDialogComponent} from "./services/service-dialog/service-dialog.component";
+import {ServiceDialogComponent} from "./components/service-dialog/service-dialog.component";
 import {GraphQLConfigModule} from "./apolloConfig";
 import {ChangePasswordComponent} from "./pages/system/change-password/change-password.component";
 import {SetPasswordComponent} from "./pages/system/set-password/set-password.component";
@@ -103,6 +103,8 @@ import {GeoJsonEntryComponent} from "./list-items/geoJson-entry/geoJson-entry.co
 import { ProfileComponent } from './pages/profile/profile.component';
 import {DetailComponent} from "./pages/detail/detail.component";
 import { LatestComponent } from './pages/latest/latest.component';
+import {JsonSchemaEditorComponent} from "./components/json-schema-editor/json-schema-editor.component";
+import {CreateEntryEditorComponent} from "./components/create-entry-editor/create-entry-editor.component";
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -294,7 +296,9 @@ const appRoutes: Routes = [
     ProfileComponent,
     DetailComponent,
     ProfileComponent,
-    LatestComponent
+    LatestComponent,
+    JsonSchemaEditorComponent,
+    CreateEntryEditorComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -352,7 +356,7 @@ const appRoutes: Routes = [
     CalendarModule.forRoot({provide: DateAdapter, useFactory: momentAdapterFactory}),
   ],
   providers: [ProfileService, CanActivateRoute],
-  entryComponents: [SearchComponent, ListGroupComponent, ListContactComponent, ListChatComponent, FeedComponent],
+  entryComponents: [SearchComponent, ListGroupComponent, ListContactComponent, ListChatComponent, FeedComponent, CreateEntryEditorComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {
