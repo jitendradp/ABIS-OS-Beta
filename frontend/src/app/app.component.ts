@@ -14,13 +14,11 @@ import {
 import {IEvent} from "./actions/IEvent";
 import {ActionDispatcherService} from "./services/action-dispatcher.service";
 import {MatDialog} from "@angular/material";
-import {EditorChannelComponent} from "./dialogs/editor-channel/editor-channel.component";
 import {Home} from "./actions/routes/Home";
 import {ShowNotification} from "./actions/ui/ShowNotification";
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {LogEntry} from "./services/logger.service";
 import {Back} from "./actions/routes/Back";
-import {EditorGroupComponent} from "./dialogs/editor-group/editor-group.component";
 import {SetVisibility} from "./actions/ui/SetVisibility";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {RouteChanged} from "./actions/routes/RouteChanged";
@@ -32,7 +30,6 @@ import {NestedAction} from "./actions/NestedAction";
 import {SetApplicationTitle} from "./actions/ui/SetApplicationTitle";
 import {MatBottomSheet} from "@angular/material/bottom-sheet";
 import {SetContent} from "./actions/ui/SetContent";
-import {SearchComponent} from "./search/search.component";
 
 @Component({
   selector: 'app-root',
@@ -146,12 +143,6 @@ export class AppComponent implements AfterViewInit {
           this.actionDispatcher.dispatch(a);
         }
         break;
-      case "Abis.Chat.Channel.Create":
-        this.openChannelCreateDialog();
-        break;
-      case "Abis.Chat.Group.Create":
-        this.openGroupCreateDialog();
-        break;
       case "Abis.Chat.Contact.Invite":
         this.openContactInviteDialog();
         break;
@@ -210,26 +201,6 @@ export class AppComponent implements AfterViewInit {
     });
   }
 
-  public openChannelCreateDialog(): void {
-    const dialogRef = this._dialog.open(EditorChannelComponent, {
-      width: '250px'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-  }
-
-  public openGroupCreateDialog(): void {
-    const dialogRef = this._dialog.open(EditorGroupComponent, {
-      width: '30%',
-      minWidth: '300px'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-  }
 
   public openGroupExploreDialog(): void {
     const dialogRef = this._dialog.open(ListGroupComponent, {
