@@ -4,6 +4,7 @@ import {ActionResponse} from "../../mutations/actionResponse";
 import {AgentCanSee} from "../../../statements/agentCanSee";
 import {Init} from "../../../init";
 import {Entry, EntryWhereInput, prisma} from "../../../generated";
+import type = Mocha.utils.type;
 
 export class GroupQueries2 {
 
@@ -49,7 +50,28 @@ export class GroupQueries2 {
             }
 
             return entries.map(async o => {
-                (<any>o).tagAggregate = [];
+
+                const tags = await prisma.tags({
+                    where: {
+                        forId: o.id
+                    }
+                });
+
+                const typesAndCount:{[type:string]:number} = {};
+                tags.forEach(tag => {
+                   if (!typesAndCount[tag.tagType]) {
+                       typesAndCount[tag.tagType] = 0;
+                   }
+                   typesAndCount[tag.tagType]++;
+                });
+
+                (<any>o).tagAggregate = Object.keys(typesAndCount).map(key => {
+                    return {
+                        type: key,
+                        count: typesAndCount[key]
+                    }
+                });
+
                 // @ts-ignore
                 if ((<any>o).contentEncoding && (<any>o).contentEncoding.id) {  // TODO: Bullshit!
                     (<any>o).contentEncoding = await prisma.contentEncoding({id: (<any>o).contentEncoding.id}) ?? "";
