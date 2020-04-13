@@ -1,6 +1,5 @@
 import {Component, Input} from '@angular/core';
 import {MatBottomSheet} from "@angular/material";
-import {SearchComponent} from "../../search/search.component";
 import {SetVisibility} from "../../actions/ui/SetVisibility";
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
 import {Logout} from "../../actions/routes/Logout";
@@ -12,16 +11,8 @@ import {ListContactComponent} from "../../lists/list-contact/list-contact.compon
 import {ListChatComponent} from "../../lists/list-chat/list-chat.component";
 import {NestedAction} from "../../actions/NestedAction";
 import {IEvent} from "../../actions/IEvent";
-import {ChatComponent} from "../../chat/chat.component";
 import {Home} from "../../actions/routes/Home";
 
-export interface IconList {
-  name: string;
-  metric?: string;
-  label?: string;
-  action?: string;
-  color?: string;
-}
 
 
 export enum IconBarOrientation {
@@ -66,7 +57,7 @@ export class IconbarComponent {
       this._entries = [
         new Home(),
         new NestedAction(
-          "group",
+          "place",
           "Groups",
           [
             <IEvent>profileList,
@@ -80,8 +71,8 @@ export class IconbarComponent {
             <IEvent>openLeftSidebarBase
           ]),
         new NestedAction(
-          "group",
-          "Groups",
+          "chat",
+          "Chats",
           [
             <IEvent>roomList,
             <IEvent>openLeftSidebarBase
@@ -95,10 +86,6 @@ export class IconbarComponent {
     private bottomSheet: MatBottomSheet,
     private actionDispatcher: ActionDispatcherService,
     public userService: UserService) {
-  }
-
-  openBottomSheet() {
-    this.bottomSheet.open(SearchComponent)
   }
 
   close() {
