@@ -1,4 +1,4 @@
-![Alt text](https://user-images.githubusercontent.com/19590434/78272646-15906d00-750e-11ea-88d5-c5064a3ef1c7.png "Map and Chat View")
+![Alt text](https://user-images.githubusercontent.com/19590434/79083022-bf040980-7d2b-11ea-90bf-06e7ca2b1801.png "Map and Chat View")
 # Quickstart (run pre-build docker images)
 **Prerequisites**
 You will need at least version 19.03 of Docker Desktop installed
