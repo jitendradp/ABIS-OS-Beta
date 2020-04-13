@@ -1,11 +1,11 @@
 <app-iconbar [orientation]='"Vertical"'></app-iconbar>
 <mat-sidenav-container [hasBackdrop]="false">
   <app-header [actions]="actions" [title]="title"></app-header>
-  <mat-drawer-container [hasBackdrop]="false">
+  <mat-drawer-container [hasBackdrop]="false">x
     <mat-drawer position="end" #right mode="side" class="sidebarRight">
     </mat-drawer>
     <mat-drawer-content class="body">
-      <mat-sidenav #left position="start" mode="push" class="sidebarLeft" >
+      <mat-sidenav #left position="start" mode="push" class="sidebarLeft">
         <app-navigation></app-navigation>
       </mat-sidenav>
       <router-outlet></router-outlet>
