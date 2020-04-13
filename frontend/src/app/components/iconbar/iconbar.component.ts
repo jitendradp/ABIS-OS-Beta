@@ -54,7 +54,7 @@ export class IconbarComponent {
       const openLeftSidebarBase = new SetVisibility("left", "visible", "base");
 
       this._entries = [
-        new Home(),
+       /* new Home(),*/
         new NestedAction(
           "place",
           "Groups",
@@ -70,8 +70,8 @@ export class IconbarComponent {
             <IEvent>openLeftSidebarBase
           ]),
         new NestedAction(
-          "chat",
-          "Chats",
+          "weekend",
+          "Room",
           [
             <IEvent>roomList,
             <IEvent>openLeftSidebarBase
