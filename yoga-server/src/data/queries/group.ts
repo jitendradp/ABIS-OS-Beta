@@ -64,7 +64,7 @@ export class GroupQueries {
         }
          */
 
-        const rooms = await prisma.groups({where:{type:"Room", isPublic:true}});
+        const rooms = await prisma.groups({where:{type:"Room", OR: [{isPublic: true}, {owner:agentId}, {memberships_some:{member: {id:agentId}}}]}});
         return rooms.map(o => <any>{
             ...o,
             isPrivate: !o.isPublic,
