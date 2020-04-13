@@ -7,11 +7,11 @@ import {IEvent} from "../../actions/IEvent";
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
 
 @Component({
-  selector: 'app-card-contact',
-  templateUrl: './card-contact.component.html',
-  styleUrls: ['./card-contact.component.css']
+  selector: 'app-card-list-entry',
+  templateUrl: './card-list-entry.component.html',
+  styleUrls: ['./card-list-entry.component.css']
 })
-export class CardContactComponent {
+export class CardListEntryComponent {
 
   @Input()
   contactPicture: string;

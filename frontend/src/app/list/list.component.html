@@ -1,23 +1,13 @@
-<!-- todo combine the mat toolbar navigation to new component -->
-<div *ngIf="showActions">
-  <mat-toolbar class="chatNavToolbar">
-    <button mat-flat-button color="primary" (click)="collapsed = !collapsed">
-      <mat-icon>search</mat-icon>
-      <span fxHide fxShow.gt-md>&nbsp;Search</span>
-    </button>
-  </mat-toolbar>
-  <div style="padding-left: 16px; padding-right: 16px;" *ngIf="collapsed">
-    <app-input style="font-size: 14px" [placeholder]="'Type your search query...'"
-               [appearance]="'outline'"></app-input>
-  </div>
-</div>
-<app-whitespace [height]="'8px'"></app-whitespace>
 <mat-nav-list>
   <div *ngFor="let entry of entries">
-    <app-card-contact [context]="entry" *ngIf="entry.type == 'Room'" [contactFullName]="entry.name" [subtitle]="!entry.description ? '-' : entry.description"></app-card-contact>
-    <app-card-contact *ngIf="entry.type == 'Profile'" [contactFullName]="entry.name" [subtitle]="entry.slogan"></app-card-contact>
-    <app-card-contact *ngIf="entry.type == 'Group'" [contactFullName]="entry.title" [subtitle]="entry.location"></app-card-contact>
-    <app-card-contact *ngIf="entry.type != 'Profile' && entry.type != 'Group'&& entry.type != 'Room'" [contactFullName]="'!= Contact'" [subtitle]="'My slogan'"></app-card-contact>
+    <app-card-list-entry [context]="entry" *ngIf="entry.type == 'Room'" [contactFullName]="entry.name"
+                      [subtitle]="!entry.description ? '-' : entry.description"></app-card-list-entry>
+    <app-card-list-entry *ngIf="entry.type == 'Profile'" [contactFullName]="entry.name"
+                      [subtitle]="entry.slogan"></app-card-list-entry>
+    <app-card-list-entry *ngIf="entry.type == 'Group'" [contactFullName]="entry.title"
+                      [subtitle]="entry.location"></app-card-list-entry>
+    <app-card-list-entry *ngIf="entry.type != 'Profile' && entry.type != 'Group'&& entry.type != 'Room'"
+                      [contactFullName]="'!= Contact'" [subtitle]="'My slogan'"></app-card-list-entry>
   </div>
 </mat-nav-list>
 
