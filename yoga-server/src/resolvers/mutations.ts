@@ -128,9 +128,9 @@ export const mutations = {
             || toAgentId == Init.verifyEmailServiceId
             || toAgentId == Init.setPasswordServiceId
             || toAgentId == Init.resetPasswordServiceId) {
-            newChannel = await AgentCreate.channel(Init, agentId, toAgentId, true, "New Channel", "channel.png");
+            newChannel = await AgentCreate.channel(Init, agentId, toAgentId, true, "New Channel", "channel.png", ctx.sessionToken, csrfToken, ctx.bearerToken);
         } else {
-            newChannel = await AgentCreate.channel(Init, agentId, toAgentId, false, "New Channel", "channel.png");
+            newChannel = await AgentCreate.channel(Init, agentId, toAgentId, false, "New Channel", "channel.png", ctx.sessionToken, csrfToken, ctx.bearerToken);
         }
 
         (<any>newChannel).receiver = await prisma.agent({id: toAgentId});

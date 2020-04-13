@@ -7,20 +7,13 @@ import {UserCreate} from "../../data/mutations/userCreate";
 import {RequestSynchronousService} from "../../services/requestSynchronousService";
 import {GetAgentOf} from "../../queries/getAgentOf";
 import {Entry, Group, prisma} from "../../generated";
+import {UserHas} from "../../statements/userHas";
 
 class Implementation extends RequestSynchronousService {
     private static readonly bcrypt = require('bcrypt');
 
     get welcomeMessageContentEncodingId(): string {
         return this.server.loginContentEncoding.id;
-    }
-
-    async onNewChannel(newChannel:Channel) {
-        if (!(await UserOwns.profile(this.server.anonymousUser.id, newChannel.owner))) {
-            throw new Error(`Only anonymous sessions can use this service.`);
-        }
-
-        return super.onNewChannel(newChannel);
     }
 
     async onNewEntry(newEntry: Entry, answerChannel: Group, request?:any) {
