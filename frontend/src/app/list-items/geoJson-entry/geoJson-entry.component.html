@@ -37,7 +37,7 @@
             <button mat-icon-button (click)="onThumbsUp()">
               <mat-icon matTooltip="Like">thumb_up</mat-icon>
             </button>
-            <small>{{likesCount}}</small>
+            <small>{{entry.tagAggregate.length > 0 ? entry.tagAggregate[0].count : 0}}</small>
           </mat-grid-tile>
           <mat-grid-tile>
             <button mat-icon-button (click)="collapsedSplit = !collapsedSplit">
