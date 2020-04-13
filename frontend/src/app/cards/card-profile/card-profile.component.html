@@ -48,59 +48,20 @@
   </mat-card-content>
 </mat-card>
 
-<mat-card *ngIf="onPage"
-          class="profileCard"
-          fxLayout
-          fxLayout.xs="column"
-          fxLayoutAlign="left"
-          fxLayoutGap.xs="0">
-  <div fxFlex="75%">
-    <mat-card-header class="headerProfileStage">
-      <img mat-card-avatar class="profilePicture mat-elevation-z10"
-           src="{{profileService.profileInformation.pictureAvatar}}"
-           [matMenuTriggerFor]="contactMenu">
-      <mat-menu #contactMenu="matMenu">
-        <button mat-menu-item>add contact</button>
-        <button mat-menu-item>follow</button>
-        <button mat-menu-item>instant message</button>
-      </mat-menu>
-      <mat-card-title style="color: white">
-      </mat-card-title>
-      <mat-card-subtitle style="color: white">
-        @{{profileService.profileInformation.name}}
-      </mat-card-subtitle>
-    </mat-card-header>
-  </div>
-  <!-- todo cleanup here make just material-->
-  <div fxFlex="auto">
-    <div class="headerProfileContent"
-         fxLayout
-         fxLayout.xs="row"
-         fxLayoutAlign="center"
-         fxLayoutGap.xs="0">
-      <div fxFlex="25">
-        <small>THREADS</small>
-        <br>
-        <span mat-card-title>687</span>
-      </div>
-      <div fxFlex="25">
-        <small>ROOMS</small>
-        <br>
-        <span mat-card-title>39</span>
-      </div>
-      <div fxFlex="25">
-        <small>CONTACTS</small>
-        <br>
-        <span mat-card-title>126</span>
-      </div>
-      <div fxFlex="25">
-        <small>FOLLOWERS</small>
-        <br>
-        <span mat-card-title>89</span>
-      </div>
-    </div>
-  </div>
-</mat-card>
 
-
+<div *ngIf="profileHeader">
+  <app-content>
+    <mat-card>
+      <mat-card-content style="height: 300px; overflow: hidden">
+        <img style="object-fit: cover" mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+             alt="Photo of a Shiba Inu">
+      </mat-card-content>
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>Shiba Inu</mat-card-title>
+        <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+  </app-content>
+</div>
 
