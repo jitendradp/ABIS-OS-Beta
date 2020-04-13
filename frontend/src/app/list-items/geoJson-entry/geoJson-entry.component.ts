@@ -4,11 +4,11 @@ import {ActionDispatcherService} from "../../services/action-dispatcher.service"
 import {JumpToMapPosition} from "../../actions/ui/JumpToMapPosition";
 
 @Component({
-  selector: 'app-card-map',
-  templateUrl: './card-map.component.html',
-  styleUrls: ['./card-map.component.css']
+  selector: 'app-geoJson-entry',
+  templateUrl: './geoJson-entry.component.html',
+  styleUrls: ['./geoJson-entry.component.css']
 })
-export class CardMapComponent implements AfterViewInit{
+export class GeoJsonEntryComponent implements AfterViewInit{
   mapStyle = "mapbox://styles/mapbox/dark-v9";
 
   colorPalette: string[] = [

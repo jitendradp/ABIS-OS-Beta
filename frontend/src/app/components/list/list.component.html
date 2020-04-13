@@ -1,0 +1,23 @@
+<mat-nav-list>
+  <div *ngFor="let entry of entries">
+    <app-card-list-entry [context]="entry" *ngIf="!entry.contentEncoding && entry.type == 'Room'" [contactFullName]="entry.name" [subtitle]="!entry.description ? '-' : entry.description"></app-card-list-entry>
+    <app-card-list-entry *ngIf="!entry.contentEncoding && entry.type == 'Profile'" [contactFullName]="entry.name" [subtitle]="entry.slogan"></app-card-list-entry>
+    <app-card-list-entry *ngIf="!entry.contentEncoding && entry.type == 'Group'" [contactFullName]="entry.title" [subtitle]="entry.location"></app-card-list-entry>
+    <app-card-list-entry *ngIf="!entry.contentEncoding && entry.type != 'Profile' && entry.type != 'Group'&& entry.type != 'Room'" [contactFullName]="'!= Contact'" [subtitle]="'My slogan'"></app-card-list-entry>
+    <div *ngIf="entry.contentEncoding && userService.findContentEncodingById(entry.contentEncoding.id).name == 'GeoJsonFeature'">
+      <app-geoJson-entry
+        [entry]="entry"
+        [groupId]="entry.groupId"
+        [message]="entry.content"
+        [creator]="entry.createdBy"
+        [createdAt]="entry.createdAt"
+        [pictureCreator]="''"
+        [picturePost]="''"
+        [commentsCount]="0"
+        [likesCount]="0"
+        [sharesCount]="0">
+      </app-geoJson-entry>
+    </div>
+  </div>
+</mat-nav-list>
+

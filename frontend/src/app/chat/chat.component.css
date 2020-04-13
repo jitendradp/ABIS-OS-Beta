@@ -5,3 +5,83 @@
   box-shadow: none;
   overflow: hidden;
 }
+.chatContent {
+  overflow: hidden;
+  border-radius: 0;
+  overflow-y: scroll;
+  position: relative;
+  height: calc(100% - 56px);
+  background-color: #eee;
+  padding: unset;
+  box-shadow: none;
+}
+
+.chatContentHeader {
+  height: 48px;
+  background: white;
+  margin: unset;
+}
+
+/*todo refactor delete */
+.chatGroupLogo {
+  padding-left: 16px;
+  margin: auto;
+}
+
+/*todo refactor delete */
+.chatGroupHeaderTitle {
+  padding-top: 3px;
+  margin-left: -8px;
+}
+
+/*todo refactor delete */
+.chatGroupHeaderSubtitle {
+  margin-top: 3px;
+}
+
+.fill-remaining-space {
+  /* This fills the remaining space, by using flexbox.
+     Every toolbar row uses a flexbox row layout. */
+  flex: 1 1 auto;
+}
+
+/*todo float the buttons on the navigation of the chat under when changing the width by opening the right sidepanel */
+.chatInputWrapper {
+  position: absolute;
+  bottom: 0;
+  border-radius: 0;
+  height: 56px;
+  width: 100%;
+  padding: unset;
+  box-shadow: none;
+}
+
+.chatContent::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.chatContent::-webkit-scrollbar {
+  width: 8px;
+  background: #c2c2c2;
+}
+
+.messageInput {
+  background-color: #4e4c56;
+  width: 100%;
+}
+
+.messageInputButton {
+  float: right;
+  height: 56px;
+  border-radius: 0;
+  box-shadow: none;
+  padding-right: 16px;
+}
+
+.messageInputTextarea {
+  padding-left: 16px;
+}
+
+::placeholder { /* Firefox, Chrome, Opera */
+  color: white;
+}

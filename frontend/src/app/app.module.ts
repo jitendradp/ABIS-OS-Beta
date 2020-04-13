@@ -70,7 +70,6 @@ import {DeviceDetectorModule} from "ngx-device-detector";
 import {ClusterPopupComponent} from "./map/cluster-popup/cluster-popup.component";
 import {AgGridModule} from "ag-grid-angular";
 import {CardProfileComponent} from "./cards/card-profile/card-profile.component";
-import {FeedMessageComponent} from "./feeds/feed-message/feed-message.component";
 import {ChartGraphForceComponent} from "./components/charts/chart-graph-force/chart-graph-force.component";
 import {ChartLineComponent} from "./components/charts/chart-line/chart-line.component";
 import {ChartMapComponent} from "./components/charts/chart-map/chart-map.component";
@@ -79,22 +78,19 @@ import {ChartTableComponent} from "./components/charts/chart-table/chart-table.c
 import {MaterialElevationDirective} from "./directives/material-elevation.directive";
 import {ChipComponent} from "./components/chip/chip.component";
 import {CardListEntryComponent} from "./cards/card-list-entry/card-list-entry.component";
-import {ListGroupComponent} from "./list-items/list-group/list-group.component";
-import {ListContactComponent} from "./list-items/list-contact/list-contact.component";
+import {ListGroupComponent} from "./lists/list-group/list-group.component";
+import {ListContactComponent} from "./lists/list-contact/list-contact.component";
 import {AvatarComponent} from "./components/avatar/avatar.component";
 import {ListChipComponent} from "./list-items/list-chip/list-chip.component";
 import {ChatComponent} from "./chat/chat.component";
 import {ListMemberComponent} from "./list-items/list-member/list-member.component";
-import {FeedNotificationComponent} from "./feeds/feed-notification/feed-notification.component";
 import {ListDataspaceComponent} from "./list-items/list-dataspace/list-dataspace.component";
 import {ListProfileComponent} from "./list-items/list-profile/list-profile.component";
-import {FeedThreadComponent} from "./feeds/feed-thread/feed-thread.component";
-import {CardChatComponent} from "./cards/card-chat/card-chat.component";
 import {CalendarModule, DateAdapter} from 'angular-calendar';
 import {adapterFactory} from 'angular-calendar/date-adapters/moment';
 import * as moment from 'moment';
 import {FileUploadComponent} from "./components/file-upload/file-upload.component";
-import {ListChatComponent} from "./list-items/list-chat/list-chat.component";
+import {ListChatComponent} from "./lists/list-chat/list-chat.component";
 import {EditorProfileComponent} from "./dialogs/editor-profile/editor-profile.component";
 import {ProfileService} from "./services/profile.service";
 import {EditorAccountComponent} from "./dialogs/editor-account/editor-account.component";
@@ -110,8 +106,8 @@ import {ResetPasswordComponent} from "./pages/system/reset-password/reset-passwo
 import {CreateProfileComponent} from "./pages/system/create-profile/create-profile.component";
 import {CreateRoomComponent} from "./pages/system/create-room/create-room.component";
 import {InviteComponent} from "./pages/system/invite/invite.component";
-import { ListComponent } from './list/list.component';
-import {CardMapComponent} from "./cards/card-map/card-map.component";
+import { ListComponent } from './components/list/list.component';
+import {GeoJsonEntryComponent} from "./list-items/geoJson-entry/geoJson-entry.component";
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -269,7 +265,6 @@ const appRoutes: Routes = [
     CardComponent,
     ClusterPopupComponent,
     CardProfileComponent,
-    FeedMessageComponent,
     ChartGraphForceComponent,
     ResetPasswordComponent,
     ChartLineComponent,
@@ -291,11 +286,8 @@ const appRoutes: Routes = [
     ListChipComponent,
     ResetPasswordComponent,
     ListMemberComponent,
-    FeedNotificationComponent,
     ListDataspaceComponent,
     ListProfileComponent,
-    FeedThreadComponent,
-    CardChatComponent,
     FileUploadComponent,
     ListChatComponent,
     EditorProfileComponent,
@@ -304,7 +296,7 @@ const appRoutes: Routes = [
     ServiceDialogComponent,
     ListIconComponent,
     ListComponent,
-    CardMapComponent
+    GeoJsonEntryComponent
   ],
   imports: [
     RouterModule.forRoot(
