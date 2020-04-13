@@ -111,6 +111,7 @@ import {CreateProfileComponent} from "./pages/system/create-profile/create-profi
 import {CreateRoomComponent} from "./pages/system/create-room/create-room.component";
 import {InviteComponent} from "./pages/system/invite/invite.component";
 import { ListComponent } from './list/list.component';
+import {CardMapComponent} from "./cards/card-map/card-map.component";
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -303,6 +304,7 @@ const appRoutes: Routes = [
     ServiceDialogComponent,
     ListIconComponent,
     ListComponent,
+    CardMapComponent
   ],
   imports: [
     RouterModule.forRoot(

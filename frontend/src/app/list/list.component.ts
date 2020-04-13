@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ITypedElement} from "./ITypedElement";
 
 @Component({
   selector: 'app-list',

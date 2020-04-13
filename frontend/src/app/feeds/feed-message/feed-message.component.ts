@@ -1,4 +1,5 @@
 import {Component, Input} from '@angular/core';
+import {UserService} from "../../services/user.service";
 
 export interface feedItem {
   creator: string;
@@ -20,6 +21,9 @@ export class FeedMessageComponent {
 
   @Input()
   private entries: any[] = [];
+
+  constructor(public userService:UserService) {
+  }
 
 
 }

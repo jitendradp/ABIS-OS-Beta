@@ -41,7 +41,12 @@ export class CardChatComponent implements AfterViewInit{
       groupId: this.groupId,
       csrfToken: this.userService.csrfToken
     }).toPromise()).then(o => {
-      this.entries = o.data.getEntries;
+      const newArr = [];
+      const maxCount = 10;
+      for (let i = 0; i < (o.data.getEntries.length > maxCount ? maxCount : o.data.getEntries.length); i++) {
+         newArr.push(o.data.getEntries[i]);
+      }
+      this.entries = newArr;
     });
   }
 

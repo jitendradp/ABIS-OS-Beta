@@ -1,0 +1,62 @@
+<mat-card class="embeddableMessage" appMaterialElevation>
+  <div fxLayout="row wrap"
+       fxLayout.lt-sm="column"
+       fxLayoutGap="0px"
+       fxLayoutAlign="left stretch">
+    <div fxFlex>
+      <mat-card-header>
+
+        <img mat-card-avatar src="{{pictureCreator}}"
+             onError="this.src='./assets/error-images/picture.png';">
+
+        <mat-card-title>{{entry.name}}</mat-card-title>
+        <mat-card-subtitle>{{entry.createdAt}}</mat-card-subtitle>
+      </mat-card-header>
+
+      <mgl-map
+        *ngIf="entry"
+        class="postPicture"
+        [style]="mapStyle"
+        [interactive]="false"
+        [zoom]="[3]"
+        [center]="center">
+
+        <mgl-geojson-source id="{{entry.id}}" [data]="entry.content">
+          <mgl-layer id="{{entry.id}}_layer"
+                     type="fill"
+                     source="{{entry.id}}"
+                     [paint]="getPaint(entry)">
+          </mgl-layer>
+        </mgl-geojson-source>
+      </mgl-map>
+
+      <mat-card-actions>
+        <mat-grid-list cols="3" rowHeight="40px">
+          <mat-grid-tile>
+            <button mat-icon-button>
+              <mat-icon matTooltip="Like">thumb_up</mat-icon>
+            </button>
+            <small>{{likesCount}}</small>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <button mat-icon-button (click)="collapsedSplit = !collapsedSplit">
+              <mat-icon matTooltip="Comment">comment</mat-icon>
+            </button>
+            <small>{{commentsCount}}</small>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <button mat-icon-button>
+              <mat-icon matTooltip="Share">share</mat-icon>
+            </button>
+            <small>{{sharesCount}}</small>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </mat-card-actions>
+    </div>
+    <mat-card-content *ngIf="collapsedSplit" fxFlex="100" fxFlex.gt-md="100">
+      <app-content>
+        <app-feed-thread></app-feed-thread>
+      </app-content>
+    </mat-card-content>
+  </div>
+</mat-card>
