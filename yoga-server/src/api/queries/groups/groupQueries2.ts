@@ -51,9 +51,9 @@ export class GroupQueries2 {
             return entries.map(async o => {
                 (<any>o).tagAggregate = [];
                 // @ts-ignore
-                if ((<any>o).contentEncoding.id) {  // TODO: Bullshit!
+                if ((<any>o).contentEncoding && (<any>o).contentEncoding.id) {  // TODO: Bullshit!
                     (<any>o).contentEncoding = await prisma.contentEncoding({id: (<any>o).contentEncoding.id}) ?? "";
-                } else {
+                } else if ((<any>o).contentEncoding) {
                     (<any>o).contentEncoding = await prisma.contentEncoding({id: o.contentEncoding}) ?? "";
                 }
                 return o;

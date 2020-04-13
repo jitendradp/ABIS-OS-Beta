@@ -201,6 +201,8 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
       });
   }
 
+  hideEditor:boolean;
+
   private async initDialog() {
     const channelState = await this.getChannelState();
 
@@ -212,6 +214,8 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
       this.initChannel();
       return;
     }
+
+    this.hideEditor = channelState.status.error && !channelState.entries.lastSchema;
 
     if (channelState.status.error) {
       const lastError = channelState.entries.lastError.content;
@@ -225,7 +229,8 @@ export class ServiceDialogComponent implements OnInit, OnChanges {
       return;
     }
 
-    throw new Error(`Undefined dialog state: Not 'success' and no schema.`);
+
+    //throw new Error(`Undefined dialog state: Not 'success' and no schema.`);
   }
 
   async formSubmit($event: any) {

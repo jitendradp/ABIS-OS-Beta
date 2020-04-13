@@ -8,6 +8,7 @@
   </table>
 </div>
 <json-schema-form
+  *ngIf="!hideEditor"
   [schema]="formSchema"
   framework="material-design"
   (onSubmit)="formSubmit($event)">
