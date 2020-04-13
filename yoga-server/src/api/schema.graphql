@@ -6,15 +6,18 @@ scalar Upload
 
 type Tag {
     id: ID!
-    type: String!           # reserved types are '#' (hashtag) and '@' (mention). Maybe more to follow..
-
-    owner: ID!
 
     createdBy: ID!
     createdAt: DateTime!
 
     updatedBy: ID
     updatedAt: DateTime
+
+    owner: ID!
+
+    tagType: String!           # reserved types are '#' (hashtag) and '@' (mention). Maybe more to follow..
+    forType: String!
+    forId:ID!
 
     value: String!
 }
@@ -22,86 +25,6 @@ type Tag {
 type TagAggregate {
     type: String!
     count: Integer!
-}
-
-interface Location {
-    id: ID!
-
-    owner: ID!
-
-    createdBy: ID!
-    createdAt: DateTime!
-
-    updatedBy: ID
-    updatedAt: DateTime
-
-    name: String
-
-    tags: [Tag!]!
-    tagAggregate:[TagAggregate!]!       # Contains the tag-counts grouped by their type.
-}
-
-type OpenStreetMap implements Location {
-    id: ID!
-
-    owner: ID!
-
-    createdBy: ID!
-    createdAt: DateTime!
-
-    updatedBy: ID
-    updatedAt: DateTime
-
-    name: String
-
-    tags: [Tag!]!
-    tagAggregate:[TagAggregate!]!       # Contains the tag-counts grouped by their type.
-
-    osmNodeId:String!
-}
-
-type Address implements Location {
-    id: ID!
-
-    owner: ID!
-
-    createdBy: ID!
-    createdAt: DateTime!
-
-    updatedBy: ID
-    updatedAt: DateTime
-
-    name: String
-
-    tags: [Tag!]!
-    tagAggregate:[TagAggregate!]!       # Contains the tag-counts grouped by their type.
-
-    line1: String!
-    line2: String
-    city: String!
-    zipCode: String!
-    country: String!
-}
-
-type GeoPoint implements Location {
-    id: ID!
-
-    owner: ID!
-
-    createdBy: ID!
-    createdAt: DateTime!
-
-    updatedBy: ID
-    updatedAt: DateTime
-
-    name: String
-
-    tags: [Tag!]!
-    tagAggregate:[TagAggregate!]!       # Contains the tag-counts grouped by their type.
-
-    geoPointLatitude: Float!
-    geoPointLongitude: Float!
-    geoPointRadiusMeter: Float!
 }
 
 type Inbox {
@@ -122,7 +45,6 @@ interface Agent {
     name: String!
 
     timezone: String!
-    location: Location
 }
 
 enum ProfileStatus {
@@ -141,7 +63,6 @@ type Profile implements Agent {
     name: String!
 
     timezone: String!
-    location: Location
 
     profileType: ProfileType!
     avatar: String!
@@ -167,7 +88,6 @@ type Service implements Agent {
     name: String!
 
     timezone: String!
-    location: Location
 
     status: ServiceStatus!
     description: String
@@ -203,8 +123,6 @@ type Stash implements Group {
     name: String!
 
     entryCount: Integer
-
-    tags: [Tag!]!
 }
 
 type Channel implements Group {
@@ -278,7 +196,6 @@ type Room implements Group {
     memberCount: Integer
     memberships: [Membership!]!         # Empty when returned in searches.
 
-    tags: [Tag!]!
     tagAggregate:[TagAggregate!]!       # Contains the tag-counts grouped by their type.
 }
 
@@ -325,7 +242,6 @@ input CreateProfileInput {
     name:String!
     picture:String
     timezone:String
-    location: CreateLocationInput
 }
 
 input UpdateProfileInput {
@@ -334,7 +250,6 @@ input UpdateProfileInput {
     name:String!
     picture:String
     timezone:String
-    location: CreateLocationInput
     status:ProfileStatus!
 }
 
@@ -354,7 +269,6 @@ input CreateRoomInput {
     description: String
     logo: String
     banner: String
-    # tags: [AddTagInput!]!
 }
 
 input UpdateRoomInput {
@@ -375,8 +289,6 @@ input CreateEntryInput {
 
     content: Json
     contentEncoding: ID
-
-    # tags: [AddTagInput!]!
 }
 
 input UpdateEntryInput {
@@ -388,59 +300,8 @@ input UpdateEntryInput {
     contentEncoding: ID
 }
 
-enum LocationType {
-    OpenStreetMap
-    Address
-    GeoPoint
-}
-
-input CreateLocationInput {
-    id: ID
-    type: LocationType!
-
-    name: String
-
-    # Only if "type == LocationType.OpenStreetMap":
-    osmNodeId: String
-
-    # Only if "type == LocationType.Address":
-    addressLine1: String
-    addressLine2: String
-    addressCity: String
-    addressZipCode: String
-    addressCountry: String
-
-    # Only if "type == LocationType.GeoPoint":
-    geoPointLatitude: Float
-    geoPointLongitude: Float
-    geoPointRadiusMeter: Float
-
-    tags: [AddTagInput!]!
-}
-
-input UpdateLocationInput {
-    id:ID!
-    type: LocationType!
-
-    name: String
-
-    # Only if "type == LocationType.OpenStreetMap":
-    osmNodeId: String
-
-    # Only if "type == LocationType.Address":
-    addressLine1: String
-    addressLine2: String
-    addressCity: String
-    addressZipCode: String
-    addressCountry: String
-
-    # Only if "type == LocationType.GeoPoint":
-    geoPointLatitude: Float
-    geoPointLongitude: Float
-    geoPointRadiusMeter: Float
-}
-
 input AddTagInput {
+    isPrivate: Boolean!
     type: String!
     value: String!
 }
@@ -462,7 +323,6 @@ type Entry {
     content: Json
     contentEncoding: ContentEncoding
 
-    tags: [Tag!]!
     tagAggregate:[TagAggregate!]!       # Contains the tag-counts grouped by their type.
 }
 
@@ -513,7 +373,6 @@ type Account {
     createdAt: DateTime!
     updatedAt: DateTime
 
-    location: Location
     timezone: String!
 
     email: String!

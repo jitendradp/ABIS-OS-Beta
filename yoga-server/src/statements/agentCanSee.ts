@@ -1,4 +1,3 @@
-
 import {Server} from "../init";
 import {GroupType, prisma} from "../generated";
 
@@ -7,20 +6,20 @@ import {GroupType, prisma} from "../generated";
  */
 export class AgentCanSee {
 
-    public static async group(agentId:string, groupId:string, type?:GroupType) : Promise<boolean> {
+    public static async group(agentId: string, groupId: string, type?: GroupType): Promise<boolean> {
         const queryParams = {
-            where:{
-                id:groupId,
-                OR:[{
-                    memberships_some:{
-                        member:{
-                            id:agentId
+            where: {
+                id: groupId,
+                OR: [{
+                    memberships_some: {
+                        member: {
+                            id: agentId
                         }
                     }
                 }, {
-                    owner:agentId
+                    owner: agentId
                 }, {
-                    isPublic:true
+                    isPublic: true
                 }]
             }
         };
@@ -39,28 +38,29 @@ export class AgentCanSee {
         return AgentCanSee.group(agentId, roomId, "Room");
     }
 
-    public static async channel(agentId:string, channelId:string) {
+    public static async channel(agentId: string, channelId: string) {
         return AgentCanSee.group(agentId, channelId, "Channel");
     }
 
-    public static async stash(agentId:string, stashId:string) {
+    public static async stash(agentId: string, stashId: string) {
         return AgentCanSee.group(agentId, stashId, "Stash");
     }
 
-    public static async entry(server:Server, agentId:string, entryId:string) {
+    public static async entry(server: Server, agentId: string, entryId: string) {
         let groups = await prisma.groups({
-            where:{
-                entries_some:{
+            where: {
+                entries_some: {
                     id: entryId
                 },
                 OR: [{
+                    isPublic: true
+                }, {
                     memberships_some: {
                         member: {
                             id: agentId
                         }
                     }
-                },
-                {
+                }, {
                     owner: agentId
                 }]
             }

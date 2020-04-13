@@ -11,7 +11,6 @@ import {ListContactComponent} from "../../lists/list-contact/list-contact.compon
 import {ListChatComponent} from "../../lists/list-chat/list-chat.component";
 import {NestedAction} from "../../actions/NestedAction";
 import {IEvent} from "../../actions/IEvent";
-import {Home} from "../../actions/routes/Home";
 import {SearchComponent} from "../../search/search.component";
 
 

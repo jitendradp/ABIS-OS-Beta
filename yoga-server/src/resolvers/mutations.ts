@@ -177,14 +177,19 @@ export const mutations = {
 
         const tag = await prisma.createTag({
             createdBy: agentId,
-            isPrivate: false,
-            type: addTagInput.type,
+            isPrivate: addTagInput.isPrivate,
+            forId: to,
+            forType: "Entry",
+            tagType: addTagInput.type,
             value: addTagInput.value,
             owner: agentId
         });
 
+        /*
         await prisma.updateEntry({
-            where:{id: entryId},
+            where:{
+                id: entryId
+            },
             data:{
                 tags: {
                     connect: {
@@ -193,6 +198,7 @@ export const mutations = {
                 }
             }
         });
+         */
 
         return tag;
     },

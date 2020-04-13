@@ -93,8 +93,9 @@ export class GeoJsonEntryComponent implements AfterViewInit{
 
   async onThumbsUp() {
     await this.addTagApi.mutate({csrfToken: this.userService.csrfToken, to: this.entry.id, addTagInput: {
+      isPrivate: false,
       type: "thumbs-up",
-        value: "Deine Mudda"
+      value: "Deine Mudda"
       }}).toPromise();
   }
 }
