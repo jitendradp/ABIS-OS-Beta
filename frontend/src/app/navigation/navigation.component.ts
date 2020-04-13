@@ -44,7 +44,8 @@ export class NavigationComponent {
         }
         break;
       case SetContent.Name:
-        if ((<any>action).side == "bottom") {
+        if ((<any>action).side == "bottom"
+        || (<any>action).side == "dialog") {
           return;
         }
         this.components[(<any>action).elevation] = { title: (<any>action).title, component: (<any>action).component, context: (<any>action).context };
