@@ -38,7 +38,7 @@ export class MapComponent implements OnInit, OnChanges {
     actionDispatcher.onAction.subscribe(action => this.onAction(action));
   }
 
-  onAction(action: IEvent) {
+  async onAction(action: IEvent) {
     switch (action.name) {
       case JumpToMapPosition.Name:
         this.center = (<JumpToMapPosition>action).latlng;
@@ -47,7 +47,7 @@ export class MapComponent implements OnInit, OnChanges {
             return;
           }
           this.groupId = (<JumpToMapPosition>action).groupId;
-          this.initMap();
+          await this.initMap();
         }
         break;
     }
@@ -73,9 +73,11 @@ export class MapComponent implements OnInit, OnChanges {
         // TODO: Add "type" filter
       }).toPromise()).data.getEntries;
 
+      const entries = [];
       groupEntries.forEach(entry => {
-        this.geoJsonEntries.push(entry);
+        entries.push(entry);
       });
+      this.geoJsonEntries = entries;
     });
   }
 
