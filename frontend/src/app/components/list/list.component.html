@@ -1,5 +1,6 @@
 <mat-nav-list>
   <div *ngFor="let entry of entries">
+    <app-card-list-entry *ngIf="entry.contentEncoding && entry.contentEncoding.id == userService.findContentEncodingByName('TextMessage').id" [contactFullName]="entry.content.TextMessage.message" ></app-card-list-entry>
     <app-card-list-entry [context]="entry" *ngIf="!entry.contentEncoding && entry.type == 'Room'" [contactFullName]="entry.name" [subtitle]="!entry.description ? '-' : entry.description"></app-card-list-entry>
     <app-card-list-entry *ngIf="!entry.contentEncoding && entry.type == 'Profile'" [contactFullName]="entry.name" [subtitle]="entry.slogan"></app-card-list-entry>
     <app-card-list-entry *ngIf="!entry.contentEncoding && entry.type == 'Group'" [contactFullName]="entry.title" [subtitle]="entry.location"></app-card-list-entry>
