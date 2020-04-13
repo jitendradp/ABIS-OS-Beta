@@ -24,7 +24,7 @@
 <!-- todo: Make a general "horizontal" version for this  -->
 <div *ngIf='orientation == "Horizontal"'>
   <div class="subline"></div>
-  <mat-grid-list class="footerWrapper" cols="4" rowHeight="53px">
+  <mat-grid-list class="footerWrapper" cols="5" rowHeight="53px">
 
     <mat-grid-tile>
       <button mat-button class="tileButton" routerLink="/">
@@ -37,6 +37,13 @@
       <button mat-button class="tileButton" routerLink="profile">
         <mat-icon>account_box</mat-icon>
         <span fxHide fxShow.gt-sm class="iconLabelSpacing">Profile</span>
+      </button>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <button mat-button class="tileButton" (click)="searchClicked($event)">
+        <mat-icon>loupe</mat-icon>
+        <span fxHide fxShow.gt-sm class="iconLabelSpacing">Search</span>
       </button>
     </mat-grid-tile>
 

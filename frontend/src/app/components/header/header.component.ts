@@ -39,8 +39,4 @@ export class HeaderComponent {
 
   constructor(public actionDispatcher: ActionDispatcherService) {
   }
-
-  searchClicked($event: MouseEvent) {
-    this.actionDispatcher.dispatch(new SetContent("", "bottom", SearchComponent, "base"));
-  }
 }
