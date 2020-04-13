@@ -11,11 +11,13 @@ import {
   GetSystemServicesGQL,
   Service,
   CreateSessionGQL,
-  VerifySessionGQL,
+  VerifySessionGQL, NewEntryGQL, NewChannelGQL,
 } from "../../generated/abis-api";
 import {ClientStateService} from "./client-state.service";
 import {Logger, LoggerService} from "./logger.service";
 import {SessionCreated} from "../actions/user/SessionCreated";
+import {NewEntryEvent} from "../actions/newEntryEvent";
+import {NewChannelEvent} from "../actions/newChannelEvent";
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +42,6 @@ export class UserService {
   public get csrfToken(): string {
     return this.clientState.get<string>(UserService.CsrfTokenKey, null).data;
   }
-
 
   public static readonly ProfileKey = "UserService.profileId";
   public get profileId(): string {
@@ -78,6 +79,8 @@ export class UserService {
     , private clientState: ClientStateService
     , private getSystemServicesApi: GetSystemServicesGQL
     , private myChannelsApi: MyChannelsGQL
+    , private newEntrySubscription: NewEntryGQL
+    , private newChannelSubscription: NewChannelGQL
     , private verifySessionApi: VerifySessionGQL) {
 
     // TODO: this seems to be a bit hacky, does the service really need to subscribe to its own events to know that?
@@ -103,6 +106,15 @@ export class UserService {
         localStorage.clear(); // TODO: Clearing all localStorage is a little radical but good for testing at the moment
         return this.createAnonymousSession();
       } else {
+        this.newEntrySubscription.subscribe({csrfToken: this.csrfToken})
+          .subscribe((newEntry:any) => {
+            this.actionDispatcher.dispatch(new NewEntryEvent(newEntry.data.newEntry));
+          });
+        this.newChannelSubscription.subscribe({csrfToken: this.csrfToken})
+          .subscribe((newChannel:any) => {
+            this.actionDispatcher.dispatch(new NewChannelEvent(newChannel.data.newChannel));
+          });
+
         return new Promise((resolve => resolve(new SessionCreated())));
       }
     }
