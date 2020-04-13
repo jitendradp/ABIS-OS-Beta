@@ -53,11 +53,16 @@ export class AgentCanSee {
                 entries_some:{
                     id: entryId
                 },
-                memberships_some: {
-                    member: {
-                        id: agentId
+                OR: [{
+                    memberships_some: {
+                        member: {
+                            id: agentId
+                        }
                     }
-                }
+                },
+                {
+                    owner: agentId
+                }]
             }
         });
 

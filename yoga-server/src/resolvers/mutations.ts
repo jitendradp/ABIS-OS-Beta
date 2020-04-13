@@ -14,6 +14,7 @@ const db = new lowdb(new FileSync('db.json'));
 import * as mkdirp from 'mkdirp';
 import * as shortid from 'shortid';
 import { createWriteStream } from 'fs'
+import {AgentCanSee} from "../statements/agentCanSee";
 
 // Seed an empty DB
 db.defaults({ uploads: [] }).write();
@@ -166,10 +167,36 @@ export const mutations = {
         throw new Error("Not implemented");
     },
 
-    async addTag(root, {csrfToken}, ctx) {
-        throw new Error("Not implemented");
+    async addTag(root, {csrfToken, to, addTagInput}, ctx) {
+        const agentId = await GetAgentOf.session(csrfToken, ctx.sessionToken);
+        const entryId = to;
+
+        if (!(await AgentCanSee.entry(Init, agentId, entryId))) {
+            throw new Error(`Entry '${to}' was not found.`);
+        }
+
+        const tag = await prisma.createTag({
+            createdBy: agentId,
+            isPrivate: false,
+            type: addTagInput.type,
+            value: addTagInput.value,
+            owner: agentId
+        });
+
+        await prisma.updateEntry({
+            where:{id: entryId},
+            data:{
+                tags: {
+                    connect: {
+                        id: tag.id
+                    }
+                }
+            }
+        });
+
+        return tag;
     },
-    async removeTag(root, {csrfToken}, ctx) {
+    async removeTag(root, {csrfToken, tagId}, ctx) {
         throw new Error("Not implemented");
     }
 };

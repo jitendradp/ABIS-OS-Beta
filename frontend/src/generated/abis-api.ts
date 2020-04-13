@@ -12,6 +12,7 @@ export type Scalars = {
   DateTime: any,
   Integer: any,
   Json: any,
+  Upload: any,
 };
 
 
@@ -185,6 +186,15 @@ export enum EntryType {
   Thing = 'Thing'
 }
 
+export type File = {
+   __typename?: 'File',
+  id: Scalars['ID'],
+  path: Scalars['String'],
+  filename: Scalars['String'],
+  mimetype: Scalars['String'],
+  encoding: Scalars['String'],
+};
+
 export type GeoPoint = Location & {
    __typename?: 'GeoPoint',
   id: Scalars['ID'],
@@ -264,31 +274,27 @@ export enum MembershipType {
 
 export type Mutation = {
    __typename?: 'Mutation',
+  singleUpload: File,
+  multipleUpload: Array<File>,
   createSession: ActionResponse,
   verifySession: ActionResponse,
-  createProfile?: Maybe<Profile>,
-  updateProfile?: Maybe<Profile>,
-  deleteProfile: ActionResponse,
-  createStash?: Maybe<Stash>,
-  updateStash?: Maybe<Stash>,
-  deleteStash: ActionResponse,
   createChannel?: Maybe<Channel>,
   deleteChannel: ActionResponse,
-  createRoom?: Maybe<Room>,
-  updateRoom?: Maybe<Room>,
-  deleteRoom: ActionResponse,
   createEntry?: Maybe<Entry>,
   updateEntry?: Maybe<Entry>,
   deleteEntry: ActionResponse,
-  join?: Maybe<Membership>,
-  leave: ActionResponse,
-  invite: ActionResponse,
-  kick: ActionResponse,
   addTag?: Maybe<Tag>,
   removeTag: ActionResponse,
-  createLocation?: Maybe<Location>,
-  updateLocation?: Maybe<Location>,
-  deleteLocation: ActionResponse,
+};
+
+
+export type MutationSingleUploadArgs = {
+  file: Scalars['Upload']
+};
+
+
+export type MutationMultipleUploadArgs = {
+  files: Array<Scalars['Upload']>
 };
 
 
@@ -302,42 +308,6 @@ export type MutationVerifySessionArgs = {
 };
 
 
-export type MutationCreateProfileArgs = {
-  csrfToken: Scalars['String'],
-  createProfileInput: CreateProfileInput
-};
-
-
-export type MutationUpdateProfileArgs = {
-  csrfToken: Scalars['String'],
-  updateProfileInput: UpdateProfileInput
-};
-
-
-export type MutationDeleteProfileArgs = {
-  csrfToken: Scalars['String'],
-  id: Scalars['ID']
-};
-
-
-export type MutationCreateStashArgs = {
-  csrfToken: Scalars['String'],
-  createStashInput: CreateStashInput
-};
-
-
-export type MutationUpdateStashArgs = {
-  csrfToken: Scalars['String'],
-  updateStashInput: UpdateStashInput
-};
-
-
-export type MutationDeleteStashArgs = {
-  csrfToken: Scalars['String'],
-  id: Scalars['ID']
-};
-
-
 export type MutationCreateChannelArgs = {
   csrfToken: Scalars['String'],
   toAgentId: Scalars['ID']
@@ -345,24 +315,6 @@ export type MutationCreateChannelArgs = {
 
 
 export type MutationDeleteChannelArgs = {
-  csrfToken: Scalars['String'],
-  id: Scalars['ID']
-};
-
-
-export type MutationCreateRoomArgs = {
-  csrfToken: Scalars['String'],
-  createRoomInput: CreateRoomInput
-};
-
-
-export type MutationUpdateRoomArgs = {
-  csrfToken: Scalars['String'],
-  updateRoomInput: UpdateRoomInput
-};
-
-
-export type MutationDeleteRoomArgs = {
   csrfToken: Scalars['String'],
   id: Scalars['ID']
 };
@@ -386,32 +338,6 @@ export type MutationDeleteEntryArgs = {
 };
 
 
-export type MutationJoinArgs = {
-  csrfToken: Scalars['String'],
-  groupId: Scalars['ID']
-};
-
-
-export type MutationLeaveArgs = {
-  csrfToken: Scalars['String'],
-  groupId: Scalars['ID']
-};
-
-
-export type MutationInviteArgs = {
-  csrfToken: Scalars['String'],
-  agentId: Scalars['ID'],
-  toGroupId: Scalars['ID']
-};
-
-
-export type MutationKickArgs = {
-  csrfToken: Scalars['String'],
-  agentId: Scalars['ID'],
-  fromGroupId: Scalars['ID']
-};
-
-
 export type MutationAddTagArgs = {
   csrfToken: Scalars['String'],
   to: Scalars['ID'],
@@ -422,24 +348,6 @@ export type MutationAddTagArgs = {
 export type MutationRemoveTagArgs = {
   csrfToken: Scalars['String'],
   tagId: Scalars['ID']
-};
-
-
-export type MutationCreateLocationArgs = {
-  csrfToken: Scalars['String'],
-  createLocationInput: CreateLocationInput
-};
-
-
-export type MutationUpdateLocationArgs = {
-  csrfToken: Scalars['String'],
-  updateLocationInput: UpdateLocationInput
-};
-
-
-export type MutationDeleteLocationArgs = {
-  csrfToken: Scalars['String'],
-  id: Scalars['ID']
 };
 
 export type NewEntry = {
@@ -492,6 +400,7 @@ export enum ProfileType {
 
 export type Query = {
    __typename?: 'Query',
+  uploads?: Maybe<Array<Maybe<File>>>,
   contentEncodings: Array<ContentEncoding>,
   getSystemServices: Array<Service>,
   myAccount: Account,
@@ -726,6 +635,7 @@ export type UpdateStashInput = {
   name: Scalars['String'],
 };
 
+
 export enum UserType {
   Person = 'Person',
   Organization = 'Organization'
@@ -795,41 +705,6 @@ export type DeleteChannelMutation = (
   ) }
 );
 
-export type CreateRoomMutationVariables = {
-  csrfToken: Scalars['String'],
-  createRoomInput: CreateRoomInput
-};
-
-
-export type CreateRoomMutation = (
-  { __typename?: 'Mutation' }
-  & { createRoom: Maybe<(
-    { __typename?: 'Room' }
-    & Pick<Room, 'id' | 'owner' | 'createdBy' | 'createdAt' | 'name' | 'entryCount' | 'isPrivate' | 'title' | 'description' | 'logo' | 'banner'>
-    & { inbox: (
-      { __typename?: 'Inbox' }
-      & Pick<Inbox, 'id'>
-    ), memberships: Array<(
-      { __typename?: 'Membership' }
-      & Pick<Membership, 'id'>
-    )> }
-  )> }
-);
-
-export type DeleteRoomMutationVariables = {
-  csrfToken: Scalars['String'],
-  id: Scalars['ID']
-};
-
-
-export type DeleteRoomMutation = (
-  { __typename?: 'Mutation' }
-  & { deleteRoom: (
-    { __typename?: 'ActionResponse' }
-    & Pick<ActionResponse, 'success' | 'code' | 'message' | 'data'>
-  ) }
-);
-
 export type CreateEntryMutationVariables = {
   csrfToken: Scalars['String'],
   createEntryInput: CreateEntryInput
@@ -860,6 +735,21 @@ export type DeleteEntryMutation = (
     { __typename?: 'ActionResponse' }
     & Pick<ActionResponse, 'success' | 'code' | 'message' | 'data'>
   ) }
+);
+
+export type AddTagMutationVariables = {
+  csrfToken: Scalars['String'],
+  to: Scalars['ID'],
+  addTagInput: AddTagInput
+};
+
+
+export type AddTagMutation = (
+  { __typename?: 'Mutation' }
+  & { addTag: Maybe<(
+    { __typename?: 'Tag' }
+    & Pick<Tag, 'id' | 'value'>
+  )> }
 );
 
 export type ContentEncodingsQueryVariables = {
@@ -1248,55 +1138,6 @@ export const DeleteChannelDocument = gql`
     document = DeleteChannelDocument;
     
   }
-export const CreateRoomDocument = gql`
-    mutation createRoom($csrfToken: String!, $createRoomInput: CreateRoomInput!) {
-  createRoom(csrfToken: $csrfToken, createRoomInput: $createRoomInput) {
-    id
-    owner
-    createdBy
-    createdAt
-    name
-    entryCount
-    isPrivate
-    title
-    description
-    logo
-    banner
-    inbox {
-      id
-    }
-    memberships {
-      id
-    }
-  }
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class CreateRoomGQL extends Apollo.Mutation<CreateRoomMutation, CreateRoomMutationVariables> {
-    document = CreateRoomDocument;
-    
-  }
-export const DeleteRoomDocument = gql`
-    mutation deleteRoom($csrfToken: String!, $id: ID!) {
-  deleteRoom(csrfToken: $csrfToken, id: $id) {
-    success
-    code
-    message
-    data
-  }
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class DeleteRoomGQL extends Apollo.Mutation<DeleteRoomMutation, DeleteRoomMutationVariables> {
-    document = DeleteRoomDocument;
-    
-  }
 export const CreateEntryDocument = gql`
     mutation createEntry($csrfToken: String!, $createEntryInput: CreateEntryInput!) {
   createEntry(csrfToken: $csrfToken, createEntryInput: $createEntryInput) {
@@ -1337,6 +1178,22 @@ export const DeleteEntryDocument = gql`
   })
   export class DeleteEntryGQL extends Apollo.Mutation<DeleteEntryMutation, DeleteEntryMutationVariables> {
     document = DeleteEntryDocument;
+    
+  }
+export const AddTagDocument = gql`
+    mutation addTag($csrfToken: String!, $to: ID!, $addTagInput: AddTagInput!) {
+  addTag(csrfToken: $csrfToken, to: $to, addTagInput: $addTagInput) {
+    id
+    value
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class AddTagGQL extends Apollo.Mutation<AddTagMutation, AddTagMutationVariables> {
+    document = AddTagDocument;
     
   }
 export const ContentEncodingsDocument = gql`

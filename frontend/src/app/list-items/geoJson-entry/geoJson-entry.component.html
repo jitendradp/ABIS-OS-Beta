@@ -1,5 +1,4 @@
-<mat-card class="embeddableMessage" appMaterialElevation
- (click)="onClick($event)">
+<mat-card class="embeddableMessage" appMaterialElevation>
   <div fxLayout="row wrap"
        fxLayout.lt-sm="column"
        fxLayoutGap="0px"
@@ -15,6 +14,7 @@
       </mat-card-header>
 
       <mgl-map
+        (click)="onMapClick()"
         *ngIf="entry"
         class="postPicture"
         [style]="mapStyle"
@@ -34,7 +34,7 @@
       <mat-card-actions>
         <mat-grid-list cols="3" rowHeight="40px">
           <mat-grid-tile>
-            <button mat-icon-button>
+            <button mat-icon-button (click)="onThumbsUp()">
               <mat-icon matTooltip="Like">thumb_up</mat-icon>
             </button>
             <small>{{likesCount}}</small>

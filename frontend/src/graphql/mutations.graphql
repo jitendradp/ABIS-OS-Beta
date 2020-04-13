@@ -40,37 +40,6 @@ mutation deleteChannel($csrfToken:String! $id:ID!) {
   }
 }
 
-mutation createRoom($csrfToken:String! $createRoomInput:CreateRoomInput!) {
-  createRoom(csrfToken: $csrfToken createRoomInput:$createRoomInput) {
-    id
-    owner
-    createdBy
-    createdAt
-    name
-    entryCount
-    isPrivate
-    title
-    description
-    logo
-    banner
-    inbox {
-      id
-    }
-    memberships {
-      id
-    }
-  }
-}
-
-mutation deleteRoom($csrfToken:String! $id:ID!) {
-  deleteRoom(csrfToken: $csrfToken id:$id) {
-    success
-    code
-    message
-    data
-  }
-}
-
 mutation createEntry($csrfToken:String! $createEntryInput:CreateEntryInput!) {
   createEntry(csrfToken: $csrfToken createEntryInput:$createEntryInput) {
     type
@@ -92,6 +61,13 @@ mutation deleteEntry($csrfToken:String! $id:ID!) {
     code
     message
     data
+  }
+}
+
+mutation addTag($csrfToken:String! $to:ID! $addTagInput:AddTagInput!) {
+  addTag(csrfToken:$csrfToken, to:$to, addTagInput:$addTagInput) {
+    id
+    value
   }
 }
 

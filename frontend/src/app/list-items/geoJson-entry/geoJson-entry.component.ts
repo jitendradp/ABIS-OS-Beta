@@ -1,7 +1,8 @@
 import {AfterViewInit, Component, Input} from '@angular/core';
-import {Entry} from "../../../generated/abis-api";
+import {AddTagGQL, Entry} from "../../../generated/abis-api";
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
 import {JumpToMapPosition} from "../../actions/ui/JumpToMapPosition";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-geoJson-entry',
@@ -25,7 +26,9 @@ export class GeoJsonEntryComponent implements AfterViewInit{
     };
   }
 
-  constructor(private actionDispatcher: ActionDispatcherService) {
+  constructor(private actionDispatcher: ActionDispatcherService
+  , private addTagApi:AddTagGQL
+  , private userService:UserService) {
   }
 
   getHashFromString(str:string) {
@@ -84,7 +87,14 @@ export class GeoJsonEntryComponent implements AfterViewInit{
 
   center: any;
 
-  onClick($event: MouseEvent) {
+  onMapClick() {
     this.actionDispatcher.dispatch(new JumpToMapPosition(this.center, this.groupId));
+  }
+
+  async onThumbsUp() {
+    await this.addTagApi.mutate({csrfToken: this.userService.csrfToken, to: this.entry.id, addTagInput: {
+      type: "thumbs-up",
+        value: "Deine Mudda"
+      }}).toPromise();
   }
 }
