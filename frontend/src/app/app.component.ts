@@ -90,6 +90,7 @@ export class AppComponent implements AfterViewInit {
         if (this.deviceService.isMobile() && this.right.opened) {
           this.actionDispatcher.dispatch(new SetVisibility("right", "invisible", "base"));
         }
+        this.maintainBackState();
         break;
       case SetApplicationTitle.Name:
         this.title = (<SetApplicationTitle>action).title;
@@ -100,6 +101,12 @@ export class AppComponent implements AfterViewInit {
         }
         if ((<any>action).side == "dialog") {
           this.openDialog((<any>action).component, '50%', '50%');
+        }
+        if ((<any>action).side == "full") {
+          if ((<any>action).title) {
+            this._routeTitle = (<any>action).title;
+            this.title = (<any>action).title;
+          }
         }
         break;
       case SetVisibility.Name:
@@ -124,17 +131,10 @@ export class AppComponent implements AfterViewInit {
           // Every time when the sidebar is hidden, show the route's title in the header.
           this.left.toggle(visibility).then(o => {
             this._sidebarOpen = o != "close";
-            if (this._sidebarOpen){
-              if (this.actions && this.actions.length < 1 || (this.actions.length > 0 && this.actions[0].name != Back.Name)) {
-                this.actions.unshift(new Back());
-              }
-              return;
-            } else {
-              if (this.actions.length > 0 && this.actions[0].name == Back.Name) {
-                this.actions.shift();
-              }
+            this.maintainBackState();
+            if (!this._sidebarOpen) {
+              this.title = this._routeTitle;
             }
-            this.title = this._routeTitle;
           });
         } else if (action.side == "right") {
           this.right.toggle(visibility);
@@ -185,6 +185,18 @@ export class AppComponent implements AfterViewInit {
       case Logout.Name:
         this.router.navigate(["/logout"]);
         break;
+    }
+  }
+
+  private maintainBackState() {
+    if (this._sidebarOpen) {
+      if (this.actions && this.actions.length < 1 || (this.actions.length > 0 && this.actions[0].name != Back.Name)) {
+        this.actions.unshift(new Back());
+      }
+    } else {
+      if (this.actions.length > 0 && this.actions[0].name == Back.Name) {
+        this.actions.shift();
+      }
     }
   }
 

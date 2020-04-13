@@ -3,6 +3,8 @@ import {ActionDispatcherService} from "../../services/action-dispatcher.service"
 import {SetContent} from "../../actions/ui/SetContent";
 import {SetApplicationTitle} from "../../actions/ui/SetApplicationTitle";
 import {IAction} from "../../actions/IAction";
+import {Router} from "@angular/router";
+import {Home} from "../../actions/routes/Home";
 
 @Component({
   selector: 'app-detail',
@@ -23,6 +25,10 @@ export class DetailComponent implements AfterViewInit {
 
   lastAction:IAction;
 
+  ngAfterViewInit(): void {
+    this.setContent();
+  }
+
   private handleAction(action) {
     switch (action.name) {
       case SetContent.Name:
@@ -35,13 +41,15 @@ export class DetailComponent implements AfterViewInit {
   }
 
   private setContent() {
-    if (!this.lastAction) {
-      return;
-    }
     setTimeout(() => {
       this.fullscreenContainer.clear();
 
       setTimeout(() => {
+        if (!this.lastAction) {
+          this.actionDispatcher.dispatch(new Home());
+          return;
+        }
+
         this.fullscreenContainer.clear();
         this.fullscreenComponent = (<any>this.lastAction).component;
         const factory = this.componentFactoryResolver.resolveComponentFactory(this.fullscreenComponent);
@@ -57,10 +65,6 @@ export class DetailComponent implements AfterViewInit {
         ref.changeDetectorRef.detectChanges();
       }, 0);
     }, 0);
-  }
-
-  ngAfterViewInit(): void {
-    this.setContent();
   }
 
 }
