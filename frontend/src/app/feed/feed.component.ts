@@ -4,6 +4,8 @@ import {UserService} from "../services/user.service";
 import {ActionDispatcherService} from "../services/action-dispatcher.service";
 import {SetContent} from "../actions/ui/SetContent";
 import {CreateEntryEditorComponent} from "../components/create-entry-editor/create-entry-editor.component";
+import {IEvent} from "../actions/IEvent";
+import {NewEntryEvent} from "../actions/newEntryEvent";
 
 @Component({
   selector: 'app-feed',
@@ -25,10 +27,27 @@ export class FeedComponent {
   constructor(private getEntries: GetEntriesGQL
     , private userService: UserService
     , private actionDispatcher: ActionDispatcherService) {
+
+    const self = this;
+    this.actionDispatcher.onAction.subscribe(next => self.onAction.call(self, next));
   }
 
+  private onAction(action: IEvent) {
+    switch (action.name) {
+      case NewEntryEvent.Name:
+        if (this.groupId !== (<NewEntryEvent>action).entry.containerId) {
+          return;
+        }
+        this.reload();
+        break;
+    }
+  }
 
   ngAfterViewInit(): void {
+    this.reload();
+  }
+
+  private reload() {
     if (!this.groupId) {
       return;
     }
