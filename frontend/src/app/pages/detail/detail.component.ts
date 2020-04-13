@@ -42,6 +42,7 @@ export class DetailComponent implements AfterViewInit {
       this.fullscreenContainer.clear();
 
       setTimeout(() => {
+        this.fullscreenContainer.clear();
         this.fullscreenComponent = (<any>this.lastAction).component;
         const factory = this.componentFactoryResolver.resolveComponentFactory(this.fullscreenComponent);
         const ref = this.fullscreenContainer.createComponent(factory);
