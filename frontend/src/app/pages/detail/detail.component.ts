@@ -2,7 +2,6 @@ import {AfterViewInit, Component, ComponentFactoryResolver, OnInit, ViewChild, V
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
 import {SetContent} from "../../actions/ui/SetContent";
 import {SetApplicationTitle} from "../../actions/ui/SetApplicationTitle";
-import {Action} from "rxjs/internal/scheduler/Action";
 import {IAction} from "../../actions/IAction";
 
 @Component({
@@ -41,19 +40,20 @@ export class DetailComponent implements AfterViewInit {
     }
     setTimeout(() => {
       this.fullscreenContainer.clear();
+
       setTimeout(() => {
-      this.fullscreenComponent = (<any>this.lastAction).component;
-      const factory = this.componentFactoryResolver.resolveComponentFactory(this.fullscreenComponent);
-      const ref = this.fullscreenContainer.createComponent(factory);
-      if ((<any>this.lastAction).context) {
-        // TODO: Pass "groupId" to ChatComponent in a more robust way
-        (<any>ref.instance).groupId = (<any>this.lastAction).context.id;
-        (<any>ref.instance).title = (<any>this.lastAction).context.name;
-      }
-      if ((<any>this.lastAction).title) {
-        this.actionDispatcher.dispatch(new SetApplicationTitle((<any>this.lastAction).title));
-      }
-      ref.changeDetectorRef.detectChanges();
+        this.fullscreenComponent = (<any>this.lastAction).component;
+        const factory = this.componentFactoryResolver.resolveComponentFactory(this.fullscreenComponent);
+        const ref = this.fullscreenContainer.createComponent(factory);
+        if ((<any>this.lastAction).context) {
+          // TODO: Pass "groupId" to ChatComponent in a more robust way
+          (<any>ref.instance).groupId = (<any>this.lastAction).context.id;
+          (<any>ref.instance).title = (<any>this.lastAction).context.name;
+        }
+        if ((<any>this.lastAction).title) {
+          this.actionDispatcher.dispatch(new SetApplicationTitle((<any>this.lastAction).title));
+        }
+        ref.changeDetectorRef.detectChanges();
       }, 0);
     }, 0);
   }
