@@ -52,13 +52,11 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HeaderComponent} from './components/header/header.component';
 import {InputComponent} from './components/input/input.component';
 import {WhitespaceComponent} from './components/whitespace/whitespace.component';
-import {EditorChannelComponent} from './dialogs/editor-channel/editor-channel.component';
 import {HttpClientModule} from '@angular/common/http';
 import {CardIntroComponent} from "./cards/card-intro/card-intro.component";
 import {NavigationComponent} from "./navigation/navigation.component";
 import {LogoutComponent} from './pages/system/logout/logout.component';
 import {IAction} from "./actions/IAction";
-import {EditorGroupComponent} from "./dialogs/editor-group/editor-group.component";
 import {CardMessageComponent} from "./cards/card-message/card-message.component";
 import {CardGroupComponent} from "./cards/card-group/card-group.component";
 import {CardFormComponent} from "./cards/card-form/card-form.component";
@@ -89,10 +87,7 @@ import {adapterFactory} from 'angular-calendar/date-adapters/moment';
 import * as moment from 'moment';
 import {FileUploadComponent} from "./components/file-upload/file-upload.component";
 import {ListChatComponent} from "./lists/list-chat/list-chat.component";
-import {EditorProfileComponent} from "./dialogs/editor-profile/editor-profile.component";
 import {ProfileService} from "./services/profile.service";
-import {EditorAccountComponent} from "./dialogs/editor-account/editor-account.component";
-import {EditorPasswordComponent} from "./dialogs/editor-password/editor-password.component";
 import {CanActivateRoute} from "./services/routeGuard";
 import {MaterialDesignFrameworkModule} from "angular6-json-schema-form";
 import {ServiceDialogComponent} from "./services/service-dialog/service-dialog.component";
@@ -206,22 +201,8 @@ const appRoutes: Routes = [
     , canActivate: [CanActivateRoute]
   },
   {
-    path: 'editor-channel', component: EditorChannelComponent, data: {
-      "title": "Create new channel",
-      "actions": defaultActions
-    }
-    , canActivate: [CanActivateRoute]
-  },
-  {
     path: 'logout', component: LogoutComponent, data: {
       "title": "Logout",
-      "actions": defaultActions
-    }
-    , canActivate: [CanActivateRoute]
-  },
-  {
-    path: 'editor-team', component: EditorGroupComponent, data: {
-      "title": "Create new team",
       "actions": defaultActions
     }
     , canActivate: [CanActivateRoute]
@@ -250,11 +231,9 @@ const appRoutes: Routes = [
     HeaderComponent,
     InputComponent,
     WhitespaceComponent,
-    EditorChannelComponent,
     CardIntroComponent,
     NavigationComponent,
     LogoutComponent,
-    EditorGroupComponent,
     CardMessageComponent,
     CardGroupComponent,
     CardFormComponent,
@@ -285,9 +264,6 @@ const appRoutes: Routes = [
     ListMemberComponent,
     FileUploadComponent,
     ListChatComponent,
-    EditorProfileComponent,
-    EditorAccountComponent,
-    EditorPasswordComponent,
     ServiceDialogComponent,
     ListComponent,
     GeoJsonEntryComponent
