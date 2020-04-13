@@ -14,7 +14,7 @@
 <app-whitespace [height]="'8px'"></app-whitespace>
 <mat-nav-list>
   <div *ngFor="let entry of entries">
-    <app-card-contact *ngIf="entry.type == 'Room'" [contactFullName]="entry.name" [subtitle]="!entry.description ? '-' : entry.description"></app-card-contact>
+    <app-card-contact [context]="entry.id" *ngIf="entry.type == 'Room'" [contactFullName]="entry.name" [subtitle]="!entry.description ? '-' : entry.description"></app-card-contact>
     <app-card-contact *ngIf="entry.type == 'Profile'" [contactFullName]="entry.name" [subtitle]="entry.slogan"></app-card-contact>
     <app-card-contact *ngIf="entry.type == 'Group'" [contactFullName]="entry.title" [subtitle]="entry.location"></app-card-contact>
     <app-card-contact *ngIf="entry.type != 'Profile' && entry.type != 'Group'&& entry.type != 'Room'" [contactFullName]="'!= Contact'" [subtitle]="'My slogan'"></app-card-contact>

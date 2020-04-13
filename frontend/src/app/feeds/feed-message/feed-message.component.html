@@ -4,17 +4,17 @@
      fxLayoutAlign="left">
   <div fxFlex="100"
        fxFlex.lt-md="100"
-       fxFlex.lt-sm="100" *ngFor="let message of messages">
+       fxFlex.lt-sm="100" *ngFor="let message of entries">
     <app-content>
       <app-card-message
-        [message]="message.message"
-        [creator]="message.creator"
+        [message]="message.content"
+        [creator]="message.createdBy"
         [createdAt]="message.createdAt"
-        [pictureCreator]="message.pictureCreator"
-        [picturePost]="message.picturePost"
-        [commentsCount]="message.commentsCount"
-        [likesCount]="message.likesCount"
-        [sharesCount]="message.sharesCount">
+        [pictureCreator]="''"
+        [picturePost]="''"
+        [commentsCount]="0"
+        [likesCount]="0"
+        [sharesCount]="0">
       </app-card-message>
     </app-content>
   </div>

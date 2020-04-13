@@ -94,6 +94,7 @@ export class ListGroupComponent implements OnInit {
 
     this.entries = rooms.map(o => {
       return {
+        id: o.id,
         type: "Room",
         name: o.name,
         title: o.title,

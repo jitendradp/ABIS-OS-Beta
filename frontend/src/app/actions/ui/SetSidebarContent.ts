@@ -10,11 +10,13 @@ export class SetSidebarContent<T> implements IEvent {
   side: SidebarSide;
   component: Type<T>;
   elevation:Elevation;
+  context?:any;
 
-  constructor(title:string, side:SidebarSide, component: Type<T>, elevation:Elevation) {
+  constructor(title:string, side:SidebarSide, component: Type<T>, elevation:Elevation, context?:any) {
     this.title = title;
     this.side = side;
     this.component = component;
     this.elevation = elevation;
+    this.context = context;
   }
 }

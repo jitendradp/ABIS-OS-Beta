@@ -22,11 +22,14 @@ export class CardContactComponent {
   @Input()
   subtitle: string;
 
+  @Input()
+  context: string;
+
   constructor(private actionDispatcher: ActionDispatcherService) {
   }
 
   onClick() {
-    const chat = new SetSidebarContent("Chat", "left", ChatComponent, "level1");
+    const chat = new SetSidebarContent("Chat", "left", ChatComponent, "level1", this.context);
     const openLeftSidebarLevel1 = new SetSidebarVisibility("left", "visible", "level1");
 
     this.actionDispatcher.dispatch(new NestedAction(

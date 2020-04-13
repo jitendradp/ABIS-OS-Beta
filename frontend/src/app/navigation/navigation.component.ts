@@ -4,6 +4,7 @@ import {ActionDispatcherService} from "../services/action-dispatcher.service";
 import {IEvent} from "../actions/IEvent";
 import {SetSidebarContent} from "../actions/ui/SetSidebarContent";
 import {SetApplicationTitle} from "../actions/ui/SetApplicationTitle";
+import {ChatComponent} from "../chat/chat.component";
 
 @Component({
   selector: 'app-navigation',
@@ -31,7 +32,7 @@ export class NavigationComponent {
           // Close either the whole sidebar or only the higher layer
           if (this.elevation == "level1") {
             this.elevation = "base";
-            this.setElevationContent();
+            this.setElevationContent((<any>action).context);
           } else if (this.elevation == "base") {
             this.actionDispatcher.dispatch(new SetSidebarVisibility("left", "invisible", "base"));
           }
@@ -39,27 +40,31 @@ export class NavigationComponent {
         }
         if (a.elevation != this.elevation) {
           this.elevation = a.elevation;
-          this.setElevationContent();
+          this.setElevationContent((<any>action).context);
         }
         break;
       case SetSidebarContent.Name:
         if ((<any>action).side == "bottom") {
           return;
         }
-        this.components[(<any>action).elevation] = { title: (<any>action).title, component: (<any>action).component };
+        this.components[(<any>action).elevation] = { title: (<any>action).title, component: (<any>action).component, context: (<any>action).context };
 
         if (this.elevation.toString() === (<any>action).elevation.toString()) {
-          this.setElevationContent();
+          this.setElevationContent((<any>action).context);
         }
         break;
     }
   }
 
-  setElevationContent() {
+  setElevationContent(context?:string) {
     const level = this.components[this.elevation];
     const factory = this.componentFactoryResolver.resolveComponentFactory(level.component);
     this.contentContainer1.clear();
     const ref = this.contentContainer1.createComponent(factory);
+    if (level.context) {
+      // TODO: Pass "groupId" to ChatComponent
+      (<any>ref.instance).groupId = level.context;
+    }
     this.actionDispatcher.dispatch(new SetApplicationTitle(level.title));
     ref.changeDetectorRef.detectChanges();
   }
