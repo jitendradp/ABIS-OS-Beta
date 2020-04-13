@@ -3,6 +3,8 @@ import {Entry, FindRoomsGQL, GetEntriesGQL} from "../../generated/abis-api";
 import {UserService} from "../services/user.service";
 import {SetSidebarVisibility} from "../actions/ui/SetSidebarVisibility";
 import {ActionDispatcherService} from "../services/action-dispatcher.service";
+import {IEvent} from "../actions/IEvent";
+import {JumpToMapPosition} from "../actions/ui/JumpToMapPosition";
 
 @Component({
   selector: 'app-map',
@@ -16,6 +18,7 @@ export class MapComponent implements OnInit, OnChanges {
 
   // TODO: Get new data from http://ustroetz.github.io/gimmeOSM/
 
+  center:any = [10.27739, 47.41156];
   geoJsonEntries: any[] = [];
   datenDieterId: string;
 
@@ -33,6 +36,16 @@ export class MapComponent implements OnInit, OnChanges {
     , private actionDispatcher: ActionDispatcherService
     , private userService: UserService) {
     this.datenDieterId = this.userService.systemServices.find(o => o.name == "Daten Dieter").id;
+    actionDispatcher.onAction.subscribe(action => this.onAction(action));
+  }
+
+
+  onAction(action: IEvent) {
+    switch (action.name) {
+      case JumpToMapPosition.Name:
+        this.center = (<JumpToMapPosition>action).latlng;
+        break;
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {

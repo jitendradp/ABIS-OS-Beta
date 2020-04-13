@@ -1,5 +1,7 @@
 import {AfterViewInit, Component, Input} from '@angular/core';
 import {Entry} from "../../../generated/abis-api";
+import {ActionDispatcherService} from "../../services/action-dispatcher.service";
+import {JumpToMapPosition} from "../../actions/ui/JumpToMapPosition";
 
 @Component({
   selector: 'app-card-map',
@@ -23,6 +25,9 @@ export class CardMapComponent implements AfterViewInit{
       'fill-color': this.colorPalette[Math.abs(this.getHashFromString(entry.id) % this.colorPalette.length)],
       'fill-opacity': 0.4
     };
+  }
+
+  constructor(private actionDispatcher: ActionDispatcherService) {
   }
 
   getHashFromString(str:string) {
@@ -77,4 +82,7 @@ export class CardMapComponent implements AfterViewInit{
   sharesCount: number;
   center: any;
 
+  onClick($event: MouseEvent) {
+    this.actionDispatcher.dispatch(new JumpToMapPosition(this.center));
+  }
 }
