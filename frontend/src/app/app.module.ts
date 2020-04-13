@@ -240,6 +240,13 @@ const appRoutes: Routes = [
     }
     , canActivate: [CanActivateRoute]
   },
+  {
+    path: 'latest', component: LatestComponent, data: {
+      "title": "Latest",
+      "actions": defaultActions
+    }
+    , canActivate: [CanActivateRoute]
+  },
 ];
 
 
