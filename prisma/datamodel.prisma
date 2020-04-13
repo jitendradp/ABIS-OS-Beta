@@ -48,8 +48,6 @@ type Entry {
 
     content: Json
     contentEncoding: ID
-
-    tags: [Tag!]!
 }
 
 enum EntryType {
@@ -94,8 +92,6 @@ type Group {
 
     entries: [Entry!]! @relation(name: "EntriesOfGroup", onDelete: CASCADE)
     inbox: ID # Only "Room"s have Agents of type 'Inbox'
-
-    tags: [Tag!]!
 
     isMemory: Boolean!
 }
@@ -172,7 +168,6 @@ type Agent {
     status: AgentStatus!
 
     timezone: String    # User's timezone is used when this field is null
-    location: Location @relation(link: INLINE)
 
     # Only when "type == AgentType.Profile":
     profileSlogan: String
@@ -277,57 +272,21 @@ type Session {
  	user: User!
  	agent: Agent!
 
- 	location: Location
  	ipAddress: String
 }
 
 type Tag {
     id: ID! @id @unique
-    type: String!
+
+    tagType: String!
+    forType: String!
+    forId: ID!
+
+    value: String!
 
     isPrivate: Boolean!
     owner: ID!
 
     createdBy: ID!
     createdAt: DateTime! @createdAt
-
-   	value: String!
-}
-
-type Location {
-    id: ID! @id @unique
-    type: LocationType!
-
-    owner: ID!
-
-    createdBy: ID!
-    createdAt: DateTime! @createdAt
-
-    updatedBy: ID
-    updatedAt: DateTime @updatedAt
-
-	name: String
-
-	# Only if "type == LocationType.OpenStreetMap":
-	osmNodeId: String
-
-	# Only if "type == LocationType.Address":
-	addressLine1: String
-	addressLine2: String
-	addressCity: String
-	addressZipCode: String
-	addressCountry: String
-
-    # Only if "type == LocationType.GeoPoint":
-	geoPointLatitude: Float
-	geoPointLongitude: Float
-	geoPointRadiusMeter: Float
-
-	tags: [Tag!]!
-}
-
-enum LocationType {
-    OpenStreetMap
-    Address
-    GeoPoint
 }

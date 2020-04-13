@@ -3948,6 +3948,20 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "isPrivate",
+            "description": "",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
             "name": "type",
             "description": "",
             "type": {

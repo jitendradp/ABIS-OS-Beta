@@ -60,6 +60,7 @@ export type Address = Location & {
 };
 
 export type AddTagInput = {
+  isPrivate: Scalars['Boolean'],
   type: Scalars['String'],
   value: Scalars['String'],
 };
