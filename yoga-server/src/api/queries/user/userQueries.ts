@@ -41,8 +41,7 @@ export class UserQueries {
                 profileType: profileAgent.profileType,
                 slogan: profileAgent.profileSlogan,
                 status: profileAgent.status,
-                timezone: profileAgent.timezone,
-                location: null
+                timezone: profileAgent.timezone
             });
             return myProfiles;
         } catch (e) {
@@ -74,8 +73,7 @@ export class UserQueries {
                 profileType: profileAgent.profileType,
                 status: profileAgent.status,
                 timezone: profileAgent.timezone,
-                description: profileAgent.serviceDescription,
-                location: null
+                description: profileAgent.serviceDescription
             });
             return myServices;
         } catch (e) {

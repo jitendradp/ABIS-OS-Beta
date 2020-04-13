@@ -21,9 +21,6 @@ query myAccount($csrfToken:String! ) {
     id
     createdAt
 
-    location {
-      id
-    }
     timezone
 
     email
@@ -48,10 +45,6 @@ query myProfiles($csrfToken:String! ) {
     name
     status
     timezone
-    location {
-      id
-      name
-    }
     avatar
     banner
     slogan
@@ -66,10 +59,6 @@ query myServices($csrfToken:String! ) {
     updatedAt
     name
     timezone
-    location {
-      id
-      name
-    }
     status
     description
   }

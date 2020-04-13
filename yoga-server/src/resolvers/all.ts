@@ -8,11 +8,6 @@ export const resolvers = {
     Subscription: subscriptions,
 
     // Resolvers for interface types
-    Location: {
-        __resolveType: (collection) => {
-            return collection.type;
-        }
-    },
     Agent: {
         __resolveType: (collection) => {
             return collection.type;

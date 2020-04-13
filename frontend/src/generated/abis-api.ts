@@ -23,7 +23,6 @@ export type Account = {
   type: UserType,
   createdAt: Scalars['DateTime'],
   updatedAt?: Maybe<Scalars['DateTime']>,
-  location?: Maybe<Location>,
   timezone: Scalars['String'],
   email: Scalars['String'],
   personFirstName?: Maybe<Scalars['String']>,
@@ -41,24 +40,6 @@ export type ActionResponse = {
   data?: Maybe<Scalars['String']>,
 };
 
-export type Address = Location & {
-   __typename?: 'Address',
-  id: Scalars['ID'],
-  owner: Scalars['ID'],
-  createdBy: Scalars['ID'],
-  createdAt: Scalars['DateTime'],
-  updatedBy?: Maybe<Scalars['ID']>,
-  updatedAt?: Maybe<Scalars['DateTime']>,
-  name?: Maybe<Scalars['String']>,
-  tags: Array<Tag>,
-  tagAggregate: Array<TagAggregate>,
-  line1: Scalars['String'],
-  line2?: Maybe<Scalars['String']>,
-  city: Scalars['String'],
-  zipCode: Scalars['String'],
-  country: Scalars['String'],
-};
-
 export type AddTagInput = {
   isPrivate: Scalars['Boolean'],
   type: Scalars['String'],
@@ -71,7 +52,6 @@ export type Agent = {
   updatedAt?: Maybe<Scalars['DateTime']>,
   name: Scalars['String'],
   timezone: Scalars['String'],
-  location?: Maybe<Location>,
 };
 
 export type Channel = Group & {
@@ -111,28 +91,11 @@ export type CreateEntryInput = {
   contentEncoding?: Maybe<Scalars['ID']>,
 };
 
-export type CreateLocationInput = {
-  id?: Maybe<Scalars['ID']>,
-  type: LocationType,
-  name?: Maybe<Scalars['String']>,
-  osmNodeId?: Maybe<Scalars['String']>,
-  addressLine1?: Maybe<Scalars['String']>,
-  addressLine2?: Maybe<Scalars['String']>,
-  addressCity?: Maybe<Scalars['String']>,
-  addressZipCode?: Maybe<Scalars['String']>,
-  addressCountry?: Maybe<Scalars['String']>,
-  geoPointLatitude?: Maybe<Scalars['Float']>,
-  geoPointLongitude?: Maybe<Scalars['Float']>,
-  geoPointRadiusMeter?: Maybe<Scalars['Float']>,
-  tags: Array<AddTagInput>,
-};
-
 export type CreateProfileInput = {
   type: ProfileType,
   name: Scalars['String'],
   picture?: Maybe<Scalars['String']>,
   timezone?: Maybe<Scalars['String']>,
-  location?: Maybe<CreateLocationInput>,
 };
 
 export type CreateRoomInput = {
@@ -173,7 +136,6 @@ export type Entry = {
   name?: Maybe<Scalars['String']>,
   content?: Maybe<Scalars['Json']>,
   contentEncoding?: Maybe<ContentEncoding>,
-  tags: Array<Tag>,
   tagAggregate: Array<TagAggregate>,
 };
 
@@ -194,22 +156,6 @@ export type File = {
   filename: Scalars['String'],
   mimetype: Scalars['String'],
   encoding: Scalars['String'],
-};
-
-export type GeoPoint = Location & {
-   __typename?: 'GeoPoint',
-  id: Scalars['ID'],
-  owner: Scalars['ID'],
-  createdBy: Scalars['ID'],
-  createdAt: Scalars['DateTime'],
-  updatedBy?: Maybe<Scalars['ID']>,
-  updatedAt?: Maybe<Scalars['DateTime']>,
-  name?: Maybe<Scalars['String']>,
-  tags: Array<Tag>,
-  tagAggregate: Array<TagAggregate>,
-  geoPointLatitude: Scalars['Float'],
-  geoPointLongitude: Scalars['Float'],
-  geoPointRadiusMeter: Scalars['Float'],
 };
 
 export type Group = {
@@ -234,24 +180,6 @@ export type Inbox = {
 };
 
 
-
-export type Location = {
-  id: Scalars['ID'],
-  owner: Scalars['ID'],
-  createdBy: Scalars['ID'],
-  createdAt: Scalars['DateTime'],
-  updatedBy?: Maybe<Scalars['ID']>,
-  updatedAt?: Maybe<Scalars['DateTime']>,
-  name?: Maybe<Scalars['String']>,
-  tags: Array<Tag>,
-  tagAggregate: Array<TagAggregate>,
-};
-
-export enum LocationType {
-  OpenStreetMap = 'OpenStreetMap',
-  Address = 'Address',
-  GeoPoint = 'GeoPoint'
-}
 
 export type Membership = {
    __typename?: 'Membership',
@@ -357,20 +285,6 @@ export type NewEntry = {
   containerId: Scalars['ID'],
 };
 
-export type OpenStreetMap = Location & {
-   __typename?: 'OpenStreetMap',
-  id: Scalars['ID'],
-  owner: Scalars['ID'],
-  createdBy: Scalars['ID'],
-  createdAt: Scalars['DateTime'],
-  updatedBy?: Maybe<Scalars['ID']>,
-  updatedAt?: Maybe<Scalars['DateTime']>,
-  name?: Maybe<Scalars['String']>,
-  tags: Array<Tag>,
-  tagAggregate: Array<TagAggregate>,
-  osmNodeId: Scalars['String'],
-};
-
 export type Profile = Agent & {
    __typename?: 'Profile',
   id: Scalars['ID'],
@@ -378,7 +292,6 @@ export type Profile = Agent & {
   updatedAt?: Maybe<Scalars['DateTime']>,
   name: Scalars['String'],
   timezone: Scalars['String'],
-  location?: Maybe<Location>,
   profileType: ProfileType,
   avatar: Scalars['String'],
   status: ProfileStatus,
@@ -502,7 +415,6 @@ export type Room = Group & {
   inbox: Inbox,
   memberCount?: Maybe<Scalars['Integer']>,
   memberships: Array<Membership>,
-  tags: Array<Tag>,
   tagAggregate: Array<TagAggregate>,
 };
 
@@ -513,7 +425,6 @@ export type Service = Agent & {
   updatedAt?: Maybe<Scalars['DateTime']>,
   name: Scalars['String'],
   timezone: Scalars['String'],
-  location?: Maybe<Location>,
   status: ServiceStatus,
   description?: Maybe<Scalars['String']>,
 };
@@ -547,7 +458,6 @@ export type Stash = Group & {
   updatedAt?: Maybe<Scalars['DateTime']>,
   name: Scalars['String'],
   entryCount?: Maybe<Scalars['Integer']>,
-  tags: Array<Tag>,
 };
 
 export type Subscription = {
@@ -575,12 +485,14 @@ export type SubscriptionNewRoomArgs = {
 export type Tag = {
    __typename?: 'Tag',
   id: Scalars['ID'],
-  type: Scalars['String'],
-  owner: Scalars['ID'],
   createdBy: Scalars['ID'],
   createdAt: Scalars['DateTime'],
   updatedBy?: Maybe<Scalars['ID']>,
   updatedAt?: Maybe<Scalars['DateTime']>,
+  owner: Scalars['ID'],
+  tagType: Scalars['String'],
+  forType: Scalars['String'],
+  forId: Scalars['ID'],
   value: Scalars['String'],
 };
 
@@ -597,28 +509,12 @@ export type UpdateEntryInput = {
   contentEncoding?: Maybe<Scalars['ID']>,
 };
 
-export type UpdateLocationInput = {
-  id: Scalars['ID'],
-  type: LocationType,
-  name?: Maybe<Scalars['String']>,
-  osmNodeId?: Maybe<Scalars['String']>,
-  addressLine1?: Maybe<Scalars['String']>,
-  addressLine2?: Maybe<Scalars['String']>,
-  addressCity?: Maybe<Scalars['String']>,
-  addressZipCode?: Maybe<Scalars['String']>,
-  addressCountry?: Maybe<Scalars['String']>,
-  geoPointLatitude?: Maybe<Scalars['Float']>,
-  geoPointLongitude?: Maybe<Scalars['Float']>,
-  geoPointRadiusMeter?: Maybe<Scalars['Float']>,
-};
-
 export type UpdateProfileInput = {
   id: Scalars['ID'],
   type: ProfileType,
   name: Scalars['String'],
   picture?: Maybe<Scalars['String']>,
   timezone?: Maybe<Scalars['String']>,
-  location?: Maybe<CreateLocationInput>,
   status: ProfileStatus,
 };
 
@@ -789,16 +685,6 @@ export type MyAccountQuery = (
   & { myAccount: (
     { __typename?: 'Account' }
     & Pick<Account, 'id' | 'createdAt' | 'timezone' | 'email' | 'personFirstName' | 'personLastName' | 'personPhone' | 'personMobilePhone' | 'organizationName'>
-    & { location: Maybe<(
-      { __typename?: 'OpenStreetMap' }
-      & Pick<OpenStreetMap, 'id'>
-    ) | (
-      { __typename?: 'Address' }
-      & Pick<Address, 'id'>
-    ) | (
-      { __typename?: 'GeoPoint' }
-      & Pick<GeoPoint, 'id'>
-    )> }
   ) }
 );
 
@@ -812,16 +698,6 @@ export type MyProfilesQuery = (
   & { myProfiles: Array<Maybe<(
     { __typename?: 'Profile' }
     & Pick<Profile, 'id' | 'profileType' | 'createdAt' | 'updatedAt' | 'name' | 'status' | 'timezone' | 'avatar' | 'banner' | 'slogan' | 'jobTitle'>
-    & { location: Maybe<(
-      { __typename?: 'OpenStreetMap' }
-      & Pick<OpenStreetMap, 'id' | 'name'>
-    ) | (
-      { __typename?: 'Address' }
-      & Pick<Address, 'id' | 'name'>
-    ) | (
-      { __typename?: 'GeoPoint' }
-      & Pick<GeoPoint, 'id' | 'name'>
-    )> }
   )>> }
 );
 
@@ -835,16 +711,6 @@ export type MyServicesQuery = (
   & { myServices: Array<Maybe<(
     { __typename?: 'Service' }
     & Pick<Service, 'id' | 'createdAt' | 'updatedAt' | 'name' | 'timezone' | 'status' | 'description'>
-    & { location: Maybe<(
-      { __typename?: 'OpenStreetMap' }
-      & Pick<OpenStreetMap, 'id' | 'name'>
-    ) | (
-      { __typename?: 'Address' }
-      & Pick<Address, 'id' | 'name'>
-    ) | (
-      { __typename?: 'GeoPoint' }
-      & Pick<GeoPoint, 'id' | 'name'>
-    )> }
   )>> }
 );
 
@@ -1238,9 +1104,6 @@ export const MyAccountDocument = gql`
   myAccount(csrfToken: $csrfToken) {
     id
     createdAt
-    location {
-      id
-    }
     timezone
     email
     personFirstName
@@ -1269,10 +1132,6 @@ export const MyProfilesDocument = gql`
     name
     status
     timezone
-    location {
-      id
-      name
-    }
     avatar
     banner
     slogan
@@ -1296,10 +1155,6 @@ export const MyServicesDocument = gql`
     updatedAt
     name
     timezone
-    location {
-      id
-      name
-    }
     status
     description
   }

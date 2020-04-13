@@ -14,7 +14,6 @@ export type Profile = {
     name: string,
 
     timezone: string,
-    location: Location
 
     profileType: ProfileType
     avatar: string
@@ -38,7 +37,6 @@ export type Service = {
     name: string,
 
     timezone: string,
-    location: Location
 
     status: ServiceStatus
     description: string
