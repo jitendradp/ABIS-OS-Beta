@@ -49,6 +49,9 @@ export class CardMapComponent implements AfterViewInit{
   }
 
   @Input()
+  groupId:any;
+
+  @Input()
   entry:any;
 
   @Input()
@@ -83,6 +86,6 @@ export class CardMapComponent implements AfterViewInit{
   center: any;
 
   onClick($event: MouseEvent) {
-    this.actionDispatcher.dispatch(new JumpToMapPosition(this.center));
+    this.actionDispatcher.dispatch(new JumpToMapPosition(this.center, this.groupId));
   }
 }

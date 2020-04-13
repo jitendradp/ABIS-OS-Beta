@@ -22,7 +22,7 @@ export class MapComponent implements OnInit, OnChanges {
   datenDieterId: string;
 
   @Input()
-  public groupId: string[] = [];
+  public groupId: string ;
   colorPalette: string[] = [
     "#77aaff"
     , "#99ccff"
@@ -42,25 +42,21 @@ export class MapComponent implements OnInit, OnChanges {
     switch (action.name) {
       case JumpToMapPosition.Name:
         this.center = (<JumpToMapPosition>action).latlng;
+        if ((<JumpToMapPosition>action).groupId) {
+          if (!(<JumpToMapPosition>action).groupId || this.groupId == (<JumpToMapPosition>action).groupId) {
+            return;
+          }
+          this.groupId = (<JumpToMapPosition>action).groupId;
+          this.initMap();
+        }
         break;
     }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes["groupId"]) {
-      return;
-    }
-    if (!this.groupId) {
-      throw new Error("The groupId property must be set to a value.")
-    }
-    this.initMap();
   }
 
   async ngOnInit() {
-    if (!this.groupId) {
-      return;
-    }
-    this.initMap();
   }
 
   async initMap() {
@@ -72,7 +68,7 @@ export class MapComponent implements OnInit, OnChanges {
     this.geoJsonEntries = [];
     rooms.map(o => o.id).forEach(async groupId => {
       const groupEntries = (await this.getEntries.fetch({
-        groupId: groupId,
+        groupId: this.groupId,
         csrfToken: this.userService.csrfToken
         // TODO: Add "type" filter
       }).toPromise()).data.getEntries;

@@ -21,6 +21,8 @@ export class FeedMessageComponent {
 
   @Input()
   private entries: any[] = [];
+  @Input()
+  private groupId: string = "";
 
   constructor(public userService:UserService) {
   }

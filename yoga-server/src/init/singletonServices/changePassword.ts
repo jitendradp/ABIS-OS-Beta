@@ -2,6 +2,7 @@ import {DirectService} from "../../services/directService";
 import {Entry, Group, prisma} from "../../generated/prisma_client";
 import {GetUserOf} from "../../queries/getUserOf";
 import {config} from "../../config";
+import {GetAgentOf} from "../../queries/getAgentOf";
 
 class Implementation extends DirectService {
     private readonly bcrypt = require('bcrypt');
@@ -12,6 +13,7 @@ class Implementation extends DirectService {
 
     async onNewEntry(newEntry: Entry, answerChannel: Group) {
         const userId = await GetUserOf.session((<any>newEntry).__csrfToken, (<any>newEntry).__sessionToken);
+        const agentId = await GetAgentOf.session((<any>newEntry).__csrfToken, (<any>newEntry).__sessionToken);
         const user = await prisma.user({id: userId});
 
         const passwordsMatch = await this.bcrypt.compare(newEntry.content.ChangePassword.old_password, user.passwordHash);
@@ -39,6 +41,8 @@ class Implementation extends DirectService {
         });
 
         await this.postContinueTo("", answerChannel.id);
+        prisma.deleteManyGroups({owner:this.id, memberships_every:{member:{id:agentId}}});
+        prisma.deleteGroup({id:answerChannel.id});
     }
 }
 

@@ -6,6 +6,7 @@ import {UserOwns} from "../../statements/userOwns";
 import {config} from "../../config";
 import {UserCreate} from "../../data/mutations/userCreate";
 import {RequestSynchronousService} from "../../services/requestSynchronousService";
+import {GetAgentOf} from "../../queries/getAgentOf";
 
 class Implementation extends RequestSynchronousService {
     private static readonly bcrypt = require('bcrypt');
@@ -26,6 +27,10 @@ class Implementation extends RequestSynchronousService {
         if (!request){
             throw new Error("This service needs a request to operate on.");
         }
+
+        const csrfToken = (<any>newEntry).__csrfToken;
+        const sessionToken = (<any>newEntry).__sessionToken;
+        const agentId = await GetAgentOf.session(csrfToken, sessionToken);
 
         const loginEntryContent: {
             email: string,
@@ -63,6 +68,9 @@ class Implementation extends RequestSynchronousService {
             csrfToken: session.csrfToken,
             profileId: userProfiles[0].id
         });
+
+        prisma.deleteManyGroups({owner:this.id, memberships_every:{member:{id:agentId}}});
+        prisma.deleteGroup({id:answerChannel.id});
     }
 }
 

@@ -82,6 +82,8 @@ class Implementation extends DirectService {
         }
 
         await this.postContinueTo("", answerChannel.id);
+        prisma.deleteManyGroups({owner:this.id, memberships_every:{member:{id:agentId}}});
+        prisma.deleteGroup({id:answerChannel.id});
     }
 }
 

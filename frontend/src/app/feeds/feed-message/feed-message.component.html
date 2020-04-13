@@ -9,6 +9,7 @@
       <div *ngIf="userService.findContentEncodingById(message.contentEncoding.id).name == 'GeoJsonFeature'">
         <app-card-map
           [entry]="message"
+          [groupId]="groupId"
           [message]="message.content"
           [creator]="message.createdBy"
           [createdAt]="message.createdAt"

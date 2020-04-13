@@ -1,13 +1,3 @@
-import {
-    Agent,
-    ContentEncoding,
-    Entry,
-    EntryCreateInput,
-    EntryWhereInput,
-    Group,
-    prisma,
-    User
-} from "./generated/prisma_client";
 import {config} from "./config";
 import {EventBroker, Topic, Topics} from "./services/eventBroker";
 import {Helper} from "./helper/helper";
@@ -17,6 +7,7 @@ import {Channel} from "./api/types/channel";
 import {UserCreate} from "./data/mutations/userCreate";
 import {AgentCreate} from "./data/mutations/agentCreate";
 import {Service} from "./services/service";
+import {Agent, ContentEncoding, Entry, EntryCreateInput, EntryWhereInput, Group, prisma, User} from "./generated";
 
 const isInTest = typeof global.it === 'function';
 
@@ -204,6 +195,7 @@ export class Server {
     private _newEntryTopic: Topic<Entry>;
     private _newRoomTopic: Topic<Group>;
     private _countriesSystemRoom: Group;
+    private _dachSystemRoom: Group;
     private _eventBroker: EventBroker;
 
     private _contentEncodingsNameMap: {[name:string]:ContentEncoding} = {};
@@ -246,12 +238,19 @@ export class Server {
     }
 
     private async createSystemGroups() {
-        const existingCountriesSystemRoom = await prisma.groups({where:{owner:this._datenDieterSystemAgent.id, type:"Room", name:"Countries"}});
+        let existingCountriesSystemRoom = await prisma.groups({where:{owner:this._datenDieterSystemAgent.id, type:"Room", name:"Countries"}});
         if (existingCountriesSystemRoom.length == 0) {
             this._countriesSystemRoom = await AgentCreate.room(this, this._datenDieterSystemAgent.id, "Countries", "logo.png", true);
             await this.createCountryEntries();
         } else {
             this._countriesSystemRoom = existingCountriesSystemRoom[0];
+        }
+        existingCountriesSystemRoom = await prisma.groups({where:{owner:this._datenDieterSystemAgent.id, type:"Room", name:"DACH Countries"}});
+        if (existingCountriesSystemRoom.length == 0) {
+            this._dachSystemRoom = await AgentCreate.room(this, this._datenDieterSystemAgent.id, "DACH Countries", "logo.png", true);
+            await this.createCountry2Entries();
+        } else {
+            this._dachSystemRoom = existingCountriesSystemRoom[0];
         }
     }
 
@@ -461,19 +460,28 @@ export class Server {
         const dir = path.join(__dirname, "init", "systemEntries", "countriesGeoJson") + "/";
 
         const self = this;
-        await Promise.all(this.loadModules(dir).map(loadedCountry => self.insertCountryEntryIfNotExisting(loadedCountry)));
+        await Promise.all(this.loadModules(dir).map(loadedCountry => self.insertGeoJsonEntryIfNotExists(this._countriesSystemRoom.id, loadedCountry, "sovereignt")));
+    }
+    private async createCountry2Entries() {
+        const path = require('path');
+        const dir = path.join(__dirname, "init", "systemEntries", "countriesGeoJson2") + "/";
+
+        const self = this;
+        await Promise.all(this.loadModules(dir).map(loadedCountry => self.insertGeoJsonEntryIfNotExists(this._dachSystemRoom.id, loadedCountry, "sovereignt")));
     }
 
-    private async insertCountryEntryIfNotExisting(geojson:any) {
-        const countryName = geojson.properties.sovereignt;
+    // this._countriesSystemRoom.id
+    // nameProperty: sovereign
+    private async insertGeoJsonEntryIfNotExists(groupId:string, geojson:any, nameProperty:string) {
+        const countryName = geojson.properties[nameProperty];
 
-        const existingContentEncoding = await prisma.group({id:this._countriesSystemRoom.id}).entries({
+        const existingEntry = await prisma.group({id:groupId}).entries({
             where: {
                 name: countryName
             }
         });
 
-        if (existingContentEncoding.length > 0) {
+        if (existingEntry.length > 0) {
             console.log(`   Country '${countryName}' already exists.`);
             return;
         }
@@ -481,7 +489,7 @@ export class Server {
         const newEntry = await AgentCreate.entry(
             this,
             this.datenDieterSystemAgent.id,
-            this._countriesSystemRoom.id,
+            groupId,
             {
                 contentEncoding: this.geoJsonFeatureContentEncoding.id,
                 createdBy: this.systemUser.id,

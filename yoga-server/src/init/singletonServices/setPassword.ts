@@ -2,6 +2,7 @@ import {DirectService} from "../../services/directService";
 import {Entry, Group, prisma} from "../../generated/prisma_client";
 import {UserQueries} from "../../data/queries/user";
 import {config} from "../../config";
+import {GetAgentOf} from "../../queries/getAgentOf";
 
 class Implementation extends DirectService {
     private readonly bcrypt = require('bcrypt');
@@ -34,7 +35,14 @@ class Implementation extends DirectService {
             }
         });
 
+        const csrfToken = (<any>newEntry).__csrfToken;
+        const sessionToken = (<any>newEntry).__sessionToken;
+        const agentId = await GetAgentOf.session(csrfToken, sessionToken);
+
         await this.postContinueTo(this.server.loginServiceId, answerChannel.id);
+
+        prisma.deleteManyGroups({owner:this.id, memberships_every:{member:{id:agentId}}});
+        prisma.deleteGroup({id:answerChannel.id});
     }
 }
 
