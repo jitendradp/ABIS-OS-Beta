@@ -24,7 +24,7 @@
 <!-- todo: Make a general "horizontal" version for this  -->
 <div *ngIf='orientation == "Horizontal"'>
   <div class="subline"></div>
-  <mat-grid-list class="footerWrapper" cols="3" rowHeight="53px">
+  <mat-grid-list class="footerWrapper" cols="4" rowHeight="53px">
 
     <mat-grid-tile>
       <button mat-button class="tileButton" routerLink="/">
@@ -41,9 +41,16 @@
     </mat-grid-tile>
 
     <mat-grid-tile>
-      <button mat-button class="tileButton" routerLink="chat">
-        <mat-icon>chat</mat-icon>
-        <span fxHide fxShow.gt-sm class="iconLabelSpacing">Chat</span>
+      <button mat-button class="tileButton" routerLink="latest">
+        <mat-icon>notifications</mat-icon>
+        <span fxHide fxShow.gt-sm class="iconLabelSpacing">Latest</span>
+      </button>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <button mat-button class="tileButton" routerLink="access">
+        <mat-icon>lock_open</mat-icon>
+        <span fxHide fxShow.gt-sm class="iconLabelSpacing">Signup / Login</span>
       </button>
     </mat-grid-tile>
 

@@ -102,6 +102,7 @@ import {ListComponent} from './components/list/list.component';
 import {GeoJsonEntryComponent} from "./list-items/geoJson-entry/geoJson-entry.component";
 import { ProfileComponent } from './pages/profile/profile.component';
 import {DetailComponent} from "./pages/detail/detail.component";
+import { LatestComponent } from './pages/latest/latest.component';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -291,7 +292,9 @@ const appRoutes: Routes = [
     ListComponent,
     GeoJsonEntryComponent,
     ProfileComponent,
-    DetailComponent
+    DetailComponent,
+    ProfileComponent,
+    LatestComponent
   ],
   imports: [
     RouterModule.forRoot(

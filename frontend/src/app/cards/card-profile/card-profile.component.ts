@@ -31,6 +31,9 @@ export class CardProfileComponent {
   onMenu: boolean;
 
   @Input()
-  onPage: boolean;
+  profileHeader: boolean;
+
+  @Input()
+  profileFriends: boolean;
 
 }

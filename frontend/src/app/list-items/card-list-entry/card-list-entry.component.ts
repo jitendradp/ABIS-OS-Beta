@@ -29,12 +29,12 @@ export class CardListEntryComponent {
   }
 
   onClick() {
-    const chat = new SetContent("Feed", "left", FeedComponent, "level1", this.context);
+    const chat = new SetContent("Rooms", "left", FeedComponent, "level1", this.context);
     const openLeftSidebarLevel1 = new SetVisibility("left", "visible", "level1");
 
     this.actionDispatcher.dispatch(new NestedAction(
-      "chat",
-      "Feed",
+      "couch",
+      "Rooms",
       [
         <IEvent>chat,
         <IEvent>openLeftSidebarLevel1
