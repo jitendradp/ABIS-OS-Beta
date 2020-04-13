@@ -9,6 +9,7 @@ import {prisma} from "./generated";
 const cookie = require('cookie');
 
 const server = new GraphQLServer({
+
     typeDefs: './src/api/schema.graphql',
     resolvers,
     context: (req: ContextParameters) => {
@@ -33,6 +34,8 @@ const server = new GraphQLServer({
         };
     }
 });
+
+
 
 var morgan = require('morgan');
 server.use(morgan('combined'));

@@ -2,6 +2,7 @@ scalar DateTime
 scalar Json
 scalar ID
 scalar Integer
+scalar Upload
 
 type Tag {
     id: ID!
@@ -532,7 +533,18 @@ type NewEntry {
     containerId: ID!
 }
 
+
+type File {
+    id: ID!
+    path: String!
+    filename: String!
+    mimetype: String!
+    encoding: String!
+}
+
 type Query {
+    uploads: [File]
+
     contentEncodings(csrfToken: String!) : [ContentEncoding!]!
 
     getSystemServices(csrfToken: String!) : [Service!]!
@@ -563,6 +575,9 @@ type Query {
 }
 
 type Mutation {
+    singleUpload (file: Upload!): File!
+    multipleUpload (files: [Upload!]!): [File!]!
+
     createSession(clientTime:String!) : ActionResponse!
     verifySession(csrfToken:String!) : ActionResponse!
 
