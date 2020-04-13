@@ -101,6 +101,7 @@ import {InviteComponent} from "./pages/system/invite/invite.component";
 import {ListComponent} from './components/list/list.component';
 import {GeoJsonEntryComponent} from "./list-items/geoJson-entry/geoJson-entry.component";
 import { ProfileComponent } from './pages/profile/profile.component';
+import { LatestComponent } from './pages/latest/latest.component';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -223,8 +224,8 @@ const appRoutes: Routes = [
     , canActivate: [CanActivateRoute]
   },
   {
-    path: 'chat', component: FeedComponent, data: {
-      "title": "hi",
+    path: 'latest', component: LatestComponent, data: {
+      "title": "Latest",
       "actions": defaultActions
     }
     , canActivate: [CanActivateRoute]
@@ -282,7 +283,8 @@ const appRoutes: Routes = [
     ServiceDialogComponent,
     ListComponent,
     GeoJsonEntryComponent,
-    ProfileComponent
+    ProfileComponent,
+    LatestComponent
   ],
   imports: [
     RouterModule.forRoot(
