@@ -84,6 +84,11 @@ export const mutations = {
     },
 
     async verifySession(root, {csrfToken}, ctx) {
+        if (!ctx.sessionToken) {
+            return <ActionResponse>{
+                success: false
+            };
+        }
         const sessions = await prisma.sessions({
             where: {
                 csrfToken: csrfToken,
