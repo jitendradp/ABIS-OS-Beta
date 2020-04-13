@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {SetContent} from "../../actions/ui/SetContent";
-import {ChatComponent} from "../../chat/chat.component";
+import {FeedComponent} from "../../feed/feed.component";
 import {SetVisibility} from "../../actions/ui/SetVisibility";
 import {NestedAction} from "../../actions/NestedAction";
 import {IEvent} from "../../actions/IEvent";
@@ -29,12 +29,12 @@ export class CardListEntryComponent {
   }
 
   onClick() {
-    const chat = new SetContent("Chat", "left", ChatComponent, "level1", this.context);
+    const chat = new SetContent("Feed", "left", FeedComponent, "level1", this.context);
     const openLeftSidebarLevel1 = new SetVisibility("left", "visible", "level1");
 
     this.actionDispatcher.dispatch(new NestedAction(
       "chat",
-      "Chat",
+      "Feed",
       [
         <IEvent>chat,
         <IEvent>openLeftSidebarLevel1

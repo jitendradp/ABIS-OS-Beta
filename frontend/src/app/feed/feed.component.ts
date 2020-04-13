@@ -3,11 +3,11 @@ import {GetEntriesGQL} from "../../generated/abis-api";
 import {UserService} from "../services/user.service";
 
 @Component({
-  selector: 'app-chat',
-  templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.css']
+  selector: 'app-feed',
+  templateUrl: './feed.component.html',
+  styleUrls: ['./feed.component.css']
 })
-export class ChatComponent {
+export class FeedComponent {
   @Input()
   groupId: string;
 

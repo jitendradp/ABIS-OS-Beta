@@ -24,12 +24,38 @@
 <!-- todo: Make a general "horizontal" version for this  -->
 <div *ngIf='orientation == "Horizontal"'>
   <div class="subline"></div>
-  <mat-grid-list class="footerWrapper" cols="5" rowHeight="53px">
+  <mat-grid-list class="footerWrapper" cols="3" rowHeight="53px">
+
+    <mat-grid-tile>
+      <button mat-button class="tileButton" routerLink="/">
+        <mat-icon>map</mat-icon>
+        <span fxHide fxShow.gt-sm class="iconLabelSpacing">Map</span>
+      </button>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <button mat-button class="tileButton" routerLink="profile">
+        <mat-icon>account_box</mat-icon>
+        <span fxHide fxShow.gt-sm class="iconLabelSpacing">Profile</span>
+      </button>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <button mat-button class="tileButton" routerLink="chat">
+        <mat-icon>chat</mat-icon>
+        <span fxHide fxShow.gt-sm class="iconLabelSpacing">Chat</span>
+      </button>
+    </mat-grid-tile>
+
+
+  <!--
     <mat-grid-tile *ngFor="let action of entries">
       <button mat-button class="tileButton" (click)="onIconClick($event, action)">
         <mat-icon>{{action.icon}}</mat-icon>
         <span fxHide fxShow.gt-sm class="iconLabelSpacing">{{action.label}}</span>
       </button>
     </mat-grid-tile>
+  -->
+
   </mat-grid-list>
 </div>

@@ -46,7 +46,7 @@ import {IconbarComponent} from './components/iconbar/iconbar.component';
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {NgxEchartsModule} from "ngx-echarts";
-import {MapComponent} from './map/map.component';
+import {MapComponent} from './pages/map/map.component';
 import {LogoComponent} from './components/logo/logo.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HeaderComponent} from './components/header/header.component';
@@ -65,7 +65,7 @@ import {NgxMapboxGLModule} from "ngx-mapbox-gl";
 import {CardComponent} from "./cards/card/card.component";
 import {SetVisibility} from "./actions/ui/SetVisibility";
 import {DeviceDetectorModule} from "ngx-device-detector";
-import {ClusterPopupComponent} from "./map/cluster-popup/cluster-popup.component";
+import {ClusterPopupComponent} from "./pages/map/cluster-popup/cluster-popup.component";
 import {AgGridModule} from "ag-grid-angular";
 import {CardProfileComponent} from "./cards/card-profile/card-profile.component";
 import {ChartGraphForceComponent} from "./components/charts/chart-graph-force/chart-graph-force.component";
@@ -80,7 +80,7 @@ import {ListGroupComponent} from "./lists/list-group/list-group.component";
 import {ListContactComponent} from "./lists/list-contact/list-contact.component";
 import {AvatarComponent} from "./components/avatar/avatar.component";
 import {ListChipComponent} from "./list-items/list-chip/list-chip.component";
-import {ChatComponent} from "./chat/chat.component";
+import {FeedComponent} from "./feed/feed.component";
 import {ListMemberComponent} from "./list-items/list-member/list-member.component";
 import {CalendarModule, DateAdapter} from 'angular-calendar';
 import {adapterFactory} from 'angular-calendar/date-adapters/moment';
@@ -100,6 +100,7 @@ import {CreateRoomComponent} from "./pages/system/create-room/create-room.compon
 import {InviteComponent} from "./pages/system/invite/invite.component";
 import {ListComponent} from './components/list/list.component';
 import {GeoJsonEntryComponent} from "./list-items/geoJson-entry/geoJson-entry.component";
+import { ProfileComponent } from './pages/profile/profile.component';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -214,6 +215,20 @@ const appRoutes: Routes = [
     }
     , canActivate: [CanActivateRoute]
   },
+  {
+    path: 'profile', component: ProfileComponent, data: {
+      "title": "Profile",
+      "actions": defaultActions
+    }
+    , canActivate: [CanActivateRoute]
+  },
+  {
+    path: 'chat', component: FeedComponent, data: {
+      "title": "hi",
+      "actions": defaultActions
+    }
+    , canActivate: [CanActivateRoute]
+  },
 ];
 
 
@@ -251,7 +266,7 @@ const appRoutes: Routes = [
     ChartTableComponent,
     MaterialElevationDirective,
     InviteComponent,
-    ChatComponent,
+    FeedComponent,
     ChipComponent,
     CardListEntryComponent,
     ListGroupComponent,
@@ -266,7 +281,8 @@ const appRoutes: Routes = [
     ListChatComponent,
     ServiceDialogComponent,
     ListComponent,
-    GeoJsonEntryComponent
+    GeoJsonEntryComponent,
+    ProfileComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -324,7 +340,7 @@ const appRoutes: Routes = [
     CalendarModule.forRoot({provide: DateAdapter, useFactory: momentAdapterFactory}),
   ],
   providers: [ProfileService, CanActivateRoute],
-  entryComponents: [SearchComponent, ListGroupComponent, ListContactComponent, ListChatComponent, ChatComponent],
+  entryComponents: [SearchComponent, ListGroupComponent, ListContactComponent, ListChatComponent, FeedComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {
