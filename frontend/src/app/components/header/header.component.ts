@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
 import {IAction} from "../../actions/IAction";
-import {SetSidebarVisibility} from "../../actions/ui/SetSidebarVisibility";
-import {SetSidebarContent} from "../../actions/ui/SetSidebarContent";
+import {SetVisibility} from "../../actions/ui/SetVisibility";
+import {SetContent} from "../../actions/ui/SetContent";
 import {SearchComponent} from "../../search/search.component";
 
 @Component({
@@ -22,16 +22,16 @@ export class HeaderComponent {
   actions: IAction[] = [];
 
   get leftActions(): IAction[] {
-    return this.actions.filter((o: SetSidebarVisibility) => o.side == "left");
+    return this.actions.filter((o: SetVisibility) => o.side == "left");
   }
 
   get midActions(): IAction[] {
-    return this.actions.filter((o: SetSidebarVisibility) =>
+    return this.actions.filter((o: SetVisibility) =>
       o.side == "middle");
   }
 
   get rightActions(): IAction[] {
-    return this.actions.filter((o: SetSidebarVisibility) => o.side == "right");
+    return this.actions.filter((o: SetVisibility) => o.side == "right");
   }
 
   @Output()
@@ -41,6 +41,6 @@ export class HeaderComponent {
   }
 
   searchClicked($event: MouseEvent) {
-    this.actionDispatcher.dispatch(new SetSidebarContent("", "bottom", SearchComponent, "base"));
+    this.actionDispatcher.dispatch(new SetContent("", "bottom", SearchComponent, "base"));
   }
 }

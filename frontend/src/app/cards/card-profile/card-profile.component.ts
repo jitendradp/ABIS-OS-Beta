@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {UserService} from "../../services/user.service";
-import {SetSidebarVisibility} from "../../actions/ui/SetSidebarVisibility";
+import {SetVisibility} from "../../actions/ui/SetVisibility";
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
 import {ProfileService} from "../../services/profile.service";
 
@@ -18,7 +18,7 @@ export class CardProfileComponent {
   }
 
   close() {
-    this.actionDispatcher.dispatch(new SetSidebarVisibility("left", "invisible", "base"));
+    this.actionDispatcher.dispatch(new SetVisibility("left", "invisible", "base"));
   }
 
   @Input()

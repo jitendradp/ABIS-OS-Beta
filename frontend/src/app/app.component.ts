@@ -21,7 +21,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {LogEntry} from "./services/logger.service";
 import {Back} from "./actions/routes/Back";
 import {EditorGroupComponent} from "./dialogs/editor-group/editor-group.component";
-import {SetSidebarVisibility} from "./actions/ui/SetSidebarVisibility";
+import {SetVisibility} from "./actions/ui/SetVisibility";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {RouteChanged} from "./actions/routes/RouteChanged";
 import {ListGroupComponent} from "./list-items/list-group/list-group.component";
@@ -31,7 +31,7 @@ import {CreateEntryGQL} from "../generated/abis-api";
 import {NestedAction} from "./actions/NestedAction";
 import {SetApplicationTitle} from "./actions/ui/SetApplicationTitle";
 import {MatBottomSheet} from "@angular/material/bottom-sheet";
-import {SetSidebarContent} from "./actions/ui/SetSidebarContent";
+import {SetContent} from "./actions/ui/SetContent";
 import {SearchComponent} from "./search/search.component";
 
 @Component({
@@ -89,22 +89,24 @@ export class AppComponent implements AfterViewInit {
         }
 
         if (this.deviceService.isMobile() && this.right.opened) {
-          this.actionDispatcher.dispatch(new SetSidebarVisibility("right", "invisible", "base"));
+          this.actionDispatcher.dispatch(new SetVisibility("right", "invisible", "base"));
         }
         break;
       case SetApplicationTitle.Name:
         this.title = (<SetApplicationTitle>action).title;
         break;
-      case SetSidebarContent.Name:
-        if ((<any>action).side != "bottom") {
-          return;
+      case SetContent.Name:
+        if ((<any>action).side == "bottom") {
+          this.bottomSheet.open((<any>action).component);
         }
-        this.bottomSheet.open((<any>action).component);
+        if ((<any>action).side == "dialog") {
+          this.openDialog((<any>action).component, '50%', '50%');
+        }
         break;
-      case SetSidebarVisibility.Name:
+      case SetVisibility.Name:
         let visibility: boolean = false;
 
-        if (!(<SetSidebarVisibility>action).elevation) {
+        if (!(<SetVisibility>action).elevation) {
           return;
         }
 
@@ -174,7 +176,7 @@ export class AppComponent implements AfterViewInit {
         break;
       case Back.Name:
         if (this._sidebarOpen) {
-          this.actionDispatcher.dispatch(new SetSidebarVisibility("left", "invisible", null));
+          this.actionDispatcher.dispatch(new SetVisibility("left", "invisible", null));
           return;
         }
 
@@ -195,6 +197,17 @@ export class AppComponent implements AfterViewInit {
     if (o instanceof ActivationEnd) {
       this.actionDispatcher.dispatch(new RouteChanged(o.snapshot.data));
     }
+  }
+
+  public openDialog(componentType:any, width:string, height: string): void {
+    const dialogRef = this._dialog.open(componentType, {
+      width: width,
+      height: height
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 
   public openChannelCreateDialog(): void {

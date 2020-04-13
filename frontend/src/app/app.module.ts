@@ -65,7 +65,7 @@ import {CardFormComponent} from "./cards/card-form/card-form.component";
 import {SearchComponent} from "./search/search.component";
 import {NgxMapboxGLModule} from "ngx-mapbox-gl";
 import {CardComponent} from "./cards/card/card.component";
-import {SetSidebarVisibility} from "./actions/ui/SetSidebarVisibility";
+import {SetVisibility} from "./actions/ui/SetVisibility";
 import {DeviceDetectorModule} from "ngx-device-detector";
 import {ClusterPopupComponent} from "./map/cluster-popup/cluster-popup.component";
 import {AgGridModule} from "ag-grid-angular";
@@ -120,8 +120,8 @@ export function momentAdapterFactory() {
 const defaultActions: IAction[] =
   [
     /*
-    <SetSidebarVisibility>{
-      name: SetSidebarVisibility.Name,
+    <SetVisibility>{
+      name: SetVisibility.Name,
       label: "Open/Close Menu",
       icon: "chevron_left",
       side: "left",
@@ -130,8 +130,8 @@ const defaultActions: IAction[] =
     },*/
 
     // todo show/hide when user is logged in or not
-    <SetSidebarVisibility>{
-      name: SetSidebarVisibility.Name,
+    <SetVisibility>{
+      name: SetVisibility.Name,
       label: "Open/Close Chat",
       icon: "more_vert",
       side: "right",

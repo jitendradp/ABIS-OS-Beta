@@ -1,8 +1,8 @@
 import {Component, ComponentFactoryResolver, ViewChild, ViewContainerRef} from '@angular/core';
-import {Elevation, SetSidebarVisibility} from "../actions/ui/SetSidebarVisibility";
+import {Elevation, SetVisibility} from "../actions/ui/SetVisibility";
 import {ActionDispatcherService} from "../services/action-dispatcher.service";
 import {IEvent} from "../actions/IEvent";
-import {SetSidebarContent} from "../actions/ui/SetSidebarContent";
+import {SetContent} from "../actions/ui/SetContent";
 import {SetApplicationTitle} from "../actions/ui/SetApplicationTitle";
 import {ChatComponent} from "../chat/chat.component";
 
@@ -26,15 +26,15 @@ export class NavigationComponent {
 
   onAction(action: IEvent) {
     switch (action.name) {
-      case SetSidebarVisibility.Name:
-        const a = <SetSidebarVisibility>action;
+      case SetVisibility.Name:
+        const a = <SetVisibility>action;
         if (a.state == "invisible" && !a.elevation) {
           // Close either the whole sidebar or only the higher layer
           if (this.elevation == "level1") {
             this.elevation = "base";
             this.setElevationContent((<any>action).context);
           } else if (this.elevation == "base") {
-            this.actionDispatcher.dispatch(new SetSidebarVisibility("left", "invisible", "base"));
+            this.actionDispatcher.dispatch(new SetVisibility("left", "invisible", "base"));
           }
           return;
         }
@@ -43,7 +43,7 @@ export class NavigationComponent {
           this.setElevationContent((<any>action).context);
         }
         break;
-      case SetSidebarContent.Name:
+      case SetContent.Name:
         if ((<any>action).side == "bottom") {
           return;
         }

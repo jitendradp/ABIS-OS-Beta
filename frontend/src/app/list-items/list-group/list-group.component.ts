@@ -1,57 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
-import {MatTreeFlatDataSource, MatTreeFlattener} from "@angular/material";
-import {FlatTreeControl} from "@angular/cdk/tree";
 import {FindRoomsGQL, NewRoomGQL} from "../../../generated/abis-api";
 import {UserService} from "../../services/user.service";
 import {LoginStateChanged} from "../../actions/user/LoginStateChanged";
-import {filterErrorsAndWarnings} from "@angular/compiler-cli";
-import {ITypedElement} from "../../list/ITypedElement";
-
-interface GroupNode {
-  name: string;
-  logo?: string;
-  icon?: string;
-  channels?: GroupNode[];
-}
-
-let TREE_DATA: GroupNode[] = [
-  {
-    name: 'My Company',
-    logo: 'https://marketingplatform.google.com/about/partners/img/company/6027496168357888/assets/5686306919153664',
-    channels: [
-      {name: 'Chaos', icon: 'lock'},
-      {name: 'General', icon: 'lock'},
-      {name: 'Customer Support', icon: 'lock_open'},
-      {name: 'Chaos', icon: 'lock_open'},
-      {name: 'General', icon: 'lock_open'},
-      {name: 'Customer Support', icon: 'lock_open'},
-    ]
-  }
-];
-
-/** Flat node with expandable and level information */
-interface ExampleFlatNode {
-  expandable: boolean;
-  name: string;
-  level: number;
-  logo: string;
-}
-
-
-export interface groupItem {
-  name: string;
-  title: string;
-  creator: string;
-  createdAt: string;
-  pictureLogo: string;
-  description: string;
-  membersLive: number;
-  membersTotal: number;
-  location: string;
-  buttonLink: string;
-  tags: string;
-}
+import {SetContent} from "../../actions/ui/SetContent";
+import {CreateRoomComponent} from "../../pages/system/create-room/create-room.component";
 
 @Component({
   selector: 'app-list-group',
@@ -107,4 +60,7 @@ export class ListGroupComponent implements OnInit {
 
   entries: any[] = [];
 
+  onNew() {
+    this.actionDispatcher.dispatch(new SetContent("", "dialog", CreateRoomComponent, "base"));
+  }
 }

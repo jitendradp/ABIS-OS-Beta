@@ -1,12 +1,12 @@
 import {Component, Input} from '@angular/core';
 import {MatBottomSheet} from "@angular/material";
 import {SearchComponent} from "../../search/search.component";
-import {SetSidebarVisibility} from "../../actions/ui/SetSidebarVisibility";
+import {SetVisibility} from "../../actions/ui/SetVisibility";
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
 import {Logout} from "../../actions/routes/Logout";
 import {UserService} from "../../services/user.service";
 import {IAction} from "../../actions/IAction";
-import {SetSidebarContent} from "../../actions/ui/SetSidebarContent";
+import {SetContent} from "../../actions/ui/SetContent";
 import {ListGroupComponent} from "../../list-items/list-group/list-group.component";
 import {ListContactComponent} from "../../list-items/list-contact/list-contact.component";
 import {ListChatComponent} from "../../list-items/list-chat/list-chat.component";
@@ -58,10 +58,10 @@ export class IconbarComponent {
 
   public get entries() : IAction[] {
     if (!this._entries) {
-      const profileList = new SetSidebarContent("Groups", "left", ListGroupComponent, "base");
-      const contactList = new SetSidebarContent("Contacts", "left", ListContactComponent, "base");
-      const roomList = new SetSidebarContent("Rooms", "left", ListChatComponent, "base");
-      const openLeftSidebarBase = new SetSidebarVisibility("left", "visible", "base");
+      const profileList = new SetContent("Groups", "left", ListGroupComponent, "base");
+      const contactList = new SetContent("Contacts", "left", ListContactComponent, "base");
+      const roomList = new SetContent("Rooms", "left", ListChatComponent, "base");
+      const openLeftSidebarBase = new SetVisibility("left", "visible", "base");
 
       this._entries = [
         new Home(),
@@ -102,7 +102,7 @@ export class IconbarComponent {
   }
 
   close() {
-    this.actionDispatcher.dispatch(new SetSidebarVisibility("left", "invisible", "base"));
+    this.actionDispatcher.dispatch(new SetVisibility("left", "invisible", "base"));
   }
 
   logout() {

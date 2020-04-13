@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
-import {SetSidebarContent} from "../../actions/ui/SetSidebarContent";
+import {SetContent} from "../../actions/ui/SetContent";
 import {ChatComponent} from "../../chat/chat.component";
-import {SetSidebarVisibility} from "../../actions/ui/SetSidebarVisibility";
+import {SetVisibility} from "../../actions/ui/SetVisibility";
 import {NestedAction} from "../../actions/NestedAction";
 import {IEvent} from "../../actions/IEvent";
 import {ActionDispatcherService} from "../../services/action-dispatcher.service";
@@ -29,8 +29,8 @@ export class CardContactComponent {
   }
 
   onClick() {
-    const chat = new SetSidebarContent("Chat", "left", ChatComponent, "level1", this.context);
-    const openLeftSidebarLevel1 = new SetSidebarVisibility("left", "visible", "level1");
+    const chat = new SetContent("Chat", "left", ChatComponent, "level1", this.context);
+    const openLeftSidebarLevel1 = new SetVisibility("left", "visible", "level1");
 
     this.actionDispatcher.dispatch(new NestedAction(
       "chat",
