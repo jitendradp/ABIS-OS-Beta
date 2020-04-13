@@ -4,7 +4,6 @@ import {ActionDispatcherService} from "../services/action-dispatcher.service";
 import {IEvent} from "../actions/IEvent";
 import {SetContent} from "../actions/ui/SetContent";
 import {SetApplicationTitle} from "../actions/ui/SetApplicationTitle";
-import {ChatComponent} from "../chat/chat.component";
 
 @Component({
   selector: 'app-navigation',
