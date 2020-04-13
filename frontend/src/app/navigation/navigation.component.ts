@@ -63,7 +63,8 @@ export class NavigationComponent {
     const ref = this.contentContainer1.createComponent(factory);
     if (level.context) {
       // TODO: Pass "groupId" to ChatComponent in a more robust way
-      (<any>ref.instance).groupId = level.context;
+      (<any>ref.instance).groupId = level.context.id;
+      (<any>ref.instance).title = level.context.name;
     }
     this.actionDispatcher.dispatch(new SetApplicationTitle(level.title));
     ref.changeDetectorRef.detectChanges();

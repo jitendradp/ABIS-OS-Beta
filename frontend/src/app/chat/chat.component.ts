@@ -9,4 +9,7 @@ export class ChatComponent {
   @Input()
   groupId: string;
 
+  @Input()
+  title:string = "";
+
 }

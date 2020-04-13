@@ -16,9 +16,6 @@ export class CardChatComponent implements AfterViewInit{
   chatGroupTitle: string;
 
   @Input()
-  chatGroupSubtitle: string;
-
-  @Input()
   chatGroupMembersCount: number;
 
   @Input()
