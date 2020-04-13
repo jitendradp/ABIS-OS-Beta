@@ -71,11 +71,18 @@ export class IconbarComponent {
           ]),
         new NestedAction(
           "weekend",
-          "Rooms",
+          "My Rooms",
           [
             <IEvent>roomList,
             <IEvent>openLeftSidebarBase
-          ])
+          ]),
+        new NestedAction(
+          "bookmarks",
+          "Bookmarks",
+          [
+            <IEvent>profileList,
+            <IEvent>openLeftSidebarBase
+          ]),
       ];
     }
     return this._entries;
