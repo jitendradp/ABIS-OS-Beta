@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {ActionDispatcherService} from "../../services/action-dispatcher.service";
-import {FindRoomsGQL, NewRoomGQL} from "../../../generated/abis-api";
-import {UserService} from "../../services/user.service";
-import {LoginStateChanged} from "../../actions/user/LoginStateChanged";
-import {SetContent} from "../../actions/ui/SetContent";
-import {CreateRoomComponent} from "../../pages/system/create-room/create-room.component";
+import {ActionDispatcherService} from "../../../services/action-dispatcher.service";
+import {FindRoomsGQL, NewRoomGQL} from "../../../../generated/abis-api";
+import {UserService} from "../../../services/user.service";
+import {LoginStateChanged} from "../../../actions/user/LoginStateChanged";
+import {SetContent} from "../../../actions/ui/SetContent";
+import {CreateRoomComponent} from "../../../pages/system/create-room/create-room.component";
 
 @Component({
   selector: 'app-list-group',
