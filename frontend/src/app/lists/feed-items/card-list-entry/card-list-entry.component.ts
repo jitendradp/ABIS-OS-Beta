@@ -1,10 +1,10 @@
 import {Component, Input} from '@angular/core';
-import {SetContent} from "../../actions/ui/SetContent";
+import {SetContent} from "../../../actions/ui/SetContent";
 import {FeedComponent} from "../../feed/feed.component";
-import {SetVisibility} from "../../actions/ui/SetVisibility";
-import {NestedAction} from "../../actions/NestedAction";
-import {IEvent} from "../../actions/IEvent";
-import {ActionDispatcherService} from "../../services/action-dispatcher.service";
+import {SetVisibility} from "../../../actions/ui/SetVisibility";
+import {NestedAction} from "../../../actions/NestedAction";
+import {IEvent} from "../../../actions/IEvent";
+import {ActionDispatcherService} from "../../../services/action-dispatcher.service";
 
 @Component({
   selector: 'app-card-list-entry',

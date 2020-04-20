@@ -1,8 +1,8 @@
 import {AfterViewInit, Component, Input} from '@angular/core';
-import {AddTagGQL, Entry} from "../../../generated/abis-api";
-import {ActionDispatcherService} from "../../services/action-dispatcher.service";
-import {JumpToMapPosition} from "../../actions/ui/JumpToMapPosition";
-import {UserService} from "../../services/user.service";
+import {AddTagGQL, Entry} from "../../../../generated/abis-api";
+import {ActionDispatcherService} from "../../../services/action-dispatcher.service";
+import {JumpToMapPosition} from "../../../actions/ui/JumpToMapPosition";
+import {UserService} from "../../../services/user.service";
 
 @Component({
   selector: 'app-geoJson-entry',

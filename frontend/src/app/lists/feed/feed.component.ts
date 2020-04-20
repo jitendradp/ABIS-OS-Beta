@@ -1,12 +1,12 @@
 import {Component, Input} from '@angular/core';
-import {ContentEncoding, GetEntriesGQL} from "../../generated/abis-api";
-import {UserService} from "../services/user.service";
-import {ActionDispatcherService} from "../services/action-dispatcher.service";
-import {SetContent} from "../actions/ui/SetContent";
-import {CreateEntryEditorComponent} from "../components/create-entry-editor/create-entry-editor.component";
-import {IEvent} from "../actions/IEvent";
-import {NewEntryEvent} from "../actions/newEntryEvent";
-import {NewTagEvent} from "../actions/newTagEvent";
+import {ContentEncoding, GetEntriesGQL} from "../../../generated/abis-api";
+import {UserService} from "../../services/user.service";
+import {ActionDispatcherService} from "../../services/action-dispatcher.service";
+import {SetContent} from "../../actions/ui/SetContent";
+import {CreateEntryEditorComponent} from "../../components/create-entry-editor/create-entry-editor.component";
+import {IEvent} from "../../actions/IEvent";
+import {NewEntryEvent} from "../../actions/newEntryEvent";
+import {NewTagEvent} from "../../actions/newTagEvent";
 
 @Component({
   selector: 'app-feed',
