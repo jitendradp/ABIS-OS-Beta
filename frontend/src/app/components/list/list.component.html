@@ -18,6 +18,18 @@
         [sharesCount]="0">
       </app-geoJson-entry>
     </div>
+    <div *ngIf="entry.contentEncoding && userService.findContentEncodingById(entry.contentEncoding.id).name == 'Event'">
+      <div>
+        <table>
+          <tr>
+            <td>{{entry.content.country}}</td>
+            <td>{{entry.content.date}}</td>
+            <td>{{entry.content.time}}</td>
+            <td>{{entry.content.name}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
   </div>
 </mat-nav-list>
 

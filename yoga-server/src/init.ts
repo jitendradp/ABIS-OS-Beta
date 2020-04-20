@@ -178,6 +178,10 @@ export class Server {
         return this.contentEncodingsNameMap["GeoJsonFeature"];
     }
 
+    get eventEntryContentEncoding(): ContentEncoding {
+        return this.contentEncodingsNameMap["Event"];
+    }
+
     get contentEncodings(): ContentEncoding[] {
         return Object.keys(this._contentEncodingsIdMap).map(id => this._contentEncodingsIdMap[id]);
     }
@@ -196,6 +200,7 @@ export class Server {
     private _newRoomTopic: Topic<Group>;
     private _newTagTopic: Topic<Tag>;
     private _countriesSystemRoom: Group;
+    private _eventsSystemRoom: Group;
     private _dachSystemRoom: Group;
     private _eventBroker: EventBroker;
 
@@ -222,6 +227,7 @@ export class Server {
         await this.createSystemAgents();
 
         await this.createServices();
+
         await this.createSystemTopics();
 
         await this.loadAgents();
@@ -239,19 +245,28 @@ export class Server {
     }
 
     private async createSystemGroups() {
-        let existingCountriesSystemRoom = await prisma.groups({where:{owner:this._datenDieterSystemAgent.id, type:"Room", name:"Countries"}});
-        if (existingCountriesSystemRoom.length == 0) {
-            this._countriesSystemRoom = await AgentCreate.room(this, this._datenDieterSystemAgent.id, "Countries", "logo.png", true);
+        let existingRooms = await prisma.groups({where:{owner:this._datenDieterSystemAgent.id, type:"Room", name:"Countries"}});
+        if (existingRooms.length == 0) {
+            this._countriesSystemRoom = await AgentCreate.room(this, this._datenDieterSystemAgent.id, "Countries", "logo.png", true, true);
             await this.createCountryEntries();
         } else {
-            this._countriesSystemRoom = existingCountriesSystemRoom[0];
+            this._countriesSystemRoom = existingRooms[0];
         }
-        existingCountriesSystemRoom = await prisma.groups({where:{owner:this._datenDieterSystemAgent.id, type:"Room", name:"DACH Countries"}});
-        if (existingCountriesSystemRoom.length == 0) {
-            this._dachSystemRoom = await AgentCreate.room(this, this._datenDieterSystemAgent.id, "DACH Countries", "logo.png", true);
+
+        existingRooms = await prisma.groups({where:{owner:this._datenDieterSystemAgent.id, type:"Room", name:"DACH Countries"}});
+        if (existingRooms.length == 0) {
+            this._dachSystemRoom = await AgentCreate.room(this, this._datenDieterSystemAgent.id, "DACH Countries", "logo.png", true, true);
             await this.createCountry2Entries();
         } else {
-            this._dachSystemRoom = existingCountriesSystemRoom[0];
+            this._dachSystemRoom = existingRooms[0];
+        }
+
+        existingRooms = await prisma.groups({where:{owner:this._datenDieterSystemAgent.id, type:"Room", name:"Events"}});
+        if (existingRooms.length == 0) {
+            this._eventsSystemRoom = await AgentCreate.room(this, this._datenDieterSystemAgent.id, "Events", "logo.png", true, true);
+            await this.createEventEntries();
+        } else {
+            this._eventsSystemRoom = existingRooms[0];
         }
     }
 
@@ -477,29 +492,39 @@ export class Server {
         const dir = path.join(__dirname, "init", "systemEntries", "countriesGeoJson") + "/";
 
         const self = this;
-        await Promise.all(this.loadModules(dir).map(loadedCountry => self.insertGeoJsonEntryIfNotExists(this._countriesSystemRoom.id, loadedCountry, "sovereignt")));
+        await Promise.all(this.loadModules(dir).map(entry => self.insertGeoJsonEntryIfNotExists(this._countriesSystemRoom.id, entry, "sovereignt")));
     }
+
     private async createCountry2Entries() {
         const path = require('path');
         const dir = path.join(__dirname, "init", "systemEntries", "countriesGeoJson2") + "/";
 
         const self = this;
-        await Promise.all(this.loadModules(dir).map(loadedCountry => self.insertGeoJsonEntryIfNotExists(this._dachSystemRoom.id, loadedCountry, "sovereignt")));
+        await Promise.all(this.loadModules(dir).map(entry => self.insertGeoJsonEntryIfNotExists(this._dachSystemRoom.id, entry, "sovereignt")));
+    }
+
+    private async createEventEntries() {
+        const path = require('path');
+        const dir = path.join(__dirname, "init", "systemEntries", "events") + "/";
+
+        for(let entry of this.loadModules(dir)) {
+            await this.insertEventsIfNotExists(this._eventsSystemRoom.id, entry);
+        }
     }
 
     // this._countriesSystemRoom.id
     // nameProperty: sovereign
-    private async insertGeoJsonEntryIfNotExists(groupId:string, geojson:any, nameProperty:string) {
-        const countryName = geojson.properties[nameProperty];
+    private async insertGeoJsonEntryIfNotExists(groupId:string, entry:any, nameProperty:string) {
+        const entryName = entry.properties[nameProperty];
 
         const existingEntry = await prisma.group({id:groupId}).entries({
             where: {
-                name: countryName
+                name: entryName
             }
         });
 
         if (existingEntry.length > 0) {
-            console.log(`   Country '${countryName}' already exists.`);
+            console.log(`   Country '${entryName}' already exists.`);
             return;
         }
 
@@ -512,15 +537,39 @@ export class Server {
                 createdBy: this.systemUser.id,
                 owner: this.systemUser.id,
                 type: "Json",
-                name: countryName,
-                content: geojson
+                name: entryName,
+                content: entry
             },
             null,
             null,
             null,
-            null);
+            null,
+            true);
 
-        console.log(`   Created entry '${newEntry.id}' for country '${countryName}' in group system room '${this._countriesSystemRoom.id}'.`);
+        console.log(`   Created entry '${newEntry.id}' for country '${entryName}' in group system room '${this._countriesSystemRoom.id}'.`);
+    }
+
+    private async insertEventsIfNotExists(groupId:string, entry:any) {
+        const entryName = entry.name;
+        const newEntry = await AgentCreate.entry(
+            this,
+            this.datenDieterSystemAgent.id,
+            groupId,
+            {
+                contentEncoding: this.eventEntryContentEncoding.id,
+                createdBy: this.systemUser.id,
+                owner: this.systemUser.id,
+                type: "Json",
+                name: entryName,
+                content: entry
+            },
+            null,
+            null,
+            null,
+            null,
+            true);
+
+        console.log(`   Created entry '${newEntry.id}' for country '${entryName}' in group system room '${this._countriesSystemRoom.id}'.`);
     }
 
     private loadModules(path:string) {
@@ -528,7 +577,7 @@ export class Server {
 
         Helper.log(`Trying to load modules from '${path}' ...`);
 
-        return readdirSync(path, {withFileTypes: true})
+        return Array.from(readdirSync(path, {withFileTypes: true})
             .filter(fsItem => fsItem.isFile()
                 && fsItem.name.length > 3
                 && fsItem.name.substr (fsItem.name.length - 3, 3).toLowerCase() == ".js")
@@ -541,7 +590,7 @@ export class Server {
                     Helper.log(`   Error: ${e}`);
                 }
             })
-            .filter(mod => mod !== undefined);
+            .filter(mod => mod !== undefined));
     }
 }
 

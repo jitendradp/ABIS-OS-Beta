@@ -149,7 +149,7 @@ export class AgentCreate {
         return newChannel;
     }
 
-    public static async room(server: Server, agentId: string, name: string, logo: string, isPublic: boolean) {
+    public static async room(server: Server, agentId: string, name: string, logo: string, isPublic: boolean, silent?:boolean) {
         const agent = await prisma.agent({id: agentId});
         if (!agent) {
             throw new Error(`Couldn't create a Room. The specified agentId does not exist: ${agentId}`);
@@ -171,14 +171,16 @@ export class AgentCreate {
 
         Helper.log(`Created a new room (${newRoom.id}) with agent '${agentId}' as owner.`);
 
-        await server.eventBroker
-            .getTopic<Group>("system", Topics.NewRoom)
-            .publish(newRoom);
+        if (!silent) {
+            await server.eventBroker
+                .getTopic<Group>("system", Topics.NewRoom)
+                .publish(newRoom);
+        }
 
         return newRoom;
     }
 
-    public static async entry(server: Server, agentId: string, groupId: string, entry: EntryCreateInput, request:any, sessionToken:string, csrfToken:string, bearerToken:string) : Promise<Entry> {
+    public static async entry(server: Server, agentId: string, groupId: string, entry: EntryCreateInput, request:any, sessionToken:string, csrfToken:string, bearerToken:string, silent?:boolean) : Promise<Entry> {
         entry.createdBy = agentId;
         entry.owner = agentId;
 
@@ -217,9 +219,12 @@ export class AgentCreate {
         (<any>createdEntry).__bearerToken = bearerToken; // TODO: Find a better way to set the tokens
 
         // TODO: This can propagate the errors of services to this position
-        await server.eventBroker
-            .getTopic<Entry>("system", Topics.NewEntry)
-            .publish(createdEntry);
+
+        if (!silent) {
+            await server.eventBroker
+                .getTopic<Entry>("system", Topics.NewEntry)
+                .publish(createdEntry);
+        }
 
         return createdEntry;
     }
