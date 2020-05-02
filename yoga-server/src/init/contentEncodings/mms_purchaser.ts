@@ -1,13 +1,13 @@
 import {ContentEncodingCreateInput} from "../../generated";
 
 export const Index: ContentEncodingCreateInput = {
-    createdBy: "",
-    maintainer: "",
+    createdBy: "dave",
+    maintainer: "munichMotosport",
     charset: "utf-8",
-    name: "MmsPurchaser",
+    name: "Purchaser",
     type: "JsonSchema",
     data: JSON.stringify({
-        MmsPurchaser: {
+        Purchaser: {
             "type": "object",
             "properties": {
                 "last_name": {"type": "string"},
